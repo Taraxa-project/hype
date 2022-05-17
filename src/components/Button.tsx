@@ -20,7 +20,7 @@ const StyledButton = styled.button<CustomStyledProps>`
   color: ${(props) => (props.variant === "primary" ? "#fff" : "#595959")};
   font-size: 1rem;
   padding: ${(props) =>
-    props.size === "small" ? "1rem 0.5rem" : "1rem 1.5rem"};
+    props.size === "small" ? "1rem 0.5rem" : "1rem 4.5rem"};
   ${(props) => props.size === "full-width" && "width: 100%;"}
 
   :hover {
