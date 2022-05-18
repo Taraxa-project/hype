@@ -49,18 +49,22 @@ const StyledHeader = styled.header<CustomStyledProps>`
 
   .account {
     background: #f7f7f7;
-    border-radius: 32px;
+    border-radius: 26px;
+    font-size: 12px;
     display: flex;
     align-items: center;
     color: #787878;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .greendot {
-    height: 0.33rem;
-    width: 0.33rem;
-    background-color: #bbb;
+    margin-left: 0.1rem;
+    margin-right: 0.2rem;
+    height: 6px !important;
+    width: 6px !important;
+    background: #15AC5B;
     border-radius: 50%;
-    display: inline-block;
   }
 
   span {
@@ -85,7 +89,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
   }
 `;
 
-enum HeaderValues {
+export enum HeaderValues {
   HypeFarming = "Hype Farming",
   HypePool = "Hype Pool",
   Redeem = "Redeem",
@@ -106,7 +110,7 @@ const Header = React.memo(
     headerElements?: HeaderValues[];
     status: "connected" | "disconnected" | "unavailable";
     onConnect: () => void;
-    account: string;
+    account?: string;
   }) => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const [selected, setSelected] = React.useState<HeaderValues>(
@@ -146,7 +150,7 @@ const Header = React.memo(
             </Button>
           ) : status === "connected" ? (
             <div className="account">
-              <span className="greendot" />
+              <p className="greendot" />
               {account}
             </div>
           ) : (
