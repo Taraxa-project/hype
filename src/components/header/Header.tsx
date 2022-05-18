@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import styled from "styled-components";
+import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import HypeIcon from "../../assets/icons/HypeIcon";
 import Button from "../button/Button";
 
@@ -63,7 +64,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
     margin-right: 0.2rem;
     height: 6px !important;
     width: 6px !important;
-    background: #15AC5B;
+    background: #15ac5b;
     border-radius: 50%;
   }
 
@@ -129,32 +130,50 @@ const Header = React.memo(
       HeaderValues.Redeem,
     ];
     return (
-      <StyledHeader variant={isMobile ? "mobile" : "desktop"}>
+      <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
         <div className="headerLeft">
           <HypeIcon />
         </div>
+
         <div className="headerRight">
-          {headerEntries.map((e) =>
-            e === selected ? (
-              <span className="selected">
-                + {e}
-                <p className="underline" />
-              </span>
+          {variant === 'mobile' ? (
+            status === "connected" ? (
+              <>
+                {" "}
+                <div className="account">
+                  <p className="greendot" />
+                  {account}
+                </div>
+                <HamburgerMenuIcon />
+              </>
             ) : (
-              <span onClick={() => onSelect(e)}>{e}</span>
+              <HamburgerMenuIcon />
             )
-          )}
-          {status === "disconnected" ? (
-            <Button size="regular" onClick={onConnect}>
-              Connect Wallet
-            </Button>
-          ) : status === "connected" ? (
-            <div className="account">
-              <p className="greendot" />
-              {account}
-            </div>
           ) : (
-            <div className="account">Metamask is not available.</div>
+            <>
+              {headerEntries.map((e) =>
+                e === selected ? (
+                  <span className="selected">
+                    + {e}
+                    <p className="underline" />
+                  </span>
+                ) : (
+                  <span onClick={() => onSelect(e)}>{e}</span>
+                )
+              )}
+              {status === "disconnected" ? (
+                <Button size="regular" onClick={onConnect}>
+                  Connect Wallet
+                </Button>
+              ) : status === "connected" ? (
+                <div className="account">
+                  <p className="greendot" />
+                  {account}
+                </div>
+              ) : (
+                <div className="account">Metamask is not available.</div>
+              )}
+            </>
           )}
         </div>
         {children}
