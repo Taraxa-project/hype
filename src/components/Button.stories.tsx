@@ -3,12 +3,12 @@ import { ComponentStory } from "@storybook/react";
 import Button from "./Button";
 
 export default {
-  title: "Button",
+  title: "Hype/Button",
   component: Button,
 };
 
 const Template: ComponentStory<typeof Button> = (args) => (
-  <Button {...args}>Button</Button>
+  <Button {...args}>Learn more</Button>
 );
 
 export const Primary = Template.bind({});
@@ -28,3 +28,12 @@ Fullwidth.args = { size: "full-width" };
 
 export const Disabled = Template.bind({});
 Disabled.args = { disabled: true };
+
+export const CancelSmall = Template.bind({});
+Small.args = { size: "small" };
+
+export const CancelRegular = Template.bind({});
+Regular.args = { size: "regular" };
+
+export const CancelFullwidth = Template.bind({});
+Fullwidth.args = { size: "full-width" };
