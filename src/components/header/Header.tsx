@@ -19,7 +19,6 @@ const StyledHeader = styled.header<CustomStyledProps>`
   border-radius: 0.75rem;
   font-size: 1rem;
   background: #ffffff;
-
   .headerLeft {
     width: 50%;
     display: flex;
@@ -144,10 +143,10 @@ const Header = React.memo(
                   <p className="greendot" />
                   {account}
                 </div>
-                <HamburgerMenuIcon />
+                <p style={{top: "calc(50% - 10px)"}}><HamburgerMenuIcon /></p>
               </>
             ) : (
-              <HamburgerMenuIcon />
+              <p style={{top: "calc(50% - 10px)"}}><HamburgerMenuIcon /></p>
             )
           ) : (
             <>
