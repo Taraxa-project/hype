@@ -89,6 +89,96 @@ const StyledHeader = styled.header<CustomStyledProps>`
   }
 `;
 
+const SidebarHover = styled.div`
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(45, 45, 45, 0.4);
+`;
+
+const Sidebar = styled.div`
+  position: absolute;
+  left: calc(100% - 20.375rem);
+  box-sizing: border-box;
+  top: 0;
+  height: 100vh;
+  width: 20.375rem;
+  background-color: #ffffff;
+`;
+
+const SidebarHeader = styled.div`
+  display: flex;
+  padding: 1.5rem 3rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6.25rem;
+`;
+
+const SidebarMenu = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 9.375rem;
+`;
+
+interface SidebarMenuLinkProps extends React.HTMLProps<HTMLLIElement> {
+  selected?: boolean;
+}
+
+const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  padding: 1.25rem 3rem;
+  font-weight: ${(props) => (props.selected ? "700" : "400")};
+  color: ${(props) => (props.selected ? "#292929" : "#adadad")};
+
+  ::before {
+    position: absolute;
+    left: 0;
+    display: block;
+    content: ${(props) => (props.selected ? `""` : "none")};
+    width: 1rem;
+    height: 1.5rem;
+    background-color: #dda25d;
+  }
+`;
+
+const SidebarFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MenuButton = styled.button`
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+`;
+
+const Account = styled.div`
+  background: #f7f7f7;
+  border-radius: 1.625rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  color: #787878;
+  padding: 0.375rem 1.5rem;
+`;
+
+const GreenDot = styled.div`
+  margin-left: 0.1rem;
+  margin-right: 0.2rem;
+  height: 6px !important;
+  width: 6px !important;
+  background: #15ac5b;
+  border-radius: 50%;
+`;
+
 export enum HeaderValues {
   HypeFarming = "Hype Farming",
   HypePool = "Hype Pool",
@@ -113,6 +203,7 @@ const Header = React.memo(
     account?: string | null;
   }) => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [selected, setSelected] = React.useState<HeaderValues>(
       HeaderValues.None
     );
@@ -121,60 +212,118 @@ const Header = React.memo(
       setSelected(e);
     };
 
+    const onMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
+      setMenuOpen(!menuOpen);
+    };
+
+    const onSidebarClick = (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+    };
+
+    const onHoverClick = (e: React.MouseEvent<HTMLElement>) => {
+      setMenuOpen(false);
+    };
+
     const headerEntries: HeaderValues[] = headerElements || [
       HeaderValues.HypeFarming,
       HeaderValues.HypePool,
       HeaderValues.Redeem,
     ];
     return (
-      <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
-        <div className="headerLeft">
-          <HypeIcon />
-        </div>
-
-        <div className="headerRight">
-          {variant === 'mobile' ? (
-            status === "connected" ? (
-              <>
-                {" "}
-                <div className="account">
-                  <p className="greendot" />
-                  {account}
-                </div>
-                <p style={{top: "calc(50% - 10px)"}}><HamburgerMenuIcon /></p>
-              </>
-            ) : (
-              <p style={{top: "calc(50% - 10px)"}}><HamburgerMenuIcon /></p>
-            )
-          ) : (
-            <>
-              {headerEntries.map((e) =>
-                e === selected ? (
-                  <span className="selected">
-                    + {e}
-                    <p className="underline" />
-                  </span>
+      <>
+        {(variant === "mobile" || isMobile) && menuOpen && (
+          <SidebarHover onClick={onHoverClick}>
+            <Sidebar onClick={onSidebarClick}>
+              <SidebarHeader>
+                {status === "connected" ? (
+                  <>
+                    <MenuButton onClick={onMenuOpen}>
+                      <HamburgerMenuIcon />
+                    </MenuButton>
+                    <Account>
+                      <GreenDot />
+                      {account}
+                    </Account>
+                  </>
                 ) : (
-                  <span onClick={() => onSelect(e)}>{e}</span>
-                )
-              )}
-              {status === "notConnected" ? (
-                <Button size="regular" onClick={onConnect}>
-                  Connect Wallet
-                </Button>
-              ) : status === "connected" ? (
-                <div className="account">
-                  <p className="greendot" />
-                  {account}
-                </div>
+                  <MenuButton onClick={onMenuOpen}>
+                    <HamburgerMenuIcon />
+                  </MenuButton>
+                )}
+              </SidebarHeader>
+              <SidebarMenu>
+                {headerEntries.map((e) => (
+                  <SidebarMenuLink
+                    selected={e === selected}
+                    onClick={() => onSelect(e)}
+                  >
+                    {e}
+                  </SidebarMenuLink>
+                ))}
+              </SidebarMenu>
+              <SidebarFooter>
+                {status === "notConnected" && (
+                  <Button size="regular" onClick={onConnect}>
+                    Connect Wallet
+                  </Button>
+                )}
+              </SidebarFooter>
+            </Sidebar>
+          </SidebarHover>
+        )}
+        <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
+          <div className="headerLeft">
+            <HypeIcon />
+          </div>
+
+          <div className="headerRight">
+            {variant === "mobile" ? (
+              status === "connected" ? (
+                <>
+                  {" "}
+                  <div className="account">
+                    <p className="greendot" />
+                    {account}
+                  </div>
+                  <p onClick={onMenuOpen} style={{ top: "calc(50% - 10px)" }}>
+                    <HamburgerMenuIcon />
+                  </p>
+                </>
               ) : (
-                <div className="account">Metamask is not available.</div>
-              )}
-            </>
-          )}
-        </div>
-        {children}
-      </StyledHeader>
+                <p onClick={onMenuOpen} style={{ top: "calc(50% - 10px)" }}>
+                  <HamburgerMenuIcon />
+                </p>
+              )
+            ) : (
+              <>
+                {headerEntries.map((e) =>
+                  e === selected ? (
+                    <span className="selected">
+                      + {e}
+                      <p className="underline" />
+                    </span>
+                  ) : (
+                    <span onClick={() => onSelect(e)}>{e}</span>
+                  )
+                )}
+                {status === "notConnected" ? (
+                  <Button size="regular" onClick={onConnect}>
+                    Connect Wallet
+                  </Button>
+                ) : status === "connected" ? (
+                  <div className="account">
+                    <p className="greendot" />
+                    {account}
+                  </div>
+                ) : (
+                  <div className="account">Metamask is not available.</div>
+                )}
+              </>
+            )}
+          </div>
+          {children}
+        </StyledHeader>
+      </>
     );
   }
 );
