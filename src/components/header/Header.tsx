@@ -20,16 +20,21 @@ const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 1rem;
   background: #ffffff;
   .headerLeft {
-    width: 50%;
+    flex: 1 0 auto;
     display: flex;
     align-items: left;
   }
 
   .headerRight {
-    width: 50%;
+    flex: 0 1 auto;
+    padding-right: 2rem;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
+  }
+
+  .margin-right {
+    margin-right: 2rem;
   }
 
   .selected {
@@ -45,26 +50,6 @@ const StyledHeader = styled.header<CustomStyledProps>`
     min-height: 10%;
     width: 100%;
     margin: 0 0 0 0;
-  }
-
-  .account {
-    background: #f7f7f7;
-    border-radius: 1.625rem;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    color: #787878;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  .greendot {
-    margin-left: 0.1rem;
-    margin-right: 0.2rem;
-    height: 6px !important;
-    width: 6px !important;
-    background: #15ac5b;
-    border-radius: 50%;
   }
 
   span {
@@ -89,7 +74,12 @@ const StyledHeader = styled.header<CustomStyledProps>`
   }
 `;
 
-const SidebarHover = styled.div`
+interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
+  show?: boolean;
+}
+
+const SidebarHover = styled.div<SidebarProps>`
+  ${(props) => !props.show && `visibility: hidden;`}
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -98,9 +88,10 @@ const SidebarHover = styled.div`
   background-color: rgba(45, 45, 45, 0.4);
 `;
 
-const Sidebar = styled.div`
+const Sidebar = styled.div<SidebarProps>`
+  transition: all 0.5s ease;
   position: absolute;
-  left: calc(100% - 20.375rem);
+  left: ${(props) => (props.show ? "calc(100% - 20.375rem)" : "100%")};
   box-sizing: border-box;
   top: 0;
   height: 100vh;
@@ -231,24 +222,23 @@ const Header = React.memo(
     ];
     return (
       <>
-        {(variant === "mobile" || isMobile) && menuOpen && (
-          <SidebarHover onClick={onHoverClick}>
-            <Sidebar onClick={onSidebarClick}>
+        {(variant === "mobile" || isMobile) && (
+          <SidebarHover onClick={onHoverClick} show={menuOpen}>
+            <Sidebar onClick={onSidebarClick} show={menuOpen}>
               <SidebarHeader>
-                {status === "connected" ? (
-                  <>
-                    <MenuButton onClick={onMenuOpen}>
-                      <HamburgerMenuIcon />
-                    </MenuButton>
-                    <Account>
-                      <GreenDot />
-                      {account}
-                    </Account>
-                  </>
-                ) : (
-                  <MenuButton onClick={onMenuOpen}>
-                    <HamburgerMenuIcon />
-                  </MenuButton>
+                <MenuButton onClick={onMenuOpen}>
+                  <HamburgerMenuIcon />
+                </MenuButton>
+                {status !== "notConnected" && (
+                  <Account>
+                    {status === "connected" && (
+                      <>
+                        <GreenDot />
+                        {account}
+                      </>
+                    )}
+                    {status === "unavailable" && "Metamask is not available."}
+                  </Account>
                 )}
               </SidebarHeader>
               <SidebarMenu>
@@ -281,18 +271,18 @@ const Header = React.memo(
               status === "connected" ? (
                 <>
                   {" "}
-                  <div className="account">
-                    <p className="greendot" />
+                  <Account className="margin-right">
+                    <GreenDot />
                     {account}
-                  </div>
-                  <p onClick={onMenuOpen} style={{ top: "calc(50% - 10px)" }}>
+                  </Account>
+                  <MenuButton onClick={onMenuOpen}>
                     <HamburgerMenuIcon />
-                  </p>
+                  </MenuButton>
                 </>
               ) : (
-                <p onClick={onMenuOpen} style={{ top: "calc(50% - 10px)" }}>
+                <MenuButton onClick={onMenuOpen}>
                   <HamburgerMenuIcon />
-                </p>
+                </MenuButton>
               )
             ) : (
               <>
@@ -311,12 +301,12 @@ const Header = React.memo(
                     Connect Wallet
                   </Button>
                 ) : status === "connected" ? (
-                  <div className="account">
-                    <p className="greendot" />
+                  <Account>
+                    <GreenDot />
                     {account}
-                  </div>
+                  </Account>
                 ) : (
-                  <div className="account">Metamask is not available.</div>
+                  <Account>Metamask is not available.</Account>
                 )}
               </>
             )}
