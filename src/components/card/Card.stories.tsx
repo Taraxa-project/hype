@@ -48,7 +48,7 @@ Mobile.args = {
       <h3>ApeCoin Staking Launch!</h3>
       <span>
         APE is launching it’s testnet, and we’d like everyone to come & check it
-        out! All participants will be able to claim rewards...
+        out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv
       </span>
       <div className="dataContainer">
         <span className="dataHeader">Pool:</span>

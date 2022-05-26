@@ -9,7 +9,8 @@ interface CustomStyledProps {
 
 const StyledCard = styled.div<CustomStyledProps>`
   width: ${(props) => (props.variant === "mobile" ? "19.375rem" : "23rem")};
-  height: ${(props) => (props.variant === "mobile" ? "21.938rem" : "24.438rem")};
+  height: ${(props) =>
+    props.variant === "mobile" ? "21.938rem" : "24.438rem"};
   letter-spacing: -0.02em;
   line-height: 1.25rem;
   display: flex;
@@ -29,7 +30,13 @@ const StyledCard = styled.div<CustomStyledProps>`
     font-size: 0.875rem;
     color: #595959;
     width: 100%;
+    min-height: 2rem;
     margin-bottom: 2%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 
   .container {
