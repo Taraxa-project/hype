@@ -8,25 +8,25 @@ interface CustomStyledProps {
 }
 
 const StyledCard = styled.div<CustomStyledProps>`
-  width: ${(props) => (props.variant === "mobile" ? "310px" : "368px")};
-  height: ${(props) => (props.variant === "mobile" ? "351px" : "391px")};
+  width: ${(props) => (props.variant === "mobile" ? "19.375rem" : "23rem")};
+  height: ${(props) => (props.variant === "mobile" ? "21.938rem" : "24.438rem")};
   letter-spacing: -0.02em;
-  line-height: 20px;
+  line-height: 1.25rem;
   display: flex;
-  border-radius: 16px;
+  border-radius: 1rem;
   background: #f1f1f1;
   padding: 1%;
 
   h3 {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 0.875rem;
     color: #292929;
     width: 100%;
   }
 
   span {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #595959;
     width: 100%;
     margin-bottom: 2%;

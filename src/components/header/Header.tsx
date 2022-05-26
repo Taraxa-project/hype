@@ -34,7 +34,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
 
   .selected {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1rem;
     color: #292929;
     cursor: pointer;
   }
@@ -49,8 +49,8 @@ const StyledHeader = styled.header<CustomStyledProps>`
 
   .account {
     background: #f7f7f7;
-    border-radius: 26px;
-    font-size: 12px;
+    border-radius: 1.625rem;
+    font-size: 0.75rem;
     display: flex;
     align-items: center;
     color: #787878;
@@ -83,7 +83,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
 
     :active {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 1rem;
       color: #292929;
     }
   }
@@ -108,16 +108,14 @@ const Header = React.memo(
     children: React.ReactNode;
     variant: "mobile" | "desktop";
     headerElements?: HeaderValues[];
-    status: "connected" | "disconnected" | "unavailable";
+    status: "connected" | "notConnected" | "unavailable";
     onConnect: () => void;
-    account?: string;
+    account?: string | null;
   }) => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const [selected, setSelected] = React.useState<HeaderValues>(
       HeaderValues.None
     );
-
-    console.log("Ehtereum", window);
 
     const onSelect = (e: HeaderValues) => {
       setSelected(e);
@@ -160,7 +158,7 @@ const Header = React.memo(
                   <span onClick={() => onSelect(e)}>{e}</span>
                 )
               )}
-              {status === "disconnected" ? (
+              {status === "notConnected" ? (
                 <Button size="regular" onClick={onConnect}>
                   Connect Wallet
                 </Button>

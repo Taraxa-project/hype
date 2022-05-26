@@ -5,7 +5,7 @@ import styled from "styled-components";
 const StyledInput = styled.input`
   box-sizing: border-box;
 
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 1px solid #e0e0e0;
   background: #fafafa;
   color: #595959;
@@ -15,13 +15,13 @@ const StyledInput = styled.input`
   text-align: center;
 
   :focus, :active, :hover {
-    border: 2px solid #EB8F4C !important;
+    border: 0.125rem solid #EB8F4C !important;
     background: #F7F7F7;
   }
 
   :disabled {
     background: #f1f1f1;
-    border: 1px solid #e0e0e0;
+    border: 0.063rem solid #e0e0e0;
     color: #e0e0e0;
   }
 `;
