@@ -91,7 +91,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
 
 export enum HeaderValues {
   HypeFarming = "Hype Farming",
-  HypePool = "Hype Pool",
+  HypePool = "+ Hype Pool",
   Redeem = "Redeem",
   None = "none",
 }
@@ -151,7 +151,7 @@ const Header = React.memo(
               {headerEntries.map((e) =>
                 e === selected ? (
                   <span className="selected">
-                    + {e}
+                    {e}
                     <p className="underline" />
                   </span>
                 ) : (
