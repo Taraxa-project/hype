@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory } from "@storybook/react";
 import Input from "./Input";
+import SearchIcon from "../../assets/icons/Search";
 
 export default {
   title: "Hype/Input",
@@ -12,7 +13,10 @@ const Template: ComponentStory<typeof Input> = (args) => (
 );
 
 export const Regular = Template.bind({});
-Regular.args = { };
+Regular.args = {};
+
+export const Icon = Template.bind({});
+Icon.args = { Icon: <SearchIcon />, label: 'Search for hype pools...' };
 
 export const Disabled = Template.bind({});
 Disabled.args = { disabled: true };

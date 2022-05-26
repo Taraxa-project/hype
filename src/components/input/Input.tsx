@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import SearchIcon from "../../assets/icons/Search";
 
+interface StyledInputProps {
+  Icon?: React.ReactNode;
+}
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
 
   border-radius: 0.75rem;
@@ -13,10 +17,13 @@ const StyledInput = styled.input`
   width: 100%;
   min-height: 2.5rem;
   text-align: center;
+  padding: 10px;
 
-  :focus, :active, :hover {
-    border: 0.125rem solid #EB8F4C !important;
-    background: #F7F7F7;
+  :focus,
+  :active,
+  :hover {
+    border: 0.125rem solid #eb8f4c !important;
+    background: #f7f7f7;
   }
 
   :disabled {
@@ -29,17 +36,23 @@ const StyledInput = styled.input`
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   label?: string;
+  Icon?: React.ReactNode;
 }
 
 const Input = ({ ...props }: InputProps) => {
-  return (
-    <StyledInput {...props} placeholder={props.label}/>
+  return props.Icon ? (
+    <div style={{ width: "100%", marginBottom: "0.600rem" }}>
+      <SearchIcon />
+      <StyledInput {...props} placeholder={props.label} />
+    </div>
+  ) : (
+    <StyledInput {...props} placeholder={props.label} />
   );
 };
 
 Input.defaultProps = {
   disabled: false,
-  label: 'Your address...'
+  label: "Your address...",
 };
 
 export default Input;
