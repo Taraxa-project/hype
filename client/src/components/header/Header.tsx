@@ -5,6 +5,7 @@ import styled from "styled-components";
 import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import { HypeIconSmall } from "../../assets/icons/HypeIcon";
 import Button from "../button/Button";
+import MediatedParagraph from "../mediatedParagraph/MediatedParagraph";
 
 interface CustomStyledProps {
   variant?: "mobile" | "desktop";
@@ -65,8 +66,8 @@ const StyledHeader = styled.header<CustomStyledProps>`
   .greendot {
     margin-left: 0.1rem;
     margin-right: 0.2rem;
-    height: 6px !important;
-    width: 6px !important;
+    height: 0.375rem !important;
+    width: 0.375rem !important;
     background: #15ac5b;
     border-radius: 50%;
   }
@@ -74,7 +75,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
   span {
     padding-top: 1.5rem;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -147,14 +148,10 @@ const Header = React.memo(
                   <p className="greendot" />
                   {account}
                 </div>
-                <p style={{ top: "calc(50% - 10px)" }}>
-                  <HamburgerMenuIcon />
-                </p>
+                <MediatedParagraph><HamburgerMenuIcon /></MediatedParagraph>
               </>
             ) : (
-              <p style={{ top: "calc(50% - 10px)" }}>
-                <HamburgerMenuIcon />
-              </p>
+              <MediatedParagraph><HamburgerMenuIcon /></MediatedParagraph>
             )
           ) : (
             <>
