@@ -1,0 +1,78 @@
+.pageContainer {
+  background: #fafafa;
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.heroContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  justify-content: center;
+}
+
+.header {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 26px;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+
+  color: #000000;
+}
+
+.videoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+}
+
+.poolContainer {
+  display: flex;
+  flex-direction: inherit;
+  margin-top: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  letter-spacing: -0.02em;
+  text-align: left;
+  color: #595959;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-width: 15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    overflow: auto;
+  }
+  
