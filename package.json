@@ -1,77 +1,40 @@
 {
-  "name": "hype",
-  "version": "0.1.0",
+  "name": "hype_project",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@types/styled-components": "^5.1.25",
-    "ethers": "^5.6.6",
-    "metamask-react": "^2.3.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-responsive": "^9.0.0-beta.8",
-    "react-scripts": "5.0.1",
-    "styled-components": "^5.3.5",
-    "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
-  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "install": "cd client && yarn && cd ../server && yarn",
+    "start": "concurrently \"yarn start-client && start-server\"",
+    "start-client": "cd client && yarn start",
+    "build-client": "cd client && yarn build",
+    "start-server": "cd server && yarn start",
+    "storybook": "cd client && yarn storybook",
+    "build-storybook": "yarn client && yarn build-storybook",
+    "format": "prettier . --write && eslint --fix '*.{js,jsx,ts,tsx}'",
+    "lint": "eslint client && eslint server",
+    "postinstall": "husky install"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint",
+      "prettier --write"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "husky": "^7.0.4"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.22",
-    "@storybook/addon-controls": "^6.4.22",
-    "@storybook/addon-essentials": "^6.4.22",
-    "@storybook/addon-interactions": "^6.4.22",
-    "@storybook/addon-links": "^6.4.22",
-    "@storybook/builder-webpack5": "^6.4.22",
-    "@storybook/manager-webpack5": "^6.4.22",
-    "@storybook/node-logger": "^6.4.22",
-    "@storybook/preset-create-react-app": "^4.1.0",
-    "@storybook/react": "^6.4.22",
-    "@storybook/testing-library": "^0.0.11",
-    "webpack": "^5.72.0"
-  },
-  "resolutions": {
-    "styled-components": "^5"
+    "@typescript-eslint/parser": "^5.14.0",
+    "concurrently": "^7.0.0",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-typescript-prettier": "^5.0.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "lint-staged": "^12.3.5",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
   }
 }
