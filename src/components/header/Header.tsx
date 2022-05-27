@@ -5,6 +5,7 @@ import styled from "styled-components";
 import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import HypeIcon from "../../assets/icons/HypeIcon";
 import Button from "../button/Button";
+import MediatedParagraph from "../mediatedParagraph/MediatedParagraph";
 
 interface CustomStyledProps {
   variant?: "mobile" | "desktop";
@@ -55,7 +56,7 @@ const StyledHeader = styled.header<CustomStyledProps>`
   span {
     padding-top: 1rem;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -164,8 +165,8 @@ const Account = styled.div`
 const GreenDot = styled.div`
   margin-left: 0.1rem;
   margin-right: 0.2rem;
-  height: 6px !important;
-  width: 6px !important;
+  height: 0.375rem !important;
+  width: 0.375rem !important;
   background: #15ac5b;
   border-radius: 50%;
 `;
