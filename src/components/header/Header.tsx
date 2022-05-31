@@ -5,7 +5,9 @@ import styled from "styled-components";
 import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import HypeIcon from "../../assets/icons/HypeIcon";
 import Button from "../button/Button";
-import MediatedParagraph from "../mediatedParagraph/MediatedParagraph";
+
+const getShortAddress = (addr: string | null | undefined): string =>
+  addr ? addr.slice(0, 5) + "..." + addr.slice(-4) : "";
 
 interface CustomStyledProps {
   variant?: "mobile" | "desktop";
@@ -235,7 +237,7 @@ const Header = React.memo(
                     {status === "connected" && (
                       <>
                         <GreenDot />
-                        {account}
+                        {getShortAddress(account)}
                       </>
                     )}
                     {status === "unavailable" && "Metamask is not available."}
@@ -274,7 +276,7 @@ const Header = React.memo(
                   {" "}
                   <Account className="margin-right">
                     <GreenDot />
-                    {account}
+                    {getShortAddress(account)}
                   </Account>
                   <MenuButton onClick={onMenuOpen}>
                     <HamburgerMenuIcon />
