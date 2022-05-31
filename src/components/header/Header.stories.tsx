@@ -19,7 +19,7 @@ MobileConnected.args = {
   ],
   status: "connected",
   onConnect: () => {},
-  account: "0x6e3AA...82aFB",
+  account: "0x6e3AA85dB95BBA316276a3...82aFB",
 };
 
 export const MobileDisconnected = Template.bind({});
