@@ -22,6 +22,7 @@ const StyledButton = styled.button<CustomStyledProps>`
   padding: ${(props) =>
     props.size === "small" ? "1rem 0.5rem" : "1rem 4.5rem"};
   ${(props) => props.size === "full-width" && "width: 100%;"}
+  cursor: pointer;
 
   :hover {
     background: ${(props) =>
