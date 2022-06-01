@@ -22,6 +22,9 @@ const PageContainer = styled.div`
 const HeroContainer = styled.div`
   display: flex;
   flex-direction: row;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
   justify-content: space-between;
   margin-top: 3rem;
   padding-left: 3rem;
@@ -38,6 +41,9 @@ const IntroContainer = styled.div`
 const VideoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
   align-items: right;
 `;
 

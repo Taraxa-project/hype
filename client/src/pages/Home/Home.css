@@ -1,4 +1,5 @@
-.cardContainer {
+@media (max-width: 768px) {
+  .cardContainer {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -6,5 +7,16 @@
     margin-top: 1rem;
     margin-bottom: 3rem;
     overflow: auto;
+    margin-right: 1rem;
+    margin-left: 1rem;
   }
-  
+}
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  overflow: auto;
+}
