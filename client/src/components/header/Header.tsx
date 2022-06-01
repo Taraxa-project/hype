@@ -5,7 +5,9 @@ import styled from "styled-components";
 import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import { HypeIconSmall } from "../../assets/icons/HypeIcon";
 import Button from "../button/Button";
-import MediatedParagraph from "../mediatedParagraph/MediatedParagraph";
+
+const getShortAddress = (addr: string | null | undefined): string =>
+  addr ? addr.slice(0, 5) + "..." + addr.slice(-4) : "";
 
 interface CustomStyledProps {
   variant?: "mobile" | "desktop";
@@ -22,17 +24,22 @@ const StyledHeader = styled.header<CustomStyledProps>`
   background: #ffffff;
 
   .headerLeft {
-    width: 50%;
+    flex: 1 0 auto;
     display: flex;
     align-items: left;
     margin-left: 3rem;
   }
 
   .headerRight {
-    width: 50%;
+    flex: 0 1 auto;
+    padding-right: 2rem;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
+  }
+
+  .margin-right {
+    margin-right: 2rem;
   }
 
   .selected {
@@ -48,28 +55,6 @@ const StyledHeader = styled.header<CustomStyledProps>`
     min-height: 10%;
     width: 100%;
     margin: 0 0 0 0;
-  }
-
-  .account {
-    background: #f7f7f7;
-    border-radius: 1.625rem;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #787878;
-    margin-top: 0.75rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  .greendot {
-    margin-left: 0.1rem;
-    margin-right: 0.2rem;
-    height: 0.375rem !important;
-    width: 0.375rem !important;
-    background: #15ac5b;
-    border-radius: 50%;
   }
 
   span {
@@ -92,6 +77,102 @@ const StyledHeader = styled.header<CustomStyledProps>`
       color: #292929;
     }
   }
+`;
+
+interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
+  show?: boolean;
+}
+
+const SidebarHover = styled.div<SidebarProps>`
+  ${(props) => !props.show && `visibility: hidden;`}
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(45, 45, 45, 0.4);
+`;
+
+const Sidebar = styled.div<SidebarProps>`
+  transition: all 0.5s ease;
+  position: absolute;
+  left: ${(props) => (props.show ? "calc(100% - 20.375rem)" : "100%")};
+  box-sizing: border-box;
+  top: 0;
+  height: 100vh;
+  width: 20.375rem;
+  background-color: #ffffff;
+`;
+
+const SidebarHeader = styled.div`
+  display: flex;
+  padding: 1.5rem 3rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6.25rem;
+`;
+
+const SidebarMenu = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 9.375rem;
+`;
+
+interface SidebarMenuLinkProps extends React.HTMLProps<HTMLLIElement> {
+  selected?: boolean;
+}
+
+const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  padding: 1.25rem 3rem;
+  font-weight: ${(props) => (props.selected ? "700" : "400")};
+  color: ${(props) => (props.selected ? "#292929" : "#adadad")};
+
+  ::before {
+    position: absolute;
+    left: 0;
+    display: block;
+    content: ${(props) => (props.selected ? `""` : "none")};
+    width: 1rem;
+    height: 1.5rem;
+    background-color: #dda25d;
+  }
+`;
+
+const SidebarFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MenuButton = styled.button`
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+`;
+
+const Account = styled.div`
+  background: #f7f7f7;
+  border-radius: 1.625rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  color: #787878;
+  padding: 0.375rem 1.5rem;
+`;
+
+const GreenDot = styled.div`
+  margin-left: 0.1rem;
+  margin-right: 0.2rem;
+  height: 0.375rem !important;
+  width: 0.375rem !important;
+  background: #15ac5b;
+  border-radius: 50%;
 `;
 
 export enum HeaderValues {
@@ -118,6 +199,7 @@ const Header = React.memo(
     account?: string | null;
   }) => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [selected, setSelected] = React.useState<HeaderValues>(
       HeaderValues.None
     );
@@ -126,70 +208,117 @@ const Header = React.memo(
       setSelected(e);
     };
 
+    const onMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
+      setMenuOpen(!menuOpen);
+    };
+
+    const onSidebarClick = (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+    };
+
+    const onHoverClick = (e: React.MouseEvent<HTMLElement>) => {
+      setMenuOpen(false);
+    };
+
     const headerEntries: HeaderValues[] = headerElements || [
       HeaderValues.HypeFarming,
       HeaderValues.HypePool,
       HeaderValues.Redeem,
     ];
     return (
-      <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
-        <div className="headerLeft">
-          <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-            <HypeIconSmall />
-          </div>
-        </div>
-
-        <div className="headerRight">
-          {variant === "mobile" ? (
-            status === "connected" ? (
-              <>
-                {" "}
-                <div className="account">
-                  <p className="greendot" />
-                  {account}
-                </div>
-                <MediatedParagraph><HamburgerMenuIcon /></MediatedParagraph>
-              </>
-            ) : (
-              <MediatedParagraph><HamburgerMenuIcon /></MediatedParagraph>
-            )
-          ) : (
-            <>
-              {headerEntries.map((e) =>
-                e === selected ? (
-                  <span className="selected" key={e}>
+      <>
+        {(variant === "mobile" || isMobile) && (
+          <SidebarHover onClick={onHoverClick} show={menuOpen}>
+            <Sidebar onClick={onSidebarClick} show={menuOpen}>
+              <SidebarHeader>
+                <MenuButton onClick={onMenuOpen}>
+                  <HamburgerMenuIcon />
+                </MenuButton>
+                {status !== "notConnected" && (
+                  <Account>
+                    {status === "connected" && (
+                      <>
+                        <GreenDot />
+                        {getShortAddress(account)}
+                      </>
+                    )}
+                    {status === "unavailable" && "Metamask is not available."}
+                  </Account>
+                )}
+              </SidebarHeader>
+              <SidebarMenu>
+                {headerEntries.map((e) => (
+                  <SidebarMenuLink
+                    selected={e === selected}
+                    onClick={() => onSelect(e)}
+                  >
                     {e}
-                    <p className="underline" />
-                  </span>
-                ) : (
-                  <span onClick={() => onSelect(e)} key={e}>
-                    {e}
-                  </span>
-                )
-              )}
-              {status === "notConnected" ? (
-                <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
+                  </SidebarMenuLink>
+                ))}
+              </SidebarMenu>
+              <SidebarFooter>
+                {status === "notConnected" && (
                   <Button size="regular" onClick={onConnect}>
                     Connect Wallet
                   </Button>
-                </div>
-              ) : status === "connected" ? (
-                <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-                  <div className="account">
-                    <p className="greendot" />
-                    {account}
-                  </div>
-                </div>
+                )}
+              </SidebarFooter>
+            </Sidebar>
+          </SidebarHover>
+        )}
+        <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
+          <div className="headerLeft">
+            <HypeIconSmall />
+          </div>
+
+          <div className="headerRight">
+            {variant === "mobile" ? (
+              status === "connected" ? (
+                <>
+                  {" "}
+                  <Account className="margin-right">
+                    <GreenDot />
+                    {getShortAddress(account)}
+                  </Account>
+                  <MenuButton onClick={onMenuOpen}>
+                    <HamburgerMenuIcon />
+                  </MenuButton>
+                </>
               ) : (
-                <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-                  <div className="account">Metamask is not available.</div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-        {children}
-      </StyledHeader>
+                <MenuButton onClick={onMenuOpen}>
+                  <HamburgerMenuIcon />
+                </MenuButton>
+              )
+            ) : (
+              <>
+                {headerEntries.map((e) =>
+                  e === selected ? (
+                    <span className="selected">
+                      + {e}
+                      <p className="underline" />
+                    </span>
+                  ) : (
+                    <span onClick={() => onSelect(e)}>{e}</span>
+                  )
+                )}
+                {status === "notConnected" ? (
+                  <Button size="regular" onClick={onConnect}>
+                    Connect Wallet
+                  </Button>
+                ) : status === "connected" ? (
+                  <Account>
+                    <GreenDot />
+                    {account}
+                  </Account>
+                ) : (
+                  <Account>Metamask is not available.</Account>
+                )}
+              </>
+            )}
+          </div>
+          {children}
+        </StyledHeader>
+      </>
     );
   }
 );
