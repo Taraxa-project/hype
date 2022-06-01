@@ -57,9 +57,7 @@ const PoolContainer = styled.div`
 
 const NotFoundContainer = styled.div`
   min-height: 12rem;
-  margin-top: 2rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
+  margin: 2rem 3rem 2rem;
   background: #f1f1f1;
   border-radius: 1rem;
   display: flex;
@@ -253,7 +251,7 @@ const Home = () => {
           next={addMoreCards}
           hasMore={true}
           loader={
-            <footer>
+            <footer style={{position: 'absolute', bottom: '0.5rem'}}>
               <LoadingSpinner />
             </footer>
           }
