@@ -7,6 +7,74 @@ import Input from "../../components/input/Input";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./Home.css";
 import LoadingSpinner from "../../assets/icons/Spinner";
+import styled from 'styled-components';
+
+const PageContainer = styled.div`
+background: #fafafa;
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const HeroContainer = styled.div`
+display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+`;
+
+const IntroContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: left;
+justify-content: center;
+`;
+
+const VideoContainer = styled.div`
+display: flex;
+  flex-direction: row;
+  align-items: right;
+`;
+
+const PoolContainer = styled.div`
+display: flex;
+  flex-direction: inherit;
+  margin-top: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+`;
+
+const DescriptionContainer = styled.span`
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+
+letter-spacing: -0.02em;
+text-align: left;
+color: #595959;
+display: -webkit-box;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+max-width: 15rem;
+overflow: hidden;
+text-overflow: ellipsis;
+`;
+
+const TitleText = styled.h3`
+font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.625rem;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+
+  color: #000000;
+`;
 
 interface CardData {
   title: string;
@@ -111,17 +179,17 @@ const Home = () => {
   }
 
   return (
-    <div className="pageContainer">
-      <div className="heroContainer">
-        <div className="intro">
+    <PageContainer>
+      <HeroContainer>
+        <IntroContainer>
           <HypeIconBig />
-          <h3 className="header">What is hype farming?</h3>
-          <span className="description">
+          <TitleText>What is hype farming?</TitleText>
+          <DescriptionContainer>
             APE is launching it’s testnet, and we’d like everyone to come &
             check it out! All participants will be able to claim rewards...
-          </span>
-        </div>
-        <div className="videoContainer">
+          </DescriptionContainer>
+        </IntroContainer>
+        <VideoContainer>
           <iframe
             src="https://www.youtube.com/embed/E7wJTI-1dvQ"
             frameBorder="0"
@@ -129,12 +197,12 @@ const Home = () => {
             allowFullScreen
             title="video"
           />{" "}
-        </div>
-      </div>
-      <div className="poolContainer">
-        <h3 className="header">Active Hype Pools</h3>
+        </VideoContainer>
+      </HeroContainer>
+      <PoolContainer>
+        <TitleText>Active Hype Pools</TitleText>
         <Input Icon={<SearchIcon />} label="Search for hype pools..." />
-      </div>
+      </PoolContainer>
       <InfiniteScroll
         className="cardContainer"
         dataLength={cardData.length}
@@ -181,7 +249,7 @@ const Home = () => {
           </Card>
         ))}
       </InfiniteScroll>
-    </div>
+    </PageContainer>
   );
 };
 
