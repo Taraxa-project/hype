@@ -17,7 +17,7 @@ const StyledInput = styled.input<StyledInputProps>`
   width: 100%;
   min-height: 2.5rem;
   text-align: left;
-  padding: 10px;
+  padding: 0.625rem;
   padding-left: 3rem;
   :focus,
   :active,
