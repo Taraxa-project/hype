@@ -201,7 +201,7 @@ const Header = React.memo(
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [selected, setSelected] = React.useState<HeaderValues>(
-      HeaderValues.None
+      HeaderValues.HypeFarming
     );
 
     const onSelect = (e: HeaderValues) => {

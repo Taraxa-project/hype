@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
-import Button from '../../components/button/Button';
 import Card from '../../components/card/Card';
 import Input from '../../components/input/Input';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -84,8 +83,8 @@ const NotFoundText = styled.span`
 
 const DescriptionContainer = styled.span`
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 
   letter-spacing: -0.02em;
   text-align: left;
@@ -251,44 +250,25 @@ const Home = () => {
           next={addMoreCards}
           hasMore={true}
           loader={
-            <footer style={{position: 'absolute', bottom: '0.5rem'}}>
+            <footer style={{ position: 'absolute', bottom: '0.5rem' }}>
               <LoadingSpinner />
             </footer>
           }
           scrollableTarget="scrollableDiv"
         >
           {filteredCards.map((data, i) => (
-            <Card key={`${data.title}-${i}`}>
-              <div className="container">
-                <h3>{data.title}</h3>
-                <span>{data.description}</span>
-                <div className="dataContainer">
-                  <span className="dataHeader">Pool:</span>
-                  <span className="dataValue">
-                    {data.pool} {data.poolToken}
-                  </span>
-                </div>
-                <div className="dataContainer">
-                  <span className="dataHeader">Bonus:</span>
-                  <span className="dataValue">
-                    {data.bonus} {data.bonusToken}
-                  </span>
-                </div>
-                <div className="dataContainer">
-                  <span className="dataHeader">Min reward:</span>
-                  <span className="dataValue">
-                    {data.minReward} {data.rewardToken}
-                  </span>
-                </div>
-                <div className="dataContainer">
-                  <span className="dataHeader">Duration:</span>
-                  <span className="dataValue">
-                    {monthDiff(data.startDate, data.endDate)} months left
-                  </span>
-                </div>
-                <Button size="full-width">Learn more</Button>
-              </div>
-            </Card>
+            <Card
+              key={`${data.title}-${i}`}
+              title={data.title}
+              poolAmount={data.pool}
+              description={data.description}
+              poolToken={data.poolToken}
+              bonusAmount={data.bonus}
+              bonusToken={data.bonusToken}
+              duration={`${monthDiff(data.startDate, data.endDate)} months left`}
+              minRewardAmount={data.minReward}
+              minRewardToken={data.rewardToken}
+            />
           ))}
         </InfiniteScroll>
       ) : (

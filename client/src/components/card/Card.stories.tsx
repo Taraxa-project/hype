@@ -1,7 +1,5 @@
-import React from "react";
 import { ComponentStory } from "@storybook/react";
-import Card from "./Card";
-import Button from "../button/Button";
+import  Card, { CardProps } from "./Card";
 
 export default {
   title: "Hype/Card",
@@ -10,63 +8,29 @@ export default {
 
 const Template: ComponentStory<typeof Card> = (args) => <Card {...args}></Card>;
 
-export const Regular = Template.bind({});
+export const Regular = Template.bind({} as CardProps);
 Regular.args = {
-  children: (
-    <div className="container">
-      <h3>ApeCoin Staking Launch!</h3>
-      <span>
-        APE is launching it’s testnet, and we’d like everyone to come & check it
-        out! All participants will be able to claim rewards...
-      </span>
-      <div className="dataContainer">
-        <span className="dataHeader">Pool:</span>
-        <span className="dataValue">100,000 APE</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Bonus:</span>
-        <span className="dataValue">12,000 TARA</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Min reward:</span>
-        <span className="dataValue">1 APE</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Duration:</span>
-        <span className="dataValue">3 months left</span>
-      </div>
-      <Button size="full-width">Learn more</Button>
-    </div>
-  ),
+  title: "ApeCoin Staking Launch!",
+  poolAmount: 100000,
+  description: "APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv",
+  poolToken: "APE",
+  bonusAmount: 2000,
+  bonusToken: "TARA",
+  duration : `3 months left`,
+  minRewardAmount: 2000,
+  minRewardToken: "APE"
 };
 
-export const Mobile = Template.bind({});
+export const Mobile = Template.bind({} as CardProps);
 Mobile.args = {
   variant: "mobile",
-  children: (
-    <div className="container">
-      <h3>ApeCoin Staking Launch!</h3>
-      <span>
-        APE is launching it’s testnet, and we’d like everyone to come & check it
-        out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv
-      </span>
-      <div className="dataContainer">
-        <span className="dataHeader">Pool:</span>
-        <span className="dataValue">100,000 APE</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Bonus:</span>
-        <span className="dataValue">12,000 TARA</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Min reward:</span>
-        <span className="dataValue">1 APE</span>
-      </div>
-      <div className="dataContainer">
-        <span className="dataHeader">Duration:</span>
-        <span className="dataValue">3 months left</span>
-      </div>
-      <Button size="full-width">Learn more</Button>
-    </div>
-  ),
+  title: "ApeCoin Staking Launch!",
+  poolAmount: 100000,
+  description: "APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv",
+  poolToken: "APE",
+  bonusAmount: 2000,
+  bonusToken: "TARA",
+  duration : `3 months left`,
+  minRewardAmount: 2000,
+  minRewardToken: "APE"
 };
