@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Cool pool",
+    "description": "Description for Cool Pool, NFT",
+    "accountAddress": "0x000000000000000000000000000000000000000",
+    "minReward": 200,
+    "poolCap": 500,
+    "poolEnds": "2022-07-01"
+  },
+  {
+    "name": "Cool pool",
+    "description": "Description for Cool Pool, NFT",
+    "accountAddress": "0x000000000000000000000000000000000000001",
+    "minReward": 320,
+    "poolCap": 900,
+    "poolEnds": "2022-09-01"
+  },
+  {
+    "name": "Cool pool",
+    "description": "Description for Cool Pool, NFT",
+    "accountAddress": "0x000000000000000000000000000000000000002",
+    "minReward": 150,
+    "poolCap": 800,
+    "poolEnds": "2022-08-01"
+  }
+]
