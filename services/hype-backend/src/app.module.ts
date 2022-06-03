@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PoolModule } from '@taraxa-hype/pool';
+import { PoolModule, HypePool } from '@taraxa-hype/pool';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { HypePool } from './modules/pool/pool.entity';
-import { DataSource } from 'typeorm';
+import { AuthModule } from '@taraxa-hype/auth';
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -54,9 +53,8 @@ const HypeAppTypeOrmModule = () => {
       isGlobal: true,
     }),
     HypeAppTypeOrmModule(),
+    AuthModule,
     PoolModule,
   ],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}

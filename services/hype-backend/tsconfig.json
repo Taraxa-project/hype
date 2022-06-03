@@ -24,8 +24,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@taraxa-hype/database": ["src/modules/database"],
-      "@taraxa-hype/pool": ["src/modules/pool"]
+      "@taraxa-hype/pool": ["src/modules/pool"],
+      "@taraxa-hype/auth": ["src/modules/auth"]
     }
   },
   "include": ["src/**/*", "test/**/*", "migrations/*", "data-source.ts"],

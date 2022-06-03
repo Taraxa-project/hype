@@ -7,14 +7,17 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { PoolsService } from './pools.service';
 
-@Controller()
+@ApiTags('pools')
+@Controller('/pools')
 export class PoolsController {
   constructor(private readonly poolsService: PoolsService) {}
 
@@ -24,7 +27,9 @@ export class PoolsController {
     description: 'Returns all hype pools',
   })
   @Get()
-  getAllPools(@Query(ValidationPipe) filterDto: GetFilterDto): Promise<HypePool[]> {
+  public getAllPools(
+    @Query(ValidationPipe) filterDto: GetFilterDto,
+  ): Promise<HypePool[]> {
     return this.poolsService.findAll(filterDto);
   }
 
@@ -34,19 +39,20 @@ export class PoolsController {
     type: PoolDTO,
     description: `Returns a hype pool`,
   })
-  public async get(
+  public async getById(
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<PoolDTO | null> {
     return await this.poolsService.findById(id);
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,
     description: 'Returns a new created pool',
   })
-  public async register(@Body() poolToCreate: PoolDTO): Promise<PoolDTO> {
+  public async createPool(@Body() poolToCreate: PoolDTO): Promise<PoolDTO> {
     return await this.poolsService.create(poolToCreate);
   }
 }

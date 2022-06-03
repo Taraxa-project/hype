@@ -29,6 +29,10 @@ async function bootstrap() {
     .setTitle('Taraxa Hype Pool API')
     .setDescription('Swagger documentation for Taraxa Hype Pool API')
     .setVersion('0.1')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
@@ -36,6 +40,5 @@ async function bootstrap() {
 
   await app.listen(PORT);
   logger.log(`Application listening on port ${PORT}`);
-
 }
 bootstrap();
