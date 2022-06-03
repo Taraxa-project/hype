@@ -7,11 +7,13 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UnauthorizedException,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { GetAddress } from '../auth/get-address.decorator';
 import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { PoolsService } from './pools.service';
@@ -52,7 +54,13 @@ export class PoolsController {
     type: PoolDTO,
     description: 'Returns a new created pool',
   })
-  public async createPool(@Body() poolToCreate: PoolDTO): Promise<PoolDTO> {
+  public async createPool(
+    @Body() poolToCreate: PoolDTO,
+    @GetAddress() address: string,
+  ): Promise<PoolDTO> {
+    if (address !== poolToCreate.accountAddress) {
+      throw new UnauthorizedException('Unauthorized');
+    }
     return await this.poolsService.create(poolToCreate);
   }
 }
