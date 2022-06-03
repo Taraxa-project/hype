@@ -8,6 +8,7 @@ import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import styled from 'styled-components';
 import NotFoundIcon from 'src/assets/icons/NotFount';
+import TitleText from 'src/components/TitleText/TitleText';
 
 const PageContainer = styled.div`
   background: #fafafa;
@@ -86,7 +87,6 @@ const DescriptionContainer = styled.span`
   font-size: 0.875rem;
   line-height: 1.25rem;
 
-  letter-spacing: -0.02em;
   text-align: left;
   color: #595959;
   display: -webkit-box;
@@ -95,18 +95,6 @@ const DescriptionContainer = styled.span`
   max-width: 15rem;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-const TitleText = styled.h3`
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 1.625rem;
-
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.02em;
-
-  color: #000000;
 `;
 
 interface CardData {

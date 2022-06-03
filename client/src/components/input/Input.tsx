@@ -1,28 +1,38 @@
-import React from "react";
-import styled from "styled-components";
-import SearchIcon from "../../assets/icons/Search";
+import React from 'react';
+import styled from 'styled-components';
+import SearchIcon from '../../assets/icons/Search';
 
 interface StyledInputProps {
   Icon?: React.ReactNode;
 }
 
+const InputWrapper = styled.div`
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    position: absolute;
+    margin-left: 1rem;
+  }
+`;
+
 const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
 
   border-radius: 0.75rem;
-  border: 1px solid #e0e0e0;
+  border: 0.063rem solid #e0e0e0;
   background: #fafafa;
   color: #595959;
-  font-size: 1rem;
-  width: 100%;
-  min-height: 2.5rem;
+  font-size: 0.875rem;
   text-align: left;
-  padding: 0.625rem;
-  padding-left: 3rem;
+  padding: ${(props) => (props.Icon ? `0.75rem 2rem 0.75rem 3.5rem` : `0.75rem 2rem 0.75rem 1rem`)};
+  min-width: 29rem;
+
   :focus,
   :active,
   :hover {
-    border: 0.125rem solid #eb8f4c !important;
+    border: 0.063rem solid #eb8f4c;
     background: #f7f7f7;
   }
 
@@ -31,28 +41,31 @@ const StyledInput = styled.input<StyledInputProps>`
     border: 0.063rem solid #e0e0e0;
     color: #e0e0e0;
   }
+
+  @media (max-width: 768px) {
+    min-width: 19.375rem;
+  }
 `;
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
-  label?: string;
   Icon?: React.ReactNode;
 }
 
 const Input = ({ ...props }: InputProps) => {
   return props.Icon ? (
-    <div style={{ width: "100%", marginBottom: "0.600rem" }}>
-      <SearchIcon/>
-      <StyledInput {...props} placeholder={props.label} />
-    </div>
+    <InputWrapper>
+      <SearchIcon />
+      <StyledInput {...props} />
+    </InputWrapper>
   ) : (
-    <StyledInput {...props} placeholder={props.label} />
+    <StyledInput {...props} />
   );
 };
 
 Input.defaultProps = {
   disabled: false,
-  label: "Your address...",
+  label: 'Your address...',
 };
 
 export default Input;
