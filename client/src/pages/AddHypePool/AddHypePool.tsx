@@ -149,7 +149,7 @@ const AddHypePool = () => {
         <Input placeholder="Min reward per hype..." />
         <Label>Pool cap:</Label>
         <Input placeholder="Pool cap..." />
-        <Label>Pool ends</Label>
+        <Label>Pool ends:</Label>
         <Input placeholder="Pool ends..." />
         <ConnectButton size="full-width">Connect wallet</ConnectButton>
       </FormColumn>

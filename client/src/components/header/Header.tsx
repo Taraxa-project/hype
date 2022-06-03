@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useMediaQuery } from "react-responsive";
+import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import styled from "styled-components";
-import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
-import { HypeIconSmall } from "../../assets/icons/HypeIcon";
-import Button from "../button/Button";
+import styled from 'styled-components';
+import HamburgerMenuIcon from '../../assets/icons/HambugerMenu';
+import { HypeIconSmall } from '../../assets/icons/HypeIcon';
+import Button from '../button/Button';
 
 const getShortAddress = (addr: string | null | undefined): string =>
-  addr ? addr.slice(0, 5) + "..." + addr.slice(-4) : "";
+  addr ? addr.slice(0, 5) + '...' + addr.slice(-4) : '';
 
 interface CustomStyledProps {
-  variant?: "mobile" | "desktop";
+  variant?: 'mobile' | 'desktop';
 }
 
 const StyledHeader = styled.header<CustomStyledProps>`
@@ -96,7 +97,7 @@ const SidebarHover = styled.div<SidebarProps>`
 const Sidebar = styled.div<SidebarProps>`
   transition: all 0.5s ease;
   position: absolute;
-  left: ${(props) => (props.show ? "calc(100% - 20.375rem)" : "100%")};
+  left: ${(props) => (props.show ? 'calc(100% - 20.375rem)' : '100%')};
   box-sizing: border-box;
   top: 0;
   height: 100vh;
@@ -129,14 +130,14 @@ const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
   cursor: pointer;
   align-items: center;
   padding: 1.25rem 3rem;
-  font-weight: ${(props) => (props.selected ? "700" : "400")};
-  color: ${(props) => (props.selected ? "#292929" : "#adadad")};
+  font-weight: ${(props) => (props.selected ? '700' : '400')};
+  color: ${(props) => (props.selected ? '#292929' : '#adadad')};
 
   ::before {
     position: absolute;
     left: 0;
     display: block;
-    content: ${(props) => (props.selected ? `""` : "none")};
+    content: ${(props) => (props.selected ? `""` : 'none')};
     width: 1rem;
     height: 1.5rem;
     background-color: #dda25d;
@@ -176,11 +177,14 @@ const GreenDot = styled.div`
 `;
 
 export enum HeaderValues {
-  HypeFarming = "Hype Farming",
-  HypePool = "+ Hype Pool",
-  Redeem = "Redeem",
-  None = "none",
+  HypeFarming = 'Hype Farming',
+  HypePool = '+ Hype Pool',
+  Redeem = 'Redeem',
 }
+
+type HeaderLocations = {
+  [key in HeaderValues]: string;
+};
 
 const Header = React.memo(
   ({
@@ -192,20 +196,19 @@ const Header = React.memo(
     account,
   }: {
     children: React.ReactNode;
-    variant: "mobile" | "desktop";
+    variant: 'mobile' | 'desktop';
     headerElements?: HeaderValues[];
-    status: "connected" | "notConnected" | "unavailable";
+    status: 'connected' | 'notConnected' | 'unavailable';
     onConnect: () => void;
     account?: string | null;
   }) => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const { pathname } = useLocation();
+    const history = useHistory();
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
-    const [selected, setSelected] = React.useState<HeaderValues>(
-      HeaderValues.HypeFarming
-    );
 
     const onSelect = (e: HeaderValues) => {
-      setSelected(e);
+      history.push(headerLocations[e]);
     };
 
     const onMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -225,31 +228,39 @@ const Header = React.memo(
       HeaderValues.HypePool,
       HeaderValues.Redeem,
     ];
+
+    const headerLocations: HeaderLocations = {
+      [HeaderValues.HypeFarming]: '/',
+      [HeaderValues.HypePool]: '/add-hype-pool',
+      [HeaderValues.Redeem]: '/redeem',
+    };
+
     return (
       <>
-        {(variant === "mobile" || isMobile) && (
+        {(variant === 'mobile' || isMobile) && (
           <SidebarHover onClick={onHoverClick} show={menuOpen}>
             <Sidebar onClick={onSidebarClick} show={menuOpen}>
               <SidebarHeader>
                 <MenuButton onClick={onMenuOpen}>
                   <HamburgerMenuIcon />
                 </MenuButton>
-                {status !== "notConnected" && (
+                {status !== 'notConnected' && (
                   <Account>
-                    {status === "connected" && (
+                    {status === 'connected' && (
                       <>
                         <GreenDot />
                         {getShortAddress(account)}
                       </>
                     )}
-                    {status === "unavailable" && "Metamask is not available."}
+                    {status === 'unavailable' && 'Metamask is not available.'}
                   </Account>
                 )}
               </SidebarHeader>
               <SidebarMenu>
                 {headerEntries.map((e) => (
                   <SidebarMenuLink
-                    selected={e === selected}
+                    key={e}
+                    selected={pathname === headerLocations[e]}
                     onClick={() => onSelect(e)}
                   >
                     {e}
@@ -257,7 +268,7 @@ const Header = React.memo(
                 ))}
               </SidebarMenu>
               <SidebarFooter>
-                {status === "notConnected" && (
+                {status === 'notConnected' && (
                   <Button size="regular" onClick={onConnect}>
                     Connect Wallet
                   </Button>
@@ -266,16 +277,16 @@ const Header = React.memo(
             </Sidebar>
           </SidebarHover>
         )}
-        <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
+        <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
           <div className="headerLeft">
             <HypeIconSmall />
           </div>
 
           <div className="headerRight">
-            {variant === "mobile" ? (
-              status === "connected" ? (
+            {variant === 'mobile' ? (
+              status === 'connected' ? (
                 <>
-                  {" "}
+                  {' '}
                   <Account className="margin-right">
                     <GreenDot />
                     {getShortAddress(account)}
@@ -292,20 +303,22 @@ const Header = React.memo(
             ) : (
               <>
                 {headerEntries.map((e) =>
-                  e === selected ? (
-                    <span className="selected">
-                      + {e}
+                  pathname === headerLocations[e] ? (
+                    <span key={e} className="selected">
+                      {e}
                       <p className="underline" />
                     </span>
                   ) : (
-                    <span onClick={() => onSelect(e)}>{e}</span>
-                  )
+                    <span key={e} onClick={() => onSelect(e)}>
+                      {e}
+                    </span>
+                  ),
                 )}
-                {status === "notConnected" ? (
+                {status === 'notConnected' ? (
                   <Button size="regular" onClick={onConnect}>
                     Connect Wallet
                   </Button>
-                ) : status === "connected" ? (
+                ) : status === 'connected' ? (
                   <Account>
                     <GreenDot />
                     {account}
@@ -320,7 +333,7 @@ const Header = React.memo(
         </StyledHeader>
       </>
     );
-  }
+  },
 );
 
 export default Header;

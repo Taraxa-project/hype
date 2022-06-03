@@ -28,21 +28,21 @@ function Root() {
 
   return (
     <AppWrapper>
-      <Header
-        variant={isMobile ? 'mobile' : 'desktop'}
-        status={status === 'initializing' || status === 'connecting' ? 'notConnected' : status}
-        account={account}
-        onConnect={connect}
-        children={null}
-      />
-      <Container>
-        <Router>
+      <Router>
+        <Header
+          variant={isMobile ? 'mobile' : 'desktop'}
+          status={status === 'initializing' || status === 'connecting' ? 'notConnected' : status}
+          account={account}
+          onConnect={connect}
+          children={null}
+        />
+        <Container>
           <Switch>
             <Route path="/add-hype-pool" component={AddHypePool} />
             <Route exact path="/" component={Home} />
           </Switch>
-        </Router>
-      </Container>
+        </Container>
+      </Router>
     </AppWrapper>
   );
 }
