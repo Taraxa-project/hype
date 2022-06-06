@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
-import Card from '../../components/card/Card';
+import Card, { CardData } from '../../components/card/Card';
 import Input from '../../components/input/Input';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import styled from 'styled-components';
 import NotFoundIcon from 'src/assets/icons/NotFount';
+import { useModal } from 'src/hooks/useModal';
+import CardDetailsModal from 'src/components/modals/ExtendedCardDetails.modal';
+import BackgroundHover from 'src/components/background/HoverBackground.styled';
 
 const PageContainer = styled.div`
   background: #fafafa;
@@ -18,7 +21,7 @@ const PageContainer = styled.div`
   flex-direction: column;
 `;
 
-const HeroContainer = styled.div`
+export const HeroContainer = styled.div`
   display: flex;
   flex-direction: row;
   @media (max-width: 768px) {
@@ -109,15 +112,16 @@ const TitleText = styled.h3`
   color: #000000;
 `;
 
-interface CardData {
+interface CardDataDummy {
   title: string;
   description?: string;
-  pool: number;
+  creatorAddress?: string;
+  poolAmount: number;
   poolToken: string;
-  bonus: number;
+  bonusAmount: number;
   bonusToken: string;
-  minReward: number;
-  rewardToken: string;
+  minRewardAmount: number;
+  minRewardToken: string;
   startDate: Date;
   endDate: Date;
 }
@@ -125,73 +129,73 @@ interface CardData {
 const Home = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
-
+  const [selected, setSelected] = useState<CardData>({} as CardData);
+  const { setOpen, close, isOpen } = useModal();
   useEffect(() => {
     setCardData([
       {
         title: 'ApeCoin Staking Launch!',
         description:
           'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
+        poolAmount: 100000,
         poolToken: 'APE',
-        bonus: 12000,
+        bonusAmount: 12000,
+        creatorAddress: '0x000000000000000000000000000000',
         bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        minRewardAmount: 1,
+        minRewardToken: 'APE',
+        duration: `${monthDiff(new Date(), new Date(new Date().setDate(new Date().getDate() + 7)))} months`
       },
       {
         title: 'ApeCoin Staking Launch!',
         description:
           'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
+        poolAmount: 100000,
+        creatorAddress: '0x000000000000000000000000000000',
         poolToken: 'APE',
-        bonus: 12000,
+        bonusAmount: 12000,
         bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        minRewardAmount: 1,
+        minRewardToken: 'APE',
+        duration: `${monthDiff(new Date(), new Date(new Date().setDate(new Date().getDate() + 7)))} months`
       },
       {
         title: 'ApeCoin Staking Launch!',
         description:
           'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
+        poolAmount: 100000,
+        creatorAddress: '0x000000000000000000000000000000',
         poolToken: 'APE',
-        bonus: 12000,
+        bonusAmount: 12000,
         bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        minRewardAmount: 1,
+        minRewardToken: 'APE',
+        duration: `${monthDiff(new Date(), new Date(new Date().setDate(new Date().getDate() + 7)))} months`
       },
       {
         title: 'ApeCoin Staking Launch!',
         description:
           'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
+        poolAmount: 100000,
         poolToken: 'APE',
-        bonus: 12000,
+        bonusAmount: 12000,
         bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        minRewardAmount: 1,
+        minRewardToken: 'APE',
+        duration: `${monthDiff(new Date(), new Date(new Date().setDate(new Date().getDate() + 7)))} months`
       },
       {
         title: 'ApeCoin Staking Launch!',
         description:
           'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
+        poolAmount: 100000,
+        creatorAddress: '0x000000000000000000000000000000',
         poolToken: 'APE',
-        bonus: 12000,
+        bonusAmount: 12000,
         bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        minRewardAmount: 1,
+        minRewardToken: 'APE',
+        duration: `${monthDiff(new Date(), new Date(new Date().setDate(new Date().getDate() + 7)))} months`
       },
     ]);
   }, []);
@@ -210,12 +214,29 @@ const Home = () => {
     );
   }
 
-  const filteredCards = titleFilter
-    ? cardData.filter((c) => c.title.includes(titleFilter))
-    : cardData;
+  const filteredCards = (titleFilter
+    ? cardData.filter((c) => c.title?.includes(titleFilter))
+    : cardData).map((data, i) =>  <Card
+    key={`${data.title}-${i}`}
+    title={data.title}
+    poolAmount={data.poolAmount}
+    description={data.description}
+    poolToken={data.poolToken}
+    bonusAmount={data.bonusAmount}
+    creatorAddress={data.creatorAddress}
+    bonusToken={data.bonusToken}
+    duration={data.duration}
+    minRewardAmount={data.minRewardAmount}
+    minRewardToken={data.minRewardToken}
+    onClick={() => {
+      setSelected(cardData[i]);
+      setOpen(true);
+    }}
+  />);
 
   return (
     <PageContainer>
+      <CardDetailsModal cardData={selected} />
       <HeroContainer>
         <IntroContainer>
           <HypeIconBig />
@@ -256,20 +277,7 @@ const Home = () => {
           }
           scrollableTarget="scrollableDiv"
         >
-          {filteredCards.map((data, i) => (
-            <Card
-              key={`${data.title}-${i}`}
-              title={data.title}
-              poolAmount={data.pool}
-              description={data.description}
-              poolToken={data.poolToken}
-              bonusAmount={data.bonus}
-              bonusToken={data.bonusToken}
-              duration={`${monthDiff(data.startDate, data.endDate)} months left`}
-              minRewardAmount={data.minReward}
-              minRewardToken={data.rewardToken}
-            />
-          ))}
+          {filteredCards}
         </InfiniteScroll>
       ) : (
         <NotFoundContainer>

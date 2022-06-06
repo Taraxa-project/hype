@@ -69,10 +69,9 @@ export const Container = styled.div`
   justify-content: space-between;
 `;
 
-export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
-  children?: JSX.Element | string;
-  variant?: 'mobile' | 'desktop';
+export interface CardData {
   title?: string;
+  creatorAddress?: string;
   description?: string;
   poolAmount?: number;
   poolToken?: string;
@@ -81,6 +80,12 @@ export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
   minRewardAmount?: number;
   minRewardToken?: string;
   duration?: string;
+}
+
+export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement>, CardData {
+  children?: JSX.Element | string;
+  variant?: 'mobile' | 'desktop';
+  onClick?: () => void;
 }
 
 const Card = ({ children, variant, ...props }: CardProps) => {
@@ -95,6 +100,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
     duration,
     minRewardAmount,
     minRewardToken,
+    onClick
   } = props;
   return (
     <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'} {...props}>
@@ -131,7 +137,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
             <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
           </DataContainer>
         )}
-        <Button size="full-width">Learn more</Button>
+        <Button size="full-width" onClick={onClick}>Learn more</Button>
       </Container>
       {children}
     </StyledCard>

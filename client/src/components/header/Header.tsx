@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import HamburgerMenuIcon from "../../assets/icons/HambugerMenu";
 import { HypeIconSmall } from "../../assets/icons/HypeIcon";
+import BackgroundHover from "../background/HoverBackground.styled";
 import Button from "../button/Button";
 
 const getShortAddress = (addr: string | null | undefined): string =>
@@ -83,16 +84,6 @@ interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
   show?: boolean;
 }
 
-const SidebarHover = styled.div<SidebarProps>`
-  ${(props) => !props.show && `visibility: hidden;`}
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(45, 45, 45, 0.4);
-`;
-
 const Sidebar = styled.div<SidebarProps>`
   transition: all 0.5s ease;
   position: absolute;
@@ -156,7 +147,7 @@ const MenuButton = styled.button`
   background-color: transparent;
 `;
 
-const Account = styled.div`
+export const Account = styled.div`
   background: #f7f7f7;
   border-radius: 1.625rem;
   font-size: 0.75rem;
@@ -228,7 +219,7 @@ const Header = React.memo(
     return (
       <>
         {(variant === "mobile" || isMobile) && (
-          <SidebarHover onClick={onHoverClick} show={menuOpen}>
+          <BackgroundHover onClick={onHoverClick} show={menuOpen}>
             <Sidebar onClick={onSidebarClick} show={menuOpen}>
               <SidebarHeader>
                 <MenuButton onClick={onMenuOpen}>
@@ -264,7 +255,7 @@ const Header = React.memo(
                 )}
               </SidebarFooter>
             </Sidebar>
-          </SidebarHover>
+          </BackgroundHover>
         )}
         <StyledHeader variant={variant || isMobile ? "mobile" : "desktop"}>
           <div className="headerLeft">
