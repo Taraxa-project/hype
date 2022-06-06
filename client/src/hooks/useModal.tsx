@@ -1,14 +1,41 @@
-import { useState } from "@storybook/addons";
-import React from "react";
+import React, { useState, useContext, createContext } from 'react';
 
-interface ModalProps {
-    children: React.ReactNode;
+type Context = {
+  isOpen: boolean;
+  setOpen: (state: boolean) => void;
+  close: () => void;
+};
+
+const initialState: Context = {
+  isOpen: false,
+  setOpen: () => {},
+  close: () => {}
+};
+
+const ModalContext = createContext<Context>(initialState);
+
+function useProvideModal()  {
+  const [isOpen, setOpen] = useState(false);
+
+  
+  const close = () => {
+    console.log('as');
+    setOpen(false);
+  };  
+
+
+  return {
+    isOpen,
+    setOpen,
+    close,
+  };
 }
 
-const useModal = (props: ModalProps) => {
-    const [isOpen, setOpen] = useState(false);
+export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const modal = useProvideModal();
+  return <ModalContext.Provider value={modal}>{children}</ModalContext.Provider>;
+};
 
-    return { isOpen, setOpen };
-}
-
-export default useModal;
+export const useModal = () => {
+  return useContext(ModalContext);
+};
