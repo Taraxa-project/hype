@@ -10,11 +10,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET') || 'thisisnotsecret',
+      secretOrKey:
+        configService.get<string>('AUTH_SECRET') || 'thisisnotsecret',
     });
   }
 
   async validate(payload: JwtPayload) {
+    // Request to Wallet API to check JWT
     return { id: payload.id, address: payload.address };
   }
 }

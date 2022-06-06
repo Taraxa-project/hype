@@ -35,8 +35,13 @@ export class PoolsService {
 
   async create(pool: PoolDTO): Promise<HypePool> {
     const newPool = new HypePool({ ...pool });
-    const poolEnds = new Date(pool.poolEnds);
-    const stored = await this.repository.save({ ...newPool, poolEnds });
+    const startDate = new Date(pool.startDate);
+    const endDate = new Date(pool.endDate);
+    const stored = await this.repository.save({
+      ...newPool,
+      startDate,
+      endDate,
+    });
     return stored;
   }
 
@@ -51,26 +56,31 @@ export class PoolsService {
     const { search, take, skip, orderBy, order } = filterDto;
     const limit = take || 0;
     const offset = skip || 0;
-    const orderByType = orderBy || PoolOrderByEnum.NAME;
+    const orderByType = orderBy || PoolOrderByEnum.TITLE;
     const orderDirection: 'ASC' | 'DESC' = order || OrderDirection.ASC;
 
     const query = this.repository
       .createQueryBuilder('hype_pool')
       .select([
         'hype_pool.id',
-        'hype_pool.name',
+        'hype_pool.title',
         'hype_pool.description',
+        'hype_pool.pool',
         'hype_pool.accountAddress',
+        'hype_pool.poolToken',
+        'hype_pool.bonus',
+        'hype_pool.bonusToken',
         'hype_pool.minReward',
-        'hype_pool.poolCap',
-        'hype_pool.poolEnds',
+        'hype_pool.rewardToken',
+        'hype_pool.startDate',
+        'hype_pool.endDate',
         'hype_pool.createdAt',
         'hype_pool.updatedAt',
       ]);
 
     if (search) {
       query.where(
-        'hype_pool.name ILIKE :search or hype_pool.description ILIKE :search or hype_pool.accountAddress ILIKE :search',
+        'hype_pool.title ILIKE :search or hype_pool.description ILIKE :search or LOWER(hype_pool.accountAddress) LIKE LOWER(:search)',
         { search: `%${search}%` },
       );
     }

@@ -5,6 +5,7 @@ import { PoolModule, HypePool } from '@taraxa-hype/pool';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
+import { general, auth } from '@taraxa-hype/config';
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -51,6 +52,7 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
+      load: [general, auth],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,

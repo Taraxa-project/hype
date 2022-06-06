@@ -1,4 +1,4 @@
 export enum PoolOrderByEnum {
-  NAME = 'name',
+  TITLE = 'title',
   ADDRESS = 'address',
 }

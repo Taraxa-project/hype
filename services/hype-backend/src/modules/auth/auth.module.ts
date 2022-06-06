@@ -10,7 +10,7 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || 'thisisnotasecret',
+        secret: configService.get<string>('AUTH_SECRET') || 'thisisnotasecret',
         signOptions: {
           expiresIn: configService.get<string>('JWT_EXPIRY_TIME') || '7 days',
         },

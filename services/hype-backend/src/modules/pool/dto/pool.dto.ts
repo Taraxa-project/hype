@@ -6,7 +6,7 @@ export class PoolDTO implements IPool {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  title: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -15,8 +15,28 @@ export class PoolDTO implements IPool {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
+  pool: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   accountAddress: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  poolToken: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  bonus: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  bonusToken: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -25,11 +45,16 @@ export class PoolDTO implements IPool {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  poolCap: number;
+  @IsString()
+  rewardToken: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  poolEnds: Date;
+  startDate: Date;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  endDate: Date;
 }

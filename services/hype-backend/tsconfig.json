@@ -25,7 +25,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@taraxa-hype/pool": ["src/modules/pool"],
-      "@taraxa-hype/auth": ["src/modules/auth"]
+      "@taraxa-hype/auth": ["src/modules/auth"],
+      "@taraxa-hype/config": ["config"]
     }
   },
   "include": ["src/**/*", "test/**/*", "migrations/*", "data-source.ts"],

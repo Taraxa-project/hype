@@ -16,7 +16,7 @@ import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetAddress } from '../auth/get-address.decorator';
 import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
-import { PoolsService } from './pools.service';
+import { PoolsService } from './pool.service';
 
 @ApiTags('pools')
 @Controller('/pools')
@@ -58,9 +58,6 @@ export class PoolsController {
     @Body() poolToCreate: PoolDTO,
     @GetAddress() address: string,
   ): Promise<PoolDTO> {
-    if (address !== poolToCreate.accountAddress) {
-      throw new UnauthorizedException('Unauthorized');
-    }
     return await this.poolsService.create(poolToCreate);
   }
 }
