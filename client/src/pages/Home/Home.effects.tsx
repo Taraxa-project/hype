@@ -94,12 +94,12 @@ export const useHomeEffects = () => {
     }, 3000);
   };
 
-  function monthDiff(dateFrom: Date, dateTo: Date): number {
+  const monthDiff = (dateFrom: Date, dateTo: Date): number => {
     if (!dateFrom || !dateTo) return 0;
     return (
       dateTo.getMonth() - dateFrom.getMonth() + 12 * (dateTo.getFullYear() - dateFrom.getFullYear())
     );
-  }
+  };
 
   const filteredCards = titleFilter
     ? cardData.filter((c) => c.title.includes(titleFilter))

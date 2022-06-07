@@ -15,7 +15,7 @@ const StyledAppContainer = styled.div`
   min-height: 100vh;
 `;
 
-function Root() {
+const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { status, connect, account } = useMetamask();
 
@@ -38,7 +38,7 @@ function Root() {
       </StyledAppContainer>
     </div>
   );
-}
+};
 
 const App = () => (
   <HypeThemeProvider>
