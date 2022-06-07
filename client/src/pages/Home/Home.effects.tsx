@@ -20,7 +20,7 @@ export const useHomeEffects = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
   const [selected, setSelected] = useState<CardData>({} as CardData);
-  const { setOpen, close, isOpen } = useModal();
+  const { setOpen } = useModal();
 
   useEffect(() => {
     setCardData([
@@ -116,15 +116,15 @@ export const useHomeEffects = () => {
     : cardData).map((data, i) =>  <Card
     key={`${data.title}-${i}`}
     title={data.title}
-    poolAmount={data.pool}
+    pool={data.pool}
     description={data.description}
     poolToken={data.poolToken}
-    bonusAmount={data.bonus}
+    bonus={data.bonus}
     creatorAddress={data.creatorAddress}
     bonusToken={data.bonusToken}
     duration={`${monthDiff(data.startDate, data.endDate)} months left`}
-    minRewardAmount={data.minReward}
-    minRewardToken={data.rewardToken}
+    minReward={data.minReward}
+    rewardToken={data.rewardToken}
     onClick={() => {
       setSelected(cardData[i]);
       setOpen(true);

@@ -1,33 +1,39 @@
 import { useModal } from 'src/hooks/useModal';
 import {
-  CardData,
   CardDescription,
   CardTitle,
   DataContainer,
   DataHeader,
   DataValue,
-} from '../card/Card';
+} from '../card/Card.styled';
 import Blockies from 'react-blockies';
 import Button from '../button/Button';
 import useMetamask from 'src/hooks/useMetamask';
 import CloseIcon from 'src/assets/icons/Close';
-import { Account, BlockiesContainer, ButtonDiv, StyledModal, TitleContainer } from './CardDetails.styed';
+import {
+  Account,
+  BlockiesContainer,
+  ButtonDiv,
+  StyledModal,
+  TitleContainer,
+} from './CardDetails.styed';
+import { CardData } from '../card/Card';
 
 interface ExtendedDetailsProps {
   cardData: CardData;
 }
 
-const CardDetailsModal = ({cardData} : ExtendedDetailsProps) => {
+const CardDetailsModal = ({ cardData }: ExtendedDetailsProps) => {
   const {
     title,
     creatorAddress,
     description,
-    poolAmount,
+    pool,
     poolToken,
-    bonusAmount,
+    bonus,
     bonusToken,
-    minRewardAmount,
-    minRewardToken,
+    minReward,
+    rewardToken,
     duration,
   } = cardData;
   const { isOpen, close } = useModal();
@@ -48,27 +54,27 @@ const CardDetailsModal = ({cardData} : ExtendedDetailsProps) => {
             <Account>{creatorAddress}</Account>
           </BlockiesContainer>
           <CardDescription>{description}</CardDescription>
-          {poolAmount && poolToken && (
+          {pool && poolToken && (
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-              <DataValue key={`${poolAmount}-${Date.now()}`}>
-                {poolAmount} {poolToken}
+              <DataValue key={`${pool}-${Date.now()}`}>
+                {pool} {poolToken}
               </DataValue>
             </DataContainer>
           )}
-          {bonusAmount && bonusToken && (
+          {bonus && bonusToken && (
             <DataContainer>
               <DataHeader key={`bonus-${Date.now()}`}>Bonus:</DataHeader>
-              <DataValue key={`${bonusAmount}-${Date.now()}`}>
-                {bonusAmount} {bonusToken}
+              <DataValue key={`${bonus}-${Date.now()}`}>
+                {bonus} {bonusToken}
               </DataValue>
             </DataContainer>
           )}
-          {minRewardAmount && minRewardToken && (
+          {minReward && rewardToken && (
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
-              <DataValue key={`${minRewardAmount}-${Date.now()}`}>
-                {minRewardAmount} {minRewardToken}
+              <DataValue key={`${minReward}-${Date.now()}`}>
+                {minReward} {rewardToken}
               </DataValue>
             </DataContainer>
           )}
@@ -78,11 +84,9 @@ const CardDetailsModal = ({cardData} : ExtendedDetailsProps) => {
               <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
             </DataContainer>
           )}
-          {status !== 'connected' && (
-            <Button size="full-width" onClick={connect}>
-              Connect Wallet
-            </Button>
-          )}
+          <Button size="full-width" onClick={connect} disabled={status === 'connected'}>
+            Connect Wallet
+          </Button>
         </StyledModal>
       )}
     </>
