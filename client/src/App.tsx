@@ -1,4 +1,4 @@
-import './App.css';
+import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
@@ -7,8 +7,17 @@ import { MetaMaskProvider } from 'metamask-react';
 import Home from './pages/Home/Home';
 import BackgroundHover from './components/background/HoverBackground.styled';
 import { useModal } from './hooks/useModal';
+import Redeem from './pages/Redeem';
+import { HypeThemeProvider } from './theme/HypeTheme';
+import styled from 'styled-components';
 
-function Root() {
+const StyledAppContainer = styled.div`
+  border-radius: 2rem;
+  margin: 1.5rem 2rem 1.5rem;
+  min-height: 100vh;
+`;
+
+const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { status, connect, account } = useMetamask();
   const { isOpen } = useModal();
@@ -20,25 +29,26 @@ function Root() {
         account={account}
         onConnect={connect}
         children={null}
-      ></Header>
-      <div className="appContainer">
-        <BackgroundHover show={isOpen} />
+      />
+      <StyledAppContainer>
+      <BackgroundHover show={isOpen} />
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/redeem" component={Redeem} />
           </Switch>
         </Router>
-      </div>
+      </StyledAppContainer>
     </div>
   );
-}
+};
 
-function App() {
-  return (
+const App = () => (
+  <HypeThemeProvider>
     <MetaMaskProvider>
       <Root />
     </MetaMaskProvider>
-  );
-}
+  </HypeThemeProvider>
+);
 
 export default App;
