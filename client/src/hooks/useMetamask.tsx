@@ -2,7 +2,7 @@ import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 
-function useMetamask() {
+const useMetamask = () => {
   const metamaskData = useMetaMask();
 
   const [account, setAccount] = useState<string | null>(null);
