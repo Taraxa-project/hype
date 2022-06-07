@@ -1,12 +1,12 @@
 import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
-import Card from '../../components/card/Card';
 import Input from '../../components/input/Input';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFount';
 import { useHomeEffects } from './Home.effects';
+import CardDetailsModal from 'src/components/modals/CardDetails.modal';
 import {
   PageContainer,
   HeroContainer,
@@ -20,10 +20,11 @@ import {
 } from './Home.styled';
 
 const Home = () => {
-  const { setTitleFilter, addMoreCards, monthDiff, filteredCards, cardData } = useHomeEffects();
+  const { setTitleFilter, addMoreCards, filteredCards, cardData, selected } = useHomeEffects();
 
   return (
     <PageContainer>
+      <CardDetailsModal cardData={selected} />
       <HeroContainer>
         <IntroContainer>
           <HypeIconBig />
@@ -64,20 +65,7 @@ const Home = () => {
           }
           scrollableTarget="scrollableDiv"
         >
-          {filteredCards.map((data, i) => (
-            <Card
-              key={`${data.title}-${i}`}
-              title={data.title}
-              poolAmount={data.pool}
-              description={data.description}
-              poolToken={data.poolToken}
-              bonusAmount={data.bonus}
-              bonusToken={data.bonusToken}
-              duration={`${monthDiff(data.startDate, data.endDate)} months left`}
-              minRewardAmount={data.minReward}
-              minRewardToken={data.rewardToken}
-            />
-          ))}
+          {filteredCards}
         </InfiniteScroll>
       ) : (
         <NotFoundContainer>

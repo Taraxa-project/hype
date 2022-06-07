@@ -5,6 +5,8 @@ import useMetamask from './hooks/useMetamask';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { MetaMaskProvider } from 'metamask-react';
 import Home from './pages/Home/Home';
+import BackgroundHover from './components/background/HoverBackground.styled';
+import { useModal } from './hooks/useModal';
 import Redeem from './pages/Redeem';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import styled from 'styled-components';
@@ -18,7 +20,7 @@ const StyledAppContainer = styled.div`
 const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { status, connect, account } = useMetamask();
-
+  const { isOpen } = useModal();
   return (
     <div className="App">
       <Header
@@ -29,6 +31,7 @@ const Root = () => {
         children={null}
       />
       <StyledAppContainer>
+      <BackgroundHover show={isOpen} />
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />

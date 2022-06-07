@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import Card from 'src/components/card/Card';
+import { useModal } from 'src/hooks/useModal';
 
 interface CardData {
   title: string;
@@ -8,6 +10,7 @@ interface CardData {
   bonus: number;
   bonusToken: string;
   minReward: number;
+  creatorAddress: string;
   rewardToken: string;
   startDate: Date;
   endDate: Date;
@@ -16,6 +19,8 @@ interface CardData {
 export const useHomeEffects = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
+  const [selected, setSelected] = useState<CardData>({} as CardData);
+  const { setOpen } = useModal();
 
   useEffect(() => {
     setCardData([
@@ -26,6 +31,7 @@ export const useHomeEffects = () => {
         pool: 100000,
         poolToken: 'APE',
         bonus: 12000,
+        creatorAddress: '0x0000000000000000000000000000',
         bonusToken: 'TARA',
         minReward: 1,
         rewardToken: 'APE',
@@ -39,6 +45,7 @@ export const useHomeEffects = () => {
         pool: 100000,
         poolToken: 'APE',
         bonus: 12000,
+        creatorAddress: '0x0000000000000000000000000000',
         bonusToken: 'TARA',
         minReward: 1,
         rewardToken: 'APE',
@@ -52,6 +59,7 @@ export const useHomeEffects = () => {
         pool: 100000,
         poolToken: 'APE',
         bonus: 12000,
+        creatorAddress: '0x0000000000000000000000000000',
         bonusToken: 'TARA',
         minReward: 1,
         rewardToken: 'APE',
@@ -65,6 +73,7 @@ export const useHomeEffects = () => {
         pool: 100000,
         poolToken: 'APE',
         bonus: 12000,
+        creatorAddress: '0x0000000000000000000000000000',
         bonusToken: 'TARA',
         minReward: 1,
         rewardToken: 'APE',
@@ -78,6 +87,7 @@ export const useHomeEffects = () => {
         pool: 100000,
         poolToken: 'APE',
         bonus: 12000,
+        creatorAddress: '0x0000000000000000000000000000',
         bonusToken: 'TARA',
         minReward: 1,
         rewardToken: 'APE',
@@ -101,9 +111,25 @@ export const useHomeEffects = () => {
     );
   };
 
-  const filteredCards = titleFilter
-    ? cardData.filter((c) => c.title.includes(titleFilter))
-    : cardData;
+  const filteredCards = (titleFilter
+    ? cardData.filter((c) => c.title?.includes(titleFilter))
+    : cardData).map((data, i) =>  <Card
+    key={`${data.title}-${i}`}
+    title={data.title}
+    pool={data.pool}
+    description={data.description}
+    poolToken={data.poolToken}
+    bonus={data.bonus}
+    creatorAddress={data.creatorAddress}
+    bonusToken={data.bonusToken}
+    duration={`${monthDiff(data.startDate, data.endDate)} months left`}
+    minReward={data.minReward}
+    rewardToken={data.rewardToken}
+    onClick={() => {
+      setSelected(cardData[i]);
+      setOpen(true);
+    }}
+  />);
 
   return {
     setTitleFilter,
@@ -111,5 +137,6 @@ export const useHomeEffects = () => {
     monthDiff,
     filteredCards,
     cardData,
+    selected
   };
 };

@@ -11,18 +11,23 @@ import {
   DataValue,
 } from './Card.styled';
 
-export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
-  children?: JSX.Element | string;
-  variant?: 'mobile' | 'desktop';
+export interface CardData {
   title?: string;
   description?: string;
-  poolAmount?: number;
-  poolToken?: string;
-  bonusAmount?: number;
-  bonusToken?: string;
-  minRewardAmount?: number;
-  minRewardToken?: string;
+  pool: number;
+  poolToken: string;
+  bonus: number;
+  bonusToken: string;
+  minReward: number;
+  creatorAddress: string;
+  rewardToken: string;
   duration?: string;
+}
+
+export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement>, CardData {
+  children?: JSX.Element | string;
+  variant?: 'mobile' | 'desktop';
+  onClick?: () => void;
 }
 
 const Card = ({ children, variant, ...props }: CardProps) => {
@@ -30,40 +35,41 @@ const Card = ({ children, variant, ...props }: CardProps) => {
   const {
     title,
     description,
-    poolAmount,
+    pool,
     poolToken,
-    bonusAmount,
+    bonus,
     bonusToken,
     duration,
-    minRewardAmount,
-    minRewardToken,
+    minReward,
+    rewardToken,
+    onClick
   } = props;
   return (
     <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'} {...props}>
       <Container>
         <CardTitle>{title}</CardTitle>
         <CardDescription key={`${description}-${Date.now()}`}>{description}</CardDescription>
-        {poolAmount && poolToken && (
+        {pool && poolToken && (
           <DataContainer>
             <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-            <DataValue key={`${poolAmount}-${Date.now()}`}>
-              {poolAmount} {poolToken}
+            <DataValue key={`${pool}-${Date.now()}`}>
+              {pool} {poolToken}
             </DataValue>
           </DataContainer>
         )}
-        {bonusAmount && bonusToken && (
+        {bonus && bonusToken && (
           <DataContainer>
             <DataHeader key={`bonus-${Date.now()}`}>Bonus:</DataHeader>
-            <DataValue key={`${bonusAmount}-${Date.now()}`}>
-              {bonusAmount} {bonusToken}
+            <DataValue key={`${bonus}-${Date.now()}`}>
+              {bonus} {bonusToken}
             </DataValue>
           </DataContainer>
         )}
-        {minRewardAmount && minRewardToken && (
+        {minReward && rewardToken && (
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
-            <DataValue key={`${minRewardAmount}-${Date.now()}`}>
-              {minRewardAmount} {minRewardToken}
+            <DataValue key={`${minReward}-${Date.now()}`}>
+              {minReward} {rewardToken}
             </DataValue>
           </DataContainer>
         )}
@@ -73,7 +79,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
             <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
           </DataContainer>
         )}
-        <Button size="full-width">Learn more</Button>
+        <Button size="full-width" onClick={onClick}>Learn more</Button>
       </Container>
       {children}
     </StyledCard>
