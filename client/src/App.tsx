@@ -11,7 +11,7 @@ import { useModal } from './hooks/useModal';
 function Root() {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { status, connect, account } = useMetamask();
-  const {isOpen} = useModal();
+  const { isOpen } = useModal();
   return (
     <div className="App">
       <Header
@@ -19,10 +19,10 @@ function Root() {
         status={status === 'initializing' || status === 'connecting' ? 'notConnected' : status}
         account={account}
         onConnect={connect}
-      >
-      </Header>
+        children={null}
+      ></Header>
       <div className="appContainer">
-        <BackgroundHover show={isOpen}/>
+        <BackgroundHover show={isOpen} />
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />

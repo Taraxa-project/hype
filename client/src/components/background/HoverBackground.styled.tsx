@@ -16,12 +16,12 @@ const BackgroundStyled = styled.div<BackgroundProps>`
   left: 0;
   background-color: rgba(45, 45, 45, 0.4);
 `;
-const BackgroundHover = (props: BackgroundProps): JSX.Element => (
+const BackgroundHover = ({show, children }: BackgroundProps): JSX.Element => (
   <>
-    {props.show ? (
-      <BackgroundStyled show={props.show}>{props.children}</BackgroundStyled>
+    {show ? (
+      <BackgroundStyled show={show}>{children}</BackgroundStyled>
     ) : (
-      props.children
+      children
     )}
   </>
 );

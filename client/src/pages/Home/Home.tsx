@@ -9,7 +9,7 @@ import LoadingSpinner from '../../assets/icons/Spinner';
 import styled from 'styled-components';
 import NotFoundIcon from 'src/assets/icons/NotFount';
 import { useModal } from 'src/hooks/useModal';
-import CardDetailsModal from 'src/components/modals/ExtendedCardDetails.modal';
+import CardDetailsModal from 'src/components/modals/CardDetails.modal';
 import BackgroundHover from 'src/components/background/HoverBackground.styled';
 
 const PageContainer = styled.div`

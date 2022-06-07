@@ -19,7 +19,6 @@ function useProvideModal()  {
 
   
   const close = () => {
-    console.log('as');
     setOpen(false);
   };  
 
