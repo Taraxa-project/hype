@@ -2,16 +2,9 @@ import CheckMarkIcon from '../../assets/icons/Check';
 import PendingIcon from '../../assets/icons/Pending';
 import { TransactionStatus } from '../../utils';
 import Button from '../button/Button';
-import {
-  TransactionContainer,
-  TransactionContent,
-  TransactionDate,
-  TransactionRow,
-  TransactionHeader,
-  TransactionText,
-  TransactionValue,
-  TransactionColumn,
-} from './Transaction.styled';
+import Box from '../styles/Box';
+import Text from '../styles/Text';
+import Heading from '../styles/Heading';
 
 interface TransactionProps {
   value: number;
@@ -24,36 +17,48 @@ interface TransactionProps {
 
 const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
   return (
-    <TransactionContainer>
-      <TransactionHeader>
-        <TransactionValue type={value > 0 ? 'positive' : 'negative'}>{value}</TransactionValue>
-        <TransactionDate>{date?.toLocaleString()}</TransactionDate>
-      </TransactionHeader>
-      <TransactionContent>
+    <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
+      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Heading fontSize="20px" fontWeight="700" color={value > 0 ? 'success' : 'primary'}>
+          {value}
+        </Heading>
+        <Text fontSize="14px" color="greys.4">
+          {date?.toLocaleString()}
+        </Text>
+      </Box>
+      <Box display="flex" flexDirection="column">
         {pool && (
-          <>
-            <TransactionText isBold={true}>Pool:</TransactionText>
-            <TransactionText isBold={false}>{pool}</TransactionText>
-          </>
+          <Box>
+            <Text fontWeight="bold" fontSize="14px" color="greys.7" m={0.5}>
+              Pool:
+            </Text>
+            <Text fontSize="14px" color="greys.7" m={0.5}>
+              {pool}
+            </Text>
+          </Box>
         )}
         {status && (
-          <TransactionRow>
-            <TransactionColumn>
-              <TransactionText isBold={true}>Status:</TransactionText>
-              <TransactionRow>
+          <Box mt={2} display="flex" flexDirection="row" alignItems="center">
+            <Box display="flex" flexDirection="column">
+              <Text fontWeight="bold" fontSize="14px" color="greys.7" m={0.5}>
+                Status:
+              </Text>
+              <Box display="flex" flexDirection="row" gridGap="1rem" alignItems="center">
                 {status === TransactionStatus.PENDING ? <PendingIcon /> : <CheckMarkIcon />}
-                <TransactionText isBold={false}>{status}</TransactionText>
-              </TransactionRow>
-            </TransactionColumn>
+                <Text fontSize="14px" color="greys.7" m={0.5}>
+                  {status}
+                </Text>
+              </Box>
+            </Box>
             {buttonName && buttonAction && (
               <Button size="regular" onClick={buttonAction}>
                 {buttonName}
               </Button>
             )}
-          </TransactionRow>
+          </Box>
         )}
-      </TransactionContent>
-    </TransactionContainer>
+      </Box>
+    </Box>
   );
 };
 

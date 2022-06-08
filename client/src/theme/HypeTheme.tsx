@@ -1,7 +1,6 @@
 import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../components/styles/Global';
-import { space, color, fontSize, width, fontWeight, lineHeight } from 'styled-system';
 
 export interface HypeColors {
   white: string;

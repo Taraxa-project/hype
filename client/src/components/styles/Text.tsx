@@ -1,19 +1,30 @@
 import styled from 'styled-components';
-import { space, color, fontSize, fontWeight, lineHeight } from 'styled-system';
+import {
+  space,
+  color,
+  fontSize,
+  fontWeight,
+  lineHeight,
+  FontSizeProps,
+  FontWeightProps,
+  LineHeightProps,
+  ColorProps,
+  SpaceProps,
+} from 'styled-system';
 
-const Text = styled.div`
+type TextProps = SpaceProps & FontSizeProps & FontWeightProps & LineHeightProps & ColorProps;
+
+const Text = styled.p<TextProps>`
   ${space}
   ${fontSize}
   ${fontWeight}
   ${lineHeight}
   ${color}
 `;
-Text.propTypes = {
-  ...space.propTypes,
-  ...fontSize.propTypes,
-  ...fontWeight.propTypes,
-  ...lineHeight.propTypes,
-  ...color.propTypes,
+
+Text.defaultProps = {
+  lineHeight: '20px',
+  m: 0,
 };
 
 export default Text;
