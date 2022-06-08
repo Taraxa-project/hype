@@ -4,10 +4,9 @@ import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { MetaMaskProvider } from 'metamask-react';
-import Home from './pages/Home/Home';
 import BackgroundHover from './components/background/HoverBackground.styled';
 import { useModal } from './hooks/useModal';
-import Redeem from './pages/Redeem';
+import { Home, Redeem } from './pages';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import styled from 'styled-components';
 

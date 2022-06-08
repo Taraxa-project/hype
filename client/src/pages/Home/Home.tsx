@@ -19,7 +19,7 @@ import {
   NotFoundText,
 } from './Home.styled';
 
-const Home = () => {
+export const Home = () => {
   const { setTitleFilter, addMoreCards, filteredCards, cardData, selected } = useHomeEffects();
 
   return (
@@ -77,5 +77,3 @@ const Home = () => {
     </PageContainer>
   );
 };
-
-export default Home;

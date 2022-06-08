@@ -6,7 +6,6 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
     font-family: 'Inter';
     font-style: normal;
     font-size: 16px;
-    letter-spacing: -0.02em;
   }
 
   body {
