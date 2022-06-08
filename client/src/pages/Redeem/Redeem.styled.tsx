@@ -2,12 +2,31 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme/HypeTheme';
 
 export const RewardContainer = styled.div<{ theme: HypeThemeType }>`
-  background: ${({ theme }) => theme.colors.cardBackground};
+  background: ${({ theme }) => theme.cards.lightCard.background};
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
   padding: 2rem;
+`;
+
+export const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+`;
+
+export const ColContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 export const RewardTitle = styled.h2`

@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: ${({ theme }) => theme.colors.body};
+    background: ${({ theme }) => theme.colors.background};
   }
 
   code {

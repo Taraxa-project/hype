@@ -1,4 +1,4 @@
 export enum TransactionStatus {
   REDEEMED = 'Redeemed',
-  PENDING = 'Pending remeption',
+  PENDING = 'Pending redemption',
 }

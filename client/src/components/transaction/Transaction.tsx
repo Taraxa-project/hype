@@ -1,3 +1,5 @@
+import CheckMarkIcon from '../../assets/icons/Check';
+import PendingIcon from '../../assets/icons/Pending';
 import { TransactionStatus } from '../../utils';
 import Button from '../button/Button';
 import {
@@ -38,7 +40,10 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
           <TransactionRow>
             <TransactionColumn>
               <TransactionText isBold={true}>Status:</TransactionText>
-              <TransactionText isBold={false}>{status}</TransactionText>
+              <TransactionRow>
+                {status === TransactionStatus.PENDING ? <PendingIcon /> : <CheckMarkIcon />}
+                <TransactionText isBold={false}>{status}</TransactionText>
+              </TransactionRow>
             </TransactionColumn>
             {buttonName && buttonAction && (
               <Button size="regular" onClick={buttonAction}>

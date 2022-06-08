@@ -1,6 +1,7 @@
 {
   "name": "@hype_project/client",
   "version": "0.1.0",
+  "license": "UNLICENSED",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -19,6 +20,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
+    "styled-system": "^5.1.5",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },

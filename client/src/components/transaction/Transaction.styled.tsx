@@ -19,6 +19,8 @@ export const TransactionRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  gap: 1.083rem;
 `;
 
 export const TransactionColumn = styled.div`
