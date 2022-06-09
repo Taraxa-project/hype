@@ -4,6 +4,7 @@ import SearchIcon from '../../assets/icons/Search';
 
 interface StyledInputProps {
   Icon?: React.ReactNode;
+  className?: string;
 }
 
 const InputWrapper = styled.div`
@@ -27,7 +28,6 @@ const StyledInput = styled.input<StyledInputProps>`
   font-size: 0.875rem;
   text-align: left;
   padding: ${(props) => (props.Icon ? `0.75rem 2rem 0.75rem 3.5rem` : `0.75rem 2rem 0.75rem 1rem`)};
-  min-width: 29rem;
 
   :focus,
   :active,
@@ -41,15 +41,12 @@ const StyledInput = styled.input<StyledInputProps>`
     border: 0.063rem solid #e0e0e0;
     color: #e0e0e0;
   }
-
-  @media (max-width: 768px) {
-    min-width: 19.375rem;
-  }
 `;
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   Icon?: React.ReactNode;
+  className?: string;
 }
 
 const Input = ({ ...props }: InputProps) => {

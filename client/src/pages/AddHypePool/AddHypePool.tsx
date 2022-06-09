@@ -8,14 +8,33 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+
+  width: 100%;
+
+  @media (max-width: 1280px) {
+    padding: 1rem 2rem 2rem 2rem;
+  }
 `;
 
 const FormColumn = styled.div`
   max-width: 29rem;
+
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
+`;
+
+const FormInput = styled(Input)`
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
 `;
 
 const HowItWorksColumn = styled.div`
   max-width: 30.875rem;
+  @media (max-width: 1280px) {
+    display: none;
+  }
 `;
 
 const HowItWorksWrapper = styled.div`
@@ -129,7 +148,7 @@ const AddHypePool = () => {
           <b>Example:</b> Hype App Pool, Cool NFT
         </Example>
         <Label>Hype pool name:</Label>
-        <Input placeholder="Pool name..." />
+        <FormInput placeholder="Pool name..." />
         <TitleText>What are you hyping?</TitleText>
         <InfoCard>
           Enter messages, keywords, links, whatever you want hyped up in social. Currently we only
@@ -141,16 +160,16 @@ const AddHypePool = () => {
           <a href="https://hype.taraxa.io">hype.taraxa.io</a>.
         </Example>
         <Label>What are you hyping?</Label>
-        <Input placeholder="Your message..." />
+        <FormInput placeholder="Your message..." />
         <TitleText>How do you want to reward verified hypes?</TitleText>
         <Label>Rewards are in:</Label>
-        <Input placeholder="Asset address..." />
+        <FormInput placeholder="Asset address..." />
         <Label>Min reward per hype:</Label>
-        <Input placeholder="Min reward per hype..." />
+        <FormInput placeholder="Min reward per hype..." />
         <Label>Pool cap:</Label>
-        <Input placeholder="Pool cap..." />
+        <FormInput placeholder="Pool cap..." />
         <Label>Pool ends:</Label>
-        <Input placeholder="Pool ends..." />
+        <FormInput placeholder="Pool ends..." />
         <ConnectButton size="full-width">Connect wallet</ConnectButton>
       </FormColumn>
       <HowItWorksColumn>

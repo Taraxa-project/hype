@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface CustomStyledProps {
-  variant?: "primary" | "secondary";
-  size?: "small" | "regular" | "full-width";
+  variant?: 'primary' | 'secondary';
+  size?: 'small' | 'regular' | 'full-width';
 }
 
 const StyledButton = styled.button<CustomStyledProps>`
@@ -13,20 +13,16 @@ const StyledButton = styled.button<CustomStyledProps>`
   justify-content: center;
   align-items: center;
   border-radius: 0.75rem;
-  border: ${(props) =>
-    props.variant === "primary" ? "none" : "0.063rem solid #C2C2C2"};
-  background: ${(props) =>
-    props.variant === "primary" ? "#dda25d" : "#E0E0E0"};
-  color: ${(props) => (props.variant === "primary" ? "#fff" : "#595959")};
+  border: ${(props) => (props.variant === 'primary' ? 'none' : '0.063rem solid #C2C2C2')};
+  background: ${(props) => (props.variant === 'primary' ? '#dda25d' : '#E0E0E0')};
+  color: ${(props) => (props.variant === 'primary' ? '#fff' : '#595959')};
   font-size: 1rem;
-  padding: ${(props) =>
-    props.size === "small" ? "1rem 0.5rem" : "1rem 4.5rem"};
-  ${(props) => props.size === "full-width" && "width: 100%;"}
+  padding: ${(props) => (props.size === 'small' ? '1rem 0.5rem' : '1rem 4.5rem')};
+  ${(props) => props.size === 'full-width' && 'width: 100%;'}
   cursor: pointer;
 
   :hover {
-    background: ${(props) =>
-      props.variant === "primary" ? "#e4aa65" : "#ECECEC"};
+    background: ${(props) => (props.variant === 'primary' ? '#e4aa65' : '#ECECEC')};
   }
 
   :disabled {
@@ -34,12 +30,16 @@ const StyledButton = styled.button<CustomStyledProps>`
     border: 0.063rem solid #e0e0e0;
     color: #c2c2c2;
   }
+
+  @media (max-width: 1280px) {
+    padding: ${(props) => (props.size === 'small' ? '1rem 0.5rem' : '1rem 2.5rem')};
+  }
 `;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: JSX.Element | string;
-  variant?: "primary" | "secondary";
-  size?: "small" | "regular" | "full-width";
+  variant?: 'primary' | 'secondary';
+  size?: 'small' | 'regular' | 'full-width';
   disabled?: boolean;
 }
 
@@ -52,8 +52,8 @@ const Button = ({ children, variant, size, ...props }: ButtonProps) => {
 };
 
 Button.defaultProps = {
-  variant: "primary",
-  size: "small",
+  variant: 'primary',
+  size: 'small',
   disabled: false,
 };
 
