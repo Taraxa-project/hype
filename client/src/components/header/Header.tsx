@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import HamburgerMenuIcon from '../../assets/icons/HambugerMenu';
 import { HypeIconSmall } from '../../assets/icons/HypeIcon';
 import Button from '../button/Button';
-import { HeaderValues, useHeaderEffects } from './Header.effects';
+import Box from '../styles/Box';
+import { HeaderLink, useHeaderEffects } from './Header.effects';
 import {
   SidebarHover,
   Sidebar,
@@ -28,7 +30,7 @@ const Header = React.memo(
   }: {
     children: React.ReactNode;
     variant: 'mobile' | 'desktop';
-    headerElements?: HeaderValues[];
+    headerElements?: HeaderLink[];
     status: 'connected' | 'notConnected' | 'unavailable';
     onConnect: () => void;
     account?: string | null;
@@ -67,13 +69,13 @@ const Header = React.memo(
                 )}
               </SidebarHeader>
               <SidebarMenu>
-                {headerEntries.map((e: HeaderValues) => (
+                {headerEntries.map((e: HeaderLink) => (
                   <SidebarMenuLink
-                    key={`menu-link-${e}-${Date.now()}`}
-                    selected={e === selected}
+                    key={`menu-link-${e.name}-${Date.now()}`}
+                    selected={e.name === selected}
                     onClick={() => onSelect(e)}
                   >
-                    {e}
+                    {e.name}
                   </SidebarMenuLink>
                 ))}
               </SidebarMenu>
@@ -89,7 +91,9 @@ const Header = React.memo(
         )}
         <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
           <div className="headerLeft">
-            <HypeIconSmall />
+            <Link to="/">
+              <HypeIconSmall />
+            </Link>
           </div>
 
           <div className="headerRight">
@@ -111,16 +115,20 @@ const Header = React.memo(
                 </MenuButton>
               )
             ) : (
-              <>
-                {headerEntries.map((e: HeaderValues) =>
-                  e === selected ? (
-                    <span key={`menu-link-${e}-${Date.now()}`} className="selected">
-                      + {e}
+              <Box
+                display="flex"
+                flexDirection="row"
+                gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
+              >
+                {headerEntries.map((e: HeaderLink) =>
+                  e.name === selected ? (
+                    <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
+                      {e.name}
                       <p className="underline" />
                     </span>
                   ) : (
-                    <span key={`menu-link-${e}-${Date.now()}`} onClick={() => onSelect(e)}>
-                      {e}
+                    <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
+                      {e.name}
                     </span>
                   ),
                 )}
@@ -136,7 +144,7 @@ const Header = React.memo(
                 ) : (
                   <Account>Metamask is not available.</Account>
                 )}
-              </>
+              </Box>
             )}
           </div>
           {children}

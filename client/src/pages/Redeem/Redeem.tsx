@@ -9,7 +9,7 @@ import { formatNumber } from '../../utils';
 import DownIcon from '../../assets/icons/Down';
 import UpIcon from '../../assets/icons/Up';
 import Button from '../../components/button/Button';
-import { NotConnectedMessage } from '../../components/notConnectedMessage/NotConnectedMessage';
+import { NotAvailable } from '../../components/notAvailable/NotAvailable';
 
 export const Redeem = () => {
   const {
@@ -29,7 +29,7 @@ export const Redeem = () => {
       display="flex"
       flexDirection={isConnected ? 'column' : 'row'}
       gridGap="1.5rem"
-      px="12.5rem"
+      px={{ sm: '1rem', md: '4rem', xl: '12.5rem' }}
       justifyContent="center"
     >
       <Box
@@ -42,7 +42,7 @@ export const Redeem = () => {
       >
         <Box
           display="flex"
-          flexDirection={{ xs: 'column-reverse', md: 'column-reverse', xl: 'row' }}
+          flexDirection={{ xs: 'column', md: 'column', lg: 'row', xl: 'row' }}
           justifyContent="space-between"
           alignItems="start"
         >
@@ -68,27 +68,14 @@ export const Redeem = () => {
             >
               {isConnected ? `${formatNumber(totalUnredeemed)} TARA` : `N/A`}
             </Heading>
-            {isConnected ? (
-              <Box display="flex" flexDirection="row" alignItems="center" gridGap="1rem" mt="7rem">
-                <Text color="greys.2" fontSize="1rem" fontWeight="700">
-                  Show redemption history
-                </Text>
-                {showHistory ? (
-                  <DownIcon click={toggleHistory} />
-                ) : (
-                  <UpIcon click={toggleHistory} />
-                )}
-              </Box>
-            ) : (
-              <Box mt="7rem">
-                <Button size="full-width" onClick={connect}>
-                  Connect Wallet
-                </Button>
-              </Box>
-            )}
           </Box>
-          {isConnected && pendingTransactions && (
-            <Box display="flex" flexDirection="column" width="100%">
+          {isConnected && !!pendingTransactions?.length && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              mt={{ xs: '3.5rem', sm: '3.5rem', md: '3.5rem', lg: '0' }}
+            >
               <Heading
                 fontSize="1.25rem"
                 fontWeight="700"
@@ -99,7 +86,7 @@ export const Redeem = () => {
                 Pending transactions ({pendingTransactions?.length})
               </Heading>
               <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
-                {pendingTransactions.map((transaction: TransactionItem) => (
+                {pendingTransactions?.map((transaction: TransactionItem) => (
                   <Transaction
                     key={`pending-${transaction.value}-${transaction.pool}-${
                       transaction.startDate
@@ -117,41 +104,69 @@ export const Redeem = () => {
           )}
         </Box>
 
-        {isConnected && showHistory && redeemHistory?.length && (
-          <Box display="flex" flexDirection="column" pt="4.1rem" gridGap="1rem">
-            {redeemHistory.map((transactionItem: TransactionItem) => (
-              <Transaction
-                key={`history-${transactionItem.value}-${transactionItem.pool}-${
-                  transactionItem.startDate
-                }-${Date.now()}`}
-                value={transactionItem.value}
-                pool={transactionItem.pool}
-                date={transactionItem.startDate}
-                status={transactionItem.status}
-              />
-            ))}
+        {isConnected ? (
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
+            gridGap="1rem"
+            mt={{ xs: '2.4rem', sm: '2.4rem' }}
+          >
+            <Text color="greys.2" fontSize="1rem" fontWeight="700">
+              {showHistory ? 'Hide' : 'Show'} redemption history
+            </Text>
+            {showHistory ? <UpIcon click={toggleHistory} /> : <DownIcon click={toggleHistory} />}
+          </Box>
+        ) : (
+          <Box mt="2.4rem">
+            <Button size="full-width" onClick={connect}>
+              Connect Wallet
+            </Button>
+          </Box>
+        )}
+        {isConnected && showHistory && (
+          <Box>
+            {!!redeemHistory?.length ? (
+              <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
+                {redeemHistory.map((transactionItem: TransactionItem) => (
+                  <Transaction
+                    key={`history-${transactionItem.value}-${transactionItem.pool}-${
+                      transactionItem.startDate
+                    }-${Date.now()}`}
+                    value={transactionItem.value}
+                    pool={transactionItem.pool}
+                    date={transactionItem.startDate}
+                    status={transactionItem.status}
+                  />
+                ))}
+              </Box>
+            ) : (
+              <NotAvailable message="Looks like you haven`t received any rewards yet..." mt={3} />
+            )}
           </Box>
         )}
       </Box>
-      {rewards?.length > 0 && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          backgroundColor="greys.1"
-          p="2rem"
-          borderRadius="2rem"
-          mt="2rem"
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        backgroundColor="greys.1"
+        p="2rem"
+        borderRadius="2rem"
+        mt="2rem"
+      >
+        <Heading
+          fontSize="1.25rem"
+          fontWeight="700"
+          lineHeight="1.625rem"
+          color="black"
+          letterSpacing="-0.02em"
         >
-          <Heading
-            fontSize="1.25rem"
-            fontWeight="700"
-            lineHeight="1.625rem"
-            color="black"
-            letterSpacing="-0.02em"
-          >
-            Rewards received ({rewards?.length})
-          </Heading>
-          {isConnected ? (
+          Rewards received {rewards?.length ? `(${rewards?.length})` : ''}
+        </Heading>
+        {isConnected ? (
+          rewards?.length > 0 ? (
             <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
               {rewards.map((reward: Reward) => (
                 <Transaction
@@ -163,12 +178,14 @@ export const Redeem = () => {
               ))}
             </Box>
           ) : (
-            <Box>
-              <NotConnectedMessage mt={3} />
-            </Box>
-          )}
-        </Box>
-      )}
+            <NotAvailable message="Looks like you haven`t received any rewards yet..." mt={3} />
+          )
+        ) : (
+          <Box>
+            <NotAvailable mt={3} />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

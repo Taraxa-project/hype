@@ -2,12 +2,10 @@ import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { MetaMaskProvider } from 'metamask-react';
+import { Route, Routes } from 'react-router-dom';
 import BackgroundHover from './components/background/HoverBackground.styled';
 import { useModal } from './hooks/useModal';
 import { Home, Redeem } from './pages';
-import { HypeThemeProvider } from './theme/HypeTheme';
 import styled from 'styled-components';
 
 const StyledAppContainer = styled.div`
@@ -30,24 +28,16 @@ const Root = () => {
         children={null}
       />
       <StyledAppContainer>
-      <BackgroundHover show={isOpen} />
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/redeem" component={Redeem} />
-          </Switch>
-        </Router>
+        <BackgroundHover show={isOpen} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/redeem" element={<Redeem />} />
+        </Routes>
       </StyledAppContainer>
     </div>
   );
 };
 
-const App = () => (
-  <HypeThemeProvider>
-    <MetaMaskProvider>
-      <Root />
-    </MetaMaskProvider>
-  </HypeThemeProvider>
-);
+const App = () => <Root />;
 
 export default App;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import Header from './Header';
-import { HeaderValues } from './Header.effects';
+import { HeaderLink, HeaderValues } from './Header.effects';
 
 export default {
   title: 'Hype/Header',
@@ -10,10 +10,29 @@ export default {
 
 const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
+const headerValues: HeaderLink[] = [
+  {
+    route: '/farming',
+    name: HeaderValues.HypeFarming,
+  },
+  {
+    route: '/pool',
+    name: HeaderValues.HypePool,
+  },
+  {
+    route: '/redeem',
+    name: HeaderValues.Redeem,
+  },
+  {
+    route: '/',
+    name: HeaderValues.None,
+  },
+];
+
 export const MobileConnected = Template.bind({});
 MobileConnected.args = {
   variant: 'mobile',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'connected',
   onConnect: () => {},
   account: '0x6e3AA85dB95BBA316276a3...82aFB',
@@ -22,7 +41,7 @@ MobileConnected.args = {
 export const MobileDisconnected = Template.bind({});
 MobileDisconnected.args = {
   variant: 'mobile',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'notConnected',
   onConnect: () => {},
 };
@@ -30,7 +49,7 @@ MobileDisconnected.args = {
 export const MobileUnavailable = Template.bind({});
 MobileUnavailable.args = {
   variant: 'mobile',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'unavailable',
   onConnect: () => {},
 };
@@ -38,7 +57,7 @@ MobileUnavailable.args = {
 export const DesktopConnected = Template.bind({});
 DesktopConnected.args = {
   variant: 'desktop',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'connected',
   onConnect: () => {},
   account: '0x6e3AA85dB95BBA316276a3...82aFB',
@@ -47,7 +66,7 @@ DesktopConnected.args = {
 export const DesktopDisconnected = Template.bind({});
 DesktopDisconnected.args = {
   variant: 'desktop',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'notConnected',
   onConnect: () => {},
 };
@@ -55,7 +74,7 @@ DesktopDisconnected.args = {
 export const DesktopUnavailable = Template.bind({});
 DesktopUnavailable.args = {
   variant: 'desktop',
-  headerElements: [HeaderValues.HypeFarming, HeaderValues.HypePool, HeaderValues.Redeem],
+  headerElements: headerValues,
   status: 'unavailable',
   onConnect: () => {},
 };

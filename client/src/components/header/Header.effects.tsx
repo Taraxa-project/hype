@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
 
 export interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
@@ -15,18 +16,40 @@ export interface SidebarMenuLinkProps extends React.HTMLProps<HTMLLIElement> {
 
 export enum HeaderValues {
   HypeFarming = 'Hype Farming',
-  HypePool = '+ Hype Pool',
+  HypePool = '+Hype Pool',
   Redeem = 'Redeem',
   None = 'none',
 }
 
-export const useHeaderEffects = (headerElements?: HeaderValues[]) => {
+export interface HeaderLink {
+  route: string;
+  name: string;
+}
+
+const headerValues: HeaderLink[] = [
+  {
+    route: '/',
+    name: HeaderValues.HypeFarming,
+  },
+  {
+    route: '/pool',
+    name: HeaderValues.HypePool,
+  },
+  {
+    route: '/redeem',
+    name: HeaderValues.Redeem,
+  },
+];
+
+export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<HeaderValues>(HeaderValues.HypeFarming);
+  let navigate = useNavigate();
 
-  const onSelect = (e: HeaderValues) => {
-    setSelected(e);
+  const onSelect = (e: HeaderLink) => {
+    setSelected(e.name as HeaderValues);
+    navigate(e.route);
   };
 
   const getShortAddress = (addr: string | null | undefined): string =>
@@ -44,11 +67,7 @@ export const useHeaderEffects = (headerElements?: HeaderValues[]) => {
     setMenuOpen(false);
   };
 
-  const headerEntries: HeaderValues[] = headerElements || [
-    HeaderValues.HypeFarming,
-    HeaderValues.HypePool,
-    HeaderValues.Redeem,
-  ];
+  const headerEntries: HeaderLink[] = headerElements || headerValues;
 
   return {
     onSelect,
