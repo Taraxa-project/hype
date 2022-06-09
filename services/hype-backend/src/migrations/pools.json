@@ -1,0 +1,41 @@
+[
+  {
+    "title": "ApeCoin Staking Launch!",
+    "description": "APE is launching it`s testnet, and we`d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv",
+    "pool": 100000,
+    "accountAddress": "0x000000000000000000000000000000000000001",
+    "poolToken": "APE",
+    "bonus": 12000,
+    "bonusToken": "TARA",
+    "minReward": 1,
+    "rewardToken": "APE",
+    "startDate": "2022-06-06T11:17:10.927Z",
+    "endDate": "2022-11-06T11:17:10.927Z"
+  },
+  {
+    "title": "ApeCoin Staking Launch!",
+    "description": "APE is launching it`s testnet, and we`d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv",
+    "pool": 100000,
+    "accountAddress": "0x000000000000000000000000000000000000002",
+    "poolToken": "APE",
+    "bonus": 12000,
+    "bonusToken": "TARA",
+    "minReward": 1,
+    "rewardToken": "APE",
+    "startDate": "2022-06-06T11:17:10.927Z",
+    "endDate": "2022-11-06T11:17:10.927Z"
+  },
+  {
+    "title": "ApeCoin Staking Launch!",
+    "description": "APE is launching it`s testnet, and we`d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv",
+    "pool": 100000,
+    "accountAddress": "0x000000000000000000000000000000000000003",
+    "poolToken": "APE",
+    "bonus": 12000,
+    "bonusToken": "TARA",
+    "minReward": 1,
+    "rewardToken": "APE",
+    "startDate": "2022-06-06T11:17:10.927Z",
+    "endDate": "2022-11-06T11:17:10.927Z"
+  }
+]
