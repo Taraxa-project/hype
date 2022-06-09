@@ -1,6 +1,6 @@
 import CheckMarkIcon from '../../assets/icons/Check';
 import PendingIcon from '../../assets/icons/Pending';
-import { TransactionStatus } from '../../utils';
+import { formatDate, TransactionStatus } from '../../utils';
 import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
@@ -18,12 +18,18 @@ interface TransactionProps {
 const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
   return (
     <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
-      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="1.5rem"
+      >
         <Heading fontSize="20px" fontWeight="700" color={value > 0 ? 'success' : 'primary'}>
           {value}
         </Heading>
         <Text fontSize="14px" color="greys.4">
-          {date?.toLocaleString()}
+          {formatDate(date)}
         </Text>
       </Box>
       <Box display="flex" flexDirection="column">

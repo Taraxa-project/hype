@@ -30,23 +30,13 @@ export const useRedeemEffects = () => {
 
   const redeemHistory: TransactionItem[] = [
     {
-      value: 52000,
+      value: -52000,
       status: TransactionStatus.REDEEMED,
       startDate: new Date(),
     },
     {
-      value: 52000,
-      status: TransactionStatus.PENDING,
-      startDate: new Date(),
-    },
-    {
-      value: 52000,
+      value: -52000,
       status: TransactionStatus.REDEEMED,
-      startDate: new Date(),
-    },
-    {
-      value: 52000,
-      status: TransactionStatus.PENDING,
       startDate: new Date(),
     },
   ];

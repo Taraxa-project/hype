@@ -4,7 +4,7 @@ const Heading = Text.withComponent('h1');
 
 Heading.defaultProps = {
   lineHeight: '20px',
-  m: 0,
+  margin: '8px 0 8px 0',
 };
 
 export default Heading;
