@@ -33,12 +33,27 @@ export interface HypeCards {
   darkCard: CardColor;
 }
 
+export interface HypeBreakpoints {
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+}
+
+const breakpoints: HypeBreakpoints = {
+  sm: '600px',
+  md: '900px',
+  lg: '1200px',
+  xl: '1536px',
+};
+
 export interface HypeThemeType {
   colors: HypeColors;
   buttons: HypeButtons;
   cards: HypeCards;
   fontSizes: number[];
   space: number[];
+  breakpoints: HypeBreakpoints;
 }
 
 const colors: HypeColors = {
@@ -96,6 +111,7 @@ const theme: HypeThemeType = {
     // margin and padding
     0, 4, 8, 16, 32, 64, 128, 256,
   ],
+  breakpoints,
 };
 
 type HypeThemeProps = {

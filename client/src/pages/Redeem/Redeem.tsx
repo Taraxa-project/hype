@@ -29,6 +29,7 @@ export const Redeem = () => {
       display="flex"
       flexDirection={isConnected ? 'column' : 'row'}
       gridGap="1.5rem"
+      px="12.5rem"
       justifyContent="center"
     >
       <Box
@@ -39,7 +40,12 @@ export const Redeem = () => {
         borderRadius="2rem"
         mt="2rem"
       >
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="start">
+        <Box
+          display="flex"
+          flexDirection={{ xs: 'column-reverse', md: 'column-reverse', xl: 'row' }}
+          justifyContent="space-between"
+          alignItems="start"
+        >
           <Box display="flex" flexDirection="column" width="100%">
             <Heading
               fontSize="1.25rem"
