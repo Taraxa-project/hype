@@ -5,6 +5,7 @@ import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
 import Heading from '../styles/Heading';
+import { TransactionItem } from '../../pages/Redeem/Redeem.effects';
 
 interface TransactionProps {
   value: number;
@@ -12,7 +13,7 @@ interface TransactionProps {
   status?: TransactionStatus;
   date: Date;
   buttonName?: string;
-  buttonAction?: () => {};
+  buttonAction?: (transaction: any) => void;
 }
 
 const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
@@ -44,7 +45,13 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
           </Box>
         )}
         {status && (
-          <Box mt={2} display="flex" flexDirection="row" alignItems="center">
+          <Box
+            mt={2}
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Box display="flex" flexDirection="column">
               <Text fontWeight="bold" fontSize="14px" color="greys.7" m={0.5}>
                 Status:

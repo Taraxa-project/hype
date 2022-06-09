@@ -21,23 +21,23 @@ export const useRedeemEffects = () => {
 
   const pendingTransactions: TransactionItem[] = [
     {
-      value: -52000,
+      value: -52300,
       pool: 'NFT type',
       status: TransactionStatus.PENDING,
-      startDate: new Date(),
+      startDate: new Date('02-12-2022'),
     },
   ];
 
   const redeemHistory: TransactionItem[] = [
     {
-      value: -52000,
+      value: -52001,
       status: TransactionStatus.REDEEMED,
-      startDate: new Date(),
+      startDate: new Date('02-11-2022'),
     },
     {
-      value: -52000,
+      value: -52002,
       status: TransactionStatus.REDEEMED,
-      startDate: new Date(),
+      startDate: new Date('02-10-2022'),
     },
   ];
 
@@ -47,19 +47,19 @@ export const useRedeemEffects = () => {
 
   const rewards: Reward[] = [
     {
-      value: 52000,
+      value: 53000,
       pool: 'NFT Hype Pool',
-      startDate: new Date('01-12-2022'),
+      startDate: new Date('02-12-2022'),
+    },
+    {
+      value: 54000,
+      pool: 'NFT Hype Pool',
+      startDate: new Date('03-12-2022'),
     },
     {
       value: 52000,
       pool: 'NFT Hype Pool',
-      startDate: new Date('01-12-2022'),
-    },
-    {
-      value: 52000,
-      pool: 'NFT Hype Pool',
-      startDate: new Date('01-12-2022'),
+      startDate: new Date('04-12-2022'),
     },
   ];
 

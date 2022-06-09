@@ -74,10 +74,15 @@ export const Redeem = () => {
               <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
                 {pendingTransactions.map((transaction: TransactionItem) => (
                   <Transaction
+                    key={`pending-${transaction.value}-${transaction.pool}-${
+                      transaction.startDate
+                    }-${Date.now()}`}
                     value={transaction.value}
                     pool={transaction.pool}
                     date={transaction.startDate}
                     status={transaction.status}
+                    buttonAction={() => onRedeem(transaction)}
+                    buttonName="Redeem"
                   />
                 ))}
               </Box>
@@ -89,6 +94,9 @@ export const Redeem = () => {
           <Box display="flex" flexDirection="column" pt="4.1rem" gridGap="1rem">
             {redeemHistory.map((transactionItem: TransactionItem) => (
               <Transaction
+                key={`history-${transactionItem.value}-${transactionItem.pool}-${
+                  transactionItem.startDate
+                }-${Date.now()}`}
                 value={transactionItem.value}
                 pool={transactionItem.pool}
                 date={transactionItem.startDate}
@@ -118,7 +126,12 @@ export const Redeem = () => {
           </Heading>
           <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
             {rewards.map((reward: Reward) => (
-              <Transaction value={reward.value} pool={reward.pool} date={reward.startDate} />
+              <Transaction
+                key={`reward-${reward.value}-${reward.pool}-${reward.startDate}-${Date.now()}`}
+                value={reward.value}
+                pool={reward.pool}
+                date={reward.startDate}
+              />
             ))}
           </Box>
         </Box>
