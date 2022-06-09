@@ -69,7 +69,7 @@ const Header = React.memo(
               <SidebarMenu>
                 {headerEntries.map((e: HeaderValues) => (
                   <SidebarMenuLink
-                    key={`menu-link-${Date.now()}`}
+                    key={`menu-link-${e}-${Date.now()}`}
                     selected={e === selected}
                     onClick={() => onSelect(e)}
                   >

@@ -8,6 +8,8 @@ import Heading from '../../components/styles/Heading';
 import { formatNumber } from '../../utils';
 import DownIcon from '../../assets/icons/Down';
 import UpIcon from '../../assets/icons/Up';
+import Button from '../../components/button/Button';
+import { NotConnectedMessage } from '../../components/notConnectedMessage/NotConnectedMessage';
 
 export const Redeem = () => {
   const {
@@ -18,10 +20,17 @@ export const Redeem = () => {
     redeemHistory,
     rewards,
     onRedeem,
+    connect,
+    isConnected,
   } = useRedeemEffects();
 
   return (
-    <>
+    <Box
+      display="flex"
+      flexDirection={isConnected ? 'column' : 'row'}
+      gridGap="1.5rem"
+      justifyContent="center"
+    >
       <Box
         display="flex"
         flexDirection="column"
@@ -51,16 +60,28 @@ export const Redeem = () => {
               color="black"
               letterSpacing="-0.02em"
             >
-              {formatNumber(totalUnredeemed)} TARA
+              {isConnected ? `${formatNumber(totalUnredeemed)} TARA` : `N/A`}
             </Heading>
-            <Box display="flex" flexDirection="row" alignItems="center" gridGap="1rem" mt="7rem">
-              <Text color="greys.2" fontSize="1rem" fontWeight="700">
-                Show redemption history
-              </Text>
-              {showHistory ? <DownIcon click={toggleHistory} /> : <UpIcon click={toggleHistory} />}
-            </Box>
+            {isConnected ? (
+              <Box display="flex" flexDirection="row" alignItems="center" gridGap="1rem" mt="7rem">
+                <Text color="greys.2" fontSize="1rem" fontWeight="700">
+                  Show redemption history
+                </Text>
+                {showHistory ? (
+                  <DownIcon click={toggleHistory} />
+                ) : (
+                  <UpIcon click={toggleHistory} />
+                )}
+              </Box>
+            ) : (
+              <Box mt="7rem">
+                <Button size="full-width" onClick={connect}>
+                  Connect Wallet
+                </Button>
+              </Box>
+            )}
           </Box>
-          {pendingTransactions && (
+          {isConnected && pendingTransactions && (
             <Box display="flex" flexDirection="column" width="100%">
               <Heading
                 fontSize="1.25rem"
@@ -90,7 +111,7 @@ export const Redeem = () => {
           )}
         </Box>
 
-        {showHistory && redeemHistory?.length && (
+        {isConnected && showHistory && redeemHistory?.length && (
           <Box display="flex" flexDirection="column" pt="4.1rem" gridGap="1rem">
             {redeemHistory.map((transactionItem: TransactionItem) => (
               <Transaction
@@ -124,18 +145,24 @@ export const Redeem = () => {
           >
             Rewards received ({rewards?.length})
           </Heading>
-          <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
-            {rewards.map((reward: Reward) => (
-              <Transaction
-                key={`reward-${reward.value}-${reward.pool}-${reward.startDate}-${Date.now()}`}
-                value={reward.value}
-                pool={reward.pool}
-                date={reward.startDate}
-              />
-            ))}
-          </Box>
+          {isConnected ? (
+            <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
+              {rewards.map((reward: Reward) => (
+                <Transaction
+                  key={`reward-${reward.value}-${reward.pool}-${reward.startDate}-${Date.now()}`}
+                  value={reward.value}
+                  pool={reward.pool}
+                  date={reward.startDate}
+                />
+              ))}
+            </Box>
+          ) : (
+            <Box>
+              <NotConnectedMessage mt={3} />
+            </Box>
+          )}
         </Box>
       )}
-    </>
+    </Box>
   );
 };

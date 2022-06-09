@@ -5,7 +5,6 @@ import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
 import Heading from '../styles/Heading';
-import { TransactionItem } from '../../pages/Redeem/Redeem.effects';
 
 interface TransactionProps {
   value: number;

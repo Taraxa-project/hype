@@ -48,7 +48,17 @@ const colors: HypeColors = {
   primary: '#DDA25D',
   success: '#3E7E5C',
   danger: '',
-  greys: ['#F1F1F1', '#FAFAFA', '#B1B1B1', '#2F2F2F', '#808080', '#ADADAD', '#292929', '#595959'],
+  greys: [
+    '#F1F1F1',
+    '#FAFAFA',
+    '#B1B1B1',
+    '#2F2F2F',
+    '#808080',
+    '#ADADAD',
+    '#292929',
+    '#595959',
+    '#A6A6A6',
+  ],
 };
 
 const buttons: HypeButtons = {
