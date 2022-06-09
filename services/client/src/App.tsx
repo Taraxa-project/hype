@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import BackgroundHover from './components/background/HoverBackground.styled';
 import { useModal } from './hooks/useModal';
 import { Home, Redeem } from './pages';
@@ -32,6 +32,7 @@ const Root = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/redeem" element={<Redeem />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </StyledAppContainer>
     </div>
