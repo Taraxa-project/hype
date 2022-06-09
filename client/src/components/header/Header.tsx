@@ -67,8 +67,12 @@ const Header = React.memo(
                 )}
               </SidebarHeader>
               <SidebarMenu>
-                {headerEntries.map((e) => (
-                  <SidebarMenuLink selected={e === selected} onClick={() => onSelect(e)}>
+                {headerEntries.map((e: HeaderValues) => (
+                  <SidebarMenuLink
+                    key={`menu-link-${e}-${Date.now()}`}
+                    selected={e === selected}
+                    onClick={() => onSelect(e)}
+                  >
                     {e}
                   </SidebarMenuLink>
                 ))}
@@ -108,14 +112,16 @@ const Header = React.memo(
               )
             ) : (
               <>
-                {headerEntries.map((e) =>
+                {headerEntries.map((e: HeaderValues) =>
                   e === selected ? (
-                    <span className="selected">
+                    <span key={`menu-link-${e}-${Date.now()}`} className="selected">
                       + {e}
                       <p className="underline" />
                     </span>
                   ) : (
-                    <span onClick={() => onSelect(e)}>{e}</span>
+                    <span key={`menu-link-${e}-${Date.now()}`} onClick={() => onSelect(e)}>
+                      {e}
+                    </span>
                   ),
                 )}
                 {status === 'notConnected' ? (

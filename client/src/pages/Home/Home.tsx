@@ -4,7 +4,7 @@ import Input from '../../components/input/Input';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
-import NotFoundIcon from 'src/assets/icons/NotFount';
+import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
 import CardDetailsModal from 'src/components/modals/CardDetails.modal';
 import {
@@ -19,7 +19,7 @@ import {
   NotFoundText,
 } from './Home.styled';
 
-const Home = () => {
+export const Home = () => {
   const { setTitleFilter, addMoreCards, filteredCards, cardData, selected } = useHomeEffects();
 
   return (
@@ -77,5 +77,3 @@ const Home = () => {
     </PageContainer>
   );
 };
-
-export default Home;

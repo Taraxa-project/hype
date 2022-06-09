@@ -6,14 +6,13 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
     font-family: 'Inter';
     font-style: normal;
     font-size: 16px;
-    letter-spacing: -0.02em;
   }
 
   body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: ${({ theme }) => theme.colors.body};
+    background: ${({ theme }) => theme.colors.background};
   }
 
   code {
