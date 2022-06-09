@@ -3,9 +3,11 @@ import Box from '../styles/Box';
 import Text from '../styles/Text';
 import { SpaceProps } from 'styled-system';
 
-type NotConnectedMessageProps = SpaceProps;
+type NotAvailableProps = SpaceProps & {
+  message?: string;
+};
 
-export const NotConnectedMessage = ({ ...props }: NotConnectedMessageProps) => {
+export const NotAvailable = ({ ...props }: NotAvailableProps) => {
   return (
     <Box
       {...props}
@@ -20,7 +22,7 @@ export const NotConnectedMessage = ({ ...props }: NotConnectedMessageProps) => {
     >
       <NotFoundIcon />
       <Text color="greys.8" fontSize="14px" lineHeight="22px" fontWeight="400">
-        Connect wallet to see the history of rewards...
+        {props.message || 'Connect wallet to see the history of rewards...'}
       </Text>
     </Box>
   );

@@ -7,20 +7,21 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  border-radius: 0.75rem;
+  align-items: center;
   font-size: 1rem;
   background: #ffffff;
+  height: 4.5rem;
 
   .headerLeft {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
-    margin-left: 3rem;
+    margin-left: 2.5rem;
   }
 
   .headerRight {
     flex: 0 1 auto;
-    padding-right: 2rem;
+    padding-right: 2.5rem;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
@@ -39,19 +40,20 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 
   .underline {
     background: #dda25d;
-    align-self: flex-end;
-    min-height: 10%;
+    min-height: 8px;
     width: 100%;
-    margin: 0 0 0 0;
+    margin: 0;
+    margin-bottom: -25px;
+    margin-top: 10px;
   }
 
   span {
-    padding-top: 1.5rem;
+    padding-top: 0.3rem;
     font-weight: 400;
     font-size: 1rem;
     display: flex;
-    justify-content: space-between;
     align-content: center;
+    gap: 8px;
     flex-direction: column;
     cursor: pointer;
 

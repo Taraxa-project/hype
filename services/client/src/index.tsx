@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ModalProvider } from './hooks/useModal';
+import { BrowserRouter } from 'react-router-dom';
+import { HypeThemeProvider } from './theme/HypeTheme';
+import { MetaMaskProvider } from 'metamask-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <ModalProvider>
-      <App />
-    </ModalProvider>
+    <BrowserRouter>
+      <HypeThemeProvider>
+        <MetaMaskProvider>
+          <ModalProvider>
+            <App />
+          </ModalProvider>
+        </MetaMaskProvider>
+      </HypeThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
 );
 
