@@ -2,19 +2,17 @@
   "name": "hype_project",
   "private": true,
   "workspaces": [
-    "client",
-    "server"
+    "services/*"
   ],
   "scripts": {
-    "install": "cd client && yarn && cd ../server && yarn",
-    "start": "concurrently \"yarn start-client && start-server\"",
-    "start-client": "cd client && yarn start",
-    "build-client": "cd client && yarn build",
-    "start-server": "cd server && yarn start",
-    "storybook": "cd client && yarn storybook",
-    "build-storybook": "yarn client && yarn build-storybook",
+    "start": "concurrently \"SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start & SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start\"",
+    "start-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start",
+    "build-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build",
+    "start-server": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start",
+    "storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client storybook",
+    "build-storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build-storybook",
     "format": "prettier . --write && eslint --fix '*.{js,jsx,ts,tsx}'",
-    "lint": "eslint client && eslint server",
+    "lint": "eslint services/*",
     "postinstall": "husky install"
   },
   "lint-staged": {
