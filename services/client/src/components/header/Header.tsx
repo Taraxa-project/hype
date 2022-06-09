@@ -118,6 +118,7 @@ const Header = React.memo(
               <Box
                 display="flex"
                 flexDirection="row"
+                alignItems="center"
                 gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
               >
                 {headerEntries.map((e: HeaderLink) =>

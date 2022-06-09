@@ -40,10 +40,11 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 
   .underline {
     background: #dda25d;
-    align-self: flex-end;
-    min-height: 10%;
+    min-height: 8px;
     width: 100%;
-    margin: 0 0 0 0;
+    margin: 0;
+    margin-bottom: -25px;
+    margin-top: 10px;
   }
 
   span {
@@ -51,8 +52,8 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     font-weight: 400;
     font-size: 1rem;
     display: flex;
-    justify-content: space-between;
     align-content: center;
+    gap: 8px;
     flex-direction: column;
     cursor: pointer;
 

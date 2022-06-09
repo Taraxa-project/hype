@@ -27,7 +27,13 @@ export const Redeem = () => {
   return (
     <Box
       display="flex"
-      flexDirection={isConnected ? 'column' : 'row'}
+      flexDirection={{
+        xs: 'column',
+        sm: 'column',
+        md: isConnected ? 'column' : 'row',
+        lg: isConnected ? 'column' : 'row',
+        xl: isConnected ? 'column' : 'row',
+      }}
       gridGap="1.5rem"
       px={{ sm: '1rem', md: '4rem', xl: '12.5rem' }}
       justifyContent="center"

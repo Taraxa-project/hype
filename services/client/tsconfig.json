@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es6",
     "rootDir": ".",
@@ -9,7 +10,7 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "./dist",
-    "noEmit": true,
+    "noEmit": false,
     "lib": [
       "dom",
       "dom.iterable",
