@@ -5,7 +5,7 @@ import useMetamask from './hooks/useMetamask';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool } from './pages';
 import styled from 'styled-components';
-import { HypeModalsCenter } from './containers/modals';
+import { ModalsCenter } from './containers/modals';
 
 const StyledAppContainer = styled.div`
   flex: 1 0 auto;
@@ -44,7 +44,7 @@ const Root = () => {
           <Route path="/redeem" element={<Redeem />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <HypeModalsCenter />
+        <ModalsCenter />
       </StyledAppContainer>
     </AppWrapper>
   );

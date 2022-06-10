@@ -1,30 +1,30 @@
 import React, { createContext, FC, useContext, useReducer } from 'react';
-import { hypeModalsInitialState, hypeModalsReducer } from './reducer';
-import { THypeModalsAction, IHypeModalsStore } from './types';
+import { modalsInitialState, hypeModalsReducer } from './reducer';
+import { TModalsAction, IModalsStore } from './types';
 
-const HypeModalsStore = createContext<IHypeModalsStore>(null);
-const HypeModalsDispatch = createContext<React.Dispatch<THypeModalsAction>>(null);
+const ModalsStore = createContext<IModalsStore>(null);
+const ModalsDispatch = createContext<React.Dispatch<TModalsAction>>(null);
 
-type HypeModalsProviderProps = {
+type ModalsProviderProps = {
   children: React.ReactNode;
 };
 
-export const HypeModalsProvider: FC<HypeModalsProviderProps> = ({
+export const ModalsProvider: FC<ModalsProviderProps> = ({
   children,
-}: HypeModalsProviderProps) => {
-  const [state, dispatch] = useReducer(hypeModalsReducer, hypeModalsInitialState);
+}: ModalsProviderProps) => {
+  const [state, dispatch] = useReducer(hypeModalsReducer, modalsInitialState);
 
   return (
-    <HypeModalsStore.Provider value={state}>
-      <HypeModalsDispatch.Provider value={dispatch}>{children}</HypeModalsDispatch.Provider>
-    </HypeModalsStore.Provider>
+    <ModalsStore.Provider value={state}>
+      <ModalsDispatch.Provider value={dispatch}>{children}</ModalsDispatch.Provider>
+    </ModalsStore.Provider>
   );
 };
 
-export const useHypeModalsStore = () => {
-  return useContext(HypeModalsStore);
+export const useModalsStore = () => {
+  return useContext(ModalsStore);
 };
 
-export const useHypeModalsDispatch = () => {
-  return useContext(HypeModalsDispatch);
+export const useModalsDispatch = () => {
+  return useContext(ModalsDispatch);
 };

@@ -1,2 +1,2 @@
 export * from './card-details'
-export * from './HypeModalsCenter';
+export * from './ModalsCenter';

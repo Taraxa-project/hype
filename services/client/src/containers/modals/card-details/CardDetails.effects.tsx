@@ -1,10 +1,10 @@
-import { HypeModalsActionsEnum, useHypeModalsDispatch, useHypeModalsStore } from '../../../context';
+import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
 
 export const useCardDetailsEffects = () => {
   const {
     hypeDetails: { open, cardData },
-  } = useHypeModalsStore();
-  const dispatchModals = useHypeModalsDispatch();
+  } = useModalsStore();
+  const dispatchModals = useModalsDispatch();
 
   const {
     title,
@@ -21,7 +21,7 @@ export const useCardDetailsEffects = () => {
 
   const closeModal = () => {
     dispatchModals({
-      type: HypeModalsActionsEnum.SHOW_HYPE_DETAILS,
+      type: ModalsActionsEnum.SHOW_CARD_DETAILS,
       payload: {
         open: false,
         cardData: {

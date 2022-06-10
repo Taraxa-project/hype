@@ -1,7 +1,7 @@
 import { CardData } from '../../components/card/Card';
-import { HypeModalsActionsEnum } from './reducer';
+import { ModalsActionsEnum } from './reducer';
 
-export type THypeCardDetails = {
+export type TCardDetails = {
   open: boolean;
   cardData: CardData;
 };
@@ -13,19 +13,19 @@ export type TInfo = {
   onClose?: () => void;
 };
 
-export interface IHypeModalsStore {
-  hypeDetails: THypeCardDetails;
+export interface IModalsStore {
+  hypeDetails: TCardDetails;
   info: TInfo;
 }
 
-interface IHypeCardDetailsAction {
-  type: HypeModalsActionsEnum.SHOW_HYPE_DETAILS;
-  payload: THypeCardDetails;
+interface ICardDetailsAction {
+  type: ModalsActionsEnum.SHOW_CARD_DETAILS;
+  payload: TCardDetails;
 }
 
 interface IInfoAction {
-  type: HypeModalsActionsEnum.SHOW_INFO;
+  type: ModalsActionsEnum.SHOW_INFO;
   payload: TInfo;
 }
 
-export type THypeModalsAction = IHypeCardDetailsAction | IInfoAction;
+export type TModalsAction = ICardDetailsAction | IInfoAction;

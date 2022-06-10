@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from 'src/components/card/Card';
-import { HypeModalsActionsEnum, useHypeModalsDispatch } from '../../context';
+import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 interface CardData {
   title: string;
@@ -19,7 +19,7 @@ interface CardData {
 export const useHomeEffects = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
-  const dispatchModals = useHypeModalsDispatch();
+  const dispatchModals = useModalsDispatch();
 
   useEffect(() => {
     setCardData([
@@ -127,7 +127,7 @@ export const useHomeEffects = () => {
       rewardToken={data.rewardToken}
       onClick={() => {
         dispatchModals({
-          type: HypeModalsActionsEnum.SHOW_HYPE_DETAILS,
+          type: ModalsActionsEnum.SHOW_CARD_DETAILS,
           payload: {
             open: true,
             cardData: cardData[i],

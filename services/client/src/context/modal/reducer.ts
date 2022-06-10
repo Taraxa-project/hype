@@ -1,11 +1,11 @@
-import { IHypeModalsStore, THypeModalsAction } from './types';
+import { IModalsStore, TModalsAction } from './types';
 
-export enum HypeModalsActionsEnum {
-  SHOW_HYPE_DETAILS = 'SHOW_HYPE_DETAILS',
+export enum ModalsActionsEnum {
+  SHOW_CARD_DETAILS = 'SHOW_CARD_DETAILS',
   SHOW_INFO = 'SHOW_INFO',
 }
 
-export const hypeModalsInitialState: IHypeModalsStore = {
+export const modalsInitialState: IModalsStore = {
   hypeDetails: {
     open: false,
     cardData: {
@@ -26,13 +26,13 @@ export const hypeModalsInitialState: IHypeModalsStore = {
 };
 
 export const hypeModalsReducer = (
-  state = hypeModalsInitialState,
-  action: THypeModalsAction,
-): IHypeModalsStore => {
+  state = modalsInitialState,
+  action: TModalsAction,
+): IModalsStore => {
   switch (action.type) {
-    case HypeModalsActionsEnum.SHOW_HYPE_DETAILS:
+    case ModalsActionsEnum.SHOW_CARD_DETAILS:
       return { ...state, hypeDetails: action.payload };
-    case HypeModalsActionsEnum.SHOW_INFO:
+    case ModalsActionsEnum.SHOW_INFO:
       return { ...state, info: action.payload };
   }
 };

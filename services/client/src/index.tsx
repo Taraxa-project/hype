@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { MetaMaskProvider } from 'metamask-react';
-import { HypeModalsProvider } from './context';
+import { ModalsProvider } from './context';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -13,9 +13,9 @@ root.render(
     <BrowserRouter>
       <HypeThemeProvider>
         <MetaMaskProvider>
-          <HypeModalsProvider>
+          <ModalsProvider>
             <App />
-          </HypeModalsProvider>
+          </ModalsProvider>
         </MetaMaskProvider>
       </HypeThemeProvider>
     </BrowserRouter>

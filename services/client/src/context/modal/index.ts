@@ -1,2 +1,2 @@
 export * from './provider';
-export { HypeModalsActionsEnum } from './reducer';
+export { ModalsActionsEnum } from './reducer';
