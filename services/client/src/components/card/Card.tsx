@@ -3,12 +3,12 @@ import { useMediaQuery } from 'react-responsive';
 import Button from '../button/Button';
 import {
   StyledCard,
-  Container,
   CardTitle,
   CardDescription,
-  DataContainer,
   DataHeader,
   DataValue,
+  DataContainer,
+  Container,
 } from './Card.styled';
 
 export interface CardData {
@@ -42,7 +42,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
     duration,
     minReward,
     rewardToken,
-    onClick
+    onClick,
   } = props;
   return (
     <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'} {...props}>
@@ -79,7 +79,9 @@ const Card = ({ children, variant, ...props }: CardProps) => {
             <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
           </DataContainer>
         )}
-        <Button size="full-width" onClick={onClick}>Learn more</Button>
+        <Button size="full-width" onClick={onClick}>
+          Learn more
+        </Button>
       </Container>
       {children}
     </StyledCard>

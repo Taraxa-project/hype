@@ -16,7 +16,7 @@ import {
   ButtonDiv,
   StyledModal,
   TitleContainer,
-} from './CardDetails.styed';
+} from './CardDetails.styled';
 import { CardData } from '../card/Card';
 
 interface ExtendedDetailsProps {

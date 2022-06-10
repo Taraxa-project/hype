@@ -139,7 +139,7 @@ const StepDescription = styled.div`
   line-height: 1.25rem;
 `;
 
-const AddHypePool = () => {
+export const AddHypePool = () => {
   return (
     <Wrapper>
       <FormColumn>
@@ -201,5 +201,3 @@ const AddHypePool = () => {
     </Wrapper>
   );
 };
-
-export default AddHypePool;
