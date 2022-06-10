@@ -19,7 +19,7 @@ import {
 } from './CardDetails.styled';
 import { CardData } from '../card/Card';
 
-interface ExtendedDetailsProps {
+export interface ExtendedDetailsProps {
   cardData: CardData;
 }
 

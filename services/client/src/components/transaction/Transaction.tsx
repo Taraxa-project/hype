@@ -6,7 +6,7 @@ import Box from '../styles/Box';
 import Text from '../styles/Text';
 import Heading from '../styles/Heading';
 
-interface TransactionProps {
+export interface TransactionProps {
   value: number;
   pool?: string;
   status?: TransactionStatus;

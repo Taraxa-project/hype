@@ -23,7 +23,7 @@ import {
   DisplayProps,
 } from 'styled-system';
 
-type BoxProps = SpaceProps &
+export type BoxProps = SpaceProps &
   WidthProps &
   HeightProps &
   DisplayProps &
