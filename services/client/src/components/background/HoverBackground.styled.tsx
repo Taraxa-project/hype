@@ -7,14 +7,17 @@ interface BackgroundProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const BackgroundStyled = styled.div<BackgroundProps>`
-  ${(props) => !props.show && `visibility: hidden;`}
-  min-width: 100vw;
-  min-height: 100000000vh;
-  position: absolute;
-  z-index: 1000;
-  top: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(45, 45, 45, 0.4);
+  position: fixed;
+  bottom: 0;
+  right: 0;
   left: 0;
-  background-color: rgba(45, 45, 45, 0.4);
+  top: 0;
+  z-index: 1000;
+  ${(props) => props.show ? 'opacity: 0.5;' : ' opacity: 0;'}
+  ${(props) => props.show && 'pointer-events: all'}
 `;
 const BackgroundHover = ({show, children }: BackgroundProps): JSX.Element => (
   <>

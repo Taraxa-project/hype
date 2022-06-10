@@ -1,44 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../components/styles/Global';
-
-export interface HypeColors {
-  white: string;
-  black: string;
-  primary: string;
-  success: string;
-  danger: string;
-  background: string;
-  greys: string[];
-}
-
-type ButtonColor = {
-  color: string;
-  backgroundColor: string;
-};
-
-type CardColor = {
-  color: string;
-  background: string;
-};
-
-export interface HypeButtons {
-  primary: ButtonColor;
-  secondary: ButtonColor;
-  danger: ButtonColor;
-}
-
-export interface HypeCards {
-  lightCard: CardColor;
-  darkCard: CardColor;
-}
-
-export interface HypeBreakpoints {
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-}
+import { LightenColor } from './color-utils';
+import { HypeBreakpoints, HypeColors, HypeButtons, HypeCards, HypeThemeType } from './types';
 
 const breakpoints: HypeBreakpoints = {
   sm: '600px',
@@ -47,20 +11,12 @@ const breakpoints: HypeBreakpoints = {
   xl: '1536px',
 };
 
-export interface HypeThemeType {
-  colors: HypeColors;
-  buttons: HypeButtons;
-  cards: HypeCards;
-  fontSizes: number[];
-  space: number[];
-  breakpoints: HypeBreakpoints;
-}
-
 const colors: HypeColors = {
   white: '#FFFFFF',
   black: '#000000',
   background: '#E5E5E5',
   primary: '#DDA25D',
+  secondary: '#E0E0E0',
   success: '#3E7E5C',
   danger: '',
   greys: [
@@ -80,14 +36,22 @@ const buttons: HypeButtons = {
   primary: {
     color: colors.white,
     backgroundColor: colors.primary,
+    hover: LightenColor(colors.primary)
   },
   secondary: {
+    color: colors.greys[7],
+    backgroundColor: colors.secondary,
+    hover: LightenColor(colors.secondary)
+  },
+  success: {
     color: colors.white,
     backgroundColor: colors.success,
+    hover: LightenColor(colors.success)
   },
   danger: {
     color: colors.white,
     backgroundColor: colors.danger,
+    hover: LightenColor(colors.danger)
   },
 };
 

@@ -3,10 +3,9 @@ import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import BackgroundHover from './components/background/HoverBackground.styled';
-import { useModal } from './hooks/useModal';
 import { Home, Redeem } from './pages';
 import styled from 'styled-components';
+import { HypeModalsCenter } from './containers/modals';
 
 const StyledAppContainer = styled.div`
   border-radius: 2rem;
@@ -17,7 +16,7 @@ const StyledAppContainer = styled.div`
 const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { status, connect, account } = useMetamask();
-  const { isOpen } = useModal();
+
   return (
     <div className="App">
       <Header
@@ -28,12 +27,12 @@ const Root = () => {
         children={null}
       />
       <StyledAppContainer>
-        <BackgroundHover show={isOpen} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/redeem" element={<Redeem />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <HypeModalsCenter />
       </StyledAppContainer>
     </div>
   );

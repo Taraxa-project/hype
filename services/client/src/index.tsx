@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ModalProvider } from './hooks/useModal';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { MetaMaskProvider } from 'metamask-react';
+import { HypeModalsProvider } from './context';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -13,9 +13,9 @@ root.render(
     <BrowserRouter>
       <HypeThemeProvider>
         <MetaMaskProvider>
-          <ModalProvider>
+          <HypeModalsProvider>
             <App />
-          </ModalProvider>
+          </HypeModalsProvider>
         </MetaMaskProvider>
       </HypeThemeProvider>
     </BrowserRouter>

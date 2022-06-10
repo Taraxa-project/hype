@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from 'src/components/card/Card';
-import { useModal } from 'src/hooks/useModal';
+import { HypeModalsActionsEnum, useHypeModalsDispatch } from '../../context';
 
 interface CardData {
   title: string;
@@ -19,8 +19,7 @@ interface CardData {
 export const useHomeEffects = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
-  const [selected, setSelected] = useState<CardData>({} as CardData);
-  const { setOpen } = useModal();
+  const dispatchModals = useHypeModalsDispatch();
 
   useEffect(() => {
     setCardData([
@@ -111,25 +110,32 @@ export const useHomeEffects = () => {
     );
   };
 
-  const filteredCards = (titleFilter
-    ? cardData.filter((c) => c.title?.includes(titleFilter))
-    : cardData).map((data, i) =>  <Card
-    key={`${data.title}-${i}`}
-    title={data.title}
-    pool={data.pool}
-    description={data.description}
-    poolToken={data.poolToken}
-    bonus={data.bonus}
-    creatorAddress={data.creatorAddress}
-    bonusToken={data.bonusToken}
-    duration={`${monthDiff(data.startDate, data.endDate)} months left`}
-    minReward={data.minReward}
-    rewardToken={data.rewardToken}
-    onClick={() => {
-      setSelected(cardData[i]);
-      setOpen(true);
-    }}
-  />);
+  const filteredCards = (
+    titleFilter ? cardData.filter((c) => c.title?.includes(titleFilter)) : cardData
+  ).map((data, i) => (
+    <Card
+      key={`${data.title}-${i}`}
+      title={data.title}
+      pool={data.pool}
+      description={data.description}
+      poolToken={data.poolToken}
+      bonus={data.bonus}
+      creatorAddress={data.creatorAddress}
+      bonusToken={data.bonusToken}
+      duration={`${monthDiff(data.startDate, data.endDate)} months left`}
+      minReward={data.minReward}
+      rewardToken={data.rewardToken}
+      onClick={() => {
+        dispatchModals({
+          type: HypeModalsActionsEnum.SHOW_HYPE_DETAILS,
+          payload: {
+            open: true,
+            cardData: cardData[i],
+          },
+        });
+      }}
+    />
+  ));
 
   return {
     setTitleFilter,
@@ -137,6 +143,5 @@ export const useHomeEffects = () => {
     monthDiff,
     filteredCards,
     cardData,
-    selected
   };
 };

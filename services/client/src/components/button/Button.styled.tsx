@@ -1,27 +1,27 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
 
-interface CustomStyledProps {
-  variant?: 'primary' | 'secondary';
+export const StyledButton = styled.button<{
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
   size?: 'small' | 'regular' | 'full-width';
-}
-
-export const StyledButton = styled.button<CustomStyledProps>`
+  theme?: HypeThemeType;
+}>`
   font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0.75rem;
-  border: ${(props) => (props.variant === 'primary' ? 'none' : '0.063rem solid #C2C2C2')};
-  background: ${(props) => (props.variant === 'primary' ? '#dda25d' : '#E0E0E0')};
-  color: ${(props) => (props.variant === 'primary' ? '#fff' : '#595959')};
+  border: ${({ variant }) => (variant === 'primary' ? 'none' : '0.063rem solid #C2C2C2')};
+  background: ${({ variant, theme }) => theme.buttons[variant].backgroundColor};
+  color: ${({ variant, theme }) => theme.buttons[variant].color};
   font-size: 1rem;
-  padding: ${(props) => (props.size === 'small' ? '1rem 0.5rem' : '1rem 4.5rem')};
-  ${(props) => props.size === 'full-width' && 'width: 100%;'}
+  padding: ${({ size }) => (size === 'small' ? '1rem 0.5rem' : '1rem 4.5rem')};
+  ${({ size }) => size === 'full-width' && 'width: 100%;'}
   cursor: pointer;
 
   :hover {
-    background: ${(props) => (props.variant === 'primary' ? '#e4aa65' : '#ECECEC')};
+    background: ${({ variant, theme }) => theme.buttons[variant].hover};
   }
 
   :disabled {
