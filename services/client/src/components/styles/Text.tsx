@@ -14,7 +14,12 @@ import {
   LetterSpacingProps,
 } from 'styled-system';
 
-type TextProps = SpaceProps & FontSizeProps & FontWeightProps & LineHeightProps & ColorProps & LetterSpacingProps;
+export type TextProps = SpaceProps &
+  FontSizeProps &
+  FontWeightProps &
+  LineHeightProps &
+  ColorProps &
+  LetterSpacingProps;
 
 const Text = styled.p<TextProps>`
   ${space}

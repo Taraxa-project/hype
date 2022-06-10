@@ -19,11 +19,9 @@ export const StyledButton = styled.button<CustomStyledProps>`
   padding: ${(props) => (props.size === 'small' ? '1rem 0.5rem' : '1rem 4.5rem')};
   ${(props) => props.size === 'full-width' && 'width: 100%;'}
   cursor: pointer;
-
   :hover {
     background: ${(props) => (props.variant === 'primary' ? '#e4aa65' : '#ECECEC')};
   }
-
   :disabled {
     background: #ececec;
     border: 0.063rem solid #e0e0e0;

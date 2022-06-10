@@ -2,7 +2,7 @@ import React from 'react';
 import SearchIcon from '../../assets/icons/Search';
 import { StyledInput } from './Input.styled';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   label?: string;
   Icon?: React.ReactNode;

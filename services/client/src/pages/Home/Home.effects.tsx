@@ -111,25 +111,27 @@ export const useHomeEffects = () => {
     );
   };
 
-  const filteredCards = (titleFilter
-    ? cardData.filter((c) => c.title?.includes(titleFilter))
-    : cardData).map((data, i) =>  <Card
-    key={`${data.title}-${i}`}
-    title={data.title}
-    pool={data.pool}
-    description={data.description}
-    poolToken={data.poolToken}
-    bonus={data.bonus}
-    creatorAddress={data.creatorAddress}
-    bonusToken={data.bonusToken}
-    duration={`${monthDiff(data.startDate, data.endDate)} months left`}
-    minReward={data.minReward}
-    rewardToken={data.rewardToken}
-    onClick={() => {
-      setSelected(cardData[i]);
-      setOpen(true);
-    }}
-  />);
+  const filteredCards = (
+    titleFilter ? cardData.filter((c) => c.title?.includes(titleFilter)) : cardData
+  ).map((data, i) => (
+    <Card
+      key={`${data.title}-${i}`}
+      title={data.title}
+      pool={data.pool}
+      description={data.description}
+      poolToken={data.poolToken}
+      bonus={data.bonus}
+      creatorAddress={data.creatorAddress}
+      bonusToken={data.bonusToken}
+      duration={`${monthDiff(data.startDate, data.endDate)} months left`}
+      minReward={data.minReward}
+      rewardToken={data.rewardToken}
+      onClick={() => {
+        setSelected(cardData[i]);
+        setOpen(true);
+      }}
+    />
+  ));
 
   return {
     setTitleFilter,
@@ -137,6 +139,6 @@ export const useHomeEffects = () => {
     monthDiff,
     filteredCards,
     cardData,
-    selected
+    selected,
   };
 };
