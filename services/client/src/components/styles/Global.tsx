@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { HypeThemeType } from '../../theme/HypeTheme';
+import { HypeThemeType } from '../../theme';
 
 const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   html {

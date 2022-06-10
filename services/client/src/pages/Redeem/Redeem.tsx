@@ -9,7 +9,7 @@ import { formatNumber } from '../../utils';
 import DownIcon from '../../assets/icons/Down';
 import UpIcon from '../../assets/icons/Up';
 import Button from '../../components/button/Button';
-import { NotAvailable } from '../../components/notAvailable/NotAvailable';
+import { NotAvailable } from '../../components/not-available/NotAvailable';
 
 export const Redeem = () => {
   const {

@@ -6,7 +6,6 @@ import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
-import CardDetailsModal from 'src/components/modals/CardDetails.modal';
 import {
   PageContainer,
   HeroContainer,
@@ -20,11 +19,10 @@ import {
 } from './Home.styled';
 
 export const Home = () => {
-  const { setTitleFilter, addMoreCards, filteredCards, cardData, selected } = useHomeEffects();
+  const { setTitleFilter, addMoreCards, filteredCards, cardData } = useHomeEffects();
 
   return (
     <PageContainer>
-      <CardDetailsModal cardData={selected} />
       <HeroContainer>
         <IntroContainer>
           <HypeIconBig />

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   space,
+  width,
   color,
   fontSize,
   fontWeight,
@@ -11,6 +12,7 @@ import {
   LineHeightProps,
   ColorProps,
   SpaceProps,
+  WidthProps,
   LetterSpacingProps,
 } from 'styled-system';
 
@@ -19,10 +21,12 @@ export type TextProps = SpaceProps &
   FontWeightProps &
   LineHeightProps &
   ColorProps &
-  LetterSpacingProps;
+  LetterSpacingProps &
+  WidthProps;
 
 const Text = styled.p<TextProps>`
   ${space}
+  ${width}
   ${fontSize}
   ${fontWeight}
   ${lineHeight}

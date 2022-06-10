@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from 'src/components/card/Card';
-import { useModal } from 'src/hooks/useModal';
+import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 interface CardData {
   title: string;
@@ -19,8 +19,7 @@ interface CardData {
 export const useHomeEffects = () => {
   const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
   const [titleFilter, setTitleFilter] = useState('');
-  const [selected, setSelected] = useState<CardData>({} as CardData);
-  const { setOpen } = useModal();
+  const dispatchModals = useModalsDispatch();
 
   useEffect(() => {
     setCardData([
@@ -127,8 +126,13 @@ export const useHomeEffects = () => {
       minReward={data.minReward}
       rewardToken={data.rewardToken}
       onClick={() => {
-        setSelected(cardData[i]);
-        setOpen(true);
+        dispatchModals({
+          type: ModalsActionsEnum.SHOW_CARD_DETAILS,
+          payload: {
+            open: true,
+            cardData: cardData[i],
+          },
+        });
       }}
     />
   ));
@@ -139,6 +143,5 @@ export const useHomeEffects = () => {
     monthDiff,
     filteredCards,
     cardData,
-    selected,
   };
 };
