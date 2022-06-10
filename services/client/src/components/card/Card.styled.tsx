@@ -7,7 +7,6 @@ interface CustomStyledProps {
 export const StyledCard = styled.div<CustomStyledProps>`
   width: ${(props) => (props.variant === 'mobile' ? '19.375rem' : '23rem')};
   height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
-  letter-spacing: -0.02em;
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;

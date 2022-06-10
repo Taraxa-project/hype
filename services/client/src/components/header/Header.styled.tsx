@@ -11,14 +11,12 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 1rem;
   background: #ffffff;
   height: 4.5rem;
-
   .headerLeft {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
     margin-left: 2.5rem;
   }
-
   .headerRight {
     flex: 0 1 auto;
     padding-right: 2.5rem;
@@ -26,18 +24,15 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     align-items: right;
     justify-content: space-evenly;
   }
-
   .margin-right {
     margin-right: 2rem;
   }
-
   .selected {
     font-weight: 700;
     font-size: 1rem;
     color: #292929;
     cursor: pointer;
   }
-
   .underline {
     background: #dda25d;
     min-height: 8px;
@@ -46,7 +41,6 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     margin-bottom: -25px;
     margin-top: 10px;
   }
-
   span {
     padding-top: 0.3rem;
     font-weight: 400;
@@ -56,11 +50,8 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     gap: 8px;
     flex-direction: column;
     cursor: pointer;
-
     text-align: center;
-
     color: #adadad;
-
     :active {
       font-weight: 700;
       font-size: 1rem;
@@ -113,7 +104,6 @@ export const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
   padding: 1.25rem 3rem;
   font-weight: ${(props) => (props.selected ? '700' : '400')};
   color: ${(props) => (props.selected ? '#292929' : '#adadad')};
-
   ::before {
     position: absolute;
     left: 0;

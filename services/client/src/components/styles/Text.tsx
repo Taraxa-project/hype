@@ -16,7 +16,7 @@ import {
   LetterSpacingProps,
 } from 'styled-system';
 
-type TextProps = SpaceProps &
+export type TextProps = SpaceProps &
   FontSizeProps &
   FontWeightProps &
   LineHeightProps &

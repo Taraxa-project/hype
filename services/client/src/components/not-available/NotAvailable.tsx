@@ -3,7 +3,7 @@ import Box from '../styles/Box';
 import Text from '../styles/Text';
 import { SpaceProps } from 'styled-system';
 
-type NotAvailableProps = SpaceProps & {
+export type NotAvailableProps = SpaceProps & {
   message?: string;
 };
 
