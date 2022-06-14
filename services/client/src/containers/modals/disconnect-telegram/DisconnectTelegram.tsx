@@ -6,10 +6,10 @@ import {
 import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTitle';
 import Box from '../../../components/styles/Box';
 import Text from '../../../components/styles/Text';
-import { useTelegramInfoEffects } from './TelegramInfo.effects';
+import { useDiconnectTelegramEffects } from './DisconnectTelegram.effects';
 
-export const TelegramInfo = () => {
-  const { open, title, text, message, closeModal } = useTelegramInfoEffects();
+export const DisconnectTelegram = () => {
+  const { open, title, text, username, onDisconnect, closeModal } = useDiconnectTelegramEffects();
 
   const titleProps: ModalTitleProps = {
     title,
@@ -17,8 +17,11 @@ export const TelegramInfo = () => {
   };
 
   const modalAction: ModalAction = {
-    name: 'OK',
-    onAction: closeModal,
+    name: 'Yes, disconnect this account',
+    onAction: () => {
+      onDisconnect();
+      closeModal();
+    },
   };
 
   return (
@@ -27,6 +30,7 @@ export const TelegramInfo = () => {
       open={open}
       closeModal={closeModal}
       modalAction={modalAction}
+      showCancel={true}
     >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>
@@ -38,10 +42,10 @@ export const TelegramInfo = () => {
           justifyContent="center"
         >
           <TelegramLogo />
-          {message && (
+          {username && (
             <Box borderRadius="16px" py="2" px="4" backgroundColor="greys.10" mt="4">
               <Text fontWeight="600" fontSize="0.875rem" color="greys.11">
-                {message}
+                {username}
               </Text>
             </Box>
           )}

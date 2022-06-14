@@ -1,6 +1,9 @@
 import { MetamaskLogo } from '../../../assets/icons/Metamask';
 import Button from '../../../components/button/Button';
-import { ModalContainer } from '../../../components/modals/modal-container/ModalContainer';
+import {
+  ModalAction,
+  ModalContainer,
+} from '../../../components/modals/modal-container/ModalContainer';
 import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTitle';
 import Box from '../../../components/styles/Box';
 import Text from '../../../components/styles/Text';
@@ -13,8 +16,19 @@ export const MetamaskInfo = () => {
     title,
     close: closeModal,
   };
+
+  const modalAction: ModalAction = {
+    name: 'OK',
+    onAction: closeModal,
+  };
+
   return (
-    <ModalContainer titleProps={titleProps} open={open} closeModal={closeModal}>
+    <ModalContainer
+      titleProps={titleProps}
+      open={open}
+      closeModal={closeModal}
+      modalAction={modalAction}
+    >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>
         <Box
@@ -33,14 +47,6 @@ export const MetamaskInfo = () => {
             </Box>
           )}
         </Box>
-        <Button
-          variant="primary"
-          style={{ width: '100%', maxWidth: '17.3rem', margin: '0 auto' }}
-          autoFocus
-          onClick={closeModal}
-        >
-          OK
-        </Button>
       </Box>
     </ModalContainer>
   );

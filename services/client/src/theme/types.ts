@@ -25,6 +25,7 @@ export interface HypeButtons {
   secondary: ButtonColor;
   success: ButtonColor;
   danger: ButtonColor;
+  neutral: ButtonColor;
 }
 
 export interface HypeCards {

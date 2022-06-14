@@ -159,6 +159,16 @@ export const useHomeEffects = () => {
         //     message: 'Username already registered',
         //   },
         // });
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM,
+        //   payload: {
+        //     open: true,
+        //     title: 'Disconnect account',
+        //     text: 'Are you sure you want to disconnect this account?',
+        //     username: '@hyper123',
+        //     onDisconnect: () => {console.log('Disconnected')}
+        //   },
+        // });
       }}
     />
   ));

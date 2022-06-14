@@ -27,11 +27,21 @@ export type TTelegramInfo = {
   message?: string;
 };
 
+export type TDisconnectTelegram = {
+  open: boolean;
+  title: string;
+  text: string;
+  message?: string;
+  username?: string;
+  onDisconnect: (value?: any) => void;
+};
+
 export interface IModalsStore {
   hypeDetails: TCardDetails;
   loading: TLoading;
   metamaskInfo: TMetamaskInfo;
   telegramInfo: TTelegramInfo;
+  disconnectTelegram: TDisconnectTelegram;
 }
 
 interface ICardDetailsAction {
@@ -54,8 +64,14 @@ interface ITelegramInfoAction {
   payload: TTelegramInfo;
 }
 
+interface IDisconnectTelegramAction {
+  type: ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM;
+  payload: TDisconnectTelegram;
+}
+
 export type TModalsAction =
   | ICardDetailsAction
   | ILoadingAction
   | IMetamaskInfoAction
-  | ITelegramInfoAction;
+  | ITelegramInfoAction
+  | IDisconnectTelegramAction;
