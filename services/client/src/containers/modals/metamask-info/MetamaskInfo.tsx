@@ -40,7 +40,7 @@ export const MetamaskInfo = () => {
         >
           <MetamaskLogo />
           {message && (
-            <Box borderRadius="16px" py="2" px="5" backgroundColor="greys.10">
+            <Box borderRadius="1rem" py="2" px="5" backgroundColor="greys.10">
               <Text fontWeight="600" fontSize="0.875rem" color="greys.11">
                 {message}
               </Text>

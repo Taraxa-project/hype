@@ -39,7 +39,7 @@ export const TelegramInfo = () => {
         >
           <TelegramLogo />
           {message && (
-            <Box borderRadius="16px" py="2" px="4" backgroundColor="greys.10" mt="4">
+            <Box borderRadius="1rem" py="2" px="4" backgroundColor="greys.10" mt="4">
               <Text fontWeight="600" fontSize="0.875rem" color="greys.11">
                 {message}
               </Text>

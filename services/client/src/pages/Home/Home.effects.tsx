@@ -126,11 +126,20 @@ export const useHomeEffects = () => {
       minReward={data.minReward}
       rewardToken={data.rewardToken}
       onClick={() => {
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_CARD_DETAILS,
+        //   payload: {
+        //     open: true,
+        //     cardData: cardData[i],
+        //   },
+        // });
         dispatchModals({
-          type: ModalsActionsEnum.SHOW_CARD_DETAILS,
+          type: ModalsActionsEnum.SHOW_METAMASK_INFO,
           payload: {
             open: true,
-            cardData: cardData[i],
+            title: 'Connect wallet',
+            text: 'Please, consider browsing the app in Metamask app.',
+            message: 'Metamask not available',
           },
         });
       }}

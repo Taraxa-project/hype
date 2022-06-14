@@ -11,7 +11,7 @@ export interface ModalTitleProps {
 export const ModalTitle: FC<ModalTitleProps> = ({ title, close }: ModalTitleProps) => {
   return (
     <TitleContainer>
-      <Text fontWeight="700" fontSize="1.25" color="greys.6" width="100%" lineHeight="26px">
+      <Text fontWeight="700" fontSize="1.25rem" color="greys.6" width="100%" lineHeight="26px">
         {title}
       </Text>
       {close && (
