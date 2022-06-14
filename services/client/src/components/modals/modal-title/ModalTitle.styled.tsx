@@ -7,6 +7,7 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
   align-items: baseline;
   margin-top: 0;
+  margin-bottom: 2rem;
 `;
 
 export const CloseContainer = styled.div`

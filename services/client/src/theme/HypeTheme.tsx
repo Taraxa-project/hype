@@ -29,6 +29,9 @@ const colors: HypeColors = {
     '#292929',
     '#595959',
     '#A6A6A6',
+    '#f7f7f7',
+    '#ECECEC',
+    '#787878',
   ],
 };
 

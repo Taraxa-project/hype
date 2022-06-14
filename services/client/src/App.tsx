@@ -6,14 +6,15 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
+import { HypeThemeType } from './theme';
 
-const StyledAppContainer = styled.div`
+const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
-  background: #fafafa;
+  background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   margin: 1.5rem 2rem 1.5rem;
 
-  @media (max-width: 1280px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin: 2rem 1rem;
   }
 `;

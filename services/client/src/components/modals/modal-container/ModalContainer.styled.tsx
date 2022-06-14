@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { HypeThemeType } from '../../../theme';
 
-export const StyledModal = styled.div`
+export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   position: fixed;
   left: 50%;
   top: 50%;
@@ -11,11 +12,14 @@ export const StyledModal = styled.div`
   width: auto;
   max-width: 500px !important;
   height: 60%;
-  background: #f7f7f7;
+  background: ${({ theme }) => theme.colors.greys[9]};
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: space-between;
   padding: 2rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    min-width: 400px;
+  }
 `;

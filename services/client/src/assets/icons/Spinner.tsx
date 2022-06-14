@@ -13,7 +13,6 @@ const rotate = keyframes`
 const StyledSVGSpinner = styled.svg`
   animation: ${rotate} 1.5s linear infinite;
   position: sticky;
-  left: 50%;
   bottom: 2.5rem;
   transform: translate(-50%, -50%);
   margin: 0 auto;

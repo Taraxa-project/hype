@@ -2,7 +2,9 @@ import { IModalsStore, TModalsAction } from './types';
 
 export enum ModalsActionsEnum {
   SHOW_CARD_DETAILS = 'SHOW_CARD_DETAILS',
-  SHOW_INFO = 'SHOW_INFO',
+  SHOW_LOADING = 'SHOW_LOADING',
+  SHOW_METAMASK_INFO = 'SHOW_METAMASK_INFO',
+  SHOW_TELEGRAM_INFO = 'SHOW_TELEGRAM_INFO',
 }
 
 export const modalsInitialState: IModalsStore = {
@@ -18,10 +20,22 @@ export const modalsInitialState: IModalsStore = {
       rewardToken: '',
     },
   },
-  info: {
+  loading: {
     open: false,
     title: null,
     text: null,
+  },
+  metamaskInfo: {
+    open: false,
+    title: null,
+    text: null,
+    message: null,
+  },
+  telegramInfo: {
+    open: false,
+    title: null,
+    text: null,
+    message: null,
   },
 };
 
@@ -32,7 +46,11 @@ export const hypeModalsReducer = (
   switch (action.type) {
     case ModalsActionsEnum.SHOW_CARD_DETAILS:
       return { ...state, hypeDetails: action.payload };
-    case ModalsActionsEnum.SHOW_INFO:
-      return { ...state, info: action.payload };
+    case ModalsActionsEnum.SHOW_LOADING:
+      return { ...state, loading: action.payload };
+    case ModalsActionsEnum.SHOW_METAMASK_INFO:
+      return { ...state, metamaskInfo: action.payload };
+    case ModalsActionsEnum.SHOW_TELEGRAM_INFO:
+      return { ...state, telegramInfo: action.payload };
   }
 };

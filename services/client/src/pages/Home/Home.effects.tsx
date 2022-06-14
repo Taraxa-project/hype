@@ -133,6 +133,32 @@ export const useHomeEffects = () => {
             cardData: cardData[i],
           },
         });
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_LOADING,
+        //   payload: {
+        //     open: true,
+        //     title: 'Action required...',
+        //     text: 'Please, sign the message'
+        //   },
+        // });
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_METAMASK_INFO,
+        //   payload: {
+        //     open: true,
+        //     title: 'Connect wallet',
+        //     text: 'Please, consider browsing the app in Metamask app.',
+        //     message: 'Metamask not available',
+        //   },
+        // });
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_TELEGRAM_INFO,
+        //   payload: {
+        //     open: true,
+        //     title: 'Connect telegram',
+        //     text: 'Error',
+        //     message: 'Username already registered',
+        //   },
+        // });
       }}
     />
   ));
