@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import HamburgerMenuIcon from '../../assets/icons/HambugerMenu';
 import { HypeIconSmall } from '../../assets/icons/HypeIcon';
-import Button from '../button/Button';
+import { ConnectWalletBtn } from '../connect-wallet-btn/ConnectWalletBtn';
 import Box from '../styles/Box';
 import { HeaderLink, useHeaderEffects } from './Header.effects';
 import {
@@ -80,11 +80,7 @@ const Header = React.memo(
                 ))}
               </SidebarMenu>
               <SidebarFooter>
-                {status === 'notConnected' && (
-                  <Button size="regular" onClick={onConnect}>
-                    Connect Wallet
-                  </Button>
-                )}
+                {status === 'notConnected' && <ConnectWalletBtn size="regular" />}
               </SidebarFooter>
             </Sidebar>
           </SidebarHover>
@@ -134,9 +130,7 @@ const Header = React.memo(
                   ),
                 )}
                 {status === 'notConnected' ? (
-                  <Button size="regular" onClick={onConnect}>
-                    Connect Wallet
-                  </Button>
+                  <ConnectWalletBtn size="regular" />
                 ) : status === 'connected' ? (
                   <Account>
                     <GreenDot />

@@ -29,6 +29,10 @@ const colors: HypeColors = {
     '#292929',
     '#595959',
     '#A6A6A6',
+    '#f7f7f7',
+    '#ECECEC',
+    '#787878',
+    '#C2C2C2'
   ],
 };
 
@@ -52,6 +56,11 @@ const buttons: HypeButtons = {
     color: colors.white,
     backgroundColor: colors.danger,
     hover: LightenColor(colors.danger)
+  },
+  neutral: {
+    color: colors.greys[7],
+    backgroundColor: colors.greys[12],
+    hover: LightenColor(colors.greys[12])
   },
 };
 

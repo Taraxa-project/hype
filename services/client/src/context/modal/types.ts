@@ -6,16 +6,42 @@ export type TCardDetails = {
   cardData: CardData;
 };
 
-export type TInfo = {
+export type TLoading = {
   open: boolean;
-  title?: string;
+  title: string;
   text: string;
   onClose?: () => void;
 };
 
+export type TMetamaskInfo = {
+  open: boolean;
+  title: string;
+  text: string;
+  message?: string;
+};
+
+export type TTelegramInfo = {
+  open: boolean;
+  title: string;
+  text: string;
+  message?: string;
+};
+
+export type TDisconnectTelegram = {
+  open: boolean;
+  title: string;
+  text: string;
+  message?: string;
+  username?: string;
+  onDisconnect: (value?: any) => void;
+};
+
 export interface IModalsStore {
   hypeDetails: TCardDetails;
-  info: TInfo;
+  loading: TLoading;
+  metamaskInfo: TMetamaskInfo;
+  telegramInfo: TTelegramInfo;
+  disconnectTelegram: TDisconnectTelegram;
 }
 
 interface ICardDetailsAction {
@@ -23,9 +49,29 @@ interface ICardDetailsAction {
   payload: TCardDetails;
 }
 
-interface IInfoAction {
-  type: ModalsActionsEnum.SHOW_INFO;
-  payload: TInfo;
+interface ILoadingAction {
+  type: ModalsActionsEnum.SHOW_LOADING;
+  payload: TLoading;
 }
 
-export type TModalsAction = ICardDetailsAction | IInfoAction;
+interface IMetamaskInfoAction {
+  type: ModalsActionsEnum.SHOW_METAMASK_INFO;
+  payload: TMetamaskInfo;
+}
+
+interface ITelegramInfoAction {
+  type: ModalsActionsEnum.SHOW_TELEGRAM_INFO;
+  payload: TTelegramInfo;
+}
+
+interface IDisconnectTelegramAction {
+  type: ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM;
+  payload: TDisconnectTelegram;
+}
+
+export type TModalsAction =
+  | ICardDetailsAction
+  | ILoadingAction
+  | IMetamaskInfoAction
+  | ITelegramInfoAction
+  | IDisconnectTelegramAction;

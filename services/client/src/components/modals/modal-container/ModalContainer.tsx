@@ -44,6 +44,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               width="100%"
               justifyContent="center"
               alignItems="center"
+              gridGap="12px"
             >
               {modalAction && (
                 <Button
@@ -57,7 +58,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
                 </Button>
               )}
               {showCancel && (
-                <Button variant="primary" style={{ width: '100%' }} autoFocus onClick={closeModal}>
+                <Button variant="neutral" style={{ width: '100%' }} autoFocus onClick={closeModal}>
                   Cancel
                 </Button>
               )}

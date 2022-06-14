@@ -5,7 +5,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   html {
     font-family: 'Inter';
     font-style: normal;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   body {
