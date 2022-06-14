@@ -78,7 +78,6 @@ export const useRedeemEffects = () => {
     redeemHistory,
     rewards,
     onRedeem,
-    connect,
     isConnected,
   };
 };

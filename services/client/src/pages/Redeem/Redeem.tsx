@@ -8,8 +8,8 @@ import Heading from '../../components/styles/Heading';
 import { formatNumber } from '../../utils';
 import DownIcon from '../../assets/icons/Down';
 import UpIcon from '../../assets/icons/Up';
-import Button from '../../components/button/Button';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
+import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
 
 export const Redeem = () => {
   const {
@@ -20,7 +20,6 @@ export const Redeem = () => {
     redeemHistory,
     rewards,
     onRedeem,
-    connect,
     isConnected,
   } = useRedeemEffects();
 
@@ -126,9 +125,7 @@ export const Redeem = () => {
           </Box>
         ) : (
           <Box mt="2.4rem">
-            <Button size="full-width" onClick={connect}>
-              Connect Wallet
-            </Button>
+           <ConnectWalletBtn />
           </Box>
         )}
         {isConnected && showHistory && (
