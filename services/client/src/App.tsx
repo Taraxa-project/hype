@@ -3,7 +3,7 @@ import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
 import useMetamask from './hooks/useMetamask';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Home, Redeem, AddHypePool } from './pages';
+import { Home, Redeem, AddHypePool, Profile } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
@@ -43,6 +43,7 @@ const Root = () => {
           <Route path="/" element={<Home />} />
           <Route path="/pool" element={<AddHypePool />} />
           <Route path="/redeem" element={<Redeem />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <ModalsCenter />
