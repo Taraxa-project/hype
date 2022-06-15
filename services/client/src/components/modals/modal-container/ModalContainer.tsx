@@ -58,7 +58,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
                 </Button>
               )}
               {showCancel && (
-                <Button variant="neutral" style={{ width: '100%' }} autoFocus onClick={closeModal}>
+                <Button variant="secondary" style={{ width: '100%' }} autoFocus onClick={closeModal}>
                   Cancel
                 </Button>
               )}

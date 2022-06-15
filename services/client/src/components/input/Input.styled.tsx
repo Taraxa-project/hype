@@ -20,7 +20,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   :focus,
   :active,
   :hover {
-    border: 0.125rem solid #eb8f4c !important;
+    border: 0.125rem solid #eb8f4c;
     background: #f7f7f7;
   }
 
