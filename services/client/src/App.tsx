@@ -26,7 +26,7 @@ const AppWrapper = styled.div`
 `;
 
 const Root = () => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   const { status, connect, account } = useMetamask();
 
   return (
