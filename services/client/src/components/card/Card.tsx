@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Button from '../button/Button';
-import TelegramLoginButton, { TLoginButtonSize } from '../button/TelegramLoginButton';
 import {
   StyledCard,
   CardTitle,

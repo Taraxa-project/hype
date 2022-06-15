@@ -10,9 +10,11 @@ export const StyledCard = styled.div<CustomStyledProps>`
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;
-  background: #f1f1f1;
+  background: #F1F1F1;
   padding: 1%;
   margin-top: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   margin-bottom: 2rem;
 `;
 
