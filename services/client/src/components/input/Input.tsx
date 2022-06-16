@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import SearchIcon from '../../assets/icons/Search';
-import { StyledInput } from './Input.styled';
+import { StyledInput, StyledSearchIcon } from './Input.styled';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, React.PropsWithoutRef<JSX.IntrinsicElements["input"]> {
   disabled?: boolean;
@@ -11,7 +11,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
 const Input = forwardRef<HTMLInputElement, InputProps>(({ ...props }, ref) => {
   return props.Icon ? (
     <div style={{ width: '100%', marginBottom: '0.600rem' }}>
-      <SearchIcon />
+      <StyledSearchIcon><SearchIcon /></StyledSearchIcon>
       <StyledInput {...props} placeholder={props.placeholder} ref={ref}/>
     </div>
   ) : (

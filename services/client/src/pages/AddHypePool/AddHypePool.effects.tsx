@@ -10,10 +10,7 @@ export interface HypePool {
   accountAddress: string;
   pool: number;
   // poolToken: string;
-  // bonus: number;
-  // bonusToken: string;
   minReward: number;
-  // rewardToken: string;
   startDate: Date;
   endDate: Date;
 }
@@ -32,10 +29,7 @@ export const useAddHypePoolEffects = () => {
     accountAddress: null,
     pool: null,
     // poolToken: '',
-    // bonus: null,
-    // bonusToken: '',
     minReward: null,
-    // rewardToken: '',
     startDate: null,
     endDate: null,
   };
@@ -79,6 +73,7 @@ export const useAddHypePoolEffects = () => {
     handleSubmit,
     register,
     reset,
+    control,
     formState: { isSubmitSuccessful, errors },
   } = useForm({
     defaultValues,
@@ -107,5 +102,6 @@ export const useAddHypePoolEffects = () => {
     onCancel,
     errors,
     isConnected,
+    control,
   };
 };

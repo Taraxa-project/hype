@@ -3,6 +3,8 @@ import Button from '../../components/button/Button';
 import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
 import { useAddHypePoolEffects } from './AddHypePool.effects';
 import Text from '../../components/styles/Text';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import {
   Wrapper,
@@ -20,9 +22,13 @@ import {
   StepDescription,
   FormAction,
 } from './AddHypePool.styled';
+import { Controller } from 'react-hook-form';
+import TextArea from '../../components/textarea/TextArea';
+import Tooltip from '../../components/tooltip/Tooltip';
+import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, onSubmit, onCancel, errors, isConnected } =
+  const { register, handleSubmit, onSubmit, onCancel, errors, isConnected, control } =
     useAddHypePoolEffects();
 
   return (
@@ -33,7 +39,10 @@ export const AddHypePool = () => {
           <Example>
             <b>Example:</b> Hype App Pool, Cool NFT
           </Example>
-          <Label>Hype pool name:</Label>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Hype pool name:</Label>
+            <Tooltip message="Hype pool name" />
+          </Box>
           <FormInput
             disabled={!isConnected}
             placeholder="Pool name..."
@@ -55,9 +64,13 @@ export const AddHypePool = () => {
             platform, powered by the Taraxa Layer-1 Network. Check it out at{' '}
             <a href="https://hype.taraxa.io">hype.taraxa.io</a>.
           </Example>
-          <Label>What are you hyping?</Label>
-          <FormInput
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>What are you hyping?</Label>
+            <Tooltip message="What are you hyping?" />
+          </Box>
+          <TextArea
             disabled={!isConnected}
+            rows={5}
             placeholder="Your message..."
             name="description"
             {...register('description')}
@@ -68,7 +81,10 @@ export const AddHypePool = () => {
             </Text>
           )}
           <TitleText>How do you want to reward verified hypes?</TitleText>
-          <Label>Rewards are in:</Label>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Rewards are in:</Label>
+            <Tooltip message="Rewards are in" />
+          </Box>
           <FormInput
             disabled={!isConnected}
             placeholder="Asset address..."
@@ -80,7 +96,10 @@ export const AddHypePool = () => {
               {errors.accountAddress.message}
             </Text>
           )}
-          <Label>Min reward per hype:</Label>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Min reward per hype:</Label>
+            <Tooltip message="Min reward per hype" />
+          </Box>
           <FormInput
             disabled={!isConnected}
             placeholder="Min reward per hype..."
@@ -92,7 +111,10 @@ export const AddHypePool = () => {
               {errors.minReward.message}
             </Text>
           )}
-          <Label>Pool cap:</Label>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Pool cap:</Label>
+            <Tooltip message="Pool cap" />
+          </Box>
           <FormInput
             disabled={!isConnected}
             placeholder="Pool cap..."
@@ -104,24 +126,46 @@ export const AddHypePool = () => {
               {errors.pool.message}
             </Text>
           )}
-          <Label>Pool starts:</Label>
-          <FormInput
-            disabled={!isConnected}
-            placeholder="Pool starts..."
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Pool starts:</Label>
+            <Tooltip message="Pool starts" />
+          </Box>
+          <Controller
             name="startDate"
-            {...register('startDate')}
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <DatePicker
+                wrapperClassName="datePicker"
+                placeholderText="Pool starts..."
+                disabled={!isConnected}
+                selected={value}
+                showTimeSelect
+                onChange={onChange}
+              />
+            )}
           />
           {errors.startDate && (
             <Text color="danger" fontSize="0.8rem">
               {errors.startDate.message}
             </Text>
           )}
-          <Label>Pool ends:</Label>
-          <FormInput
-            disabled={!isConnected}
-            placeholder="Pool ends..."
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Pool ends:</Label>
+            <Tooltip message="Pool ends" />
+          </Box>
+          <Controller
             name="endDate"
-            {...register('endDate')}
+            control={control}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <DatePicker
+                wrapperClassName="datePicker"
+                placeholderText="Pool ends..."
+                disabled={!isConnected}
+                selected={value}
+                showTimeSelect
+                onChange={onChange}
+              />
+            )}
           />
           {errors.endDate && (
             <Text color="danger" fontSize="0.8rem">
