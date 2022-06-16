@@ -14,7 +14,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
 
   border-radius: 0.75rem;
-  border: 2px solid #e0e0e0;
+  border: 0.125rem solid #e0e0e0;
   background: #fafafa;
   color: #595959;
   font-size: 1rem;
@@ -26,7 +26,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   :focus,
   :active,
   :hover {
-    border: 2px solid #eb8f4c;
+    border: 0.125rem solid #eb8f4c;
     background: #f7f7f7;
   }
 
