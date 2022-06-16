@@ -1,6 +1,6 @@
 import InfoIcon from '../../assets/icons/Info';
 import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css'; // optional
+import 'tippy.js/dist/tippy.css';
 import { StyledTooltip } from './Tooltip.styled';
 
 export interface TooltipProps {

@@ -9,7 +9,6 @@ export interface HypePool {
   description: string;
   accountAddress: string;
   pool: number;
-  // poolToken: string;
   minReward: number;
   startDate: Date;
   endDate: Date;
@@ -28,7 +27,6 @@ export const useAddHypePoolEffects = () => {
     description: '',
     accountAddress: null,
     pool: null,
-    // poolToken: '',
     minReward: null,
     startDate: null,
     endDate: null,
