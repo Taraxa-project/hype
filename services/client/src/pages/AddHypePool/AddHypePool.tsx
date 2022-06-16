@@ -57,7 +57,8 @@ export const AddHypePool = () => {
           <TitleText>What are you hyping?</TitleText>
           <InfoCard>
             Enter messages, keywords, links, whatever you want hyped up in social. Currently we only
-            support Telegram. Need some ideas? Check out some other hype pools.
+            support Telegram. Need some ideas? Check out some other{' '}
+            <a href="https://hype.taraxa.io">hype pools</a>.
           </InfoCard>
           <Example>
             <b>Example:</b> Taraxa is launching Hype!, the first app on its social listening
@@ -81,6 +82,11 @@ export const AddHypePool = () => {
             </Text>
           )}
           <TitleText>How do you want to reward verified hypes?</TitleText>
+          <InfoCard>
+            Taraxa`s social listening algorithms automatically account for factors such as <strong>relevance </strong>
+            and <strong>impressions </strong> to incentivize real and impactful discussions, not bounty hunters. <a href="https://hype.taraxa.io">Learn
+            more</a>
+          </InfoCard>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Rewards are in:</Label>
             <Tooltip message="Rewards are in" />
