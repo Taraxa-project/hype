@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,11 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<HeaderValues>(HeaderValues.HypeFarming);
   let navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (menuOpen) document.body.style.overflow = 'hidden';
+  //   else document.body.style.overflow = 'unset';
+  // }, [menuOpen]);
 
   const onSelect = (e: HeaderLink) => {
     setSelected(e.name as HeaderValues);

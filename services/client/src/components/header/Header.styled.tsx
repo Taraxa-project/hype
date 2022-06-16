@@ -63,10 +63,12 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 export const SidebarHover = styled.div<SidebarProps>`
   ${(props) => !props.show && `visibility: hidden;`}
   width: 100%;
-  height: 100vh;
-  position: absolute;
+  height: 100%;
+  position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  z-index: 999;
   background-color: rgba(45, 45, 45, 0.4);
 `;
 
@@ -76,7 +78,7 @@ export const Sidebar = styled.div<SidebarProps>`
   left: ${(props) => (props.show ? 'calc(100% - 20.375rem)' : '100%')};
   box-sizing: border-box;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 20.375rem;
   background-color: #ffffff;
 `;

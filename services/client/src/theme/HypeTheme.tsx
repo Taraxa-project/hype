@@ -2,7 +2,14 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../components/styles/Global';
 import { LightenColor } from './color-utils';
-import { HypeBreakpoints, HypeColors, HypeButtons, HypeCards, HypeThemeType } from './types';
+import {
+  HypeBreakpoints,
+  HypeColors,
+  HypeButtons,
+  HypeCards,
+  HypeThemeType,
+  HypeFonts,
+} from './types';
 
 const breakpoints: HypeBreakpoints = {
   sm: '600px',
@@ -32,7 +39,7 @@ const colors: HypeColors = {
     '#f7f7f7',
     '#ECECEC',
     '#787878',
-    '#C2C2C2'
+    '#C2C2C2',
   ],
 };
 
@@ -40,22 +47,22 @@ const buttons: HypeButtons = {
   primary: {
     color: colors.white,
     backgroundColor: colors.primary,
-    hover: LightenColor(colors.primary)
+    hover: LightenColor(colors.primary),
   },
   secondary: {
     color: colors.greys[7],
     backgroundColor: colors.secondary,
-    hover: LightenColor(colors.secondary)
+    hover: LightenColor(colors.secondary),
   },
   success: {
     color: colors.white,
     backgroundColor: colors.success,
-    hover: LightenColor(colors.success)
+    hover: LightenColor(colors.success),
   },
   danger: {
     color: colors.black,
     backgroundColor: colors.danger,
-    hover: LightenColor(colors.danger)
+    hover: LightenColor(colors.danger),
   },
 };
 
@@ -70,10 +77,16 @@ const cards: HypeCards = {
   },
 };
 
+const fonts: HypeFonts = {
+  primary: 'Inter',
+  default: 'Inter',
+};
+
 const theme: HypeThemeType = {
   colors,
   buttons,
   cards,
+  fonts,
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
   space: [
     // margin and padding
