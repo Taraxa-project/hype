@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 export const StyledButton = styled.button<{
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'neutral';
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
   size?: 'small' | 'regular' | 'full-width';
   theme?: HypeThemeType;
 }>`

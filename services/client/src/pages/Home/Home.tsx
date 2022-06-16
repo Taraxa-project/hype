@@ -45,7 +45,7 @@ export const Home = () => {
       <PoolContainer>
         <Input
           Icon={<SearchIcon />}
-          label="Search for hype pools..."
+          placeholder="Search for hype pools..."
           onChange={(e) => setTitleFilter(e.target.value)}
         />
         <TitleText>Active Hype Pools</TitleText>

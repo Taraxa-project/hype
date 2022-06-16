@@ -1,5 +1,4 @@
 import Input from 'src/components/input/Input';
-import Button from 'src/components/button/Button';
 import TitleText from 'src/components/TitleText/TitleText';
 
 import styled from 'styled-components';
@@ -72,10 +71,6 @@ export const InfoCard = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const ConnectButton = styled(Button)`
-  margin-top: 2rem;
-`;
-
 export const HowItWorksTitle = styled(TitleText)`
   font-size: 1.25rem;
   line-height: 1.625rem;
@@ -138,4 +133,11 @@ export const StepDescription = styled.div`
   color: #787878;
   font-size: 0.875rem;
   line-height: 1.25rem;
+`;
+
+export const FormAction = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
 `;
