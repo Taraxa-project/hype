@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
-import useMetamask from './hooks/useMetamask';
+import { shortenAddress, useEthers } from '@usedapp/core';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool } from './pages';
 import styled from 'styled-components';
@@ -27,15 +27,16 @@ const AppWrapper = styled.div`
 
 const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  const { status, connect, account } = useMetamask();
+  const { account, activateBrowserWallet } = useEthers();
+  const isConnected = account !== undefined;
 
   return (
     <AppWrapper>
       <Header
         variant={isMobile ? 'mobile' : 'desktop'}
-        status={status === 'initializing' || status === 'connecting' ? 'notConnected' : status}
+        status={isConnected ? 'notConnected' : 'connected'}
         account={account}
-        onConnect={connect}
+        onConnect={activateBrowserWallet}
         children={null}
       />
       <StyledAppContainer>

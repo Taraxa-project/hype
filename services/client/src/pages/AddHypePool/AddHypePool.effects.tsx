@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useEffect, useState } from 'react';
-import useMetamask from '../../hooks/useMetamask';
+import { useEthers } from '@usedapp/core';
 
 export interface HypePool {
   title: string;
@@ -15,12 +15,12 @@ export interface HypePool {
 }
 
 export const useAddHypePoolEffects = () => {
-  const { status } = useMetamask();
+  const { account } = useEthers();
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsConnected(status === 'connected');
-  }, [status]);
+    setIsConnected(account !== undefined);
+  }, [account]);
 
   const defaultValues: HypePool = {
     title: '',

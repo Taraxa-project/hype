@@ -4,19 +4,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
-import { MetaMaskProvider } from 'metamask-react';
 import { ModalsProvider } from './context';
+import { ChainId, DAppProvider } from '@usedapp/core';
+import type { Config } from '@usedapp/core';
+
+const config: Config = {
+  readOnlyChainId: ChainId.Kovan,
+  multicallVersion: 2,
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <HypeThemeProvider>
-        <MetaMaskProvider>
+        <DAppProvider config={config}>
           <ModalsProvider>
             <App />
           </ModalsProvider>
-        </MetaMaskProvider>
+        </DAppProvider>
       </HypeThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -1,5 +1,5 @@
+import { useEthers } from '@usedapp/core';
 import { useEffect, useState } from 'react';
-import useMetamask from '../../hooks/useMetamask';
 import { TransactionStatus } from '../../utils';
 
 export type TransactionItem = {
@@ -12,13 +12,13 @@ export type TransactionItem = {
 export type Reward = Omit<TransactionItem, 'status'>;
 
 export const useRedeemEffects = () => {
+  const { account } = useEthers();
   const [showHistory, setShowHistory] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const { connect, status } = useMetamask();
 
   useEffect(() => {
-    setIsConnected(status === 'connected');
-  }, [status]);
+    setIsConnected(account !== undefined);
+  }, [account]);
 
   const toggleHistory = () => {
     setShowHistory(!showHistory);
