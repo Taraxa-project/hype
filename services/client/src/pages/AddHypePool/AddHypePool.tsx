@@ -111,12 +111,12 @@ export const AddHypePool = () => {
           <FormInput
             disabled={!isConnected}
             placeholder="Asset address..."
-            name="rewardsAccount"
-            {...register('rewardsAccount')}
+            name="rewardsAddress"
+            {...register('rewardsAddress')}
           />
-          {errors.rewardsAccount && (
+          {errors.rewardsAddress && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.rewardsAccount.message}
+              {errors.rewardsAddress.message}
             </Text>
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">

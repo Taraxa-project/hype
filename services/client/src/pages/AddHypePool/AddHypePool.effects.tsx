@@ -17,7 +17,7 @@ export const useAddHypePoolEffects = () => {
     projectName: '',
     title: '',
     description: '',
-    rewardsAccount: null,
+    rewardsAddress: null,
     pool: null,
     minReward: null,
     startDate: null,
@@ -29,7 +29,7 @@ export const useAddHypePoolEffects = () => {
       projectName: yup.string().required('Project Name is required').label('Project Name'),
       title: yup.string().required('Title is required').label('Title'),
       description: yup.string().required('Message is required').label('Your message'),
-      rewardsAccount: yup
+      rewardsAddress: yup
         .string()
         .typeError('Address is required and must be a wallet address!')
         .min(42)
@@ -48,12 +48,12 @@ export const useAddHypePoolEffects = () => {
         .required('Min reward is required')
         .label('Min reward per hype'),
       startDate: yup
-        .string()
+        .date()
         .typeError('Pool starts is required')
         .required('Pool starts is required')
         .label('Pool starts'),
       endDate: yup
-        .string()
+        .date()
         .typeError('Pool ends is required')
         .required('Pool ends is required')
         .label('Pool ends'),

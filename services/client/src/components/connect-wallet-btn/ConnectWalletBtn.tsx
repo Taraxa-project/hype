@@ -12,7 +12,7 @@ export const ConnectWalletBtn = ({ ...props }: ConnectWalletBtnProps & SpaceProp
 
   return (
     <Box {...props}>
-      <Button size={props.size || 'full-width'} onClick={onConnect}>
+      <Button size={props.size || 'full-width'} type="button" onClick={onConnect}>
         Connect Wallet
       </Button>
     </Box>

@@ -2,7 +2,7 @@ export interface AddHypePool {
   projectName: string;
   title: string;
   description: string;
-  rewardsAccount: string;
+  rewardsAddress: string;
   pool: number;
   minReward: number;
   startDate: Date;

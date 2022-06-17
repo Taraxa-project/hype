@@ -13,7 +13,7 @@ module.exports = {
         sourceType: 'module',
       },
       extends: ['airbnb', 'airbnb/hooks', 'prettier', 'prettier/react'],
-      plugins: ['prettier'],
+      plugins: ['prettier', 'react-hooks'],
       rules: {
         'jsx-a11y/anchor-is-valid': 'off',
         'react/no-unescaped-entities': 'off',
@@ -43,7 +43,8 @@ module.exports = {
         'react/require-default-props': 'off',
         'react/jsx-no-useless-fragment': 'off',
         'react/jsx-props-no-spreading': 'off',
-        'react-hooks/exhaustive-deps': 'off',
+        "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+        "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
       },
     },
     {
