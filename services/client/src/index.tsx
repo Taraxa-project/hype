@@ -5,11 +5,11 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
-import { ChainId, DAppProvider } from '@usedapp/core';
+import { DAppProvider, Mainnet } from '@usedapp/core';
 import type { Config } from '@usedapp/core';
 
 const config: Config = {
-  readOnlyChainId: ChainId.Kovan,
+  readOnlyChainId: Mainnet.chainId,
   multicallVersion: 2,
 };
 
