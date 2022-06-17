@@ -3,20 +3,35 @@ import { useProfileEffects } from './Profile.effects';
 import {
   ProfileContainer,
   RewardsContainer,
-  StyledContainerColumn,
-  StyledContainerRow,
   CardContainer,
 } from './Profile.styled';
+import Box from '../../components/styles/Box';
 
 export const Profile = () => {
   const { joinedPools, createdPools, currentReward } = useProfileEffects();
 
   return (
-    <StyledContainerColumn>
-      <StyledContainerRow>
+    <Box
+      display="flex"
+      flexDirection="column"
+      backgroundColor='background'
+      justifyContent="center"
+    >
+      <Box
+        display="flex"
+        flexDirection={{
+            xs: 'column',
+            sm: 'column',
+            md: 'row',
+            lg: 'row',
+            xl: 'row',
+          }}
+          backgroundColor='background'
+        justifyContent="center"
+      >
         <ProfileContainer telegramUsername="hyper123" address="0x00000000000000000000000000000" />
         <RewardsContainer rewardAmount={currentReward} onRedeem={() => console.log('redeemed')} />
-      </StyledContainerRow>
+      </Box>
       <CardContainer
         show={3}
         title={`Created Pools (${createdPools.length})`}
@@ -31,6 +46,6 @@ export const Profile = () => {
         emptyMessage="Looks like you haven’t joined any pools yet..."
         target="/joinedPools"
       />
-    </StyledContainerColumn>
+    </Box>
   );
 };

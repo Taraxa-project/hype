@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { HypeThemeType } from '../../theme';
+import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Heading from '../../components/styles/Heading';
@@ -20,83 +19,75 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { Link } from 'src/components/styles/Link';
 
-export const StyledContainerRow = styled.div<{ theme: HypeThemeType }>`
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: 1rem;
-  min-height: 100%;
-  min-width: 100%;
-  display: flex;
-  flex-direction: row;
-`;
-
-export const StyledContainerColumn = styled.div<{ theme: HypeThemeType }>`
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: 1rem;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-`;
-
 interface ProfileProps {
   address: string;
   telegramUsername: string;
 }
 
-export const ProfileContainer = (props: ProfileProps) => (
-  <Box
-    backgroundColor="greys.1"
-    p="4.5rem"
-    borderRadius="1rem"
-    display="flex"
-    flexDirection="column"
-    justifyContent="space-evenly"
-    alignItems="left"
-    gridGap="1.1rem"
-    width="65%"
-    marginBottom="1rem"
-  >
-    <DataHeader>Your profile</DataHeader>
-    <BlockiesContainer>
-      <Box marginLeft="1rem">
-        <Blockies seed="Jeremy" />
-      </Box>
-      <Account>{props.address}</Account>
-    </BlockiesContainer>
-    <DataValue>Connected Apps:</DataValue>
+export const ProfileContainer = (props: ProfileProps) => {
+  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
+  return (
     <Box
-      backgroundColor="#DCDCDC"
-      p="1.5rem"
+      backgroundColor="greys.1"
+      p={isMobile ? '1.5rem' : '4.5rem'}
       borderRadius="1rem"
       display="flex"
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      gridGap="1.1rem"
+      flexDirection="column"
+      justifyContent="space-evenly"
+      alignItems="left"
+      width={isMobile ? 'none' : '65%'}
+      marginBottom="1rem"
+      marginRight={isMobile ? '1rem' : 'none'}
     >
-      <Box display="flex" flexDirection="row">
-        <TelegramLogo />
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-evenly"
-          alignItems="center"
-          marginLeft="1rem"
-        >
-          <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
-            Telegram:
-          </Text>
-          <Text fontSize="0.875rem" color="greys.4">
-            @{props.telegramUsername}
-          </Text>
+      <DataHeader>Your profile</DataHeader>
+      <BlockiesContainer>
+        <Box marginLeft="1rem">
+          <Blockies seed="Jeremy" />
         </Box>
+        <Account>{props.address}</Account>
+      </BlockiesContainer>
+      <DataValue>Connected Apps:</DataValue>
+      <Box
+        backgroundColor="#F1F1F1"
+        p="1.5rem"
+        borderRadius="1rem"
+        display="flex"
+        flexDirection={isMobile ? 'column' : 'row'}
+        justifyContent="space-between"
+        alignItems="center"
+        gridGap="1.1rem"
+      >
+        <Box display="flex" flexDirection="row">
+          <TelegramLogo />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-evenly"
+            alignItems="center"
+            marginLeft="1rem"
+            width="100%"
+          >
+            <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+              Telegram:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.4">
+              @{props.telegramUsername}
+            </Text>
+          </Box>
+        </Box>
+        {props.telegramUsername ? (
+          <Button variant="neutral" size={isMobile ? 'small' : 'regular'}>
+            Disconnect this account
+          </Button>
+        ) : (
+          <Button variant="primary" size={isMobile ? 'small' : 'regular'}>
+            Connect an account
+          </Button>
+        )}
       </Box>
-      <Button variant="neutral" size="regular">
-        Disconnect this account
-      </Button>
     </Box>
-  </Box>
-);
+  );
+};
 
 interface RewardProps {
   rewardAmount: number;
@@ -105,17 +96,18 @@ interface RewardProps {
 
 export const RewardsContainer = (props: RewardProps) => {
   const { status } = useMetamask();
+  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   const isConnected = status === 'connected';
   return (
     <Box
-      p="3.5rem"
+      p={isMobile ? '1.5rem' : '4.5rem'}
       borderRadius="1rem"
       display="flex"
       flexDirection="column"
-      width="30%"
       justifyContent="space-evenly"
       backgroundColor="greys.1"
-      marginLeft="1rem"
+      marginLeft={isMobile ? 'none' : '1rem'}
+      marginRight={isMobile ? '1rem' : 'none'}
       marginBottom="1rem"
     >
       <Heading
@@ -139,7 +131,14 @@ export const RewardsContainer = (props: RewardProps) => {
       >
         {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
       </Heading>
-      <Button variant="neutral" size="small" onClick={props.onRedeem} disabled={!isConnected}>
+      <Button
+        variant={
+          isConnected && props.rewardAmount && props.rewardAmount > 0 ? 'primary' : 'neutral'
+        }
+        size="small"
+        onClick={props.onRedeem}
+        disabled={!isConnected}
+      >
         Redeem all
       </Button>
     </Box>
@@ -155,24 +154,23 @@ export const CardContainer = (props: {
 }) => {
   const dispatchModals = useModalsDispatch();
   const hasMore = props.cards.length > props.show;
+  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   return (
     <Box
-      p="3rem"
+      p="1rem"
       borderRadius="1rem"
       display="flex"
       flexDirection="column"
-      width="93%"
       justifyContent="space-evenly"
       backgroundColor="greys.1"
       marginBottom="1rem"
+      marginRight={isMobile ? '1rem' : 'none'}
     >
       {hasMore ? (
         <Box
-          p="3rem"
           borderRadius="1rem"
           display="flex"
           flexDirection="row"
-          width="93%"
           justifyContent="space-between"
           backgroundColor="greys.1"
           marginBottom="1rem"
@@ -183,7 +181,7 @@ export const CardContainer = (props: {
             lineHeight="1.625rem"
             color="black"
             letterSpacing="-0.02em"
-            width="90%"
+            // width="90%"
           >
             {props.title}
           </Heading>
@@ -196,23 +194,22 @@ export const CardContainer = (props: {
           lineHeight="1.625rem"
           color="black"
           letterSpacing="-0.02em"
-          width="90%"
+          // width="90%"
         >
           {props.title}
         </Heading>
       )}
       <Box
-        p="3rem"
         borderRadius="1rem"
         display="flex"
-        flexDirection="row"
-        width="93%"
+        flexDirection={isMobile ? 'column' : 'row'}
         justifyContent="space-evenly"
-        backgroundColor={ props.cards.length > 0 ? "greys.1": "greys.0" }
+        backgroundColor={props.cards.length > 0 ? 'greys.1' : 'greys.0'}
       >
         {props.cards.length > 0 ? (
           props.cards.slice(0, props.show).map((data, i) => (
             <Card
+              variant={isMobile ? 'mobile' : 'desktop'}
               key={`${data.title}-${i}`}
               title={data.title}
               pool={data.pool}
