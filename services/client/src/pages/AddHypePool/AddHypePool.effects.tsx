@@ -3,16 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useEffect, useState } from 'react';
 import useMetamask from '../../hooks/useMetamask';
-
-export interface HypePool {
-  title: string;
-  description: string;
-  accountAddress: string;
-  pool: number;
-  minReward: number;
-  startDate: Date;
-  endDate: Date;
-}
+import { AddHypePool } from '../../models';
 
 export const useAddHypePoolEffects = () => {
   const { status } = useMetamask();
@@ -22,10 +13,11 @@ export const useAddHypePoolEffects = () => {
     setIsConnected(status === 'connected');
   }, [status]);
 
-  const defaultValues: HypePool = {
+  const defaultValues: AddHypePool = {
+    projectName: '',
     title: '',
     description: '',
-    accountAddress: null,
+    rewardsAccount: null,
     pool: null,
     minReward: null,
     startDate: null,
@@ -34,9 +26,10 @@ export const useAddHypePoolEffects = () => {
 
   const validationSchema = yup
     .object({
+      projectName: yup.string().required('Project Name is required').label('Project Name'),
       title: yup.string().required('Title is required').label('Title'),
       description: yup.string().required('Message is required').label('Your message'),
-      accountAddress: yup
+      rewardsAccount: yup
         .string()
         .typeError('Address is required and must be a wallet address!')
         .min(42)
@@ -84,7 +77,7 @@ export const useAddHypePoolEffects = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = async (data: HypePool) => {
+  const onSubmit = async (data: AddHypePool) => {
     console.log('Data: ', data);
     reset();
   };

@@ -35,6 +35,22 @@ export const AddHypePool = () => {
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <FormColumn>
+          <TitleText>What is your project name!</TitleText>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Project name:</Label>
+            <Tooltip message="Project name" />
+          </Box>
+          <FormInput
+            disabled={!isConnected}
+            placeholder="Project name..."
+            name="projectName"
+            {...register('projectName')}
+          />
+          {errors.projectName && (
+            <Text color="danger" fontSize="0.8rem">
+              {errors.projectName.message}
+            </Text>
+          )}
           <TitleText>Give your pool a title!</TitleText>
           <Example>
             <b>Example:</b> Hype App Pool, Cool NFT
@@ -83,9 +99,10 @@ export const AddHypePool = () => {
           )}
           <TitleText>How do you want to reward verified hypes?</TitleText>
           <InfoCard>
-            Taraxa`s social listening algorithms automatically account for factors such as <strong>relevance </strong>
-            and <strong>impressions </strong> to incentivize real and impactful discussions, not bounty hunters. <a href="https://hype.taraxa.io">Learn
-            more</a>
+            Taraxa`s social listening algorithms automatically account for factors such as{' '}
+            <strong>relevance </strong>
+            and <strong>impressions </strong> to incentivize real and impactful discussions, not
+            bounty hunters. <a href="https://hype.taraxa.io">Learn more</a>
           </InfoCard>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Rewards are in:</Label>
@@ -94,12 +111,12 @@ export const AddHypePool = () => {
           <FormInput
             disabled={!isConnected}
             placeholder="Asset address..."
-            name="accountAddress"
-            {...register('accountAddress')}
+            name="rewardsAccount"
+            {...register('rewardsAccount')}
           />
-          {errors.accountAddress && (
+          {errors.rewardsAccount && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.accountAddress.message}
+              {errors.rewardsAccount.message}
             </Text>
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
