@@ -1,20 +1,9 @@
-import { useEffect, useState } from 'react';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import useMetamask from '../../hooks/useMetamask';
 
 export const useConnectWalletEffects = () => {
-  const { connect, status } = useMetamask();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [isUnMetamaskAvailable, setIsMetamaskUnAvailable] = useState<boolean>(false);
+  const { isConnected, activateBrowserWallet, isUnMetamaskAvailable } = useMetamask();
   const dispatchModals = useModalsDispatch();
-
-  useEffect(() => {
-    setIsMetamaskUnAvailable(status === 'unavailable');
-  }, [status]);
-
-  useEffect(() => {
-    setIsConnected(status === 'connected');
-  }, [status]);
 
   const showMetamaskInfo = () => {
     dispatchModals({
@@ -32,8 +21,8 @@ export const useConnectWalletEffects = () => {
     if (isUnMetamaskAvailable) {
       showMetamaskInfo();
     }
-    connect();
-  }
+    activateBrowserWallet();
+  };
 
   return {
     onConnect,
