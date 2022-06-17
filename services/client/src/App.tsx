@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
-import { shortenAddress, useEthers } from '@usedapp/core';
+import { useEthers } from '@usedapp/core';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool } from './pages';
 import styled from 'styled-components';
@@ -29,12 +29,14 @@ const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const { account, activateBrowserWallet } = useEthers();
   const isConnected = account !== undefined;
+  console.log('account: ', account)
+  console.log('isConnected: ', isConnected)
 
   return (
     <AppWrapper>
       <Header
         variant={isMobile ? 'mobile' : 'desktop'}
-        status={isConnected ? 'notConnected' : 'connected'}
+        connected={isConnected}
         account={account}
         onConnect={activateBrowserWallet}
         children={null}
