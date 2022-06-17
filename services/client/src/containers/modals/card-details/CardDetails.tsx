@@ -12,8 +12,7 @@ import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTit
 import { useCardDetailsEffects } from './CardDetails.effects';
 import { Account, BlockiesContainer } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { useEthers } from '@usedapp/core';
-import { useEffect, useState } from 'react';
+import useMetamask from '../../../hooks/useMetamask';
 
 export const CardDetails = () => {
   const {
@@ -30,18 +29,12 @@ export const CardDetails = () => {
     duration,
     closeModal,
   } = useCardDetailsEffects();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const { account, activateBrowserWallet } = useEthers();
-
-  useEffect(() => {
-    setIsConnected(account !== undefined);
-  }, [account]);
-
 
   const titleProps: ModalTitleProps = {
     title,
     close: closeModal,
   };
+  const { isConnected, activateBrowserWallet } = useMetamask();
 
   const modalAction: ModalAction = {
     name: 'Connect Wallet',

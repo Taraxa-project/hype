@@ -1,16 +1,9 @@
-import { useEthers } from '@usedapp/core';
-import { useEffect, useState } from 'react';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import useMetamask from '../../hooks/useMetamask';
 
 export const useConnectWalletEffects = () => {
-  const { account, activateBrowserWallet } = useEthers();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const { isConnected, activateBrowserWallet, isUnMetamaskAvailable } = useMetamask();
   const dispatchModals = useModalsDispatch();
-  const isUnMetamaskAvailable = !((window as any).web3 || (window as any).ethereum);
-
-  useEffect(() => {
-    setIsConnected(account !== undefined);
-  }, [account]);
 
   const showMetamaskInfo = () => {
     dispatchModals({
@@ -29,7 +22,7 @@ export const useConnectWalletEffects = () => {
       showMetamaskInfo();
     }
     activateBrowserWallet();
-  }
+  };
 
   return {
     onConnect,
