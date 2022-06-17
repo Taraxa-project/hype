@@ -9,13 +9,14 @@ export const Account = styled.div`
   color: #787878;
   padding: 0.375rem 1.5rem;
   margin-left: 2rem;
+  word-break: break-word;
 `;
 
 export const BlockiesContainer = styled.div`
   display: flex;
   flex-direction: row;
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: row;
   }
   margin-top: 1rem;
   padding-right: 3rem;
