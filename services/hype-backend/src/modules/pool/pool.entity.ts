@@ -17,6 +17,11 @@ export class HypePool extends BaseEntity implements IPool {
   @Column({ nullable: false })
   @IsNotEmpty()
   @IsString()
+  projectName!: string;
+
+  @Column({ nullable: false })
+  @IsNotEmpty()
+  @IsString()
   title!: string;
 
   @Column({ type: 'text', nullable: false })
@@ -32,32 +37,17 @@ export class HypePool extends BaseEntity implements IPool {
   @Column({ nullable: false })
   @IsNotEmpty()
   @IsString()
-  accountAddress!: string;
+  creatorAddress!: string;
 
-  @Column()
+  @Column({ nullable: false })
   @IsNotEmpty()
   @IsString()
-  poolToken: string;
-
-  @Column()
-  @IsNotEmpty()
-  @IsNumber()
-  bonus: number;
-
-  @Column()
-  @IsNotEmpty()
-  @IsString()
-  bonusToken: string;
+  rewardsAddress!: string;
 
   @Column()
   @IsNotEmpty()
   @IsNumber()
   minReward: number;
-
-  @Column()
-  @IsNotEmpty()
-  @IsString()
-  rewardToken: string;
 
   @Column({ type: Date, nullable: false })
   @IsNotEmpty()

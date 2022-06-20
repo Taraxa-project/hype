@@ -1,14 +1,12 @@
 export interface IPool {
   id?: number;
+  projectName: string;
   title: string;
   description: string;
+  creatorAddress: string;
+  rewardsAddress: string;
   pool: number;
-  accountAddress: string;
-  poolToken: string;
-  bonus: number;
-  bonusToken: string;
   minReward: number;
-  rewardToken: string;
   startDate: Date;
   endDate: Date;
 }
