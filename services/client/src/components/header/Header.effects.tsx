@@ -19,6 +19,7 @@ export enum HeaderValues {
   HypeFarming = 'Hype Farming',
   HypePool = '+Hype Pool',
   Redeem = 'Redeem',
+  Profile= 'User Profile',
   None = 'none',
 }
 
@@ -40,6 +41,10 @@ const headerValues: HeaderLink[] = [
     route: '/redeem',
     name: HeaderValues.Redeem,
   },
+  {
+    route: '/profile',
+    name: HeaderValues.Profile,
+  }
 ];
 
 export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
