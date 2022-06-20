@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
-import { useEthers } from '@usedapp/core';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
+import useMetamask from './hooks/useMetamask';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -27,10 +27,7 @@ const AppWrapper = styled.div`
 
 const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  const { account, activateBrowserWallet } = useEthers();
-  const isConnected = account !== undefined;
-  console.log('account: ', account)
-  console.log('isConnected: ', isConnected)
+  const { account, connect, isConnected } = useMetamask();
 
   return (
     <AppWrapper>
@@ -38,7 +35,7 @@ const Root = () => {
         variant={isMobile ? 'mobile' : 'desktop'}
         connected={isConnected}
         account={account}
-        onConnect={activateBrowserWallet}
+        onConnect={connect}
         children={null}
       />
       <StyledAppContainer>

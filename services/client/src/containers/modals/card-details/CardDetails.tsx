@@ -13,20 +13,20 @@ import { useCardDetailsEffects } from './CardDetails.effects';
 import { Account, BlockiesContainer } from './CardDetails.styled';
 import Blockies from 'react-blockies';
 import useMetamask from '../../../hooks/useMetamask';
+import { monthDiff } from '../../../utils';
+import { useToken } from 'wagmi';
 
 export const CardDetails = () => {
   const {
     open,
     title,
-    creatorAddress,
     description,
+    rewardsAddress,
+    creatorAddress,
     pool,
-    poolToken,
-    bonus,
-    bonusToken,
     minReward,
-    rewardToken,
-    duration,
+    startDate,
+    endDate,
     closeModal,
   } = useCardDetailsEffects();
 
@@ -34,11 +34,18 @@ export const CardDetails = () => {
     title,
     close: closeModal,
   };
-  const { isConnected, activateBrowserWallet } = useMetamask();
+  const { isConnected, connect } = useMetamask();
+  const {
+    data: poolTokenInfo,
+    isError: poolTokenIsError,
+    isLoading: poolTokenIsLoading,
+  } = useToken({ address: rewardsAddress });
+  const poolToken = poolTokenInfo?.symbol;
+  const duration = `${monthDiff(startDate, endDate)} months left`;
 
   const modalAction: ModalAction = {
     name: 'Connect Wallet',
-    onAction: activateBrowserWallet,
+    onAction: connect,
     disabled: !isConnected,
   };
 
@@ -63,23 +70,15 @@ export const CardDetails = () => {
           </DataValue>
         </DataContainer>
       )}
-      {bonus && bonusToken && (
-        <DataContainer>
-          <DataHeader key={`bonus-${Date.now()}`}>Bonus:</DataHeader>
-          <DataValue key={`${bonus}-${Date.now()}`}>
-            {bonus} {bonusToken}
-          </DataValue>
-        </DataContainer>
-      )}
-      {minReward && rewardToken && (
+      {minReward && poolToken && (
         <DataContainer>
           <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
           <DataValue key={`${minReward}-${Date.now()}`}>
-            {minReward} {rewardToken}
+            {minReward} {poolToken}
           </DataValue>
         </DataContainer>
       )}
-      {duration && (
+      {startDate && endDate && duration && (
         <DataContainer>
           <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
           <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>

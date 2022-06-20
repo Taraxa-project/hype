@@ -1,97 +1,50 @@
 import { useEffect, useState } from 'react';
 import Card from 'src/components/card/Card';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
-
-interface CardData {
-  title: string;
-  description?: string;
-  pool: number;
-  poolToken: string;
-  bonus: number;
-  bonusToken: string;
-  minReward: number;
-  creatorAddress: string;
-  rewardToken: string;
-  startDate: Date;
-  endDate: Date;
-}
+import { HypePool } from '../../models';
 
 export const useHomeEffects = () => {
-  const [cardData, setCardData] = useState<CardData[]>([{}] as CardData[]);
+  const [cardData, setCardData] = useState<HypePool[]>([]);
   const [titleFilter, setTitleFilter] = useState('');
   const dispatchModals = useModalsDispatch();
 
   useEffect(() => {
     setCardData([
       {
-        title: 'ApeCoin Staking Launch!',
+        projectName: 'FoxCoin Hype',
+        title: 'FoxCoin Staking Launch!',
         description:
-          'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
+          'FOX is an Ethereum token that governs ShapeShift, a decentralized exchange. By participating in the ShapeShift DAO (decentralized autonomous organization), FOX holders can vote on future asset integrations, products, and fee structures for the platform.',
+        rewardsAddress: '0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d',
+        creatorAddress: '0x000000000000000000000000000000000000001',
         pool: 100000,
-        poolToken: 'APE',
-        bonus: 12000,
-        creatorAddress: '0x0000000000000000000000000000',
-        bonusToken: 'TARA',
         minReward: 1,
-        rewardToken: 'APE',
         startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth()+5)),
       },
       {
+        projectName: 'ApeCoin Hype',
         title: 'ApeCoin Staking Launch!',
         description:
-          'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
+          'Culture has found new expression in web3 through art, gaming, entertainment, and events. The possibilities for blockchain`s impact on culture are so endless that they can`t possibly all be predicted yet. APE is a token made to support what`s next, controlled and built on by the community. It will serve as a decentralized protocol layer for community-led initiatives that drive culture forward into the metaverse.',
         pool: 100000,
-        poolToken: 'APE',
-        bonus: 12000,
-        creatorAddress: '0x0000000000000000000000000000',
-        bonusToken: 'TARA',
+        rewardsAddress: '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
+        creatorAddress: '0x000000000000000000000000000000000000002',
         minReward: 1,
-        rewardToken: 'APE',
         startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth()+3)),
       },
       {
-        title: 'ApeCoin Staking Launch!',
+        projectName: 'SHIBA INU Hype',
+        title: 'SHIBA INU Staking Launch!',
         description:
-          'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
+          'Shiba Inu (SHIB) is a token that aspires to be an Ethereum-based alternative to Dogecoin (DOGE), the popular memecoin. Unlike Bitcoin, which is designed to be scarce, SHIB is intentionally abundant — with a total supply of one quadrillion. The Shiba Inu Token ecosystem supports projects such as an NFT art incubator and the development of a decentralized exchange called Shibaswap.',
         pool: 100000,
-        poolToken: 'APE',
-        bonus: 12000,
-        creatorAddress: '0x0000000000000000000000000000',
-        bonusToken: 'TARA',
+        rewardsAddress: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE',
+        creatorAddress: '0x000000000000000000000000000000000000003',
         minReward: 1,
-        rewardToken: 'APE',
         startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
-      },
-      {
-        title: 'ApeCoin Staking Launch!',
-        description:
-          'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
-        poolToken: 'APE',
-        bonus: 12000,
-        creatorAddress: '0x0000000000000000000000000000',
-        bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
-      },
-      {
-        title: 'ApeCoin Staking Launch!',
-        description:
-          'APE is launching it’s testnet, and we’d like everyone to come & check it out! All participants will be able to claim rewards as loooooooong All participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongvvvAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongAll participants will be able to claim rewards as loooooooongv',
-        pool: 100000,
-        poolToken: 'APE',
-        bonus: 12000,
-        creatorAddress: '0x0000000000000000000000000000',
-        bonusToken: 'TARA',
-        minReward: 1,
-        rewardToken: 'APE',
-        startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth()+7)),
       },
     ]);
   }, []);
@@ -103,28 +56,20 @@ export const useHomeEffects = () => {
     }, 3000);
   };
 
-  const monthDiff = (dateFrom: Date, dateTo: Date): number => {
-    if (!dateFrom || !dateTo) return 0;
-    return (
-      dateTo.getMonth() - dateFrom.getMonth() + 12 * (dateTo.getFullYear() - dateFrom.getFullYear())
-    );
-  };
-
   const filteredCards = (
     titleFilter ? cardData.filter((c) => c.title?.includes(titleFilter)) : cardData
   ).map((data, i) => (
     <Card
       key={`${data.title}-${i}`}
+      projectName={data.projectName}
       title={data.title}
       pool={data.pool}
       description={data.description}
-      poolToken={data.poolToken}
-      bonus={data.bonus}
+      rewardsAddress={data.rewardsAddress}
       creatorAddress={data.creatorAddress}
-      bonusToken={data.bonusToken}
-      duration={`${monthDiff(data.startDate, data.endDate)} months left`}
       minReward={data.minReward}
-      rewardToken={data.rewardToken}
+      startDate={data.startDate}
+      endDate={data.endDate}
       onClick={() => {
         dispatchModals({
           type: ModalsActionsEnum.SHOW_CARD_DETAILS,
@@ -140,7 +85,6 @@ export const useHomeEffects = () => {
   return {
     setTitleFilter,
     addMoreCards,
-    monthDiff,
     filteredCards,
     cardData,
   };

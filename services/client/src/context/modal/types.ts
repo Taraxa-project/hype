@@ -1,9 +1,9 @@
-import { CardData } from '../../components/card/Card';
+import { HypePool } from '../../models';
 import { ModalsActionsEnum } from './reducer';
 
 export type TCardDetails = {
   open: boolean;
-  cardData: CardData;
+  cardData: HypePool;
 };
 
 export type TLoading = {
