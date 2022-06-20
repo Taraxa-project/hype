@@ -29,17 +29,17 @@ export const CardDetails = () => {
     duration,
     closeModal,
   } = useCardDetailsEffects();
-  const { connect, status } = useMetamask();
 
   const titleProps: ModalTitleProps = {
     title,
     close: closeModal,
   };
+  const { isConnected, activateBrowserWallet } = useMetamask();
 
   const modalAction: ModalAction = {
     name: 'Connect Wallet',
-    onAction: connect,
-    disabled: status === 'connected',
+    onAction: activateBrowserWallet,
+    disabled: !isConnected,
   };
 
   return (

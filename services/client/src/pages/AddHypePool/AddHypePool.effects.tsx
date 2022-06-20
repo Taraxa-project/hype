@@ -1,17 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useMetamask from '../../hooks/useMetamask';
 import { AddHypePool } from '../../models';
 
 export const useAddHypePoolEffects = () => {
-  const { status } = useMetamask();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsConnected(status === 'connected');
-  }, [status]);
+  const { isConnected } = useMetamask();
 
   const defaultValues: AddHypePool = {
     projectName: '',
