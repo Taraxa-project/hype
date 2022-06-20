@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useEffect } from 'react';
-import useMetamask from '../../hooks/useMetamask';
+import useWallet from '../../hooks/useWallet';
 import { AddHypePool } from '../../models';
 
 export const useAddHypePoolEffects = () => {
-  const { isConnected } = useMetamask();
+  const { isConnected } = useWallet();
 
   const defaultValues: AddHypePool = {
     projectName: '',

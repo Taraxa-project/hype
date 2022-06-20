@@ -1,11 +1,18 @@
 import React from 'react';
 import { useProfileEffects } from './Profile.effects';
-import { ProfileContainer, RewardsContainer, CardContainer } from './Profile.containers';
 import Box from '../../components/styles/Box';
+import { ProfileContainer, RewardsContainer, CardContainer } from '../../containers/profile';
 
 export const Profile = () => {
-  const { joinedPools, createdPools, currentReward, onRedeem, telegramProfile } =
-    useProfileEffects();
+  const {
+    joinedPools,
+    createdPools,
+    currentReward,
+    onRedeem,
+    telegramProfile,
+    connect,
+    disconnect,
+  } = useProfileEffects();
   const { username, address } = telegramProfile;
   return (
     <Box display="flex" flexDirection="column" backgroundColor="background" justifyContent="center">
@@ -21,7 +28,12 @@ export const Profile = () => {
         backgroundColor="background"
         justifyContent="space-between"
       >
-        <ProfileContainer telegramUsername={username} address={address} />
+        <ProfileContainer
+          telegramUsername={username}
+          address={address}
+          connect={connect}
+          disconnect={disconnect}
+        />
         <RewardsContainer rewardAmount={currentReward} onRedeem={onRedeem} />
       </Box>
       <CardContainer

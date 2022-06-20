@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { TUser } from 'src/components/button/TelegramLoginButton';
-import useMetamask from 'src/hooks/useMetamask';
+import useWallet from 'src/hooks/useWallet';
 import { HypePool } from '../../models';
 
 
@@ -15,7 +15,7 @@ export const useProfileEffects = () => {
   const [currentReward, setCurrentReward] = useState<number>(0);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
 
-  const { account } = useMetamask();
+  const { account } = useWallet();
 
   const onRedeem = ()  => {
       console.log('Bazinga! You clicked the button!')

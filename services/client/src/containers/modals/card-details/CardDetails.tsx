@@ -12,7 +12,7 @@ import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTit
 import { useCardDetailsEffects } from './CardDetails.effects';
 import { Account, BlockiesContainer } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import useMetamask from '../../../hooks/useMetamask';
+import useWallet from '../../../hooks/useWallet';
 import { monthDiff } from '../../../utils';
 import { useToken } from 'wagmi';
 
@@ -34,7 +34,7 @@ export const CardDetails = () => {
     title,
     close: closeModal,
   };
-  const { isConnected, connect } = useMetamask();
+  const { isConnected, connect } = useWallet();
   const {
     data: poolTokenInfo,
     isError: poolTokenIsError,
