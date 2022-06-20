@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
+import { shortenAddress } from '@usedapp/core';
 
 export interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
@@ -77,6 +78,7 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
   return {
     onSelect,
     getShortAddress,
+    shortenAddress,
     onMenuOpen,
     onSidebarClick,
     onHoverClick,

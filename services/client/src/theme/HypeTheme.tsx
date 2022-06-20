@@ -19,7 +19,7 @@ const colors: HypeColors = {
   secondary: '#E0E0E0',
   success: '#3E7E5C',
   info: '#0081CA',
-  danger: '',
+  danger: '#F7614A',
   greys: [
     '#F1F1F1',
     '#FAFAFA',
@@ -54,14 +54,9 @@ const buttons: HypeButtons = {
     hover: LightenColor(colors.success)
   },
   danger: {
-    color: colors.white,
+    color: colors.black,
     backgroundColor: colors.danger,
     hover: LightenColor(colors.danger)
-  },
-  neutral: {
-    color: colors.greys[7],
-    backgroundColor: colors.greys[12],
-    hover: LightenColor(colors.greys[12])
   },
 };
 

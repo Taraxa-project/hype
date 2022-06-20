@@ -33,7 +33,7 @@ export const MobileConnected = Template.bind({});
 MobileConnected.args = {
   variant: 'mobile',
   headerElements: headerValues,
-  status: 'connected',
+  connected: true,
   onConnect: () => {},
   account: '0x6e3AA85dB95BBA316276a3...82aFB',
 };
@@ -42,7 +42,7 @@ export const MobileDisconnected = Template.bind({});
 MobileDisconnected.args = {
   variant: 'mobile',
   headerElements: headerValues,
-  status: 'notConnected',
+  connected: false,
   onConnect: () => {},
 };
 
@@ -50,7 +50,7 @@ export const MobileUnavailable = Template.bind({});
 MobileUnavailable.args = {
   variant: 'mobile',
   headerElements: headerValues,
-  status: 'unavailable',
+  connected: false,
   onConnect: () => {},
 };
 
@@ -58,7 +58,7 @@ export const DesktopConnected = Template.bind({});
 DesktopConnected.args = {
   variant: 'desktop',
   headerElements: headerValues,
-  status: 'connected',
+  connected: true,
   onConnect: () => {},
   account: '0x6e3AA85dB95BBA316276a3...82aFB',
 };
@@ -67,14 +67,6 @@ export const DesktopDisconnected = Template.bind({});
 DesktopDisconnected.args = {
   variant: 'desktop',
   headerElements: headerValues,
-  status: 'notConnected',
-  onConnect: () => {},
-};
-
-export const DesktopUnavailable = Template.bind({});
-DesktopUnavailable.args = {
-  variant: 'desktop',
-  headerElements: headerValues,
-  status: 'unavailable',
+  connected: false,
   onConnect: () => {},
 };

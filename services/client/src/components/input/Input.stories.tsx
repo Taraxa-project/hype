@@ -14,7 +14,7 @@ export const Regular = Template.bind({});
 Regular.args = {};
 
 export const Icon = Template.bind({});
-Icon.args = { Icon: <SearchIcon />, label: 'Search for hype pools...' };
+Icon.args = { Icon: <SearchIcon />, placeholder: 'Search for hype pools...' };
 
 export const Disabled = Template.bind({});
 Disabled.args = { disabled: true };
