@@ -185,7 +185,7 @@ export const CardContainer = (props: {
           >
             {props.title}
           </Heading>
-          <Link target={props.target} text="See all ->" />
+          <Link href={props.target} text="See all ->" />
         </Box>
       ) : (
         <Heading
