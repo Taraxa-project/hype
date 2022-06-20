@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import {  HypeThemeType } from 'src/theme/types'
 
 
- const StyledLink = styled.a`
+ const StyledLink = styled.a<{  theme: HypeThemeType }>`
     cursor: pointer;
-    color: #0081CA;
+    color: ${({ theme }) => theme.colors.info};
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.875rem;

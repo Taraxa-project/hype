@@ -1,5 +1,5 @@
 import TitleText from 'src/components/TitleText/TitleText';
-
+import { Link } from 'src/components/styles/Link'; 
 import {
   Wrapper,
   FormColumn,
@@ -30,12 +30,12 @@ export const AddHypePool = () => {
         <TitleText>What are you hyping?</TitleText>
         <InfoCard>
           Enter messages, keywords, links, whatever you want hyped up in social. Currently we only
-          support Telegram. Need some ideas? Check out some other hype pools.
+          support Telegram. Need some ideas? Check out some other <Link text='hype pools' target={'/'}/>.
         </InfoCard>
         <Example>
           <b>Example:</b> Taraxa is launching Hype!, the first app on its social listening platform,
           powered by the Taraxa Layer-1 Network. Check it out at{' '}
-          <a href="https://hype.taraxa.io">hype.taraxa.io</a>.
+          <Link text='hype.taraxa.io' target={'/'}/>.
         </Example>
         <Label>What are you hyping?</Label>
         <FormInput placeholder="Your message..." />
