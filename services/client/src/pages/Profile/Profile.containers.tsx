@@ -18,6 +18,9 @@ import Card from 'src/components/card/Card';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { Link } from 'src/components/styles/Link';
+import TLoginButton, { TLoginButtonSize } from 'src/components/button/TelegramLoginButton';
+import { useProfileEffects } from './Profile.effects';
+import TelegramConfig from 'src/api/TelegramConfig';
 
 interface ProfileProps {
   address: string;
@@ -26,6 +29,7 @@ interface ProfileProps {
 
 export const ProfileContainer = (props: ProfileProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
+  const {connect, disconnect } = useProfileEffects();
   return (
     <Box
       backgroundColor="greys.1"
@@ -33,7 +37,7 @@ export const ProfileContainer = (props: ProfileProps) => {
       borderRadius="1rem"
       display="flex"
       flexDirection="column"
-      justifyContent="space-evenly"
+      justifyContent="space-between"
       alignItems="left"
       width={isMobile ? 'none' : '65%'}
       marginBottom="1rem"
@@ -48,7 +52,7 @@ export const ProfileContainer = (props: ProfileProps) => {
       </BlockiesContainer>
       <DataValue>Connected Apps:</DataValue>
       <Box
-        backgroundColor="#F1F1F1"
+        backgroundColor="greys.0"
         p="1.5rem"
         borderRadius="1rem"
         display="flex"
@@ -76,13 +80,11 @@ export const ProfileContainer = (props: ProfileProps) => {
           </Box>
         </Box>
         {props.telegramUsername ? (
-          <Button variant="neutral" size={isMobile ? 'small' : 'regular'}>
+          <Button variant="neutral" size={isMobile ? 'small' : 'regular'} onClick={disconnect}>
             Disconnect this account
           </Button>
         ) : (
-          <Button variant="primary" size={isMobile ? 'small' : 'regular'}>
-            Connect an account
-          </Button>
+          <TLoginButton botName={TelegramConfig.botName} onAuthCallback={connect} buttonSize={isMobile ? TLoginButtonSize.Small : TLoginButtonSize.Medium} usePic={false} lang='EN'/>
         )}
       </Box>
     </Box>
@@ -181,7 +183,6 @@ export const CardContainer = (props: {
             lineHeight="1.625rem"
             color="black"
             letterSpacing="-0.02em"
-            // width="90%"
           >
             {props.title}
           </Heading>
@@ -194,7 +195,6 @@ export const CardContainer = (props: {
           lineHeight="1.625rem"
           color="black"
           letterSpacing="-0.02em"
-          // width="90%"
         >
           {props.title}
         </Heading>
