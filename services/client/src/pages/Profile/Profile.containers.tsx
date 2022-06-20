@@ -97,9 +97,8 @@ interface RewardProps {
 }
 
 export const RewardsContainer = (props: RewardProps) => {
-  const { status } = useMetamask();
+  const { isConnected } = useMetamask();
   const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
-  const isConnected = status === 'connected';
   return (
     <Box
       p={isMobile ? '1.5rem' : '4.5rem'}

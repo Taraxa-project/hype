@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { TUser } from 'src/components/button/TelegramLoginButton';
 import { CardData } from 'src/components/card/Card';
+import useMetamask from 'src/hooks/useMetamask';
 
 
 interface TelegramProfile {
@@ -13,6 +14,8 @@ export const useProfileEffects = () => {
   const [createdPools, setCreatedPools] = useState<CardData[]>([]);
   const [currentReward, setCurrentReward] = useState<number>(0);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
+
+  const { account } = useMetamask();
 
   const onRedeem = ()  => {
       console.log('Bazinga! You clicked the button!')
@@ -35,10 +38,10 @@ export const useProfileEffects = () => {
 
   useEffect(() => {
     setTelegramProfile({
-        address: '0x0000000000000000000000000000',
+        address: account,
         username: 'hyper123'
     })
-  }, []);
+  }, [account]);
 
   useEffect(() => {
     setJoinedPools([

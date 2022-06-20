@@ -58,6 +58,11 @@ const buttons: HypeButtons = {
     backgroundColor: colors.danger,
     hover: LightenColor(colors.danger)
   },
+  neutral: {
+    color: colors.greys[7],
+    backgroundColor: colors.secondary,
+    hover: LightenColor(colors.secondary)
+  }
 };
 
 const cards: HypeCards = {
