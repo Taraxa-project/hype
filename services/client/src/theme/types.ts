@@ -3,6 +3,7 @@ export interface HypeColors {
   black: string;
   primary: string;
   secondary: string;
+  info: string;
   success: string;
   danger: string;
   background: string;
@@ -25,6 +26,7 @@ export interface HypeButtons {
   secondary: ButtonColor;
   success: ButtonColor;
   danger: ButtonColor;
+  neutral: ButtonColor;
 }
 
 export interface HypeCards {
