@@ -1,3 +1,3 @@
-export * from './Profile';
-export * from './Rewards';
-export * from './Card';
+export * from './ProfileContainer';
+export * from './RewardsContainer';
+export * from './CardContainer';

@@ -1,1 +1,1 @@
-export * from './hype.model';
+export * from './HypePool.model';
