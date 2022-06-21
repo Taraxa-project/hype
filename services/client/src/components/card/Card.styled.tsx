@@ -1,18 +1,21 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${(props) => (props.variant === 'mobile' ? '19.375rem' : '23rem')};
+  width: ${(props) => (props.variant === 'mobile' ? 'none' : '23rem')};
   height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
-  border-radius: 1rem;
-  background: #f1f1f1;
+  border-radius: 1rem;  
+  background: #F1F1F1;
   padding: 1%;
   margin-top: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   margin-bottom: 2rem;
 `;
 
@@ -43,10 +46,14 @@ export const DataHeader = styled.span`
   font-weight: 700;
 `;
 
-export const DataValue = styled.span`
+export const DataValue = styled.span<{ theme: HypeThemeType }>`
   width: 50%;
   align-items: left !important;
   font-weight: 400;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 export const DataContainer = styled.div`

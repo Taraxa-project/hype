@@ -1,5 +1,4 @@
 import { MetamaskLogo } from '../../../assets/icons/Metamask';
-import Button from '../../../components/button/Button';
 import {
   ModalAction,
   ModalContainer,

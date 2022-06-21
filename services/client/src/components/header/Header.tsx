@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import HamburgerMenuIcon from '../../assets/icons/HambugerMenu';
 import { HypeIconSmall } from '../../assets/icons/HypeIcon';
+import { shortenAddress } from '../../utils/shortenAddress';
 import { ConnectWalletBtn } from '../connect-wallet-btn/ConnectWalletBtn';
 import Box from '../styles/Box';
 import { HeaderLink, useHeaderEffects } from './Header.effects';
@@ -24,20 +25,19 @@ const Header = React.memo(
     children,
     variant,
     headerElements,
-    status,
+    connected,
     onConnect,
     account,
   }: {
     children: React.ReactNode;
     variant: 'mobile' | 'desktop';
     headerElements?: HeaderLink[];
-    status: 'connected' | 'notConnected' | 'unavailable';
+    connected: boolean;
     onConnect: () => void;
     account?: string | null;
   }) => {
     const {
       onSelect,
-      getShortAddress,
       onMenuOpen,
       onSidebarClick,
       onHoverClick,
@@ -56,15 +56,12 @@ const Header = React.memo(
                 <MenuButton onClick={onMenuOpen}>
                   <HamburgerMenuIcon />
                 </MenuButton>
-                {status !== 'notConnected' && (
+                {connected && (
                   <Account>
-                    {status === 'connected' && (
-                      <>
-                        <GreenDot />
-                        {getShortAddress(account)}
-                      </>
-                    )}
-                    {status === 'unavailable' && 'Metamask is not available.'}
+                    <>
+                      <GreenDot />
+                      {shortenAddress(account)}
+                    </>
                   </Account>
                 )}
               </SidebarHeader>
@@ -79,9 +76,7 @@ const Header = React.memo(
                   </SidebarMenuLink>
                 ))}
               </SidebarMenu>
-              <SidebarFooter>
-                {status === 'notConnected' && <ConnectWalletBtn size="regular" />}
-              </SidebarFooter>
+              <SidebarFooter>{!connected && <ConnectWalletBtn size="regular" />}</SidebarFooter>
             </Sidebar>
           </SidebarHover>
         )}
@@ -95,12 +90,12 @@ const Header = React.memo(
 
             <div className="headerRight">
               {variant === 'mobile' ? (
-                status === 'connected' ? (
+                connected ? (
                   <>
                     {' '}
                     <Account className="margin-right">
                       <GreenDot />
-                      {getShortAddress(account)}
+                      {shortenAddress(account)}
                     </Account>
                     <MenuButton onClick={onMenuOpen}>
                       <HamburgerMenuIcon />
@@ -130,20 +125,17 @@ const Header = React.memo(
                       </span>
                     ),
                   )}
-                  {status === 'notConnected' ? (
+                  {!connected ? (
                     <ConnectWalletBtn size="regular" />
-                  ) : status === 'connected' ? (
+                  ) : (
                     <Account>
                       <GreenDot />
                       {account}
                     </Account>
-                  ) : (
-                    <Account>Metamask is not available.</Account>
                   )}
                 </Box>
               )}
             </div>
-            {children}
           </div>
         </StyledHeader>
       </>

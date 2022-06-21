@@ -10,13 +10,15 @@ export const ExampleCallModals = () => {
       payload: {
         open: true,
         cardData: {
+          projectName: null,
+          title: null,
+          description: null,
+          creatorAddress: null,
+          rewardsAddress: null,
           pool: 0,
-          poolToken: '',
-          bonus: 0,
-          bonusToken: '',
           minReward: 0,
-          creatorAddress: '',
-          rewardToken: '',
+          startDate: null,
+          endDate: null,
         },
       },
     });

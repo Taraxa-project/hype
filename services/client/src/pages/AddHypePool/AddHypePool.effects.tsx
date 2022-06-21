@@ -1,31 +1,18 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from 'react';
-import useMetamask from '../../hooks/useMetamask';
-
-export interface HypePool {
-  title: string;
-  description: string;
-  accountAddress: string;
-  pool: number;
-  minReward: number;
-  startDate: Date;
-  endDate: Date;
-}
+import { useEffect } from 'react';
+import useWallet from '../../hooks/useWallet';
+import { AddHypePool } from '../../models';
 
 export const useAddHypePoolEffects = () => {
-  const { status } = useMetamask();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const { isConnected } = useWallet();
 
-  useEffect(() => {
-    setIsConnected(status === 'connected');
-  }, [status]);
-
-  const defaultValues: HypePool = {
+  const defaultValues: AddHypePool = {
+    projectName: '',
     title: '',
     description: '',
-    accountAddress: null,
+    rewardsAddress: null,
     pool: null,
     minReward: null,
     startDate: null,
@@ -34,9 +21,10 @@ export const useAddHypePoolEffects = () => {
 
   const validationSchema = yup
     .object({
+      projectName: yup.string().required('Project Name is required').label('Project Name'),
       title: yup.string().required('Title is required').label('Title'),
       description: yup.string().required('Message is required').label('Your message'),
-      accountAddress: yup
+      rewardsAddress: yup
         .string()
         .typeError('Address is required and must be a wallet address!')
         .min(42)
@@ -55,12 +43,12 @@ export const useAddHypePoolEffects = () => {
         .required('Min reward is required')
         .label('Min reward per hype'),
       startDate: yup
-        .string()
+        .date()
         .typeError('Pool starts is required')
         .required('Pool starts is required')
         .label('Pool starts'),
       endDate: yup
-        .string()
+        .date()
         .typeError('Pool ends is required')
         .required('Pool ends is required')
         .label('Pool ends'),
@@ -84,7 +72,7 @@ export const useAddHypePoolEffects = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = async (data: HypePool) => {
+  const onSubmit = async (data: AddHypePool) => {
     console.log('Data: ', data);
     reset();
   };

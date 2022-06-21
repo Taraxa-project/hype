@@ -1,15 +1,43 @@
-import { useEffect, useState } from 'react';
-import Card from 'src/components/card/Card';
-import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import React, {useState, useEffect} from 'react';
+import { TUser } from 'src/components/button/TelegramLoginButton';
+import useWallet from 'src/hooks/useWallet';
 import { HypePool } from '../../models';
 
-export const useHomeEffects = () => {
-  const [cardData, setCardData] = useState<HypePool[]>([]);
-  const [titleFilter, setTitleFilter] = useState('');
-  const dispatchModals = useModalsDispatch();
+
+interface TelegramProfile {
+    address: string;
+    username: string;
+}
+
+export const useProfileEffects = () => {
+  const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
+  const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
+  const [currentReward, setCurrentReward] = useState<number>(0);
+  const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
+
+  const { account } = useWallet();
+
+  const onRedeem = ()  => {
+      console.log('Bazinga! You clicked the button!')
+  }
+
+  const connect = (user: TUser) => {
+      console.log('new T user is', user);
+  }
+
+  const disconnect = (user: any) => {
+      console.log('disconnected user is', user);
+  }
 
   useEffect(() => {
-    setCardData([
+    setTelegramProfile({
+        address: account,
+        username: 'hyper123'
+    })
+  }, [account]);
+
+  useEffect(() => {
+    setJoinedPools([
       {
         projectName: 'FoxCoin Hype',
         title: 'FoxCoin Staking Launch!',
@@ -47,45 +75,8 @@ export const useHomeEffects = () => {
         endDate: new Date(new Date().setMonth(new Date().getMonth()+7)),
       },
     ]);
+      setCurrentReward(10000);
   }, []);
 
-  const addMoreCards = () => {
-    setTimeout(() => {
-      const currCards = cardData;
-      setCardData(currCards.concat(cardData));
-    }, 3000);
-  };
-
-  const filteredCards = (
-    titleFilter ? cardData.filter((c) => c.title?.includes(titleFilter)) : cardData
-  ).map((data, i) => (
-    <Card
-      key={`${data.title}-${i}`}
-      projectName={data.projectName}
-      title={data.title}
-      pool={data.pool}
-      description={data.description}
-      rewardsAddress={data.rewardsAddress}
-      creatorAddress={data.creatorAddress}
-      minReward={data.minReward}
-      startDate={data.startDate}
-      endDate={data.endDate}
-      onClick={() => {
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_CARD_DETAILS,
-          payload: {
-            open: true,
-            cardData: cardData[i],
-          },
-        });
-      }}
-    />
-  ));
-
-  return {
-    setTitleFilter,
-    addMoreCards,
-    filteredCards,
-    cardData,
-  };
+  return { joinedPools, createdPools, currentReward, onRedeem, telegramProfile, connect, disconnect };
 };

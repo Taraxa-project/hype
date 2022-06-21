@@ -4,21 +4,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
-import { MetaMaskProvider } from 'metamask-react';
 import { ModalsProvider } from './context';
+import { WagmiConfig, createClient } from 'wagmi';
+
+const client = createClient({
+  autoConnect: true,
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <HypeThemeProvider>
-        <MetaMaskProvider>
+    <HypeThemeProvider>
+      <WagmiConfig client={client}>
+        <BrowserRouter>
           <ModalsProvider>
             <App />
           </ModalsProvider>
-        </MetaMaskProvider>
-      </HypeThemeProvider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </WagmiConfig>
+    </HypeThemeProvider>
   </React.StrictMode>,
 );
 

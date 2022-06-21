@@ -3,6 +3,7 @@ export interface HypeColors {
   black: string;
   primary: string;
   secondary: string;
+  info: string;
   success: string;
   danger: string;
   background: string;

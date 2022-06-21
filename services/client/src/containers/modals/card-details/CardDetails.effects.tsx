@@ -7,16 +7,15 @@ export const useCardDetailsEffects = () => {
   const dispatchModals = useModalsDispatch();
 
   const {
+    projectName,
     title,
-    creatorAddress,
     description,
+    rewardsAddress,
+    creatorAddress,
     pool,
-    poolToken,
-    bonus,
-    bonusToken,
     minReward,
-    rewardToken,
-    duration,
+    startDate,
+    endDate,
   } = cardData;
 
   const closeModal = () => {
@@ -25,13 +24,15 @@ export const useCardDetailsEffects = () => {
       payload: {
         open: false,
         cardData: {
+          projectName: null,
+          title: null,
+          description: null,
+          creatorAddress: null,
+          rewardsAddress: null,
           pool: 0,
-          poolToken: '',
-          bonus: 0,
-          bonusToken: '',
           minReward: 0,
-          creatorAddress: '',
-          rewardToken: '',
+          startDate: null,
+          endDate: null,
         },
       },
     });
@@ -39,16 +40,15 @@ export const useCardDetailsEffects = () => {
 
   return {
     open,
+    projectName,
     title,
-    creatorAddress,
     description,
+    rewardsAddress,
+    creatorAddress,
     pool,
-    poolToken,
-    bonus,
-    bonusToken,
     minReward,
-    rewardToken,
-    duration,
+    startDate,
+    endDate,
     closeModal,
   };
 };

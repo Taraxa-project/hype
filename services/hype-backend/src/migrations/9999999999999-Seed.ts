@@ -33,27 +33,23 @@ export class Seed9999999999999 implements MigrationInterface {
       (PoolsJSON as unknown as IPool[]).map(async (pool) => {
         queryRunner.query(
           `INSERT INTO public.hype_pool (
+            "projectName", 
             "title", 
             "description", 
             "pool", 
-            "accountAddress", 
-            "poolToken", 
-            "bonus", 
-            "bonusToken", 
+            "rewardsAddress", 
+            "creatorAddress", 
             "minReward", 
-            "rewardToken", 
             "startDate", 
             "endDate" 
             ) VALUES (
+              '${pool.projectName}', 
               '${pool.title}', 
               '${pool.description}', 
               '${pool.pool}', 
-              '${pool.accountAddress}', 
-              '${pool.poolToken}', 
-              '${pool.bonus}', 
-              '${pool.bonusToken}', 
+              '${pool.rewardsAddress}', 
+              '${pool.creatorAddress}', 
               '${pool.minReward}', 
-              '${pool.rewardToken}', 
               '${pool.startDate}', 
               '${pool.endDate}' 
             )`,

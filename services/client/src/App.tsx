@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from './components/header/Header';
 import { useMediaQuery } from 'react-responsive';
-import useMetamask from './hooks/useMetamask';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Home, Redeem, AddHypePool } from './pages';
+import { Home, Redeem, AddHypePool, Profile } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
+import useWallet from './hooks/useWallet';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -16,7 +16,7 @@ const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   width: ${({ theme }) => theme.breakpoints.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin: 2rem 1rem;
+    margin: 2rem 1rem 1rem 2rem;
     width: unset;
   }
 `;
@@ -28,14 +28,14 @@ const AppWrapper = styled.div`
 `;
 
 const Root = () => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  const { status, connect, account } = useMetamask();
+  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
+  const { account, connect, isConnected } = useWallet();
 
   return (
     <AppWrapper>
       <Header
         variant={isMobile ? 'mobile' : 'desktop'}
-        status={status === 'initializing' || status === 'connecting' ? 'notConnected' : status}
+        connected={isConnected}
         account={account}
         onConnect={connect}
         children={null}
@@ -45,6 +45,7 @@ const Root = () => {
           <Route path="/" element={<Home />} />
           <Route path="/pool" element={<AddHypePool />} />
           <Route path="/redeem" element={<Redeem />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <ModalsCenter />

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { HypePool } from '../../models';
+import { monthDiff } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -10,21 +12,10 @@ import {
   DataContainer,
   Container,
 } from './Card.styled';
+import { useToken } from 'wagmi';
 
-export interface CardData {
-  title?: string;
-  description?: string;
-  pool: number;
-  poolToken: string;
-  bonus: number;
-  bonusToken: string;
-  minReward: number;
-  creatorAddress: string;
-  rewardToken: string;
-  duration?: string;
-}
 
-export interface CardProps extends React.ButtonHTMLAttributes<HTMLDivElement>, CardData {
+export interface CardProps extends HypePool {
   children?: JSX.Element | string;
   variant?: 'mobile' | 'desktop';
   onClick?: () => void;
@@ -35,15 +26,21 @@ const Card = ({ children, variant, ...props }: CardProps) => {
   const {
     title,
     description,
+    rewardsAddress,
     pool,
-    poolToken,
-    bonus,
-    bonusToken,
-    duration,
     minReward,
-    rewardToken,
+    startDate,
+    endDate,
     onClick,
   } = props;
+  const {
+    data: poolTokenInfo,
+    isError: poolTokenIsError,
+    isLoading: poolTokenIsLoading,
+  } = useToken({ address: rewardsAddress });
+  const poolToken = poolTokenInfo?.symbol;
+  const duration = `${monthDiff(startDate, endDate)} months left`;
+
   return (
     <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'}>
       <Container>
@@ -57,23 +54,15 @@ const Card = ({ children, variant, ...props }: CardProps) => {
             </DataValue>
           </DataContainer>
         )}
-        {bonus && bonusToken && (
-          <DataContainer>
-            <DataHeader key={`bonus-${Date.now()}`}>Bonus:</DataHeader>
-            <DataValue key={`${bonus}-${Date.now()}`}>
-              {bonus} {bonusToken}
-            </DataValue>
-          </DataContainer>
-        )}
-        {minReward && rewardToken && (
+        {minReward && poolToken && (
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
             <DataValue key={`${minReward}-${Date.now()}`}>
-              {minReward} {rewardToken}
+              {minReward} {poolToken}
             </DataValue>
           </DataContainer>
         )}
-        {duration && (
+        {startDate && endDate && duration && (
           <DataContainer>
             <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
             <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>

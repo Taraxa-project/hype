@@ -28,7 +28,7 @@ export const Home = () => {
           <HypeIconBig />
           <TitleText>What is hype farming?</TitleText>
           <DescriptionContainer>
-            APE is launching it’s testnet, and we’d like everyone to come & check it out! All
+            APE is launching it's testnet, and we'd like everyone to come & check it out! All
             participants will be able to claim rewards...
           </DescriptionContainer>
         </IntroContainer>

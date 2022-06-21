@@ -25,6 +25,7 @@ const colors: HypeColors = {
   primary: '#DDA25D',
   secondary: '#E0E0E0',
   success: '#3E7E5C',
+  info: '#0081CA',
   danger: '#F7614A',
   greys: [
     '#F1F1F1',
