@@ -45,7 +45,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
     onClick,
   } = props;
   return (
-    <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'} {...props}>
+    <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'}>
       <Container>
         <CardTitle>{title}</CardTitle>
         <CardDescription key={`${description}-${Date.now()}`}>{description}</CardDescription>

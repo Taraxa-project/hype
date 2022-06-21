@@ -86,63 +86,65 @@ const Header = React.memo(
           </SidebarHover>
         )}
         <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
-          <div className="headerLeft">
-            <Link to="/">
-              <HypeIconSmall />
-            </Link>
-          </div>
+          <div>
+            <div className="headerLeft">
+              <Link to="/">
+                <HypeIconSmall />
+              </Link>
+            </div>
 
-          <div className="headerRight">
-            {variant === 'mobile' ? (
-              status === 'connected' ? (
-                <>
-                  {' '}
-                  <Account className="margin-right">
-                    <GreenDot />
-                    {getShortAddress(account)}
-                  </Account>
+            <div className="headerRight">
+              {variant === 'mobile' ? (
+                status === 'connected' ? (
+                  <>
+                    {' '}
+                    <Account className="margin-right">
+                      <GreenDot />
+                      {getShortAddress(account)}
+                    </Account>
+                    <MenuButton onClick={onMenuOpen}>
+                      <HamburgerMenuIcon />
+                    </MenuButton>
+                  </>
+                ) : (
                   <MenuButton onClick={onMenuOpen}>
                     <HamburgerMenuIcon />
                   </MenuButton>
-                </>
+                )
               ) : (
-                <MenuButton onClick={onMenuOpen}>
-                  <HamburgerMenuIcon />
-                </MenuButton>
-              )
-            ) : (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
-              >
-                {headerEntries.map((e: HeaderLink) =>
-                  e.name === selected ? (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
-                      {e.name}
-                      <p className="underline" />
-                    </span>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
+                >
+                  {headerEntries.map((e: HeaderLink) =>
+                    e.name === selected ? (
+                      <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
+                        {e.name}
+                        <p className="underline" />
+                      </span>
+                    ) : (
+                      <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
+                        {e.name}
+                      </span>
+                    ),
+                  )}
+                  {status === 'notConnected' ? (
+                    <ConnectWalletBtn size="regular" />
+                  ) : status === 'connected' ? (
+                    <Account>
+                      <GreenDot />
+                      {account}
+                    </Account>
                   ) : (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
-                      {e.name}
-                    </span>
-                  ),
-                )}
-                {status === 'notConnected' ? (
-                  <ConnectWalletBtn size="regular" />
-                ) : status === 'connected' ? (
-                  <Account>
-                    <GreenDot />
-                    {account}
-                  </Account>
-                ) : (
-                  <Account>Metamask is not available.</Account>
-                )}
-              </Box>
-            )}
+                    <Account>Metamask is not available.</Account>
+                  )}
+                </Box>
+              )}
+            </div>
+            {children}
           </div>
-          {children}
         </StyledHeader>
       </>
     );

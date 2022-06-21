@@ -11,15 +11,24 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 1rem;
   background: #ffffff;
   height: 4.5rem;
+
+  > div {
+    flex: 1 0 auto;
+    display: flex;
+    max-width: ${({ theme }) => theme.breakpoints.lg};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+      margin: 2rem 1rem;
+    }
+  }
+
   .headerLeft {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
-    margin-left: 2.5rem;
   }
   .headerRight {
     flex: 0 1 auto;
-    padding-right: 2.5rem;
     display: flex;
     align-items: right;
     justify-content: space-evenly;

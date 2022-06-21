@@ -14,7 +14,7 @@ import {
 const breakpoints: HypeBreakpoints = {
   sm: '600px',
   md: '900px',
-  lg: '1200px',
+  lg: '1316px',
   xl: '1536px',
 };
 
@@ -28,7 +28,7 @@ const colors: HypeColors = {
   danger: '#F7614A',
   greys: [
     '#F1F1F1',
-    '#FAFAFA',
+    '#F7F7F7',
     '#B1B1B1',
     '#2F2F2F',
     '#808080',
