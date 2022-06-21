@@ -6,13 +6,28 @@ export class PoolDTO implements IPool {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  projectName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   title: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   description: string;
+  
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  creatorAddress: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  rewardsAddress: string;
+  
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
@@ -20,33 +35,8 @@ export class PoolDTO implements IPool {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  accountAddress: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  poolToken: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  bonus: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  bonusToken: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
   @IsNumber()
   minReward: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  rewardToken: string;
 
   @ApiProperty()
   @IsNotEmpty()

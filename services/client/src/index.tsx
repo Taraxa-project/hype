@@ -5,26 +5,24 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
-import { DAppProvider, Mainnet } from '@usedapp/core';
-import type { Config } from '@usedapp/core';
+import { WagmiConfig, createClient } from 'wagmi';
 
-const config: Config = {
-  readOnlyChainId: Mainnet.chainId,
-  multicallVersion: 2,
-};
+const client = createClient({
+  autoConnect: true,
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <HypeThemeProvider>
-        <DAppProvider config={config}>
+    <HypeThemeProvider>
+      <WagmiConfig client={client}>
+        <BrowserRouter>
           <ModalsProvider>
             <App />
           </ModalsProvider>
-        </DAppProvider>
-      </HypeThemeProvider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </WagmiConfig>
+    </HypeThemeProvider>
   </React.StrictMode>,
 );
 

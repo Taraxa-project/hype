@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
@@ -45,10 +46,14 @@ export const DataHeader = styled.span`
   font-weight: 700;
 `;
 
-export const DataValue = styled.span`
+export const DataValue = styled.span<{ theme: HypeThemeType }>`
   width: 50%;
   align-items: left !important;
   font-weight: 400;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 export const DataContainer = styled.div`
