@@ -1,20 +1,20 @@
-name: Feature request
-description: File a feature request
-title: "[Feature]: "
-labels: ["feature", "request"]
+name: Common issue
+description: Create a common issue
+title: "[Issue]: "
+labels: ["common", "issue"]
 assignees:
   - octocat
 body:
   - type: markdown
     attributes:
       value: |
-        Generic feature request
+        Generic issue template
   - type: input
     id: title
     attributes:
-      label: Feature Title
-      description: Short description about what the feature is about
-      placeholder: ex. this feature woul help users in...
+      label: Issue Title
+      description: Short description about what the issue is about
+      placeholder: ex. this issue woul help users in...
     validations:
       required: false
   - type: textarea
@@ -24,6 +24,15 @@ body:
       description: The user story that describes the utility of the feature
       placeholder: Tell us what the feature is good for
       value: "As a user, I want to be able to fraw blue lines on the sky."
+    validations:
+      required: true
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of Done
+      description: Add the requirements that need to be fulfilled in order to complete the issue in the form of a checkbox list.
+      placeholder: Tell us what needs to be done in order to complete this issue
+      value: "- [ ] Font needs to be 16px. - [ ] Homepage container needs to have 100% width."
     validations:
       required: true
   - type: textarea
