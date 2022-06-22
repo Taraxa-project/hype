@@ -1,0 +1,42 @@
+name: Feature request
+description: File a feature request
+title: "[Feature]: "
+labels: ["feature", "request"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Generic feature request
+  - type: input
+    id: title
+    attributes:
+      label: Feature Title
+      description: Short description about what the feature is about
+      placeholder: ex. this feature woul help users in...
+    validations:
+      required: false
+  - type: textarea
+    id: user_storu
+    attributes:
+      label: User story
+      description: The user story that describes the utility of the feature
+      placeholder: Tell us what the feature is good for
+      value: "As a user, I want to be able to fraw blue lines on the sky."
+    validations:
+      required: true
+  - type: textarea
+    id: tips
+    attributes:
+      label: Useful resources
+      description: Please copy and paste any relevant resources or code. This will be auto-formatted as code, no backticks needed.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
