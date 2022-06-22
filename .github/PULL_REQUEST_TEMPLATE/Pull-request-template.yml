@@ -1,0 +1,33 @@
+name: Generic Pull Request template
+description: Create a Pull Request
+title: "[PR]: "
+labels: ["Pull request", "PR"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Generic Pull Request
+  - type: input
+    id: title
+    attributes:
+      label: Pull Request Title
+      description: Short description about what the PR contains
+      placeholder: ex. Improve rendering of the User registration form
+    validations:
+      required: false
+  - type: textarea
+    id: linked_issue
+    attributes:
+      label: Linekd issue
+      description: The issue the PR is created for
+      placeholder: Link the issue to the PR
+      value: "Closes #5"
+    validations:
+      required: true
+  - type: textarea
+    id: tips
+    attributes:
+      label: Funny gif
+      description: Leave a funny gif for faster review.
