@@ -15,8 +15,6 @@ const client = createClient({
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
       onError: (error) => {
         console.error(error);
       },

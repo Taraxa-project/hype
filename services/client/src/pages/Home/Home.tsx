@@ -1,8 +1,6 @@
 import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
 import Input from '../../components/input/Input';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
@@ -16,10 +14,13 @@ import {
   PoolContainer,
   NotFoundContainer,
   NotFoundText,
+  CardContainer,
 } from './Home.styled';
+import Card from '../../components/card/Card';
+import Box from '../../components/styles/Box';
 
 export const Home = () => {
-  const { setSearchString, addMoreCards, filteredCards, cardData } = useHomeEffects();
+  const { setSearchString, data, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
     <PageContainer>
@@ -50,22 +51,32 @@ export const Home = () => {
         />
         <TitleText>Active Hype Pools</TitleText>
       </PoolContainer>
-      {filteredCards?.length > 0 ? (
-        <InfiniteScroll
-          className="cardContainer"
-          dataLength={cardData?.length}
-          next={addMoreCards}
-          hasMore={true}
-          loader={
-            <footer style={{ position: 'absolute', bottom: '0.5rem' }}>
-              <LoadingSpinner />
-            </footer>
-          }
-          scrollableTarget="scrollableDiv"
-        >
-          {filteredCards}
-        </InfiniteScroll>
-      ) : (
+      <CardContainer>
+        {data?.pages.map(
+          (data, i) =>
+            data && (
+              <Card
+                key={`${data.title}-${i}`}
+                projectName={data.projectName}
+                title={data.title}
+                pool={data.pool}
+                description={data.description}
+                rewardsAddress={data.rewardsAddress}
+                creatorAddress={data.creatorAddress}
+                minReward={data.minReward}
+                startDate={data.startDate}
+                endDate={data.endDate}
+                onClick={() => onClick(data)}
+              />
+            ),
+        )}
+      </CardContainer>
+      {(isFetchingNextPage) && (
+        <Box display="flex" justifyContent="center" alignItems="center" my={3}>
+          <LoadingSpinner />
+        </Box>
+      )}
+      {(!data || data?.pages?.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
             <NotFoundIcon /> Nothing found...

@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PoolPaginate } from '../../models';
 import { GetAddress } from '../auth/get-address.decorator';
 import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
@@ -31,7 +32,7 @@ export class PoolsController {
   @Get()
   public getAllPools(
     @Query(ValidationPipe) filterDto: GetFilterDto,
-  ): Promise<HypePool[]> {
+  ): Promise<PoolPaginate> {
     return this.poolsService.findAll(filterDto);
   }
 

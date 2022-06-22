@@ -10,6 +10,7 @@ import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { FindManyOptions } from 'typeorm';
 import { OrderDirection, PoolOrderByEnum } from '../../utils';
+import { PoolPaginate } from '../../models';
 
 @Injectable()
 export class PoolsService {
@@ -20,9 +21,12 @@ export class PoolsService {
     private repository: Repository<HypePool>,
   ) {}
 
-  async findAll(filterDto: GetFilterDto): Promise<HypePool[]> {
-    const result = await this.getByFilters(filterDto);
-    return result;
+  async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
+    const [pools, total] = await this.getByFilters(filterDto);
+    return {
+      data: pools || [],
+      total,
+    };
   }
 
   findById(id: number): Promise<HypePool> {
@@ -52,12 +56,14 @@ export class PoolsService {
     return hypePools;
   }
 
-  private async getByFilters(filterDto: GetFilterDto): Promise<HypePool[]> {
+  private async getByFilters(
+    filterDto: GetFilterDto,
+  ): Promise<[HypePool[], number]> {
     const { search, take, skip, orderBy, order } = filterDto;
     const limit = take || 0;
     const offset = skip || 0;
-    const orderByType = orderBy || PoolOrderByEnum.TITLE;
-    const orderDirection: 'ASC' | 'DESC' = order || OrderDirection.ASC;
+    const orderByType = orderBy || PoolOrderByEnum.CREATED_AT;
+    const orderDirection: 'ASC' | 'DESC' = order || OrderDirection.DESC;
 
     const query = this.repository
       .createQueryBuilder('hype_pool')
@@ -88,7 +94,7 @@ export class PoolsService {
         .skip(offset)
         .take(limit)
         .orderBy(`hype_pool.${orderByType}`, orderDirection)
-        .getMany();
+        .getManyAndCount();
       return results;
     } catch (error) {
       this.logger.error(

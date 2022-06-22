@@ -1,4 +1,32 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
+
+export const CardContainer = styled.div<{ theme: HypeThemeType }>`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+  z-index: 1;
+  padding-bottom: 2rem;
+  margin-bottom: 1rem;
+  overflow: auto;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    overflow: auto;
+    z-index: 1;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    position: relative;
+  }
+`;
 
 export const PageContainer = styled.div`
   background: #fafafa;
