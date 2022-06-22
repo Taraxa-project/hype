@@ -29,11 +29,11 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, onSubmit, onCancel, errors, isConnected, control } =
+  const { register, handleSubmit, submitHandler, onCancel, errors, isConnected, control } =
     useAddHypePoolEffects();
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" onSubmit={handleSubmit(submitHandler)}>
       <Wrapper>
         <FormColumn>
           <TitleText>What is your project name!</TitleText>

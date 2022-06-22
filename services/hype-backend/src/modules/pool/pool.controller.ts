@@ -49,7 +49,7 @@ export class PoolsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,

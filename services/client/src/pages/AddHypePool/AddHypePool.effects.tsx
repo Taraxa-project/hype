@@ -4,9 +4,11 @@ import * as yup from 'yup';
 import { useEffect } from 'react';
 import useWallet from '../../hooks/useWallet';
 import { AddHypePool } from '../../models';
+import { useAddHypePool } from '../../api/hype/useAddHypePool';
 
 export const useAddHypePoolEffects = () => {
   const { isConnected } = useWallet();
+  const submitHandler = useAddHypePool();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -72,11 +74,6 @@ export const useAddHypePoolEffects = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = async (data: AddHypePool) => {
-    console.log('Data: ', data);
-    reset();
-  };
-
   const onCancel = () => {
     reset();
   };
@@ -84,10 +81,10 @@ export const useAddHypePoolEffects = () => {
   return {
     register,
     handleSubmit,
-    onSubmit,
     onCancel,
     errors,
     isConnected,
     control,
+    submitHandler,
   };
 };
