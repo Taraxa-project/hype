@@ -10,13 +10,15 @@ export const StyledCard = styled.div<CustomStyledProps>`
   height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
-  border-radius: 1rem;  
-  background: #F1F1F1;
-  padding: 1%;
-  margin-top: 1rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 2rem;
+  border-radius: 1rem;
+  background: #f1f1f1;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1rem;
+  }
 `;
 
 export const CardTitle = styled.h3`

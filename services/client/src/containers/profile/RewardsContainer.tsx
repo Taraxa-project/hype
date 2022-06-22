@@ -14,8 +14,8 @@ interface RewardProps {
 
 export const RewardsContainer = (props: RewardProps) => {
   const { isConnected } = useWallet();
-  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
-  
+  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
+
   return (
     <Box
       p={isMobile ? '1.5rem' : '4.5rem'}
@@ -27,7 +27,7 @@ export const RewardsContainer = (props: RewardProps) => {
       marginLeft={isMobile ? 'none' : '1rem'}
       marginRight={isMobile ? '1rem' : 'none'}
       marginBottom="1rem"
-      minWidth='250px'
+      minWidth="250px"
     >
       <Heading
         fontSize="1.25rem"

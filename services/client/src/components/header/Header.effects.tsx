@@ -14,11 +14,16 @@ export interface SidebarMenuLinkProps extends React.HTMLProps<HTMLLIElement> {
   selected?: boolean;
 }
 
+export interface AddressContainerProps extends React.HTMLProps<HTMLSpanElement> {
+  address: string;
+  shortAddress: string;
+}
+
 export enum HeaderValues {
   HypeFarming = 'Hype Farming',
   HypePool = '+Hype Pool',
   Redeem = 'Redeem',
-  Profile= 'User Profile',
+  Profile = 'User Profile',
   None = 'none',
 }
 
@@ -43,7 +48,7 @@ const headerValues: HeaderLink[] = [
   {
     route: '/profile',
     name: HeaderValues.Profile,
-  }
+  },
 ];
 
 export const useHeaderEffects = (headerElements?: HeaderLink[]) => {

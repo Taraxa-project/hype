@@ -18,6 +18,7 @@ import {
   SidebarMenuLink,
   SidebarFooter,
   StyledHeader,
+  AddressContainer,
 } from './Header.styled';
 
 const Header = React.memo(
@@ -130,7 +131,7 @@ const Header = React.memo(
                   ) : (
                     <Account>
                       <GreenDot />
-                      {account}
+                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
                     </Account>
                   )}
                 </Box>

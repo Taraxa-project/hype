@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { CustomStyledProps, SidebarMenuLinkProps, SidebarProps } from './Header.effects';
+import {
+  AddressContainerProps,
+  CustomStyledProps,
+  SidebarMenuLinkProps,
+  SidebarProps,
+} from './Header.effects';
 
 export const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 0.875rem;
@@ -156,4 +161,14 @@ export const GreenDot = styled.div`
   width: 0.375rem !important;
   background: #15ac5b;
   border-radius: 50%;
+`;
+
+export const AddressContainer = styled.div<AddressContainerProps>`
+  ::before {
+    content: '${(props) => props.address}';
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+      content: '${(props) => props.shortAddress}';
+    }
+  }
 `;

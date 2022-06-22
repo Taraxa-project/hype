@@ -3,10 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import { DataHeader, DataValue } from '../../components/card/Card.styled';
-import {
-  BlockiesContainer,
-  Account,
-} from '../modals/card-details/CardDetails.styled';
+import { BlockiesContainer, Account } from '../modals/card-details/CardDetails.styled';
 import Blockies from 'react-blockies';
 import { TelegramLogo } from 'src/assets/icons/Telegram';
 import Button from 'src/components/button/Button';
@@ -26,7 +23,7 @@ export const ProfileContainer = ({
   connect,
   disconnect,
 }: ProfileProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
   return (
     <Box
       backgroundColor="greys.1"
