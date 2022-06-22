@@ -6,9 +6,22 @@ import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { WagmiConfig, createClient } from 'wagmi';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 const client = createClient({
   autoConnect: true,
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      onError: (error) => {
+        console.error(error);
+      },
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -16,11 +29,13 @@ root.render(
   <React.StrictMode>
     <HypeThemeProvider>
       <WagmiConfig client={client}>
-        <BrowserRouter>
-          <ModalsProvider>
-            <App />
-          </ModalsProvider>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ModalsProvider>
+              <App />
+            </ModalsProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
       </WagmiConfig>
     </HypeThemeProvider>
   </React.StrictMode>,

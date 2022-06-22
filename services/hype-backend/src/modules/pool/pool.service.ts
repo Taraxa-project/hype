@@ -63,15 +63,13 @@ export class PoolsService {
       .createQueryBuilder('hype_pool')
       .select([
         'hype_pool.id',
+        'hype_pool.projectName',
         'hype_pool.title',
         'hype_pool.description',
         'hype_pool.pool',
-        'hype_pool.accountAddress',
-        'hype_pool.poolToken',
-        'hype_pool.bonus',
-        'hype_pool.bonusToken',
+        'hype_pool.creatorAddress',
+        'hype_pool.rewardsAddress',
         'hype_pool.minReward',
-        'hype_pool.rewardToken',
         'hype_pool.startDate',
         'hype_pool.endDate',
         'hype_pool.createdAt',
@@ -80,7 +78,7 @@ export class PoolsService {
 
     if (search) {
       query.where(
-        'hype_pool.title ILIKE :search or hype_pool.description ILIKE :search or LOWER(hype_pool.accountAddress) LIKE LOWER(:search)',
+        'hype_pool.title ILIKE :search or hype_pool.projectName ILIKE :search or hype_pool.description ILIKE :search or LOWER(hype_pool.creatorAddress) LIKE LOWER(:search) or LOWER(hype_pool.rewardsAddress) LIKE LOWER(:search)',
         { search: `%${search}%` },
       );
     }

@@ -19,7 +19,7 @@ import {
 } from './Home.styled';
 
 export const Home = () => {
-  const { setTitleFilter, addMoreCards, filteredCards, cardData } = useHomeEffects();
+  const { setSearchString, addMoreCards, filteredCards, cardData } = useHomeEffects();
 
   return (
     <PageContainer>
@@ -46,14 +46,14 @@ export const Home = () => {
         <Input
           Icon={<SearchIcon />}
           placeholder="Search for hype pools..."
-          onChange={(e) => setTitleFilter(e.target.value)}
+          onChange={(e) => setSearchString(e.target.value)}
         />
         <TitleText>Active Hype Pools</TitleText>
       </PoolContainer>
-      {filteredCards.length > 0 ? (
+      {filteredCards?.length > 0 ? (
         <InfiniteScroll
           className="cardContainer"
-          dataLength={cardData.length}
+          dataLength={cardData?.length}
           next={addMoreCards}
           hasMore={true}
           loader={
