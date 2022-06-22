@@ -54,7 +54,7 @@ const buttons: HypeButtons = {
     hover: LightenColor(colors.success)
   },
   danger: {
-    color: colors.black,
+    color: colors.white,
     backgroundColor: colors.danger,
     hover: LightenColor(colors.danger)
   },

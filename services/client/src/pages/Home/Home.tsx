@@ -20,7 +20,7 @@ import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
 
 export const Home = () => {
-  const { setSearchString, data, onClick, isFetchingNextPage } = useHomeEffects();
+  const { debouncedResults, data, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
     <PageContainer>
@@ -47,7 +47,7 @@ export const Home = () => {
         <Input
           Icon={<SearchIcon />}
           placeholder="Search for hype pools..."
-          onChange={(e) => setSearchString(e.target.value)}
+          onChange={debouncedResults}
         />
         <TitleText>Active Hype Pools</TitleText>
       </PoolContainer>
@@ -71,7 +71,7 @@ export const Home = () => {
             ),
         )}
       </CardContainer>
-      {(isFetchingNextPage) && (
+      {isFetchingNextPage && (
         <Box display="flex" justifyContent="center" alignItems="center" my={3}>
           <LoadingSpinner />
         </Box>

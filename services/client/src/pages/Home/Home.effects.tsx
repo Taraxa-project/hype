@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
-import { FetchHypesFilter, useFetchHypePools } from '../../api/hype/useFetchHypePools';
+import { useEffect, useState, useMemo } from 'react';
+import { useFetchHypePools } from '../../api/hype/useFetchHypePools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
-
-const hypePoolsStep = 5;
+import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
-  const [filters, setFilters] = useState<FetchHypesFilter>({ take: hypePoolsStep, skip: 0 });
   const [searchString, setSearchString] = useState('');
   const dispatchModals = useModalsDispatch();
-  const { data, isFetchingNextPage, fetchNextPage } = useFetchHypePools();
+  const { data, isFetchingNextPage, fetchNextPage } = useFetchHypePools(searchString);
 
   useEffect(() => {
     let fetching = false;
@@ -29,6 +27,21 @@ export const useHomeEffects = () => {
     };
   }, []);
 
+  const handleChange = (e: any) => {
+    console.log('EVENT: ', e, e.target.value);
+    setSearchString(e.target.value);
+  };
+
+  const debouncedResults = useMemo(() => {
+    return debounce(handleChange, 300);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
+
   const onClick = (cardData: HypePool) => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_CARD_DETAILS,
@@ -40,7 +53,7 @@ export const useHomeEffects = () => {
   };
 
   return {
-    setSearchString,
+    debouncedResults,
     data,
     onClick,
     isFetchingNextPage,
