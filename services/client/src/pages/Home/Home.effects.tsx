@@ -28,7 +28,6 @@ export const useHomeEffects = () => {
   }, []);
 
   const handleChange = (e: any) => {
-    console.log('EVENT: ', e, e.target.value);
     setSearchString(e.target.value);
   };
 

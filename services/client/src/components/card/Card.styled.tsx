@@ -3,20 +3,23 @@ import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
+  theme?: HypeThemeType;
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${(props) => (props.variant === 'mobile' ? 'none' : '23rem')};
-  height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
+  width: ${({variant}) => (variant === 'mobile' ? 'auto' : '23rem')};
+  height: ${({variant}) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
-  border-radius: 1rem;  
-  background: #F1F1F1;
+  border-radius: 1rem;
+  background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1%;
   margin-top: 1rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   margin-bottom: 2rem;
+  flex-grow: 1;
+  max-width: 28rem;
 `;
 
 export const CardTitle = styled.h3`

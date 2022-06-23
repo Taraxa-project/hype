@@ -1,39 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { TUser } from 'src/components/button/TelegramLoginButton';
 import useWallet from 'src/hooks/useWallet';
+import { useGetHypePoolsBy } from '../../api/hype/useGetHypePoolsBy';
 import { HypePool } from '../../models';
 
-
 interface TelegramProfile {
-    address: string;
-    username: string;
+  address: string;
+  username: string;
 }
 
 export const useProfileEffects = () => {
+  const { account } = useWallet();
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
   const [currentReward, setCurrentReward] = useState<number>(0);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
+  const { data } = useGetHypePoolsBy(account);
 
-  const { account } = useWallet();
+  useEffect(() => {
+    if (data?.length) {
+      setCreatedPools(data);
+    }
+  }, [data]);
 
-  const onRedeem = ()  => {
-      console.log('Bazinga! You clicked the button!')
-  }
+  const onRedeem = () => {
+    console.log('Bazinga! You clicked the button!');
+  };
 
   const connect = (user: TUser) => {
-      console.log('new T user is', user);
-  }
+    console.log('new T user is', user);
+  };
 
   const disconnect = (user: any) => {
-      console.log('disconnected user is', user);
-  }
+    console.log('disconnected user is', user);
+  };
 
   useEffect(() => {
     setTelegramProfile({
-        address: account,
-        username: 'hyper123'
-    })
+      address: account,
+      username: 'hyper123',
+    });
   }, [account]);
 
   useEffect(() => {
@@ -48,7 +54,7 @@ export const useProfileEffects = () => {
         pool: 100000,
         minReward: 1,
         startDate: new Date(),
-        endDate: new Date(new Date().setMonth(new Date().getMonth()+5)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
       },
       {
         projectName: 'ApeCoin Hype',
@@ -60,7 +66,7 @@ export const useProfileEffects = () => {
         creatorAddress: '0x000000000000000000000000000000000000002',
         minReward: 1,
         startDate: new Date(),
-        endDate: new Date(new Date().setMonth(new Date().getMonth()+3)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
       },
       {
         projectName: 'SHIBA INU Hype',
@@ -72,11 +78,19 @@ export const useProfileEffects = () => {
         creatorAddress: '0x000000000000000000000000000000000000003',
         minReward: 1,
         startDate: new Date(),
-        endDate: new Date(new Date().setMonth(new Date().getMonth()+7)),
+        endDate: new Date(new Date().setMonth(new Date().getMonth() + 7)),
       },
     ]);
-      setCurrentReward(10000);
+    setCurrentReward(10000);
   }, []);
 
-  return { joinedPools, createdPools, currentReward, onRedeem, telegramProfile, connect, disconnect };
+  return {
+    joinedPools,
+    createdPools,
+    currentReward,
+    onRedeem,
+    telegramProfile,
+    connect,
+    disconnect,
+  };
 };

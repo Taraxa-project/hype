@@ -1,20 +1,6 @@
 import axios from 'axios';
 import { useInfiniteQuery } from 'react-query';
-import { OrderDirection, PoolOrderByEnum } from '../../utils';
-import { HypePool } from '../../models';
-
-export interface FetchHypesFilter {
-  take: number;
-  skip: number;
-  search?: string;
-  orderBy?: PoolOrderByEnum;
-  order?: OrderDirection;
-}
-
-export interface PoolPaginate {
-  data: HypePool[];
-  total: number;
-}
+import { API, FetchHypesFilter, PoolPaginate } from './types';
 
 const hypePoolsPerPage = 5;
 
@@ -29,7 +15,7 @@ const computePage = (page: number, search?: string): FetchHypesFilter => {
 };
 
 const fetchPools = async (params: FetchHypesFilter) => {
-  const url = `${process.env.REACT_APP_API_HOST}/api/pools`;
+  const url = `${API}/pools`;
   const { data } = await axios.get(url, { params });
   return data as PoolPaginate;
 };

@@ -11,6 +11,7 @@ import { HypePool } from './pool.entity';
 import { FindManyOptions } from 'typeorm';
 import { OrderDirection, PoolOrderByEnum } from '../../utils';
 import { PoolPaginate } from '../../models';
+import { GetByDTO } from './dto/get-by.dto';
 
 @Injectable()
 export class PoolsService {
@@ -21,7 +22,7 @@ export class PoolsService {
     private repository: Repository<HypePool>,
   ) {}
 
-  async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
+  public async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
     const [pools, total] = await this.getByFilters(filterDto);
     return {
       data: pools || [],
@@ -29,7 +30,7 @@ export class PoolsService {
     };
   }
 
-  findById(id: number): Promise<HypePool> {
+  public findById(id: number): Promise<HypePool> {
     const found = this.repository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(`Hype Pool with ${id} not found!`);
@@ -37,7 +38,7 @@ export class PoolsService {
     return found;
   }
 
-  async create(pool: PoolDTO): Promise<HypePool> {
+  public async create(pool: PoolDTO): Promise<HypePool> {
     const newPool = new HypePool({ ...pool });
     const startDate = new Date(pool.startDate);
     const endDate = new Date(pool.endDate);
@@ -47,6 +48,14 @@ export class PoolsService {
       endDate,
     });
     return stored;
+  }
+
+  public async findBy({ creatorAddress }: GetByDTO): Promise<HypePool[]> {
+    return await this.repository.find({
+      where: {
+        creatorAddress,
+      },
+    });
   }
 
   private async findMany(

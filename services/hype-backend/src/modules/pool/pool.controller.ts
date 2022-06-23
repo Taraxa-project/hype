@@ -16,6 +16,7 @@ import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PoolPaginate } from '../../models';
 import { GetAddress } from '../auth/get-address.decorator';
 import { GetFilterDto, PoolDTO } from './dto';
+import { GetByDTO } from './dto/get-by.dto';
 import { HypePool } from './pool.entity';
 import { PoolsService } from './pool.service';
 
@@ -36,6 +37,18 @@ export class PoolsController {
     return this.poolsService.findAll(filterDto);
   }
 
+  @ApiOkResponse({
+    status: HttpStatus.OK,
+    type: [PoolDTO],
+    description: 'Returns all hype pools',
+  })
+  @Get('by')
+  public getPoolsBy(
+    @Query(ValidationPipe) filterDto: GetByDTO,
+  ): Promise<HypePool[]> {
+    return this.poolsService.findBy(filterDto);
+  }
+
   @Get(':id')
   @ApiResponse({
     status: HttpStatus.OK,
@@ -44,7 +57,7 @@ export class PoolsController {
   })
   public async getById(
     @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<PoolDTO | null> {
+  ): Promise<HypePool | null> {
     return await this.poolsService.findById(id);
   }
 
@@ -58,7 +71,7 @@ export class PoolsController {
   public async createPool(
     @Body() poolToCreate: PoolDTO,
     @GetAddress() address: string,
-  ): Promise<PoolDTO> {
+  ): Promise<HypePool> {
     return await this.poolsService.create(poolToCreate);
   }
 }
