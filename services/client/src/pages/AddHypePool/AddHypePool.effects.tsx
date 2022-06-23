@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useEffect } from 'react';
 import useWallet from '../../hooks/useWallet';
 import { AddHypePool } from '../../models';
-import { useAddHypePool } from '../../api/hype/useAddHypePool';
+import { useAddHypePool } from '../../api/pools/useAddHypePool';
 
 export const useAddHypePoolEffects = () => {
   const { isConnected } = useWallet();

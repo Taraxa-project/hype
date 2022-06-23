@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useFetchHypePools } from '../../api/hype/useFetchHypePools';
+import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';

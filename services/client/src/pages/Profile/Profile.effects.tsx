@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TUser } from 'src/components/button/TelegramLoginButton';
 import useWallet from 'src/hooks/useWallet';
-import { useGetHypePoolsBy } from '../../api/hype/useGetHypePoolsBy';
+import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
 import { HypePool } from '../../models';
 
 interface TelegramProfile {
