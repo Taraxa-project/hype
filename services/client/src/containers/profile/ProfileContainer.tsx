@@ -2,7 +2,12 @@ import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
-import { DataHeader, DataValue } from '../../components/card/Card.styled';
+import {
+  ConnectedAppsTitle,
+  DataHeader,
+  DataValue,
+  YourProfileTitle,
+} from '../../components/card/Card.styled';
 import { BlockiesContainer, Account } from '../modals/card-details/CardDetails.styled';
 import Blockies from 'react-blockies';
 import { TelegramLogo } from 'src/assets/icons/Telegram';
@@ -27,24 +32,25 @@ export const ProfileContainer = ({
   return (
     <Box
       backgroundColor="greys.1"
-      p={isMobile ? '1.5rem' : '4.5rem'}
+      p={isMobile ? '1.5rem' : '2rem'}
       borderRadius="1rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      flex="1 1 auto"
       alignItems="left"
-      width={isMobile ? 'none' : '100%'}
+      width={isMobile ? 'unset' : '100%'}
       marginBottom="1rem"
       marginRight={isMobile ? '1rem' : 'none'}
     >
-      <DataHeader>Your profile</DataHeader>
+      <YourProfileTitle>Your profile</YourProfileTitle>
       <BlockiesContainer>
         <Box marginLeft="1rem">
           <Blockies seed="Jeremy" />
         </Box>
         <Account>{address}</Account>
       </BlockiesContainer>
-      <DataValue>Connected Apps:</DataValue>
+      <ConnectedAppsTitle>Connected Apps:</ConnectedAppsTitle>
       <Box
         backgroundColor="greys.0"
         p="1.5rem"

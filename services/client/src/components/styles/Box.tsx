@@ -12,6 +12,8 @@ import {
   maxWidth,
   height,
   flexbox,
+  gridColumnGap,
+  gridRowGap,
   borderRadius,
   SpaceProps,
   WidthProps,

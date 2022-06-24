@@ -15,6 +15,7 @@ import Blockies from 'react-blockies';
 import useWallet from '../../../hooks/useWallet';
 import { monthDiff } from '../../../utils';
 import { useToken } from 'wagmi';
+import Box from 'src/components/styles/Box';
 
 export const CardDetails = () => {
   const {
@@ -56,7 +57,7 @@ export const CardDetails = () => {
       closeModal={closeModal}
       modalAction={modalAction}
     >
-      <DataHeader>Pool creator:</DataHeader>
+      <Box display="flex">Pool creator:</Box>
       <BlockiesContainer>
         <Blockies seed="Jeremy" />
         <Account>{creatorAddress}</Account>

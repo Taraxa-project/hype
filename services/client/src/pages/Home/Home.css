@@ -9,6 +9,7 @@
     overflow: auto;
     z-index: 1;
     position: relative;
+    gap: 1rem;
   }
 }
 .cardContainer {
@@ -22,4 +23,5 @@
   padding: 0 2rem 2rem 2rem;
   margin-bottom: 1rem;
   overflow: auto;
+  gap: 1rem;
 }

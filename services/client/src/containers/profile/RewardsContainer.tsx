@@ -18,7 +18,7 @@ export const RewardsContainer = (props: RewardProps) => {
 
   return (
     <Box
-      p={isMobile ? '1.5rem' : '4.5rem'}
+      p={isMobile ? '1.5rem' : '2rem'}
       borderRadius="1rem"
       display="flex"
       flexDirection="column"

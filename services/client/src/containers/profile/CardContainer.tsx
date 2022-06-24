@@ -66,6 +66,8 @@ export const CardContainer = (props: {
         display="flex"
         flexDirection={isMobile ? 'column' : 'row'}
         justifyContent="space-evenly"
+        gridGap="1rem"
+        flexWrap="wrap"
         backgroundColor={props.cards.length > 0 ? 'greys.1' : 'greys.0'}
       >
         {props.cards.length > 0 ? (

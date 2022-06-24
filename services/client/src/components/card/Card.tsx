@@ -14,7 +14,6 @@ import {
 } from './Card.styled';
 import { useToken } from 'wagmi';
 
-
 export interface CardProps extends HypePool {
   children?: JSX.Element | string;
   variant?: 'mobile' | 'desktop';
@@ -23,16 +22,8 @@ export interface CardProps extends HypePool {
 
 const Card = ({ children, variant, ...props }: CardProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  const {
-    title,
-    description,
-    rewardsAddress,
-    pool,
-    minReward,
-    startDate,
-    endDate,
-    onClick,
-  } = props;
+  const { title, description, rewardsAddress, pool, minReward, startDate, endDate, onClick } =
+    props;
   const {
     data: poolTokenInfo,
     isError: poolTokenIsError,
@@ -44,33 +35,37 @@ const Card = ({ children, variant, ...props }: CardProps) => {
   return (
     <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'}>
       <Container>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription key={`${description}-${Date.now()}`}>{description}</CardDescription>
-        {pool && poolToken && (
-          <DataContainer>
-            <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-            <DataValue key={`${pool}-${Date.now()}`}>
-              {pool} {poolToken}
-            </DataValue>
-          </DataContainer>
-        )}
-        {minReward && poolToken && (
-          <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
-            <DataValue key={`${minReward}-${Date.now()}`}>
-              {minReward} {poolToken}
-            </DataValue>
-          </DataContainer>
-        )}
-        {startDate && endDate && duration && (
-          <DataContainer>
-            <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
-            <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
-          </DataContainer>
-        )}
-        <Button size="full-width" onClick={onClick}>
-          Learn more
-        </Button>
+        <div>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription key={`${description}-${Date.now()}`}>{description}</CardDescription>
+          {pool && poolToken && (
+            <DataContainer>
+              <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
+              <DataValue key={`${pool}-${Date.now()}`}>
+                {pool} {poolToken}
+              </DataValue>
+            </DataContainer>
+          )}
+          {minReward && poolToken && (
+            <DataContainer>
+              <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
+              <DataValue key={`${minReward}-${Date.now()}`}>
+                {minReward} {poolToken}
+              </DataValue>
+            </DataContainer>
+          )}
+          {startDate && endDate && duration && (
+            <DataContainer>
+              <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
+              <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
+            </DataContainer>
+          )}
+        </div>
+        <div>
+          <Button size="full-width" onClick={onClick}>
+            Learn more
+          </Button>
+        </div>
       </Container>
       {children}
     </StyledCard>
