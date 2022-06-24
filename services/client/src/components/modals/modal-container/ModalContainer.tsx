@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { ButtonVariant } from '../../../utils';
 import BackgroundHover from '../../background/HoverBackground.styled';
 import Button from '../../button/Button';
 import Box from '../../styles/Box';
@@ -11,6 +12,7 @@ export interface ModalAction {
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onAction?: (value?: any) => void;
+  closeButtonVariant?: ButtonVariant;
 }
 
 export interface ModalContainerProps {
@@ -51,7 +53,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               {modalAction && (
                 <Button
                   type={modalAction.type || 'button'}
-                  variant="primary"
+                  variant={modalAction.closeButtonVariant || 'secondary'}
                   size="full-width"
                   onClick={modalAction.onAction}
                   disabled={modalAction.disabled}

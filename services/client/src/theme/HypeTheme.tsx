@@ -83,7 +83,7 @@ const fonts: HypeFonts = {
   default: 'Inter',
 };
 
-const theme: HypeThemeType = {
+export const theme: HypeThemeType = {
   colors,
   buttons,
   cards,
