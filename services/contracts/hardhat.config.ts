@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "hardhat-docgen";
 
 dotenv.config();
 
@@ -46,6 +47,11 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true
+  }
 };
 
 export default config;
