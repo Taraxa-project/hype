@@ -1,21 +1,15 @@
-import {
-  CardDescription,
-  DataContainer,
-  DataHeader,
-  DataValue,
-} from '../../../components/card/Card.styled';
+import { DataContainer, DataHeader, DataValue } from '../../../components/card/Card.styled';
 import {
   ModalAction,
   ModalContainer,
 } from '../../../components/modals/modal-container/ModalContainer';
 import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTitle';
 import { useCardDetailsEffects } from './CardDetails.effects';
-import { Account, BlockiesContainer } from './CardDetails.styled';
+import { Account, BlockiesContainer, CardDescription, CardSubheader } from './CardDetails.styled';
 import Blockies from 'react-blockies';
 import useWallet from '../../../hooks/useWallet';
 import { monthDiff } from '../../../utils';
 import { useToken } from 'wagmi';
-import Box from 'src/components/styles/Box';
 
 export const CardDetails = () => {
   const {
@@ -57,11 +51,12 @@ export const CardDetails = () => {
       closeModal={closeModal}
       modalAction={modalAction}
     >
-      <Box display="flex">Pool creator:</Box>
+      <CardSubheader>Pool creator:</CardSubheader>
       <BlockiesContainer>
         <Blockies seed="Jeremy" />
         <Account>{creatorAddress}</Account>
       </BlockiesContainer>
+      <CardSubheader>Description:</CardSubheader>
       <CardDescription>{description}</CardDescription>
       {pool && poolToken && (
         <DataContainer>

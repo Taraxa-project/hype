@@ -36,8 +36,10 @@ export const ModalContainer: FC<ModalContainerProps> = ({
         <>
           <BackgroundHover show={open} />
           <StyledModal>
-            <ModalTitle {...titleProps} />
-            {children}
+            <div>
+              <ModalTitle {...titleProps} />
+              {children}
+            </div>
             <Box
               display="flex"
               flexDirection="column"
@@ -58,7 +60,12 @@ export const ModalContainer: FC<ModalContainerProps> = ({
                 </Button>
               )}
               {showCancel && (
-                <Button variant="secondary" style={{ width: '100%' }} autoFocus onClick={closeModal}>
+                <Button
+                  variant="secondary"
+                  style={{ width: '100%' }}
+                  autoFocus
+                  onClick={closeModal}
+                >
                   Cancel
                 </Button>
               )}

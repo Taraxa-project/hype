@@ -15,9 +15,33 @@ export const Account = styled.div`
 export const BlockiesContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 1rem;
+  padding-right: 3rem;
+  margin-bottom: 2rem;
+  padding-left: 0.5rem;
   @media (max-width: 768px) {
     flex-direction: row;
   }
-  margin-top: 1rem;
-  padding-right: 3rem;
+
+  & > canvas {
+    border-radius: 50%;
+  }
+`;
+
+export const CardSubheader = styled.div`
+  display: flex;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: ${({ theme }) => theme.colors.greys[7]};
+  font-size: 0.875rem;
+`;
+
+export const CardDescription = styled.div`
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #595959;
+  width: 100%;
+  margin-bottom: 2rem;
+  display: block;
+  overflow: hidden;
 `;
