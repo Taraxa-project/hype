@@ -71,7 +71,7 @@ const cards: HypeCards = {
   },
 };
 
-const theme: HypeThemeType = {
+export const theme: HypeThemeType = {
   colors,
   buttons,
   cards,
