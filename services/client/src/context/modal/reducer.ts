@@ -6,6 +6,7 @@ export enum ModalsActionsEnum {
   SHOW_METAMASK_INFO = 'SHOW_METAMASK_INFO',
   SHOW_TELEGRAM_INFO = 'SHOW_TELEGRAM_INFO',
   SHOW_DISCONNECT_TELEGRAM = 'SHOW_DISCONNECT_TELEGRAM',
+  SHOW_NOTIFICATION = 'SHOW_NOTIFICATION',
 }
 
 export const modalsInitialState: IModalsStore = {
@@ -47,6 +48,11 @@ export const modalsInitialState: IModalsStore = {
     username: null,
     onDisconnect: () => {},
   },
+  notification: {
+    open: false,
+    type: null,
+    message: null,
+  },
 };
 
 export const hypeModalsReducer = (
@@ -64,5 +70,7 @@ export const hypeModalsReducer = (
       return { ...state, telegramInfo: action.payload };
     case ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM:
       return { ...state, disconnectTelegram: action.payload };
+    case ModalsActionsEnum.SHOW_NOTIFICATION:
+      return { ...state, notification: action.payload };
   }
 };

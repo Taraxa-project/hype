@@ -18,3 +18,10 @@ export enum OrderDirection {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+export enum NotificationType {
+  INFO = 'Info',
+  SUCCESS = 'Success',
+  ERROR = 'Error',
+}
+
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger';

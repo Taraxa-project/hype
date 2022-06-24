@@ -1,0 +1,51 @@
+name: Common issue
+description: Create a common issue
+title: "[Issue]: "
+labels: ["common", "issue"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Generic issue template
+  - type: input
+    id: title
+    attributes:
+      label: Issue Title
+      description: Short description about what the issue is about
+      placeholder: ex. this issue woul help users in...
+    validations:
+      required: false
+  - type: textarea
+    id: user_story
+    attributes:
+      label: User story
+      description: The user story that describes the utility of the feature
+      placeholder: Tell us what the feature is good for
+      value: "As a user, I want to be able to fraw blue lines on the sky."
+    validations:
+      required: true
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of Done
+      description: Add the requirements that need to be fulfilled in order to complete the issue in the form of a checkbox list.
+      placeholder: Tell us what needs to be done in order to complete this issue
+      value: "- [ ] Font needs to be 16px. - [ ] Homepage container needs to have 100% width."
+    validations:
+      required: true
+  - type: textarea
+    id: tips
+    attributes:
+      label: Useful resources
+      description: Please copy and paste any relevant resources or code. This will be auto-formatted as code, no backticks needed.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
