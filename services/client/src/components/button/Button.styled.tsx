@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
+import { ButtonVariant } from '../../utils';
 
 export const StyledButton = styled.button<{
-  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  variant?: ButtonVariant;
   size?: 'small' | 'regular' | 'full-width';
   theme?: HypeThemeType;
 }>`

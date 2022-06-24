@@ -1,4 +1,5 @@
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import { NotificationType } from '../../utils';
 
 // REMOVE THIS AFTER USING MODALS
 
@@ -58,6 +59,14 @@ export const ExampleCallModals = () => {
         onDisconnect: () => {
           console.log('Disconnected');
         },
+      },
+    });
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      payload: {
+        open: true,
+        type: NotificationType.ERROR,
+        message: 'Username already registered',
       },
     });
   }
