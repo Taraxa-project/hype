@@ -5,5 +5,10 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@taraxa-hype/pool": "<rootDir>/../src/modules/pool",
+    "@taraxa-hype/auth": "<rootDir>/../src/modules/auth",
+    "@taraxa-hype/config": "<rootDir>/../config"
   }
 }
