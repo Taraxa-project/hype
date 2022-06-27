@@ -35,11 +35,9 @@ export const CardDescription = styled.span`
   font-size: 0.875rem;
   color: #595959;
   width: 100%;
-  max-height: 2.5rem;
+  max-height: 3rem;
   margin-bottom: 1.5rem;
   display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export const DataHeader = styled.span`

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { HypePool } from '../../models';
-import { monthDiff } from '../../utils';
+import { monthDiff, shortenText } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -37,7 +37,7 @@ const Card = ({ children, variant, ...props }: CardProps) => {
       <Container>
         <div>
           <CardTitle>{title}</CardTitle>
-          <CardDescription key={`${description}-${Date.now()}`}>{description}</CardDescription>
+          <CardDescription key={`${description}-${Date.now()}`}>{shortenText(description)}</CardDescription>
           {pool && poolToken && (
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
