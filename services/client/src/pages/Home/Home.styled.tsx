@@ -63,10 +63,11 @@ export const IntroContainer = styled.div`
 export const VideoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: right;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
   }
-  align-items: right;
 `;
 
 export const VideoPlayer = styled(ReactPlayer)`
@@ -104,12 +105,10 @@ export const NotFoundContainer = styled.div`
 `;
 
 export const NotFoundText = styled.span`
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 0.8rem;
   line-height: 1.5rem;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -122,7 +121,6 @@ export const DescriptionContainer = styled.span`
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.25rem;
-
   letter-spacing: -0.02em;
   text-align: left;
   color: #595959;
@@ -143,11 +141,9 @@ export const TitleText = styled.h3`
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.625rem;
-
   display: flex;
   align-items: center;
   letter-spacing: -0.02em;
-
   color: #000000;
 `;
 

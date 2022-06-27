@@ -8,7 +8,6 @@ export const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-
   width: 100%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
@@ -96,7 +95,7 @@ export const Step = styled.div`
     left: 1rem;
     height: calc(
       100% - 0.5rem
-    ); // We need to substract 0.25 from the top and bottom. So 0.5 rem total
+    ); /* We need to substract 0.25 from the top and bottom. So 0.5 rem total */
     width: 0.063rem;
     background-color: #dadada;
   }
