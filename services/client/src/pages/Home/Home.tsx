@@ -7,7 +7,6 @@ import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
 import {
-  PageContainer,
   HeroContainer,
   IntroContainer,
   TitleText,
@@ -16,13 +15,15 @@ import {
   PoolContainer,
   NotFoundContainer,
   NotFoundText,
+  VideoPlayer,
+  LoadingContainer,
 } from './Home.styled';
 
 export const Home = () => {
   const { setTitleFilter, addMoreCards, filteredCards, cardData } = useHomeEffects();
 
   return (
-    <PageContainer>
+    <>
       <HeroContainer>
         <IntroContainer>
           <HypeIconBig />
@@ -33,22 +34,16 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <iframe
-            src="https://www.youtube.com/embed/E7wJTI-1dvQ"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />{' '}
+          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>
+        <TitleText>Active Hype Pools</TitleText>
         <Input
           Icon={<SearchIcon />}
           placeholder="Search for hype pools..."
           onChange={(e) => setTitleFilter(e.target.value)}
         />
-        <TitleText>Active Hype Pools</TitleText>
       </PoolContainer>
       {filteredCards.length > 0 ? (
         <InfiniteScroll
@@ -57,9 +52,9 @@ export const Home = () => {
           next={addMoreCards}
           hasMore={true}
           loader={
-            <footer style={{ position: 'absolute', bottom: '0.5rem' }}>
+            <LoadingContainer>
               <LoadingSpinner />
-            </footer>
+            </LoadingContainer>
           }
           scrollableTarget="scrollableDiv"
         >
@@ -72,6 +67,6 @@ export const Home = () => {
           </NotFoundText>
         </NotFoundContainer>
       )}
-    </PageContainer>
+    </>
   );
 };

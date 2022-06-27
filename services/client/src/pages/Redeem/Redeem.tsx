@@ -34,7 +34,7 @@ export const Redeem = () => {
         xl: isConnected ? 'column' : 'row',
       }}
       gridGap="1.5rem"
-      px={{ sm: '1rem', md: '4rem', xl: '12.5rem' }}
+      px={{ sm: '1rem', md: '2rem', xl: '2rem' }}
       justifyContent="center"
     >
       <Box
@@ -125,7 +125,7 @@ export const Redeem = () => {
           </Box>
         ) : (
           <Box mt="2.4rem">
-           <ConnectWalletBtn />
+            <ConnectWalletBtn />
           </Box>
         )}
         {isConnected && showHistory && (

@@ -45,7 +45,7 @@ export const Profile = () => {
       />
       <CardContainer
         show={3}
-        title={`Joined Pools (${joinedPools?.length})`}
+        title={`My rewards by pool (${joinedPools?.length})`}
         cards={joinedPools}
         emptyMessage="Looks like you haven’t joined any pools yet..."
         target="/joinedPools"

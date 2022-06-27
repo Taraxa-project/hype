@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
@@ -14,11 +14,16 @@ export interface SidebarMenuLinkProps extends React.HTMLProps<HTMLLIElement> {
   selected?: boolean;
 }
 
+export interface AddressContainerProps extends React.HTMLProps<HTMLSpanElement> {
+  address: string;
+  shortAddress: string;
+}
+
 export enum HeaderValues {
   HypeFarming = 'Hype Farming',
   HypePool = '+Hype Pool',
   Redeem = 'Redeem',
-  Profile= 'User Profile',
+  Profile = 'User Profile',
   None = 'none',
 }
 
@@ -43,17 +48,25 @@ const headerValues: HeaderLink[] = [
   {
     route: '/profile',
     name: HeaderValues.Profile,
-  }
+  },
 ];
 
 export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
+  let navigate = useNavigate();
+  let location = useLocation();
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<HeaderValues>(HeaderValues.HypeFarming);
-  let navigate = useNavigate();
+  const [selected, setSelected] = useState<HeaderValues>(
+    headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
+  );
+
+  useEffect(() => {
+    setSelected(
+      headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
+    );
+  }, [location]);
 
   const onSelect = (e: HeaderLink) => {
-    setSelected(e.name as HeaderValues);
     navigate(e.route);
   };
 

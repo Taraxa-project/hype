@@ -10,19 +10,22 @@ export const StyledCard = styled.div<CustomStyledProps>`
   height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
-  border-radius: 1rem;  
-  background: #F1F1F1;
-  padding: 1%;
-  margin-top: 1rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 2rem;
+  border-radius: 1rem;
+  background: #f1f1f1;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1rem;
+  }
 `;
 
 export const CardTitle = styled.h3`
   font-weight: 700;
   font-size: 0.875rem;
   color: #292929;
+  margin-bottom: 1.25rem;
   width: 100%;
 `;
 
@@ -31,36 +34,42 @@ export const CardDescription = styled.span`
   font-size: 0.875rem;
   color: #595959;
   width: 100%;
-  min-height: 2rem;
-  margin-bottom: 2%;
+  max-height: 2.5rem;
+  margin-bottom: 1.5rem;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+`;
+
+export const YourProfileTitle = styled.div`
+  display: flex;
+`;
+
+export const ConnectedAppsTitle = styled.span`
+  margin: 1.5rem 0;
 `;
 
 export const DataHeader = styled.span`
-  width: 50%;
-  align-items: left !important;
+  flex: 1 0 50%;
+  display: flex;
+  text-align: right;
   font-weight: 700;
+  line-height: 1.25rem;
 `;
 
 export const DataValue = styled.span<{ theme: HypeThemeType }>`
-  width: 50%;
-  align-items: left !important;
+  flex: 1 0 50%;
+  display: flex;
   font-weight: 400;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
+  justify-content: end;
 `;
 
 export const DataContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
 `;
 
 export const Container = styled.div`
@@ -68,6 +77,5 @@ export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
 `;
