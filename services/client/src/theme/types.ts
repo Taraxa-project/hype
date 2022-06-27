@@ -10,22 +10,18 @@ export interface HypeColors {
   greys: string[];
 }
 
-type ButtonColor = {
-  color: string;
-  backgroundColor: string;
-  hover?: string;
-};
-
-type CardColor = {
+type ColorProps = {
   color: string;
   background: string;
+  hover?: string;
+  border?: string;
 };
 
 export interface HypeButtons {
-  primary: ButtonColor;
-  secondary: ButtonColor;
-  success: ButtonColor;
-  danger: ButtonColor;
+  primary: ColorProps;
+  secondary: ColorProps;
+  success: ColorProps;
+  danger: ColorProps;
 }
 
 export interface HypeFonts {
@@ -34,8 +30,8 @@ export interface HypeFonts {
 }
 
 export interface HypeCards {
-  lightCard: CardColor;
-  darkCard: CardColor;
+  lightCard: ColorProps;
+  darkCard: ColorProps;
 }
 
 export interface HypeBreakpoints {
@@ -43,6 +39,12 @@ export interface HypeBreakpoints {
   md: string;
   lg: string;
   xl: string;
+}
+
+export interface HypeInput {
+  base: ColorProps;
+  disabled: ColorProps;
+  hover: ColorProps;
 }
 
 export interface HypeThemeType {
@@ -53,4 +55,5 @@ export interface HypeThemeType {
   fontSizes: number[];
   space: number[];
   breakpoints: HypeBreakpoints;
+  input: HypeInput;
 }

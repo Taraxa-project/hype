@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
 
 interface StyledInputProps {
   Icon?: React.ReactNode;
+  theme?: HypeThemeType;
 }
 
 export const StyledSearchIcon = styled.div`
@@ -14,9 +16,9 @@ export const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
 
   border-radius: 0.75rem;
-  border: 0.125rem solid #e0e0e0;
-  background: #fafafa;
-  color: #595959;
+  border: ${({ theme }) => `0.125rem solid ${theme.input.base.border}`};
+  background: ${({ theme }) => theme.input.base.background};
+  color: ${({ theme }) => theme.input.base.color};
   font-size: 1rem;
   width: 100%;
   min-height: 2.5rem;
@@ -26,13 +28,13 @@ export const StyledInput = styled.input<StyledInputProps>`
   :focus,
   :active,
   :hover {
-    border: 0.125rem solid #eb8f4c;
-    background: #f7f7f7;
+    border: ${({ theme }) => `0.125rem solid ${theme.input.hover.border}`};
+    background: ${({ theme }) => theme.input.hover.background};
   }
 
   :disabled {
-    background: #f1f1f1;
-    border: 0.063rem solid #e0e0e0;
-    color: #e0e0e0;
+    background: ${({ theme }) => theme.input.disabled.background};
+    border: ${({ theme }) => `0.063rem solid ${theme.input.disabled.border}`};
+    color: ${({ theme }) => theme.input.disabled.color};
   }
 `;

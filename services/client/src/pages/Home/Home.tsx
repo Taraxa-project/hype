@@ -1,8 +1,6 @@
 import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
 import Input from '../../components/input/Input';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import './Home.css';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
@@ -15,12 +13,14 @@ import {
   PoolContainer,
   NotFoundContainer,
   NotFoundText,
+  CardContainer,
   VideoPlayer,
-  LoadingContainer,
 } from './Home.styled';
+import Card from '../../components/card/Card';
+import Box from '../../components/styles/Box';
 
 export const Home = () => {
-  const { setTitleFilter, addMoreCards, filteredCards, cardData } = useHomeEffects();
+  const { debouncedResults, data, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
     <>
@@ -34,7 +34,7 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" />
+          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" controls={true} />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>
@@ -42,25 +42,35 @@ export const Home = () => {
         <Input
           Icon={<SearchIcon />}
           placeholder="Search for hype pools..."
-          onChange={(e) => setTitleFilter(e.target.value)}
+          onChange={debouncedResults}
         />
       </PoolContainer>
-      {filteredCards.length > 0 ? (
-        <InfiniteScroll
-          className="cardContainer"
-          dataLength={cardData.length}
-          next={addMoreCards}
-          hasMore={true}
-          loader={
-            <LoadingContainer>
-              <LoadingSpinner />
-            </LoadingContainer>
-          }
-          scrollableTarget="scrollableDiv"
-        >
-          {filteredCards}
-        </InfiniteScroll>
-      ) : (
+      <CardContainer>
+        {data?.pages.map(
+          (data, i) =>
+            data && (
+              <Card
+                key={`${data.title}-${i}`}
+                projectName={data.projectName}
+                title={data.title}
+                pool={data.pool}
+                description={data.description}
+                rewardsAddress={data.rewardsAddress}
+                creatorAddress={data.creatorAddress}
+                minReward={data.minReward}
+                startDate={data.startDate}
+                endDate={data.endDate}
+                onClick={() => onClick(data)}
+              />
+            ),
+        )}
+      </CardContainer>
+      {isFetchingNextPage && (
+        <Box display="flex" justifyContent="center" alignItems="center" my={3}>
+          <LoadingSpinner />
+        </Box>
+      )}
+      {(!data || data?.pages?.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
             <NotFoundIcon /> Nothing found...

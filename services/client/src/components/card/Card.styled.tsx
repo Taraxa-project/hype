@@ -3,15 +3,16 @@ import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
+  theme?: HypeThemeType;
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${(props) => (props.variant === 'mobile' ? 'none' : '23rem')};
-  height: ${(props) => (props.variant === 'mobile' ? '21.938rem' : '24.438rem')};
+  width: ${({variant}) => (variant === 'mobile' ? 'auto' : '23rem')};
+  height: ${({variant}) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;
-  background: #f1f1f1;
+  background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-sizing: border-box;
@@ -39,14 +40,6 @@ export const CardDescription = styled.span`
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-export const YourProfileTitle = styled.div`
-  display: flex;
-`;
-
-export const ConnectedAppsTitle = styled.span`
-  margin: 1.5rem 0;
 `;
 
 export const DataHeader = styled.span`
