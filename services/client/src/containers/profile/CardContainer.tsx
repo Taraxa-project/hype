@@ -18,8 +18,8 @@ export const CardContainer = (props: {
 
   return (
     <Box
-      p="1rem"
-      borderRadius="1rem"
+      p="2rem"
+      borderRadius="2rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-evenly"
@@ -47,6 +47,7 @@ export const CardContainer = (props: {
         overflowY="auto"
         overflowX="hidden"
         height="29.5rem"
+        mt="1rem"
       >
         {props.cards.length > 0 ? (
           props.cards.map((data, i) => (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import HamburgerMenuIcon from '../../assets/icons/HambugerMenu';
+import HamburgerMenuIcon from '../../assets/icons/HamburgerMenu';
 import { HypeIconSmall } from '../../assets/icons/HypeIcon';
 import { shortenAddress } from '../../utils/shortenAddress';
 import { ConnectWalletBtn } from '../connect-wallet-btn/ConnectWalletBtn';

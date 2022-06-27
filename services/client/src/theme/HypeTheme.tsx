@@ -9,6 +9,7 @@ import {
   HypeCards,
   HypeThemeType,
   HypeFonts,
+  HypeInput,
 } from './types';
 
 const breakpoints: HypeBreakpoints = {
@@ -33,36 +34,38 @@ const colors: HypeColors = {
     '#B1B1B1',
     '#2F2F2F',
     '#808080',
-    '#ADADAD',
+    '#ADADAD', //5
     '#292929',
     '#595959',
     '#A6A6A6',
-    '#f7f7f7',
-    '#ECECEC',
+    '#e0e0e0',
+    '#ECECEC', //10
     '#787878',
     '#C2C2C2',
+    '#fafafa',
+    '#797979', // 14
   ],
 };
 
 const buttons: HypeButtons = {
   primary: {
     color: colors.white,
-    backgroundColor: colors.primary,
+    background: colors.primary,
     hover: LightenColor(colors.primary),
   },
   secondary: {
     color: colors.greys[7],
-    backgroundColor: colors.secondary,
+    background: colors.secondary,
     hover: LightenColor(colors.secondary),
   },
   success: {
     color: colors.white,
-    backgroundColor: colors.success,
+    background: colors.success,
     hover: LightenColor(colors.success),
   },
   danger: {
     color: colors.white,
-    backgroundColor: colors.danger,
+    background: colors.danger,
     hover: LightenColor(colors.danger),
   },
 };
@@ -83,6 +86,24 @@ const fonts: HypeFonts = {
   default: 'Inter',
 };
 
+const input: HypeInput = {
+  base: {
+    color:  '#595959',
+    background: colors.greys[13],
+    border: '#e0e0e0'
+  },
+  hover: {
+    color:  '#595959',
+    background: colors.greys[13],
+    border: '#eb8f4c'
+  },
+  disabled: {
+    color:  '#e0e0e0',
+    background: colors.greys[0],
+    border: '#e0e0e0'
+  }
+}
+
 export const theme: HypeThemeType = {
   colors,
   buttons,
@@ -94,6 +115,7 @@ export const theme: HypeThemeType = {
     0, 4, 8, 16, 32, 64, 128, 256,
   ],
   breakpoints,
+  input
 };
 
 type HypeThemeProps = {

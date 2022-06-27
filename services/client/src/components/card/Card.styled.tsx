@@ -42,14 +42,6 @@ export const CardDescription = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const YourProfileTitle = styled.div`
-  display: flex;
-`;
-
-export const ConnectedAppsTitle = styled.span`
-  margin: 1.5rem 0;
-`;
-
 export const DataHeader = styled.span`
   flex: 1 0 50%;
   display: flex;

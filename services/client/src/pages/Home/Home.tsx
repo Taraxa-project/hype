@@ -34,7 +34,7 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" />
+          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" controls={true} />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>

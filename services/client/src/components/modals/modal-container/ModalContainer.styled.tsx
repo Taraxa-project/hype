@@ -12,7 +12,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   width: auto;
   max-width: 500px !important;
   height: 60%;
-  background: ${({ theme }) => theme.colors.greys[9]};
+  background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
