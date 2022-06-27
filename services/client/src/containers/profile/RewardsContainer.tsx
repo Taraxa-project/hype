@@ -38,18 +38,20 @@ export const RewardsContainer = (props: RewardProps) => {
       >
         Redeem rewards
       </Heading>
-      <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
-        Total unredeemed
-      </Text>
-      <Heading
-        fontSize="2.25rem"
-        fontWeight="700"
-        lineHeight="2.75rem"
-        color="black"
-        letterSpacing="-0.02em"
-      >
-        {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
-      </Heading>
+      <Box display="flex" flexDirection="column" gridGap="0.5rem">
+        <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
+          Total unredeemed
+        </Text>
+        <Heading
+          fontSize="2.25rem"
+          fontWeight="700"
+          lineHeight="2.75rem"
+          color="black"
+          letterSpacing="-0.02em"
+        >
+          {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
+        </Heading>
+      </Box>
       <Button
         variant={
           isConnected && props.rewardAmount && props.rewardAmount > 0 ? 'primary' : 'secondary'
