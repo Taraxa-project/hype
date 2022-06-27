@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
+import ReactPlayer from 'react-player';
 
 export const CardContainer = styled.div<{ theme: HypeThemeType }>`
   position: relative;
@@ -9,10 +10,11 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
   justify-content: space-evenly;
   margin-top: 1rem;
   z-index: 1;
-  padding-bottom: 2rem;
+  padding: 0 2rem 2rem 2rem;
   margin-bottom: 1rem;
   overflow: auto;
-  
+  gap: 1rem;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: flex;
     flex-wrap: wrap;
@@ -22,9 +24,8 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
     margin-bottom: 3rem;
     overflow: auto;
     z-index: 1;
-    margin-right: 1rem;
-    margin-left: 1rem;
     position: relative;
+    gap: 1rem;
   }
 `;
 
@@ -40,13 +41,16 @@ export const PageContainer = styled.div`
 export const HeroContainer = styled.div`
   display: flex;
   flex-direction: row;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
   justify-content: space-between;
   margin-top: 3rem;
   padding-left: 3rem;
   padding-right: 3rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
+    margin-top: 2.5rem;
+    padding: 0 1.5rem;
+  }
 `;
 
 export const IntroContainer = styled.div`
@@ -59,18 +63,32 @@ export const IntroContainer = styled.div`
 export const VideoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
   }
   align-items: right;
 `;
 
+export const VideoPlayer = styled(ReactPlayer)`
+  width: 29.625rem;
+  height: 16.75rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 export const PoolContainer = styled.div`
   display: flex;
-  flex-direction: inherit;
-  margin-top: 3rem;
+  flex-direction: column;
+  margin-top: 2.5rem;
   padding-left: 3rem;
   padding-right: 3rem;
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+    padding: 0 1.5rem;
+  }
 `;
 
 export const NotFoundContainer = styled.div`
@@ -114,6 +132,11 @@ export const DescriptionContainer = styled.span`
   max-width: 15rem;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    max-width: unset;
+    margin-bottom: 2.625rem;
+  }
 `;
 
 export const TitleText = styled.h3`
@@ -126,4 +149,9 @@ export const TitleText = styled.h3`
   letter-spacing: -0.02em;
 
   color: #000000;
+`;
+
+export const LoadingContainer = styled.footer`
+  position: absolute;
+  bottom: 0;
 `;

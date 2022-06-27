@@ -42,6 +42,7 @@ export const CardContainer = (props: {
         flexDirection="row"
         flexWrap="wrap"
         justifyContent="space-evenly"
+        gridGap="1rem"
         backgroundColor={props.cards.length > 0 ? 'greys.1' : 'greys.0'}
         overflowY="auto"
         overflowX="hidden"

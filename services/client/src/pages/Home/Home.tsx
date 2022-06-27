@@ -5,7 +5,6 @@ import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
 import {
-  PageContainer,
   HeroContainer,
   IntroContainer,
   TitleText,
@@ -15,6 +14,7 @@ import {
   NotFoundContainer,
   NotFoundText,
   CardContainer,
+  VideoPlayer,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
@@ -23,7 +23,7 @@ export const Home = () => {
   const { debouncedResults, data, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
-    <PageContainer>
+    <>
       <HeroContainer>
         <IntroContainer>
           <HypeIconBig />
@@ -34,22 +34,16 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <iframe
-            src="https://www.youtube.com/embed/E7wJTI-1dvQ"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />{' '}
+          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>
+        <TitleText>Active Hype Pools</TitleText>
         <Input
           Icon={<SearchIcon />}
           placeholder="Search for hype pools..."
           onChange={debouncedResults}
         />
-        <TitleText>Active Hype Pools</TitleText>
       </PoolContainer>
       <CardContainer>
         {data?.pages.map(
@@ -83,6 +77,6 @@ export const Home = () => {
           </NotFoundText>
         </NotFoundContainer>
       )}
-    </PageContainer>
+    </>
   );
 };

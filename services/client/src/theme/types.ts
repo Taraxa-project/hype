@@ -28,6 +28,11 @@ export interface HypeButtons {
   danger: ButtonColor;
 }
 
+export interface HypeFonts {
+  default: string;
+  primary: string;
+}
+
 export interface HypeCards {
   lightCard: CardColor;
   darkCard: CardColor;
@@ -44,6 +49,7 @@ export interface HypeThemeType {
   colors: HypeColors;
   buttons: HypeButtons;
   cards: HypeCards;
+  fonts: HypeFonts;
   fontSizes: number[];
   space: number[];
   breakpoints: HypeBreakpoints;

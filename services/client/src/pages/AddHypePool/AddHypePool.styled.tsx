@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 
   width: 100%;
 
-  @media (max-width: 1280px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     padding: 1rem 2rem 2rem 2rem;
   }
 `;
@@ -19,20 +19,20 @@ export const Wrapper = styled.div`
 export const FormColumn = styled.div`
   max-width: 29rem;
 
-  @media (max-width: 1280px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 100%;
   }
 `;
 
 export const FormInput = styled(Input)`
-  @media (max-width: 1280px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 100%;
   }
 `;
 
 export const HowItWorksColumn = styled.div`
   max-width: 30.875rem;
-  @media (max-width: 1280px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
 `;

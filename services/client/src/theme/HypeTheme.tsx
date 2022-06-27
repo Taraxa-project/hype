@@ -2,12 +2,19 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../components/styles/Global';
 import { LightenColor } from './color-utils';
-import { HypeBreakpoints, HypeColors, HypeButtons, HypeCards, HypeThemeType } from './types';
+import {
+  HypeBreakpoints,
+  HypeColors,
+  HypeButtons,
+  HypeCards,
+  HypeThemeType,
+  HypeFonts,
+} from './types';
 
 const breakpoints: HypeBreakpoints = {
   sm: '600px',
   md: '900px',
-  lg: '1200px',
+  lg: '1316px',
   xl: '1536px',
 };
 
@@ -22,7 +29,7 @@ const colors: HypeColors = {
   danger: '#F7614A',
   greys: [
     '#F1F1F1',
-    '#FAFAFA',
+    '#F7F7F7',
     '#B1B1B1',
     '#2F2F2F',
     '#808080',
@@ -33,7 +40,7 @@ const colors: HypeColors = {
     '#f7f7f7',
     '#ECECEC',
     '#787878',
-    '#C2C2C2'
+    '#C2C2C2',
   ],
 };
 
@@ -41,22 +48,22 @@ const buttons: HypeButtons = {
   primary: {
     color: colors.white,
     backgroundColor: colors.primary,
-    hover: LightenColor(colors.primary)
+    hover: LightenColor(colors.primary),
   },
   secondary: {
     color: colors.greys[7],
     backgroundColor: colors.secondary,
-    hover: LightenColor(colors.secondary)
+    hover: LightenColor(colors.secondary),
   },
   success: {
     color: colors.white,
     backgroundColor: colors.success,
-    hover: LightenColor(colors.success)
+    hover: LightenColor(colors.success),
   },
   danger: {
     color: colors.white,
     backgroundColor: colors.danger,
-    hover: LightenColor(colors.danger)
+    hover: LightenColor(colors.danger),
   },
 };
 
@@ -71,10 +78,16 @@ const cards: HypeCards = {
   },
 };
 
+const fonts: HypeFonts = {
+  primary: 'Inter',
+  default: 'Inter',
+};
+
 export const theme: HypeThemeType = {
   colors,
   buttons,
   cards,
+  fonts,
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
   space: [
     // margin and padding

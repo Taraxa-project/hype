@@ -18,6 +18,7 @@ import {
   SidebarMenuLink,
   SidebarFooter,
   StyledHeader,
+  AddressContainer,
 } from './Header.styled';
 
 const Header = React.memo(
@@ -81,61 +82,62 @@ const Header = React.memo(
           </SidebarHover>
         )}
         <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
-          <div className="headerLeft">
-            <Link to="/">
-              <HypeIconSmall />
-            </Link>
-          </div>
+          <div>
+            <div className="headerLeft">
+              <Link to="/">
+                <HypeIconSmall />
+              </Link>
+            </div>
 
-          <div className="headerRight">
-            {variant === 'mobile' ? (
-              connected ? (
-                <>
-                  {' '}
-                  <Account className="margin-right">
-                    <GreenDot />
-                    {shortenAddress(account)}
-                  </Account>
+            <div className="headerRight">
+              {variant === 'mobile' ? (
+                connected ? (
+                  <>
+                    {' '}
+                    <Account className="margin-right">
+                      <GreenDot />
+                      {shortenAddress(account)}
+                    </Account>
+                    <MenuButton onClick={onMenuOpen}>
+                      <HamburgerMenuIcon />
+                    </MenuButton>
+                  </>
+                ) : (
                   <MenuButton onClick={onMenuOpen}>
                     <HamburgerMenuIcon />
                   </MenuButton>
-                </>
+                )
               ) : (
-                <MenuButton onClick={onMenuOpen}>
-                  <HamburgerMenuIcon />
-                </MenuButton>
-              )
-            ) : (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
-              >
-                {headerEntries.map((e: HeaderLink) =>
-                  e.name === selected ? (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
-                      {e.name}
-                      <p className="underline" />
-                    </span>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
+                >
+                  {headerEntries.map((e: HeaderLink) =>
+                    e.name === selected ? (
+                      <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
+                        {e.name}
+                        <p className="underline" />
+                      </span>
+                    ) : (
+                      <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
+                        {e.name}
+                      </span>
+                    ),
+                  )}
+                  {!connected ? (
+                    <ConnectWalletBtn size="regular" />
                   ) : (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
-                      {e.name}
-                    </span>
-                  ),
-                )}
-                {!connected ? (
-                  <ConnectWalletBtn size="regular" />
-                ) : (
-                  <Account>
-                    <GreenDot />
-                    {account}
-                  </Account>
-                )}
-              </Box>
-            )}
+                    <Account>
+                      <GreenDot />
+                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
+                    </Account>
+                  )}
+                </Box>
+              )}
+            </div>
           </div>
-          {children}
         </StyledHeader>
       </>
     );
