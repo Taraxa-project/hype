@@ -2,9 +2,6 @@ name: qa-hype
 region: sfo
 features:
   - enable-kata-build
-domains:
-  - domain: qa.hype.taraxa.io
-    type: PRIMARY
 envs:
   - key: DB_HOST
     scope: RUN_TIME
@@ -47,7 +44,7 @@ static_sites:
     envs:
       - key: REACT_APP_API_HOST
         scope: BUILD_TIME
-        value: https://qa.hype.taraxa.io/api
+        value: ${api.PUBLIC_URL}
     build_command: yarn workspace hype-client run build
     output_dir: services/client/build
     routes:
