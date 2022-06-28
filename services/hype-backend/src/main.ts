@@ -21,7 +21,6 @@ async function bootstrap() {
     origin: '*',
     exposedHeaders: ['Content-Type', 'Content-Range'],
   });
-  app.setGlobalPrefix('api');
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 

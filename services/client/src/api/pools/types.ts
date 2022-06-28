@@ -14,4 +14,4 @@ export interface PoolPaginate {
   total: number;
 }
 
-export const API = `${process.env.REACT_APP_API_HOST}/api`;
+export const API = `${process.env.REACT_APP_API_HOST}`;
