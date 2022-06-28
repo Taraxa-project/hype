@@ -22,18 +22,24 @@ const getEnvFilePath = () => {
 export const entities: Function[] = [HypePool];
 
 const HypeAppTypeOrmModule = () => {
+  let ssl = {};
+  if (process.env.DATABASE_CERT) {
+    ssl = {
+      rejectUnauthorized: false,
+      ca: process.env.DATABASE_CERT,
+    };
+  }
   return process.env.DATABASE_URL
     ? TypeOrmModule.forRoot({
+        ssl,
         type: 'postgres',
         url: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false,
-        },
         entities,
         autoLoadEntities: true,
         logging: ['info'],
       })
     : TypeOrmModule.forRoot({
+        ssl,
         type: 'postgres',
         host: process.env.DB_HOST || 'localhost',
         port: Number(process.env.DB_PORT) || 5432,
