@@ -10,7 +10,7 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
   justify-content: space-evenly;
   margin-top: 1rem;
   z-index: 1;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 2rem 2rem;
   margin-bottom: 1rem;
   overflow: auto;
   gap: 1rem;
@@ -95,7 +95,7 @@ export const PoolContainer = styled.div`
 
 export const NotFoundContainer = styled.div`
   min-height: 12rem;
-  margin: 2rem 3rem 2rem;
+  margin: 2rem 3rem;
   background: #f1f1f1;
   border-radius: 1rem;
   display: flex;
@@ -114,7 +114,6 @@ export const NotFoundText = styled.span`
   flex-direction: row;
   align-items: center;
   letter-spacing: -0.03em;
-
   color: #a6a6a6;
 `;
 

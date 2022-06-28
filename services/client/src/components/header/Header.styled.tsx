@@ -125,6 +125,7 @@ export const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
   padding: 1.25rem 3rem;
   font-weight: ${(props) => (props.selected ? '700' : '400')};
   color: ${(props) => (props.selected ? '#292929' : '#adadad')};
+
   ::before {
     position: absolute;
     left: 0;

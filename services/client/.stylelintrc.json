@@ -22,7 +22,9 @@
           true,
           {"ignoreShorthands": ["/flex/"]}
         ],
-        "no-eol-whitespace": null
+        "no-eol-whitespace": null,
+        "alpha-value-notation": "number",
+        "color-function-notation": null
       }
     }
   ]
