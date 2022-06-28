@@ -63,7 +63,6 @@ export const InfoCard = styled.div`
   background-color: #f1f1f1;
   border-radius: 1rem;
   padding: 0.875rem 1rem;
-  /* hype_neutral/700 */
   color: #787878;
   font-size: 0.875rem;
   line-height: 1.25rem;

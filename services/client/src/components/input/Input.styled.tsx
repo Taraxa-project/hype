@@ -14,7 +14,6 @@ export const StyledSearchIcon = styled.div`
 
 export const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
-
   border-radius: 0.75rem;
   border: ${({ theme }) => `0.125rem solid ${theme.input.base.border}`};
   background: ${({ theme }) => theme.input.base.background};
@@ -25,6 +24,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   text-align: left;
   padding: 0.625rem;
   padding-left: ${({ icon }) => (icon ? '3rem;' : '')};
+
   :focus,
   :active,
   :hover {

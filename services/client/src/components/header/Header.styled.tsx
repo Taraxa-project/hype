@@ -7,7 +7,6 @@ import {
 } from './Header.effects';
 
 export const StyledHeader = styled.header<CustomStyledProps>`
-  font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   flex-direction: row;

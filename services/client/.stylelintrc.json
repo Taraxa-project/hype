@@ -21,7 +21,8 @@
         "declaration-block-no-redundant-longhand-properties": [
           true,
           {"ignoreShorthands": ["/flex/"]}
-        ]
+        ],
+        "no-eol-whitespace": null
       }
     }
   ]

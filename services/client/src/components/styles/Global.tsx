@@ -3,7 +3,7 @@ import { HypeThemeType } from '../../theme';
 
 const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   html {
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     font-style: normal;
     font-size: 1rem;
   }
@@ -20,9 +20,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   }
 
   .datePicker input {
-    width: 100% !important;
     box-sizing: border-box;
-
     border-radius: 0.75rem;
     border: 0.125rem solid #e0e0e0;
     background: #fafafa;
@@ -32,6 +30,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
     min-height: 2.5rem;
     text-align: left;
     padding: 0.625rem;
+
     :focus,
     :active,
     :hover {

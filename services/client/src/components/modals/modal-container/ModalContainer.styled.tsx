@@ -19,6 +19,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   align-items: left;
   justify-content: space-between;
   padding: 2rem;
+
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     min-width: 400px;
   }
