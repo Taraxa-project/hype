@@ -3,7 +3,7 @@ import { HypeThemeType } from '../../theme';
 
 const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   html {
-    font-family: 'Inter';
+    font-family: Inter;
     font-style: normal;
     font-size: 1rem;
   }
@@ -16,8 +16,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
   }
 
   code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
   .datePicker input {

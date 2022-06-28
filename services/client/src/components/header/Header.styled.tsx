@@ -32,21 +32,25 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     display: flex;
     align-items: left;
   }
+
   .headerRight {
     flex: 0 1 auto;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
   }
+
   .margin-right {
     margin-right: 2rem;
   }
+
   .selected {
     font-weight: 700;
     font-size: 1rem;
     color: #292929;
     cursor: pointer;
   }
+
   .underline {
     background: #dda25d;
     min-height: 8px;
@@ -55,6 +59,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     margin-bottom: -25px;
     margin-top: 10px;
   }
+
   span {
     padding-top: 0.3rem;
     font-weight: 400;
@@ -66,6 +71,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     cursor: pointer;
     text-align: center;
     color: #adadad;
+
     :active {
       font-weight: 700;
       font-size: 1rem;

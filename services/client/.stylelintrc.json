@@ -9,9 +9,10 @@
       "files": ["**/*.tsx"],
       "customSyntax": "@stylelint/postcss-css-in-js",
       "rules": {
-        "no-empty-first-line": false,
+        "no-empty-first-line": null,
         "media-feature-range-operator-space-before": null,
         "media-feature-range-operator-space-after": null,
+        "color-hex-length": null,
         "function-no-unknown": [
           true, {
           "ignoreFunctions": ["${"]

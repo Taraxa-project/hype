@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 interface StyledInputProps {
-  Icon?: React.ReactNode;
+  icon?: React.ReactNode;
   theme?: HypeThemeType;
 }
 
@@ -24,7 +24,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   min-height: 2.5rem;
   text-align: left;
   padding: 0.625rem;
-  padding-left: ${({ Icon }) => (Icon ? '3rem;' : '')};
+  padding-left: ${({ icon }) => (icon ? '3rem;' : '')};
   :focus,
   :active,
   :hover {
