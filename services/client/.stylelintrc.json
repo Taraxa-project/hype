@@ -24,7 +24,9 @@
         ],
         "no-eol-whitespace": null,
         "alpha-value-notation": "number",
-        "color-function-notation": null
+        "color-function-notation": null,
+        "declaration-colon-newline-after": null,
+        "declaration-empty-line-before": null
       }
     }
   ]

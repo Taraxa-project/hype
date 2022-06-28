@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   width: 100%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: 1rem 2rem 2rem 2rem;
+    padding: 1rem 2rem 2rem;
   }
 `;
 
@@ -31,6 +31,7 @@ export const FormInput = styled(Input)`
 
 export const HowItWorksColumn = styled.div`
   max-width: 30.875rem;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
