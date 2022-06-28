@@ -35,6 +35,7 @@ const HypeAppTypeOrmModule = () => {
         type: 'postgres',
         url: process.env.DATABASE_URL,
         entities,
+        synchronize: !!process.env.TYPEORM_SYNC,
         autoLoadEntities: true,
         logging: ['info'],
       })
@@ -47,7 +48,7 @@ const HypeAppTypeOrmModule = () => {
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_DATABASE || 'hypepool',
         entities,
-        synchronize: false,
+        synchronize: !!process.env.TYPEORM_SYNC,
         autoLoadEntities: true,
         logging: ['info'],
       });
