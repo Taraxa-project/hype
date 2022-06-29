@@ -1,7 +1,5 @@
 name: qa-hype
 region: sfo
-features:
-  - enable-kata-build
 envs:
   - key: DB_HOST
     scope: RUN_TIME
@@ -27,12 +25,16 @@ envs:
     scope: RUN_TIME
     type: SECRET
     value: ${db.CA_CERT}
+domains:
+  - domain: qa.hype.taraxa.io
+    type: PRIMARY
+    zone: qa.hype.taraxa.io
 databases:
   - name: db
     engine: PG
     num_nodes: 1
     size: basic-xxs
-    version: '12'
+    version: "12"
 static_sites:
   - name: frontend
     github:
@@ -60,10 +62,10 @@ services:
     envs:
       - key: SERVER_PORT
         scope: RUN_TIME
-        value: '3000'
+        value: "3000"
       - key: TYPEORM_SYNC
         scope: RUN_TIME
-        value: 'true'
+        value: "true"
       - key: AUTH_SECRET
         scope: RUN_TIME
         type: SECRET
