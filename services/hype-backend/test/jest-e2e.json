@@ -9,6 +9,7 @@
   "moduleNameMapper": {
     "@taraxa-hype/pool": "<rootDir>/../src/modules/pool",
     "@taraxa-hype/auth": "<rootDir>/../src/modules/auth",
+    "@taraxa-hype/blockchain": "<rootDir>/../src/modules/blockchain",
     "@taraxa-hype/config": "<rootDir>/../config"
   }
 }

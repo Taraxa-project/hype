@@ -38,6 +38,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
+    "ethers": "^5.6.9",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -93,6 +94,7 @@
   "moduleNameMapper": {
     "@taraxa-hype/auth": "<rootDir>/src/modules/auth",
     "@taraxa-hype/pool": "<rootDir>/src/modules/pool",
+    "@taraxa-hype/blockchain": "<rootDir>/src/modules/blockchain",
     "@taraxa-hype/config": "<rootDir>/config"
   }
 }
