@@ -124,12 +124,8 @@ export const DescriptionContainer = styled.span`
   letter-spacing: -0.02em;
   text-align: left;
   color: #595959;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  max-width: 15rem;
+  max-width: 19.5rem;
   overflow: hidden;
-  text-overflow: ellipsis;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: unset;

@@ -19,7 +19,7 @@ const GlobalStyles = createGlobalStyle<{ theme: HypeThemeType }>`
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
-  .datePicker input {
+  .date-picker input {
     box-sizing: border-box;
     border-radius: 0.75rem;
     border: 0.125rem solid #e0e0e0;

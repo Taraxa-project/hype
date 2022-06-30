@@ -26,13 +26,13 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     }
   }
 
-  .headerLeft {
+  .header-left {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
   }
 
-  .headerRight {
+  .header-right {
     flex: 0 1 auto;
     display: flex;
     align-items: right;
