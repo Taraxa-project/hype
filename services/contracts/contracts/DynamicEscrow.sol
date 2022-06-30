@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
+// SPDX-License-Identifier: UNLICENSED
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
@@ -34,36 +34,46 @@ contract DynamicEscrow is
     using SafeMathUpgradeable for uint256;
     using AddressUpgradeable for address payable;
     using CountersUpgradeable for CountersUpgradeable.Counter;
-    event Deposited(
-        address indexed spender,
-        uint256 weiAmount,
-        CountersUpgradeable.Counter poolId
-    );
+    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
     event Withdrawn(
         address indexed receiver,
         uint256 weiAmount,
-        CountersUpgradeable.Counter poolId
+        uint256 poolId
     );
-
+    event RewardCredited(
+        address indexed receiver,
+        uint256 weiAmount,
+        uint256 poolId
+    );
     struct DynamicDeposit {
         uint256 weiAmount;
         address tokenAddress;
-        CountersUpgradeable.Counter poolId;
+        uint256 poolId;
     }
 
     struct DepositIndex {
         address payee;
-        CountersUpgradeable.Counter poolId;
+        uint256 poolId;
     }
 
     modifier onlyRewarder() {
-        require(msg.sender == _rewarder);
+        require(msg.sender == _rewarder, "OnlyRewarder");
         _;
     }
 
-    address _rewarder;
+    address private _rewarder;
     mapping(bytes => DynamicDeposit) private _deposits;
-    mapping(address => uint256) private _accruedRewards;
+
+    /* @dev Rewards introduce the notion of reward pools. Reward pools are
+     * defined by their IDs as integers and every reward accrued must be associated
+     * with a reward pool. The reward pool ID is used to identify the reward itself
+     * and can be used throughout multiple application.*/
+    mapping(bytes => uint256) private _accruedRewards;
+
+    /* @dev Read the configured rewarder address. */
+    function getRewarder() public view returns (address) {
+        return _rewarder;
+    }
 
     /*
      * @dev Read Deposits to the escrow.
@@ -76,7 +86,7 @@ contract DynamicEscrow is
         view
         returns (DynamicDeposit memory)
     {
-        return _deposits[abi.encode(DepositIndex(payee, CountersUpgradeable.Counter(poolId)))];
+        return _deposits[abi.encode(DepositIndex(payee, poolId))];
     }
 
     /*
@@ -84,8 +94,12 @@ contract DynamicEscrow is
      * @param payee The payee of the reward.
      * @return The accrued rewards for the payee.
      */
-    function accruedRewardsOf(address payee) public view returns (uint256) {
-        return _accruedRewards[payee];
+    function accruedRewardsOf(address payee, uint256 poolId)
+        public
+        view
+        returns (uint256)
+    {
+        return _accruedRewards[abi.encode(DepositIndex(payee, poolId))];
     }
 
     /*
@@ -94,11 +108,15 @@ contract DynamicEscrow is
      * @param weiAmount The amount of wei to deposit.
      * modifier onlyRewarder Only the rewarder can call this function.
      */
-    function accrueRewardFor(address payee, uint256 amount)
-        public
-        onlyRewarder
-    {
-        _accruedRewards[payee] += amount;
+    function accrueRewardFor(
+        address payee,
+        uint256 poolId,
+        uint256 amount
+    ) public onlyRewarder nonReentrant {
+        bytes memory index = abi.encode(DepositIndex(payee, poolId));
+        _accruedRewards[index] += amount;
+        require(_accruedRewards[index] >= amount, "AccruedRewardOverflow");
+        emit RewardCredited(payee, amount, poolId);
     }
 
     /*
@@ -111,17 +129,18 @@ contract DynamicEscrow is
         address receiver,
         address tokenAddress,
         uint256 poolId
-    ) public nonReentrant() {
-        require(_accruedRewards[receiver] >= 0);
-        uint256 _amount = _accruedRewards[receiver];
-        _accruedRewards[receiver] = 0;
+    ) public nonReentrant {
+        bytes memory index = abi.encode(DepositIndex(msg.sender, poolId));
+        require(_accruedRewards[index] > 0, "Not enough accrued rewards");
+        uint256 _amount = _accruedRewards[index];
+        _accruedRewards[index] = 0;
         if (tokenAddress != address(0)) {
             IERC20Upgradeable token = ERC20Upgradeable(tokenAddress);
-            token.transfer(receiver, _accruedRewards[receiver]);
+            token.safeTransfer(receiver, _amount);
         } else {
             payable(address(this)).sendValue(_amount);
         }
-        emit Withdrawn(receiver, _amount, CountersUpgradeable.Counter(poolId));
+        emit Withdrawn(receiver, _amount, poolId);
     }
 
     /**
@@ -138,17 +157,22 @@ contract DynamicEscrow is
         uint256 poolId,
         uint256 amount,
         address tokenAddress
-    ) public payable {
+    ) public payable nonReentrant {
         if (tokenAddress != address(0)) {
             IERC20Upgradeable token = ERC20Upgradeable(tokenAddress);
             uint256 balance = token.balanceOf(spender);
             require(balance >= amount, "Insufficient balance");
             token.safeTransferFrom(spender, address(this), amount);
+        } else {
+            require(msg.value == amount, "Invalid amount");
         }
-        CountersUpgradeable.Counter memory _id = CountersUpgradeable.Counter(poolId);
-        DynamicDeposit memory depo = DynamicDeposit(amount, spender, _id);
-        _deposits[abi.encode(DepositIndex(spender, _id))] = depo;
-        emit Deposited(spender, amount, _id);
+        DynamicDeposit memory depo = DynamicDeposit(
+            amount,
+            tokenAddress,
+            poolId
+        );
+        _deposits[abi.encode(DepositIndex(spender, poolId))] = depo;
+        emit Deposited(spender, amount, poolId);
     }
 
     /**
@@ -160,28 +184,26 @@ contract DynamicEscrow is
      * @param amount The amount of tokens to withdraw.
      */
     function withdraw(
-        address receiver,
+        address payable receiver,
         uint256 poolId,
         uint256 amount
-    ) public nonReentrant() {
-        CountersUpgradeable.Counter memory _id = CountersUpgradeable.Counter(poolId);
-        bytes memory index = abi.encode(DepositIndex(msg.sender, _id));
+    ) external nonReentrant {
+        bytes memory index = abi.encode(DepositIndex(msg.sender, poolId));
         DynamicDeposit memory _depo = _deposits[index];
-
         require(_depo.weiAmount >= amount, "Not enough funds");
         if (_depo.weiAmount == amount) {
             delete _deposits[index];
         } else {
             _depo.weiAmount -= amount;
-            _deposits[index] = _depo;
+            _deposits[index].weiAmount -= amount;
         }
         if (_depo.tokenAddress == address(0)) {
-            payable(receiver).sendValue(amount);
+            receiver.transfer(amount);
         } else {
             IERC20Upgradeable token = ERC20Upgradeable(_depo.tokenAddress);
-            token.safeTransferFrom(address(this), receiver, amount);
+            token.safeTransferFrom(receiver, address(this), amount);
         }
-        emit Withdrawn(receiver, amount, _id);
+        emit Withdrawn(receiver, amount, poolId);
     }
 
     /**
