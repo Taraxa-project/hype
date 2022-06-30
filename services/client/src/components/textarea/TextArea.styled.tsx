@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 export const StyledTextArea = styled.textarea<{ theme: HypeThemeType }>`
-  font-family: 'Inter';
   box-sizing: border-box;
   border-radius: 0.75rem;
   border: ${({ theme }) => `0.125rem solid ${theme.input.base.border}`};
@@ -13,6 +12,7 @@ export const StyledTextArea = styled.textarea<{ theme: HypeThemeType }>`
   min-height: 2.5rem;
   text-align: left;
   padding: 0.625rem;
+
   :focus,
   :active,
   :hover {

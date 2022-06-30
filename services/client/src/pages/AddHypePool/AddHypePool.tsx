@@ -159,7 +159,7 @@ export const AddHypePool = () => {
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool starts..."
                 disabled={!isConnected}
                 selected={value}
@@ -182,7 +182,7 @@ export const AddHypePool = () => {
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool ends..."
                 disabled={!isConnected}
                 selected={value}

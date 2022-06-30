@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 interface StyledInputProps {
-  Icon?: React.ReactNode;
+  icon?: React.ReactNode;
   theme?: HypeThemeType;
 }
 
@@ -14,7 +14,6 @@ export const StyledSearchIcon = styled.div`
 
 export const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
-
   border-radius: 0.75rem;
   border: ${({ theme }) => `0.125rem solid ${theme.input.base.border}`};
   background: ${({ theme }) => theme.input.base.background};
@@ -24,7 +23,8 @@ export const StyledInput = styled.input<StyledInputProps>`
   min-height: 2.5rem;
   text-align: left;
   padding: 0.625rem;
-  padding-left: ${({ Icon }) => (Icon ? '3rem;' : '')};
+  padding-left: ${({ icon }) => (icon ? '3rem;' : '')};
+
   :focus,
   :active,
   :hover {

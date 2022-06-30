@@ -19,6 +19,7 @@ export const BlockiesContainer = styled.div`
   padding-right: 3rem;
   margin-bottom: 2rem;
   padding-left: 0.5rem;
+
   @media (max-width: 768px) {
     flex-direction: row;
   }
