@@ -7,6 +7,7 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "hardhat-docgen";
+import "@openzeppelin/hardhat-upgrades";
 
 dotenv.config();
 
@@ -39,6 +40,13 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    local: {
+      url: "http://127.0.0.1:8545/"
+    },
+    taraMainnet: {
+      chainId: 1,
+      url: process.env.TARA_MAINNET_URL || "",
+    }
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
