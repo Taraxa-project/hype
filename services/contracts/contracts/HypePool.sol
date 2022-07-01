@@ -34,6 +34,10 @@ contract HypePool is
         __Ownable_init();
     }
 
+    function getCurrentIndex() external view returns (uint256) {
+        return _tokenIdCounter.current();
+    }
+
     function poolURI(uint256 tokenId)
         public
         view
@@ -51,16 +55,17 @@ contract HypePool is
     }
 
     function createPool(string memory uri, uint256 poolCap, uint256 minHypeReward) external override returns (HypePool memory) {
-        require(!_isPaused(), "Contract is paused");
-        require(uri.length > 0, "Missing metadata URI");
+        require(!PausableUpgradeable.paused(), "Contract is paused");
+        require(bytes(uri).length > 0, "Missing metadata URI");
         require(poolCap > 0, "Invalid pool cap");
         require(minHypeReward > 0, "Invalid minimal hype reward");
         IEscrow escrowContract = IEscrow(_escrowContractAddress);
-        DynamicDeposit _deposit = escrowContract.depositsOf(msg.sender, _tokenIdCounter.value);
+        uint256 _counter = _tokenIdCounter.current();
+        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, _counter);
         require(_deposit.weiAmount == poolCap, "Deposited amount does not match pool cap");
-        uint256 _counter = _tokenIdCounter.value;
-        _pools[_counter] = HypePool(_tokenIdCounter.value, msg.sender, uri, poolCap, _deposit.tokenAddress, minHypeReward);
+        _pools[_counter] = HypePool(_counter, msg.sender, uri, poolCap, _deposit.tokenAddress, minHypeReward);
         _tokenIdCounter.increment();
+        emit PoolCreated(_counter, msg.sender, uri, poolCap, _deposit.tokenAddress, minHypeReward);
         return _pools[_counter];
     }
 
