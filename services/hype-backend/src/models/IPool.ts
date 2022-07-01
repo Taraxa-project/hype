@@ -10,3 +10,8 @@ export interface IPool {
   startDate: Date;
   endDate: Date;
 }
+
+export interface PoolPaginate {
+  data: any[];
+  total: number;
+}

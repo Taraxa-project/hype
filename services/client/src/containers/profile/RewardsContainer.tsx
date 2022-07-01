@@ -14,20 +14,20 @@ interface RewardProps {
 
 export const RewardsContainer = (props: RewardProps) => {
   const { isConnected } = useWallet();
-  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
-  
+  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
+
   return (
     <Box
-      p={isMobile ? '1.5rem' : '4.5rem'}
-      borderRadius="1rem"
+      p={isMobile ? '1.5rem' : '2rem'}
+      borderRadius="2rem"
       display="flex"
       flexDirection="column"
-      justifyContent="space-evenly"
+      justifyContent="space-between"
       backgroundColor="greys.1"
       marginLeft={isMobile ? 'none' : '1rem'}
       marginRight={isMobile ? '1rem' : 'none'}
       marginBottom="1rem"
-      minWidth='250px'
+      minWidth="340px"
     >
       <Heading
         fontSize="1.25rem"
@@ -38,18 +38,20 @@ export const RewardsContainer = (props: RewardProps) => {
       >
         Redeem rewards
       </Heading>
-      <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
-        Total unredeemed
-      </Text>
-      <Heading
-        fontSize="2.25rem"
-        fontWeight="700"
-        lineHeight="2.75rem"
-        color="black"
-        letterSpacing="-0.02em"
-      >
-        {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
-      </Heading>
+      <Box display="flex" flexDirection="column" gridGap="0.5rem">
+        <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
+          Total unredeemed
+        </Text>
+        <Heading
+          fontSize="2.25rem"
+          fontWeight="700"
+          lineHeight="2.75rem"
+          color="black"
+          letterSpacing="-0.02em"
+        >
+          {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
+        </Heading>
+      </Box>
       <Button
         variant={
           isConnected && props.rewardAmount && props.rewardAmount > 0 ? 'primary' : 'secondary'

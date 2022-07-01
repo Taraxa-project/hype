@@ -26,6 +26,7 @@ export const Redeem = () => {
   return (
     <Box
       display="flex"
+      backgroundColor="background"
       flexDirection={{
         xs: 'column',
         sm: 'column',
@@ -33,8 +34,7 @@ export const Redeem = () => {
         lg: isConnected ? 'column' : 'row',
         xl: isConnected ? 'column' : 'row',
       }}
-      gridGap="1.5rem"
-      px={{ sm: '1rem', md: '4rem', xl: '12.5rem' }}
+      gridGap="1rem"
       justifyContent="center"
     >
       <Box
@@ -43,7 +43,6 @@ export const Redeem = () => {
         backgroundColor="greys.1"
         p="2rem"
         borderRadius="2rem"
-        mt="2rem"
       >
         <Box
           display="flex"
@@ -125,7 +124,7 @@ export const Redeem = () => {
           </Box>
         ) : (
           <Box mt="2.4rem">
-           <ConnectWalletBtn />
+            <ConnectWalletBtn />
           </Box>
         )}
         {isConnected && showHistory && (
@@ -157,7 +156,6 @@ export const Redeem = () => {
         backgroundColor="greys.1"
         p="2rem"
         borderRadius="2rem"
-        mt="2rem"
       >
         <Heading
           fontSize="1.25rem"

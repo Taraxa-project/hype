@@ -1,9 +1,10 @@
 import React from 'react';
+import { ButtonVariant } from '../../utils';
 import { StyledButton } from './Button.styled';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: JSX.Element | string;
-  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  variant?: ButtonVariant;
   size?: 'small' | 'regular' | 'full-width';
   disabled?: boolean;
 }

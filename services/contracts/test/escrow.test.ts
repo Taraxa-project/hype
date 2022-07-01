@@ -5,7 +5,7 @@ import { ethers, upgrades } from "hardhat";
 import { network } from "hardhat";
 import { DynamicEscrow, ERC20Base } from "../typechain";
 
-describe("HypePool", function () {
+describe("DynamicEscrow", function () {
   let dynamicEscrow: Contract;
   let initialAddress: string;
   const zeroAddress = "0x0000000000000000000000000000000000000000";

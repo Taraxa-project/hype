@@ -2,12 +2,20 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../components/styles/Global';
 import { LightenColor } from './color-utils';
-import { HypeBreakpoints, HypeColors, HypeButtons, HypeCards, HypeThemeType } from './types';
+import {
+  HypeBreakpoints,
+  HypeColors,
+  HypeButtons,
+  HypeCards,
+  HypeThemeType,
+  HypeFonts,
+  HypeInput,
+} from './types';
 
 const breakpoints: HypeBreakpoints = {
   sm: '600px',
   md: '900px',
-  lg: '1200px',
+  lg: '1316px',
   xl: '1536px',
 };
 
@@ -22,41 +30,43 @@ const colors: HypeColors = {
   danger: '#F7614A',
   greys: [
     '#F1F1F1',
-    '#FAFAFA',
+    '#F7F7F7',
     '#B1B1B1',
     '#2F2F2F',
     '#808080',
-    '#ADADAD',
+    '#ADADAD', //5
     '#292929',
     '#595959',
     '#A6A6A6',
-    '#f7f7f7',
-    '#ECECEC',
+    '#e0e0e0',
+    '#ECECEC', //10
     '#787878',
-    '#C2C2C2'
+    '#C2C2C2',
+    '#fafafa',
+    '#797979', // 14
   ],
 };
 
 const buttons: HypeButtons = {
   primary: {
     color: colors.white,
-    backgroundColor: colors.primary,
-    hover: LightenColor(colors.primary)
+    background: colors.primary,
+    hover: LightenColor(colors.primary),
   },
   secondary: {
     color: colors.greys[7],
-    backgroundColor: colors.secondary,
-    hover: LightenColor(colors.secondary)
+    background: colors.secondary,
+    hover: LightenColor(colors.secondary),
   },
   success: {
     color: colors.white,
-    backgroundColor: colors.success,
-    hover: LightenColor(colors.success)
+    background: colors.success,
+    hover: LightenColor(colors.success),
   },
   danger: {
-    color: colors.black,
-    backgroundColor: colors.danger,
-    hover: LightenColor(colors.danger)
+    color: colors.white,
+    background: colors.danger,
+    hover: LightenColor(colors.danger),
   },
 };
 
@@ -71,16 +81,41 @@ const cards: HypeCards = {
   },
 };
 
-const theme: HypeThemeType = {
+const fonts: HypeFonts = {
+  primary: 'Inter',
+  default: 'Inter',
+};
+
+const input: HypeInput = {
+  base: {
+    color:  '#595959',
+    background: colors.greys[13],
+    border: '#e0e0e0'
+  },
+  hover: {
+    color:  '#595959',
+    background: colors.greys[13],
+    border: '#eb8f4c'
+  },
+  disabled: {
+    color:  '#e0e0e0',
+    background: colors.greys[0],
+    border: '#e0e0e0'
+  }
+}
+
+export const theme: HypeThemeType = {
   colors,
   buttons,
   cards,
+  fonts,
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
   space: [
     // margin and padding
     0, 4, 8, 16, 32, 64, 128, 256,
   ],
   breakpoints,
+  input
 };
 
 type HypeThemeProps = {

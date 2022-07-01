@@ -10,6 +10,8 @@ import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { FindManyOptions } from 'typeorm';
 import { OrderDirection, PoolOrderByEnum } from '../../utils';
+import { PoolPaginate } from '../../models';
+import { GetByDTO } from './dto/get-by.dto';
 
 @Injectable()
 export class PoolsService {
@@ -20,12 +22,15 @@ export class PoolsService {
     private repository: Repository<HypePool>,
   ) {}
 
-  async findAll(filterDto: GetFilterDto): Promise<HypePool[]> {
-    const result = await this.getByFilters(filterDto);
-    return result;
+  public async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
+    const [pools, total] = await this.getByFilters(filterDto);
+    return {
+      data: pools || [],
+      total,
+    };
   }
 
-  findById(id: number): Promise<HypePool> {
+  public findById(id: number): Promise<HypePool> {
     const found = this.repository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(`Hype Pool with ${id} not found!`);
@@ -33,7 +38,7 @@ export class PoolsService {
     return found;
   }
 
-  async create(pool: PoolDTO): Promise<HypePool> {
+  public async create(pool: PoolDTO): Promise<HypePool> {
     const newPool = new HypePool({ ...pool });
     const startDate = new Date(pool.startDate);
     const endDate = new Date(pool.endDate);
@@ -45,6 +50,14 @@ export class PoolsService {
     return stored;
   }
 
+  public async findBy({ creatorAddress }: GetByDTO): Promise<HypePool[]> {
+    return await this.repository.find({
+      where: {
+        creatorAddress,
+      },
+    });
+  }
+
   private async findMany(
     conditions: FindManyOptions<HypePool>,
   ): Promise<HypePool[]> {
@@ -52,26 +65,26 @@ export class PoolsService {
     return hypePools;
   }
 
-  private async getByFilters(filterDto: GetFilterDto): Promise<HypePool[]> {
+  private async getByFilters(
+    filterDto: GetFilterDto,
+  ): Promise<[HypePool[], number]> {
     const { search, take, skip, orderBy, order } = filterDto;
     const limit = take || 0;
     const offset = skip || 0;
-    const orderByType = orderBy || PoolOrderByEnum.TITLE;
-    const orderDirection: 'ASC' | 'DESC' = order || OrderDirection.ASC;
+    const orderByType = orderBy || PoolOrderByEnum.CREATED_AT;
+    const orderDirection: 'ASC' | 'DESC' = order || OrderDirection.DESC;
 
     const query = this.repository
       .createQueryBuilder('hype_pool')
       .select([
         'hype_pool.id',
+        'hype_pool.projectName',
         'hype_pool.title',
         'hype_pool.description',
         'hype_pool.pool',
-        'hype_pool.accountAddress',
-        'hype_pool.poolToken',
-        'hype_pool.bonus',
-        'hype_pool.bonusToken',
+        'hype_pool.creatorAddress',
+        'hype_pool.rewardsAddress',
         'hype_pool.minReward',
-        'hype_pool.rewardToken',
         'hype_pool.startDate',
         'hype_pool.endDate',
         'hype_pool.createdAt',
@@ -80,7 +93,7 @@ export class PoolsService {
 
     if (search) {
       query.where(
-        'hype_pool.title ILIKE :search or hype_pool.description ILIKE :search or LOWER(hype_pool.accountAddress) LIKE LOWER(:search)',
+        'hype_pool.title ILIKE :search or hype_pool.projectName ILIKE :search or hype_pool.description ILIKE :search or LOWER(hype_pool.creatorAddress) LIKE LOWER(:search) or LOWER(hype_pool.rewardsAddress) LIKE LOWER(:search)',
         { search: `%${search}%` },
       );
     }
@@ -90,7 +103,7 @@ export class PoolsService {
         .skip(offset)
         .take(limit)
         .orderBy(`hype_pool.${orderByType}`, orderDirection)
-        .getMany();
+        .getManyAndCount();
       return results;
     } catch (error) {
       this.logger.error(
