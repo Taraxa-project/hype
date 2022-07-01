@@ -1,45 +1,34 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/draft-ERC721VotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+import "./interfaces/IHypePool.sol";
+
 contract HypePool is
+    IHypePool,
     Initializable,
-    ERC721Upgradeable,
-    ERC721URIStorageUpgradeable,
     PausableUpgradeable,
     OwnableUpgradeable,
-    ERC721BurnableUpgradeable,
-    EIP712Upgradeable,
-    ERC721VotesUpgradeable
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    mapping(uint256 => uint256) private _hypeCap;
+    address escrowContractAddress;
 
+    mapping(CountersUpgradeable.Counter => HypePool) private _pools;
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
     function initialize() public initializer {
-        __ERC721_init("HypePool", "HYPE");
-        __ERC721URIStorage_init();
         __Pausable_init();
         __Ownable_init();
-        __ERC721Burnable_init();
-        __EIP712_init("HypePool", "1");
-        __ERC721Votes_init();
     }
 
     function pause() public onlyOwner {
