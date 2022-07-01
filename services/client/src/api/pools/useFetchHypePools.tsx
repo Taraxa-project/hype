@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useInfiniteQuery } from 'react-query';
-import { API, FetchHypesFilter, PoolPaginate } from './types';
+import { API, FetchHypesFilter, PoolPaginate } from '../types';
 
-const hypePoolsPerPage = 5;
+const hypePoolsPerPage = 6;
 
 const computePage = (page: number, search?: string): FetchHypesFilter => {
-  const take = page * hypePoolsPerPage;
+  const take = hypePoolsPerPage;
   const skip = take - hypePoolsPerPage;
   return {
     take,

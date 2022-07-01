@@ -7,9 +7,9 @@ import { ModalTitleProps } from '../../../components/modals/modal-title/ModalTit
 import { useCardDetailsEffects } from './CardDetails.effects';
 import { Account, BlockiesContainer, CardDescription, CardSubheader } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import useWallet from '../../../hooks/useWallet';
 import { monthDiff } from '../../../utils';
 import { useToken } from 'wagmi';
+import useWallet from '../../../hooks/useWallet';
 
 export const CardDetails = () => {
   const {
@@ -30,11 +30,7 @@ export const CardDetails = () => {
     close: closeModal,
   };
   const { isConnected, connect } = useWallet();
-  const {
-    data: poolTokenInfo,
-    isError: poolTokenIsError,
-    isLoading: poolTokenIsLoading,
-  } = useToken({ address: rewardsAddress });
+  const { data: poolTokenInfo } = useToken({ address: rewardsAddress });
   const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(startDate, endDate)} months left`;
 
