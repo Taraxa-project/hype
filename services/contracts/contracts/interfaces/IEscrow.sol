@@ -26,7 +26,7 @@ interface IEscrow {
     ) external payable;
 
     function withdraw(
-        address receiver,
+        address payable receiver,
         uint256 poolId,
         uint256 amount
     ) external;

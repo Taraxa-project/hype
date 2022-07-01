@@ -12,7 +12,10 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "hardhat/console.sol";
 
+import "./interfaces/IEscrow.sol";
+
 contract DynamicEscrow is
+    IEscrow,
     Initializable,
     OwnableUpgradeable,
     ReentrancyGuardUpgradeable
@@ -44,16 +47,6 @@ contract DynamicEscrow is
         uint256 weiAmount,
         uint256 poolId
     );
-    struct DynamicDeposit {
-        uint256 weiAmount;
-        address tokenAddress;
-        uint256 poolId;
-    }
-
-    struct DepositIndex {
-        address payee;
-        uint256 poolId;
-    }
 
     modifier onlyRewarder() {
         require(msg.sender == _rewarder, "OnlyRewarder");
@@ -61,7 +54,7 @@ contract DynamicEscrow is
     }
 
     address private _rewarder;
-    mapping(bytes => DynamicDeposit) private _deposits;
+    mapping(bytes => IEscrow.DynamicDeposit) private _deposits;
 
     /* @dev Rewards introduce the notion of reward pools. Reward pools are
      * defined by their IDs as integers and every reward accrued must be associated
@@ -83,9 +76,10 @@ contract DynamicEscrow is
     function depositsOf(address payee, uint256 poolId)
         public
         view
-        returns (DynamicDeposit memory)
+        override
+        returns (IEscrow.DynamicDeposit memory)
     {
-        return _deposits[abi.encode(DepositIndex(payee, poolId))];
+        return _deposits[abi.encode(IEscrow.DepositIndex(payee, poolId))];
     }
 
     /*
@@ -98,7 +92,7 @@ contract DynamicEscrow is
         view
         returns (uint256)
     {
-        return _accruedRewards[abi.encode(DepositIndex(payee, poolId))];
+        return _accruedRewards[abi.encode(IEscrow.DepositIndex(payee, poolId))];
     }
 
     /*
@@ -112,7 +106,7 @@ contract DynamicEscrow is
         uint256 poolId,
         uint256 amount
     ) public onlyRewarder nonReentrant {
-        bytes memory index = abi.encode(DepositIndex(payee, poolId));
+        bytes memory index = abi.encode(IEscrow.DepositIndex(payee, poolId));
         _accruedRewards[index] += amount;
         require(_accruedRewards[index] >= amount, "AccruedRewardOverflow");
         emit RewardCredited(payee, amount, poolId);
@@ -129,7 +123,7 @@ contract DynamicEscrow is
         address tokenAddress,
         uint256 poolId
     ) public nonReentrant {
-        bytes memory index = abi.encode(DepositIndex(msg.sender, poolId));
+        bytes memory index = abi.encode(IEscrow.DepositIndex(msg.sender, poolId));
         require(_accruedRewards[index] > 0, "Not enough accrued rewards");
         uint256 _amount = _accruedRewards[index];
         _accruedRewards[index] = 0;
@@ -156,7 +150,7 @@ contract DynamicEscrow is
         uint256 poolId,
         uint256 amount,
         address tokenAddress
-    ) public payable nonReentrant {
+    ) public payable nonReentrant override {
         if (tokenAddress != address(0)) {
             IERC20Upgradeable token = ERC20Upgradeable(tokenAddress);
             uint256 balance = token.balanceOf(spender);
@@ -165,12 +159,12 @@ contract DynamicEscrow is
         } else {
             require(msg.value == amount, "Invalid amount");
         }
-        DynamicDeposit memory depo = DynamicDeposit(
+        IEscrow.DynamicDeposit memory depo = IEscrow.DynamicDeposit(
             amount,
             tokenAddress,
             poolId
         );
-        _deposits[abi.encode(DepositIndex(spender, poolId))] = depo;
+        _deposits[abi.encode(IEscrow.DepositIndex(spender, poolId))] = depo;
         emit Deposited(spender, amount, poolId);
     }
 
@@ -186,9 +180,9 @@ contract DynamicEscrow is
         address payable receiver,
         uint256 poolId,
         uint256 amount
-    ) external nonReentrant {
-        bytes memory index = abi.encode(DepositIndex(msg.sender, poolId));
-        DynamicDeposit memory _depo = _deposits[index];
+    ) external nonReentrant override {
+        bytes memory index = abi.encode(IEscrow.DepositIndex(msg.sender, poolId));
+        IEscrow.DynamicDeposit memory _depo = _deposits[index];
         require(_depo.weiAmount >= amount, "Not enough funds");
         if (_depo.weiAmount == amount) {
             delete _deposits[index];
