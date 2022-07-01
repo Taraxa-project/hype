@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import {
   space,
   display,
+  overflow,
+  overflowX,
+  overflowY,
   color,
   gridGap,
   fontSize,
@@ -36,6 +39,8 @@ import {
   DisplayProps,
   GridGapProps,
   BorderRadiusProps,
+  OverflowProps,
+  MaxHeightProps,
 } from 'styled-system';
 
 export type BoxProps = SpaceProps &
@@ -43,6 +48,7 @@ export type BoxProps = SpaceProps &
   HeightProps &
   MinWidthProps &
   MaxWidthProps &
+  MaxHeightProps &
   MinHeightProps &
   MinWidthProps &
   FontSizeProps &
@@ -61,7 +67,8 @@ export type BoxProps = SpaceProps &
   AlignItemsProps &
   AlignSelfProps &
   GridGapProps &
-  BorderRadiusProps;
+  BorderRadiusProps &
+  OverflowProps;
 
 const Box = styled.div<BoxProps>`
   ${space}
@@ -77,6 +84,9 @@ const Box = styled.div<BoxProps>`
   ${color}
   ${flexbox}
   ${borderRadius}
+  ${overflow}
+  ${overflowX}
+  ${overflowY}
 `;
 
 export default Box;

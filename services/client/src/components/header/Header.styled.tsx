@@ -1,8 +1,12 @@
 import styled from 'styled-components';
-import { CustomStyledProps, SidebarMenuLinkProps, SidebarProps } from './Header.effects';
+import {
+  AddressContainerProps,
+  CustomStyledProps,
+  SidebarMenuLinkProps,
+  SidebarProps,
+} from './Header.effects';
 
 export const StyledHeader = styled.header<CustomStyledProps>`
-  font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   flex-direction: row;
@@ -11,28 +15,41 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 1rem;
   background: #ffffff;
   height: 4.5rem;
-  .headerLeft {
+
+  > div {
+    flex: 1 0 auto;
+    display: flex;
+    max-width: ${({ theme }) => theme.breakpoints.lg};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+      margin: 2rem 1rem;
+    }
+  }
+
+  .header-left {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
-    margin-left: 2.5rem;
   }
-  .headerRight {
+
+  .header-right {
     flex: 0 1 auto;
-    padding-right: 2.5rem;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
   }
+
   .margin-right {
     margin-right: 2rem;
   }
+
   .selected {
     font-weight: 700;
     font-size: 1rem;
     color: #292929;
     cursor: pointer;
   }
+
   .underline {
     background: #dda25d;
     min-height: 8px;
@@ -41,6 +58,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     margin-bottom: -25px;
     margin-top: 10px;
   }
+
   span {
     padding-top: 0.3rem;
     font-weight: 400;
@@ -52,6 +70,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     cursor: pointer;
     text-align: center;
     color: #adadad;
+
     :active {
       font-weight: 700;
       font-size: 1rem;
@@ -63,10 +82,12 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 export const SidebarHover = styled.div<SidebarProps>`
   ${(props) => !props.show && `visibility: hidden;`}
   width: 100%;
-  height: 100vh;
-  position: absolute;
+  height: 100%;
+  position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  z-index: 999;
   background-color: rgba(45, 45, 45, 0.4);
 `;
 
@@ -76,7 +97,7 @@ export const Sidebar = styled.div<SidebarProps>`
   left: ${(props) => (props.show ? 'calc(100% - 20.375rem)' : '100%')};
   box-sizing: border-box;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 20.375rem;
   background-color: #ffffff;
 `;
@@ -104,6 +125,7 @@ export const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
   padding: 1.25rem 3rem;
   font-weight: ${(props) => (props.selected ? '700' : '400')};
   color: ${(props) => (props.selected ? '#292929' : '#adadad')};
+
   ::before {
     position: absolute;
     left: 0;
@@ -145,4 +167,14 @@ export const GreenDot = styled.div`
   width: 0.375rem !important;
   background: #15ac5b;
   border-radius: 50%;
+`;
+
+export const AddressContainer = styled.div<AddressContainerProps>`
+  ::before {
+    content: '${(props) => props.address}';
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+      content: '${(props) => props.shortAddress}';
+    }
+  }
 `;

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { ButtonVariant } from '../../../utils';
 import BackgroundHover from '../../background/HoverBackground.styled';
 import Button from '../../button/Button';
 import Box from '../../styles/Box';
@@ -11,6 +12,7 @@ export interface ModalAction {
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onAction?: (value?: any) => void;
+  closeButtonVariant?: ButtonVariant;
 }
 
 export interface ModalContainerProps {
@@ -36,8 +38,10 @@ export const ModalContainer: FC<ModalContainerProps> = ({
         <>
           <BackgroundHover show={open} />
           <StyledModal>
-            <ModalTitle {...titleProps} />
-            {children}
+            <div>
+              <ModalTitle {...titleProps} />
+              {children}
+            </div>
             <Box
               display="flex"
               flexDirection="column"
@@ -49,7 +53,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               {modalAction && (
                 <Button
                   type={modalAction.type || 'button'}
-                  variant="primary"
+                  variant={modalAction.closeButtonVariant || 'secondary'}
                   size="full-width"
                   onClick={modalAction.onAction}
                   disabled={modalAction.disabled}
@@ -58,7 +62,12 @@ export const ModalContainer: FC<ModalContainerProps> = ({
                 </Button>
               )}
               {showCancel && (
-                <Button variant="secondary" style={{ width: '100%' }} autoFocus onClick={closeModal}>
+                <Button
+                  variant="secondary"
+                  style={{ width: '100%' }}
+                  autoFocus
+                  onClick={closeModal}
+                >
                   Cancel
                 </Button>
               )}

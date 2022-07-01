@@ -29,13 +29,13 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, onSubmit, onCancel, errors, isConnected, control } =
+  const { register, handleSubmit, submitHandler, onCancel, errors, isConnected, control } =
     useAddHypePoolEffects();
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <Wrapper>
-        <FormColumn>
+    <Wrapper>
+      <FormColumn>
+        <form autoComplete="off" onSubmit={handleSubmit(submitHandler)}>
           <TitleText>What is your project name!</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project name:</Label>
@@ -159,7 +159,7 @@ export const AddHypePool = () => {
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool starts..."
                 disabled={!isConnected}
                 selected={value}
@@ -182,7 +182,7 @@ export const AddHypePool = () => {
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool ends..."
                 disabled={!isConnected}
                 selected={value}
@@ -208,35 +208,35 @@ export const AddHypePool = () => {
           ) : (
             <ConnectWalletBtn mt="4" size="full-width" />
           )}
-        </FormColumn>
+        </form>
+      </FormColumn>
 
-        <HowItWorksColumn>
-          <HowItWorksWrapper>
-            <HowItWorksTitle>How it works</HowItWorksTitle>
-            <Steps>
-              <Step>
-                <StepNumber>1</StepNumber>
-                <StepDescription>Come up with a name for your hype pool.</StepDescription>
-              </Step>
-              <Step>
-                <StepNumber>2</StepNumber>
-                <StepDescription>
-                  Enter messages, keywords, links, whatever you want hyped up in social. Currently
-                  we only support Telegram. Need some ideas? Check out some other hype pools.
-                </StepDescription>
-              </Step>
-              <Step>
-                <StepNumber>3</StepNumber>
-                <StepDescription>
-                  Enter asset address which has the rewards for the pool - currently supports ERC-20
-                  compatible assets. Then specify the minimum reward for hype. Learn more about
-                  verified hype here..
-                </StepDescription>
-              </Step>
-            </Steps>
-          </HowItWorksWrapper>
-        </HowItWorksColumn>
-      </Wrapper>
-    </form>
+      <HowItWorksColumn>
+        <HowItWorksWrapper>
+          <HowItWorksTitle>How it works</HowItWorksTitle>
+          <Steps>
+            <Step>
+              <StepNumber>1</StepNumber>
+              <StepDescription>Come up with a name for your hype pool.</StepDescription>
+            </Step>
+            <Step>
+              <StepNumber>2</StepNumber>
+              <StepDescription>
+                Enter messages, keywords, links, whatever you want hyped up in social. Currently we
+                only support Telegram. Need some ideas? Check out some other hype pools.
+              </StepDescription>
+            </Step>
+            <Step>
+              <StepNumber>3</StepNumber>
+              <StepDescription>
+                Enter asset address which has the rewards for the pool - currently supports ERC-20
+                compatible assets. Then specify the minimum reward for hype. Learn more about
+                verified hype here..
+              </StepDescription>
+            </Step>
+          </Steps>
+        </HowItWorksWrapper>
+      </HowItWorksColumn>
+    </Wrapper>
   );
 };

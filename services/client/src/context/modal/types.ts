@@ -1,4 +1,5 @@
 import { HypePool } from '../../models';
+import { NotificationType } from '../../utils';
 import { ModalsActionsEnum } from './reducer';
 
 export type TCardDetails = {
@@ -36,12 +37,19 @@ export type TDisconnectTelegram = {
   onDisconnect: (value?: any) => void;
 };
 
+export type TNotification = {
+  open: boolean;
+  type: NotificationType;
+  message: string;
+}
+
 export interface IModalsStore {
   hypeDetails: TCardDetails;
   loading: TLoading;
   metamaskInfo: TMetamaskInfo;
   telegramInfo: TTelegramInfo;
   disconnectTelegram: TDisconnectTelegram;
+  notification: TNotification;
 }
 
 interface ICardDetailsAction {
@@ -69,9 +77,16 @@ interface IDisconnectTelegramAction {
   payload: TDisconnectTelegram;
 }
 
+interface TNotificationAction {
+  type: ModalsActionsEnum.SHOW_NOTIFICATION;
+  payload: TNotification;
+}
+
+
 export type TModalsAction =
   | ICardDetailsAction
   | ILoadingAction
   | IMetamaskInfoAction
   | ITelegramInfoAction
-  | IDisconnectTelegramAction;
+  | IDisconnectTelegramAction
+  | TNotificationAction;
