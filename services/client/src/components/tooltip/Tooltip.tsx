@@ -4,12 +4,13 @@ import 'tippy.js/dist/tippy.css';
 import { StyledTooltip } from './Tooltip.styled';
 
 export interface TooltipProps {
+  className?: string;
   message: string;
 }
 
-const Tooltip = ({ message }: TooltipProps) => {
+const Tooltip = ({ message, className }: TooltipProps) => {
   return (
-    <StyledTooltip>
+    <StyledTooltip className={className}>
       <Tippy content={message}>
         <div>
           <InfoIcon />

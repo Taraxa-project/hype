@@ -1,14 +1,13 @@
 import React, { AnchorHTMLAttributes } from 'react';
 import { StyledLink } from './Link.styled';
 
-
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-    text: string;
+  className?: 'string';
+  text: string;
 }
 
-
 export const Link = (props: LinkProps) => (
-    <StyledLink href={props.href}>
-        {props.text}
-    </StyledLink>
-)
+  <StyledLink className={props.className} href={props.href}>
+    {props.text}
+  </StyledLink>
+);

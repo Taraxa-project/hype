@@ -75,7 +75,7 @@ export const ProfileContainer = ({
         mt="0.75rem"
       >
         <Box display="flex" flexDirection="row">
-          <TelegramLogo width='90' height='90'/>
+          <TelegramLogo width="90" height="54.75" />
           <Box
             display="flex"
             flexDirection="column"
