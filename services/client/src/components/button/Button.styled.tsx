@@ -7,7 +7,6 @@ export const StyledButton = styled.button<{
   size?: 'small' | 'regular' | 'full-width';
   theme?: HypeThemeType;
 }>`
-  font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   justify-content: center;
@@ -20,9 +19,11 @@ export const StyledButton = styled.button<{
   padding: ${({ size }) => (size === 'small' ? '1rem 0.5rem' : '1rem 4.5rem')};
   ${({ size }) => size === 'full-width' && 'width: 100%;'}
   cursor: pointer;
+
   :hover {
     background: ${({ variant, theme }) => theme.buttons[variant].hover};
   }
+
   :disabled {
     background: #ececec;
     border: 0.063rem solid #e0e0e0;

@@ -7,7 +7,6 @@ import {
 } from './Header.effects';
 
 export const StyledHeader = styled.header<CustomStyledProps>`
-  font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   flex-direction: row;
@@ -27,26 +26,30 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     }
   }
 
-  .headerLeft {
+  .header-left {
     flex: 1 0 auto;
     display: flex;
     align-items: left;
   }
-  .headerRight {
+
+  .header-right {
     flex: 0 1 auto;
     display: flex;
     align-items: right;
     justify-content: space-evenly;
   }
+
   .margin-right {
     margin-right: 2rem;
   }
+
   .selected {
     font-weight: 700;
     font-size: 1rem;
     color: #292929;
     cursor: pointer;
   }
+
   .underline {
     background: #dda25d;
     min-height: 8px;
@@ -55,6 +58,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     margin-bottom: -25px;
     margin-top: 10px;
   }
+
   span {
     padding-top: 0.3rem;
     font-weight: 400;
@@ -66,6 +70,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     cursor: pointer;
     text-align: center;
     color: #adadad;
+
     :active {
       font-weight: 700;
       font-size: 1rem;
@@ -120,6 +125,7 @@ export const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
   padding: 1.25rem 3rem;
   font-weight: ${(props) => (props.selected ? '700' : '400')};
   color: ${(props) => (props.selected ? '#292929' : '#adadad')};
+
   ::before {
     position: absolute;
     left: 0;

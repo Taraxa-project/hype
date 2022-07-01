@@ -7,8 +7,8 @@ interface CustomStyledProps {
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${({variant}) => (variant === 'mobile' ? 'auto' : '23rem')};
-  height: ${({variant}) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
+  width: ${({ variant }) => (variant === 'mobile' ? 'auto' : '23rem')};
+  height: ${({ variant }) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;
@@ -18,7 +18,7 @@ export const StyledCard = styled.div<CustomStyledProps>`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 1rem 1rem;
+    padding: 1rem;
   }
 `;
 

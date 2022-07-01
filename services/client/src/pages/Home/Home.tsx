@@ -34,13 +34,18 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" controls={true} />
+          <VideoPlayer
+            url="https://www.youtube.com/embed/E7wJTI-1dvQ"
+            width=""
+            height=""
+            controls={true}
+          />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>
         <TitleText>Active Hype Pools</TitleText>
         <Input
-          Icon={<SearchIcon />}
+          icon={<SearchIcon />}
           placeholder="Search for hype pools..."
           onChange={debouncedResults}
         />
