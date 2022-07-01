@@ -8,27 +8,60 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import "./interfaces/IHypePool.sol";
 
+import "./interfaces/IEscrow.sol";
+
 contract HypePool is
     IHypePool,
     Initializable,
     PausableUpgradeable,
-    OwnableUpgradeable,
+    OwnableUpgradeable
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    address escrowContractAddress;
+    address _escrowContractAddress;
 
-    mapping(CountersUpgradeable.Counter => HypePool) private _pools;
+    mapping(uint256 => HypePool) private _pools;
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address escrowContractAddress) public initializer {
         __Pausable_init();
+        _escrowContractAddress = escrowContractAddress;
         __Ownable_init();
+    }
+
+    function poolURI(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        return _pools[tokenId].uri;
+    }
+
+    function getPool(uint256 tokenId)
+        public
+        view
+        returns (HypePool memory)
+    {
+        return _pools[tokenId];
+    }
+
+    function createPool(string memory uri, uint256 poolCap, uint256 minHypeReward) external override returns (HypePool memory) {
+        require(!_isPaused(), "Contract is paused");
+        require(uri.length > 0, "Missing metadata URI");
+        require(poolCap > 0, "Invalid pool cap");
+        require(minHypeReward > 0, "Invalid minimal hype reward");
+        IEscrow escrowContract = IEscrow(_escrowContractAddress);
+        DynamicDeposit _deposit = escrowContract.depositsOf(msg.sender, _tokenIdCounter.value);
+        require(_deposit.weiAmount == poolCap, "Deposited amount does not match pool cap");
+        uint256 _counter = _tokenIdCounter.value;
+        _pools[_counter] = HypePool(_tokenIdCounter.value, msg.sender, uri, poolCap, _deposit.tokenAddress, minHypeReward);
+        _tokenIdCounter.increment();
+        return _pools[_counter];
     }
 
     function pause() public onlyOwner {
@@ -37,50 +70,5 @@ contract HypePool is
 
     function unpause() public onlyOwner {
         _unpause();
-    }
-
-    function safeMint(address to, string memory uri) public payable {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
-    }
-
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override whenNotPaused {
-        require(
-            from == address(0) || to == address(0),
-            "HypePools are non-transferable"
-        );
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
-
-    // The following functions are overrides required by Solidity.
-
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721Upgradeable, ERC721VotesUpgradeable) {
-        super._afterTokenTransfer(from, to, tokenId);
-    }
-
-    function _burn(uint256 tokenId)
-        internal
-        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
-    {
-        super._burn(tokenId);
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
-        returns (string memory)
-    {
-        return super.tokenURI(tokenId);
     }
 }

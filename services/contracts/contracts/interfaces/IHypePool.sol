@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 interface IHypePool {
     struct HypePool {
-        CountersUpgradable.Counter poolId;
+        uint256 poolId;
         address creator;
         string uri;
         uint256 poolCap;
