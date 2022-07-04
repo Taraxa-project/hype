@@ -20,7 +20,6 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
     flex-wrap: wrap;
     flex-direction: row;
     padding: 0 1.5rem 2rem;
-    justify-content: space-evenly;
     margin-top: 1rem;
     margin-bottom: 3rem;
     overflow: auto;
