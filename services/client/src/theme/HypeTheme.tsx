@@ -13,7 +13,7 @@ import {
 } from './types';
 
 const breakpoints: HypeBreakpoints = {
-  sm: '600px',
+  sm: '768px',
   md: '900px',
   lg: '1316px',
   xl: '1536px',

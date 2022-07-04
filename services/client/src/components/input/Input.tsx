@@ -12,7 +12,7 @@ export interface InputProps
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ ...props }, ref) => {
   return props.icon ? (
-    <div style={{ width: '100%', marginBottom: '0.6rem' }}>
+    <div style={{ width: '100%'}}>
       <StyledSearchIcon>
         <SearchIcon />
       </StyledSearchIcon>
