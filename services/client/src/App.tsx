@@ -16,7 +16,7 @@ const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   width: ${({ theme }) => theme.breakpoints.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin: 2rem 1rem 1rem 2rem;
+    margin: 2rem 2rem 1rem;
     width: unset;
   }
 `;
