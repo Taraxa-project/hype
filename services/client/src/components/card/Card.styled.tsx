@@ -17,7 +17,8 @@ export const StyledCard = styled.div<CustomStyledProps>`
   margin-bottom: 1.5rem;
   box-sizing: border-box;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
+    height: unset;
     padding: 1rem;
   }
 `;

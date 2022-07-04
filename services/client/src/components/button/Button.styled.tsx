@@ -29,4 +29,8 @@ export const StyledButton = styled.button<{
     border: 0.063rem solid #e0e0e0;
     color: #c2c2c2;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 1rem 0.5rem;
+  }
 `;
