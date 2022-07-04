@@ -16,7 +16,7 @@ const login = async (publicAddress: string) => {
 };
 
 export const useGetUser = (publicAddress: string) => {
-  const { data, refetch } = useQuery(['auth', publicAddress], () => login(publicAddress), {
+  const { data, refetch } = useQuery(['user', publicAddress], () => login(publicAddress), {
     enabled: false,
     onError: (error) => {
       console.log('ERROR: ', error);

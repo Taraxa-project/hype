@@ -10,13 +10,23 @@ const getPoolsBy = async (creatorAddress: string) => {
   const params = {
     creatorAddress,
   };
-  const { data } = await axios.get(url, { params });
-  return data;
+  try {
+    const { data } = await axios.get(url, { params });
+    return data;
+  } catch (err: any) {
+    console.log('err', err);
+   
+  }
 };
 
 export const useGetHypePoolsBy = (creatorAddress: string) => {
-  const { isLoading, isError, data, error } = useQuery(['pools', creatorAddress], () =>
-    getPoolsBy(creatorAddress),
+  const { isLoading, isError, data, error } = useQuery(
+    ['pools', creatorAddress],
+    () => getPoolsBy(creatorAddress),
+    {
+      retry: false,
+      enabled: !!creatorAddress,
+    },
   );
 
   return {

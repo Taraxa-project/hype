@@ -4,14 +4,17 @@ import useWallet from './useWallet';
 import { useSignMessage } from 'wagmi';
 import { useLogin } from '../api/auth/useLogin';
 import { LoginSignature } from '../models';
-import { getAuthenticationToken, removeAuthenticationToken } from '../utils';
-import { useQueryClient } from 'react-query';
+import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
+import { ModalsActionsEnum, useModalsDispatch } from '../context';
+import { useNavigate } from 'react-router';
 
 const useAuth = () => {
-  const queryClient = useQueryClient();
-  const { account, disconnect, connector, isDisconnected } = useWallet();
+  const { account, isConnected, disconnect } = useWallet();
   const { data: user, refetch } = useGetUser(account);
+  const dispatchModals = useModalsDispatch();
+  const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+
   const onLogin = useLogin();
   const { signMessage } = useSignMessage({
     onSuccess(data) {
@@ -24,35 +27,36 @@ const useAuth = () => {
     },
   });
   const tokenExists = Boolean(getAuthenticationToken());
-  
+
   const logout = () => {
     setAuthenticated(false);
-    removeAuthenticationToken();
     disconnect();
-    queryClient.clear();
+    removeAuthenticationToken();
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      payload: {
+        open: true,
+        type: NotificationType.ERROR,
+        message: 'User must be logged in to access profile!',
+      },
+    });
+    navigate('/');
   };
 
   useEffect(() => {
-    if (user && connector) {
-      signMessage({ message: `${user.nonce}` });
+    if (tokenExists && isConnected) {
+      setAuthenticated(true);
     }
-  }, [user, connector, signMessage]);
-
-  useEffect(() => {
-    if (account && !tokenExists) {
-      refetch();
-    }
-  }, [account, tokenExists]);
-
-  useEffect(() => {
-    if (isDisconnected) {
-      logout();
-    }
-  }, [isDisconnected])
+  }, [tokenExists, isConnected]);
 
   return {
+    account,
     authenticated,
     logout,
+    signMessage,
+    user,
+    tokenExists,
+    refetch,
   };
 };
 

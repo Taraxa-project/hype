@@ -1,24 +1,17 @@
 import { Module, Global } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './jwt.strategy';
+import { HttpModule } from '@nestjs/axios';
+import { CqrsModule } from '@nestjs/cqrs';
+import { AuthService } from './auth.service';
+import { ConfigModule } from '@nestjs/config';
+import { auth } from '@taraxa-hype/config';
 
-@Global()
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('AUTH_SECRET') || 'thisisnotasecret',
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRY_TIME') || '7 days',
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    ConfigModule.forFeature(auth),
+    HttpModule,
+    CqrsModule,
   ],
-  providers: [JwtStrategy],
-  exports: [PassportModule, JwtModule],
+  providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}

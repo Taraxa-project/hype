@@ -7,7 +7,9 @@ import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
 import useWallet from './hooks/useWallet';
-import useAuth from './hooks/useAuth';
+import useAxiosInterceptors from './hooks/useAxiosInterceptors';
+import { useGetMe } from './api/auth/useGetMe';
+import useSignUser from './hooks/useSignUser';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -31,7 +33,9 @@ const AppWrapper = styled.div`
 const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   const { account, connect, isConnected } = useWallet();
-  useAuth();
+  useAxiosInterceptors();
+  useSignUser();
+  useGetMe();
 
   return (
     <AppWrapper>
