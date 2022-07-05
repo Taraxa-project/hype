@@ -22,6 +22,7 @@ export interface ModalContainerProps {
   children?: React.ReactNode;
   modalAction?: ModalAction;
   showCancel?: boolean;
+  closeOutside?: boolean;
 }
 
 export const ModalContainer: FC<ModalContainerProps> = ({
@@ -31,11 +32,16 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   closeModal,
   modalAction,
   showCancel,
+  closeOutside = true,
 }) => {
   return (
     <>
       {open && (
-        <div onClick={closeModal}>
+        <div
+          onClick={() => {
+            closeOutside && closeModal();
+          }}
+        >
           <BackgroundHover show={open} />
           <StyledModal onClick={(e) => e.stopPropagation()}>
             <div>
