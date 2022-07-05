@@ -1,5 +1,6 @@
 import Input from 'src/components/input/Input';
 import TitleText from 'src/components/TitleText/TitleText';
+import Tooltip from 'src/components/tooltip/Tooltip';
 
 import styled from 'styled-components';
 
@@ -57,7 +58,7 @@ export const Label = styled.div`
   color: #5c5c5c;
   margin-top: 1rem;
   margin-bottom: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export const InfoCard = styled.div`
@@ -139,4 +140,8 @@ export const FormAction = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
+`;
+
+export const SpacedStyledTooltip = styled(Tooltip)`
+  margin-left: 0.625rem;
 `;
