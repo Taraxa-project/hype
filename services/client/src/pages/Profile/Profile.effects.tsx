@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
 import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
-import { TUser } from 'src/components/button/TelegramLoginButton';
 import useWallet from 'src/hooks/useWallet';
+import { TelegramUser } from 'src/models/HypeUser.model';
 import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
 import { HypePool } from '../../models';
 
@@ -31,18 +31,20 @@ export const useProfileEffects = () => {
     console.log('Bazinga! You clicked the button!');
   };
 
-  const useConnect = async (user: TUser) => {
+  const useConnect = async (user: TelegramUser) => {
     console.log('new T user is', user);
     setTelegramProfile({
       address: account,
       username: user.username,
     });
-    submitHandler({address: account, username: user.username, auth_date: user.auth_date});
+    if(user && user.username && user.auth_date){
+      submitHandler({ address: account, username: user.username, auth_date: user.auth_date });
+    }
   };
 
-  const useDisconnect = async (user: TUser) => {
+  const useDisconnect = async (user: TelegramUser) => {
     console.log('disconnected T user is', user);
-    submitHandler({address: account, username: undefined, auth_date: undefined});
+    submitHandler({ address: account, username: null, auth_date: null });
   };
 
   useEffect(() => {

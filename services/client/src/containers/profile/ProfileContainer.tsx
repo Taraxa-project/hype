@@ -5,11 +5,14 @@ import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
 import { TelegramLogo } from 'src/assets/icons/Telegram';
 import Button from 'src/components/button/Button';
-import TLoginButton, { TLoginButtonSize, TUser } from '../../components/button/TelegramLoginButton';
+import TelegramLoginButton, {
+  TelegramLoginButtonSize,
+} from '../../components/button/TelegramLoginButton';
 import TelegramConfig from 'src/api/TelegramConfig';
 import Heading from '../../components/styles/Heading';
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
+import { TelegramUser } from 'src/models/HypeUser.model';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -22,7 +25,7 @@ export const Account = styled.p<{ theme: HypeThemeType }>`
 interface ProfileProps {
   address: string;
   telegramUsername: string;
-  connect: (user: TUser) => void;
+  connect: (user: TelegramUser) => void;
   disconnect: (user: any) => void;
 }
 
@@ -97,10 +100,10 @@ export const ProfileContainer = ({
             Disconnect this account
           </Button>
         ) : (
-          <TLoginButton
+          <TelegramLoginButton
             botName={TelegramConfig.botName}
             onAuthCallback={connect}
-            buttonSize={isMobile ? TLoginButtonSize.Small : TLoginButtonSize.Medium}
+            buttonSize={isMobile ? TelegramLoginButtonSize.Small : TelegramLoginButtonSize.Medium}
             usePic={false}
             lang="EN"
           />

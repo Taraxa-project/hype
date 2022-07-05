@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { HypeUser } from 'src/models/HypeUser.model';
 import { API } from '../types';
 
-const login = async (publicAddress: string) => {
+const getByAddress = async (publicAddress: string) => {
   if (!publicAddress) {
     return;
   }
@@ -16,14 +16,13 @@ const login = async (publicAddress: string) => {
 };
 
 export const useGetHypeUserBy = (publicAddress: string) => {
-  const { data, refetch } = useQuery(['user', publicAddress], () => login(publicAddress), {
-    enabled: false,
+  const { data } = useQuery(['user', publicAddress], () => getByAddress(publicAddress), {
     onError: (error) => {
       console.log('ERROR: ', error);
     },
+    enabled: !!publicAddress,
   });
   return {
     data,
-    refetch,
   };
 };
