@@ -37,7 +37,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
       {open && (
         <div onClick={closeModal}>
           <BackgroundHover show={open} />
-          <StyledModal>
+          <StyledModal onClick={(e) => e.stopPropagation()}>
             <div>
               <ModalTitle {...titleProps} />
               {children}
