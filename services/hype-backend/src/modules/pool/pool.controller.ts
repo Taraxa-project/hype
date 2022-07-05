@@ -7,14 +7,13 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UnauthorizedException,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PoolPaginate } from '../../models';
 import { GetAddress } from '../auth/get-address.decorator';
+import { WalletGuard } from '../auth/wallet.guard';
 import { GetFilterDto, PoolDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
 import { HypePool } from './pool.entity';
@@ -43,6 +42,7 @@ export class PoolsController {
     description: 'Returns all hype pools',
   })
   @Get('by')
+  @UseGuards(WalletGuard)
   public getPoolsBy(
     @Query(ValidationPipe) filterDto: GetByDTO,
   ): Promise<HypePool[]> {
@@ -50,6 +50,7 @@ export class PoolsController {
   }
 
   @Get(':id')
+  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,
@@ -62,7 +63,7 @@ export class PoolsController {
   }
 
   @Post()
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,

@@ -1,24 +1,10 @@
-import { useState } from 'react';
 import useWallet from '../../hooks/useWallet';
+import { Reward, TransactionItem } from '../../models/Reward.model';
 import { TransactionStatus } from '../../utils';
 
-export type TransactionItem = {
-  value: number;
-  pool?: string;
-  status: TransactionStatus;
-  startDate: Date;
-};
-
-export type Reward = Omit<TransactionItem, 'status'>;
 
 export const useRedeemEffects = () => {
   const { isConnected } = useWallet();
-  const [showHistory, setShowHistory] = useState<boolean>(false);
-
-  const toggleHistory = () => {
-    setShowHistory(!showHistory);
-  };
-
   const totalUnredeemed = 52000;
 
   const pendingTransactions: TransactionItem[] = [
@@ -66,8 +52,6 @@ export const useRedeemEffects = () => {
   ];
 
   return {
-    showHistory,
-    toggleHistory,
     totalUnredeemed,
     pendingTransactions,
     redeemHistory,

@@ -2,7 +2,7 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import useWallet from '../../hooks/useWallet';
 
 export const useConnectWalletEffects = () => {
-  const { isConnected, connect, isUnMetamaskAvailable } = useWallet();
+  const { isConnected, connect, isMetamaskAvailable } = useWallet();
   const dispatchModals = useModalsDispatch();
 
   const showMetamaskInfo = () => {
@@ -18,7 +18,7 @@ export const useConnectWalletEffects = () => {
   };
 
   const onConnect = () => {
-    if (isUnMetamaskAvailable) {
+    if (isMetamaskAvailable) {
       showMetamaskInfo();
     }
     connect();

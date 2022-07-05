@@ -5,16 +5,39 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
-import { WagmiConfig, createClient } from 'wagmi';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import {
+  WagmiConfig,
+  createClient,
+  configureChains,
+  defaultChains,
+  chain,
+} from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
+
+const { provider, webSocketProvider } = configureChains(
+  [chain.mainnet, ...defaultChains],
+  [publicProvider()],
+)
+
+const metamaskConnector = new MetaMaskConnector({
+  options: {
+    shimDisconnect: true,
+  },
+});
 
 const client = createClient({
   autoConnect: true,
-});
+  provider,
+  webSocketProvider,
+  connectors: [metamaskConnector],
+})
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      refetchOnWindowFocus: false,
       onError: (error) => {
         console.error(error);
       },

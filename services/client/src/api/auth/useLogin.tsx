@@ -1,36 +1,39 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { AddHypePool, HypePool } from '../../models';
-import { UnpackNestedValue } from 'react-hook-form';
-import useWallet from '../../hooks/useWallet';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import { LoginSignature } from '../../models';
 import { NotificationType } from '../../utils';
-import { API } from '../types';
+import { setAuthenticationToken } from '../../utils';
+import { AUTH_API } from '../types';
 
-const postNewPool = async (pool: HypePool) => {
-  const url = `${API}/pools`;
-  const { data } = await axios.post(url, pool);
-  return data as HypePool;
+const sendSignature = async (login: LoginSignature) => {
+  if (!login) {
+    return;
+  }
+  const url = `${AUTH_API}/auth/login`;
+
+  const { data } = await axios.post(url, login);
+  return data;
 };
 
-export const useAddHypePool = () => {
+export const useLogin = () => {
   const queryClient = useQueryClient();
-  const { account } = useWallet();
+  const { mutate } = useMutation((values: LoginSignature) => sendSignature(values), {
+    useErrorBoundary: true,
+  });
   const dispatchModals = useModalsDispatch();
 
-  const { mutate } = useMutation((values: HypePool) => postNewPool(values));
-
-  const submitHandler = (values: UnpackNestedValue<AddHypePool>) => {
-    const newHypePool: HypePool = { ...values, creatorAddress: account };
-    mutate(newHypePool, {
-      onSuccess: () => {
+  const onLogin = (values: LoginSignature) => {
+    mutate(values, {
+      onSuccess: ({ accessToken }) => {
+        setAuthenticationToken(accessToken);
         queryClient.resetQueries();
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {
             open: true,
             type: NotificationType.SUCCESS,
-            message: 'Hype Pool created!',
+            message: 'Login successful!',
           },
         });
       },
@@ -47,5 +50,5 @@ export const useAddHypePool = () => {
       },
     });
   };
-  return submitHandler;
+  return onLogin;
 };
