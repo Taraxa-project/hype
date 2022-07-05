@@ -35,7 +35,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   return (
     <>
       {open && (
-        <>
+        <div onClick={closeModal}>
           <BackgroundHover show={open} />
           <StyledModal>
             <div>
@@ -73,7 +73,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               )}
             </Box>
           </StyledModal>
-        </>
+        </div>
       )}
     </>
   );
