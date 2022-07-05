@@ -5,7 +5,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   position: fixed;
   left: 50%;
   top: 50%;
-  overflow: auto; /* Enable scroll if needed */
+  overflow: hidden; /* Enable scroll if needed */
   transform: translate(-50%, -50%);
   z-index: 1040;
   backdrop-filter: blur(1rem);
