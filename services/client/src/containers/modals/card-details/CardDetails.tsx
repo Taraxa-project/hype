@@ -37,7 +37,8 @@ export const CardDetails = () => {
   const modalAction: ModalAction = {
     name: 'Connect Wallet',
     onAction: connect,
-    disabled: !isConnected,
+    disabled: isConnected,
+    closeButtonVariant: 'primary',
   };
 
   return (
