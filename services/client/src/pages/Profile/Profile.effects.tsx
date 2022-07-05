@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
+import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import { TUser } from 'src/components/button/TelegramLoginButton';
 import useWallet from 'src/hooks/useWallet';
 import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
@@ -16,6 +18,8 @@ export const useProfileEffects = () => {
   const [currentReward, setCurrentReward] = useState<number>(0);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const { data } = useGetHypePoolsBy(account);
+  const { data: hypeUser } = useGetHypeUserBy(account);
+  const submitHandler = useUpdateTelegram();
 
   useEffect(() => {
     if (data?.length) {
@@ -27,20 +31,26 @@ export const useProfileEffects = () => {
     console.log('Bazinga! You clicked the button!');
   };
 
-  const connect = (user: TUser) => {
+  const useConnect = async (user: TUser) => {
     console.log('new T user is', user);
+    setTelegramProfile({
+      address: account,
+      username: user.username,
+    });
+    submitHandler({address: account, username: user.username, auth_date: user.auth_date});
   };
 
-  const disconnect = (user: any) => {
-    console.log('disconnected user is', user);
+  const useDisconnect = async (user: TUser) => {
+    console.log('disconnected T user is', user);
+    submitHandler({address: account, username: undefined, auth_date: undefined});
   };
 
   useEffect(() => {
     setTelegramProfile({
       address: account,
-      username: 'hyper123',
+      username: hypeUser?.username,
     });
-  }, [account]);
+  }, [account, hypeUser]);
 
   useEffect(() => {
     setJoinedPools([
@@ -90,7 +100,7 @@ export const useProfileEffects = () => {
     currentReward,
     onRedeem,
     telegramProfile,
-    connect,
-    disconnect,
+    useConnect,
+    useDisconnect,
   };
 };

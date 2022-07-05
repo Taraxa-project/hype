@@ -10,8 +10,8 @@ export const Profile = () => {
     currentReward,
     onRedeem,
     telegramProfile,
-    connect,
-    disconnect,
+    useConnect,
+    useDisconnect,
   } = useProfileEffects();
   const { username, address } = telegramProfile;
   return (
@@ -31,8 +31,8 @@ export const Profile = () => {
         <ProfileContainer
           telegramUsername={username}
           address={address}
-          connect={connect}
-          disconnect={disconnect}
+          connect={useConnect}
+          disconnect={useDisconnect}
         />
         <RewardsContainer rewardAmount={currentReward} onRedeem={onRedeem} />
       </Box>
