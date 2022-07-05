@@ -68,6 +68,7 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
 
   const onSelect = (e: HeaderLink) => {
     navigate(e.route);
+    setMenuOpen(false)
   };
 
   const getShortAddress = (addr: string | null | undefined): string =>
