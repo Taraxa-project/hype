@@ -1,33 +1,24 @@
 import { Component, createRef, ReactNode } from 'react';
+import { TelegramUser } from 'src/models/HypeUser.model';
 
-export enum TLoginButtonSize {
+export enum TelegramLoginButtonSize {
   Large = 'large',
   Medium = 'medium',
   Small = 'small',
 }
 
-export type TUser = Readonly<{
-  auth_date: number;
-  first_name: string;
-  last_name?: string;
-  hash: string;
-  id: number;
-  photo_url?: string;
-  username?: string;
-}>;
-
-export type TLoginButtonProps = Readonly<{
+export type TelegramLoginButtonProps = Readonly<{
   botName: string;
-  onAuthCallback?: (user: TUser) => void;
+  onAuthCallback?: (user: TelegramUser) => void;
   redirectUrl?: string;
-  buttonSize: TLoginButtonSize;
+  buttonSize: TelegramLoginButtonSize;
   cornerRadius?: number;
   requestAccess?: string;
   usePic?: boolean;
   lang?: string;
 }>;
 
-export default class TLoginButton extends Component<TLoginButtonProps> {
+export default class TelegramLoginButton extends Component<TelegramLoginButtonProps> {
   private readonly _containerRef = createRef<HTMLDivElement>();
 
   componentDidMount(): void {
@@ -43,40 +34,40 @@ export default class TLoginButton extends Component<TLoginButtonProps> {
     } = this.props;
 
     if (onAuthCallback != null) {
-      (window as any).TelegramOnAuthCb = (user: TUser) => onAuthCallback(user);
+      (window as any).TelegramOnAuthCb = (user: TelegramUser) => onAuthCallback(user);
     }
 
     const script = document.createElement('script');
     script.src = 'https://telegram.org/js/telegram-widget.js?19';
     script.async = true;
 
-    script.setAttribute('data-telegram-login', botName)
+    script.setAttribute('data-telegram-login', botName);
     if (buttonSize != null) {
-      script.setAttribute('data-size', buttonSize)
+      script.setAttribute('data-size', buttonSize);
     }
     if (buttonSize != null) {
-      script.setAttribute('data-radius', `${cornerRadius}`)
+      script.setAttribute('data-radius', `${cornerRadius}`);
     }
     if (usePic != null) {
-      script.setAttribute('data-userpic', `${usePic}`)
+      script.setAttribute('data-userpic', `${usePic}`);
     }
     if (lang != null) {
-      script.setAttribute('data-lang', lang)
+      script.setAttribute('data-lang', lang);
     }
     if (redirectUrl != null) {
-      script.setAttribute('data-auth-url', redirectUrl)
+      script.setAttribute('data-auth-url', redirectUrl);
     }
     if (onAuthCallback != null) {
-      script.setAttribute('data-onauth', 'TelegramOnAuthCb(user)')
+      script.setAttribute('data-onauth', 'TelegramOnAuthCb(user)');
     }
     if (requestAccess != null) {
-      script.setAttribute('data-request-access', requestAccess)
+      script.setAttribute('data-request-access', requestAccess);
     }
 
     this._containerRef.current!.appendChild(script);
   }
 
   render(): ReactNode {
-    return <div className="tlogin-button" ref={this._containerRef}/>;
+    return <div className="tlogin-button" ref={this._containerRef} />;
   }
 }
