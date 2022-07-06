@@ -5291,10 +5291,10 @@
   optionalDependencies:
     prettier "^1.18.2 || ^2.0.0"
 
-"@wagmi/core@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-0.3.8.tgz#7f2d13a25f6d86e5ddcb31ec1d1c9af7efaa4736"
-  integrity sha512-9wsd8YGW2ivjFwpkgAETn7cRbKOAddZz91vuh2VmIP2bWGiDuFA6RXy5/KLV/tGpvIIiCyGFO0JXpx+n4hFhgQ==
+"@wagmi/core@^0.4.4":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-0.4.6.tgz#b21ff905c60f866752ea3208a1942e24f73680eb"
+  integrity sha512-g6d5t41eCBHIeLjdlBTlydcfyRPxgD3N6UD172CkdXgm1enF8u3mwdG2dOMLv0YapBCiptVQOLItVzf6YsdDnQ==
   dependencies:
     eventemitter3 "^4.0.7"
     zustand "^4.0.0-rc.1"
@@ -8991,6 +8991,13 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
+cross-env@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
+  integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
+  dependencies:
+    cross-spawn "^7.0.1"
 
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.6"
