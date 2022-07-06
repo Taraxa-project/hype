@@ -1,15 +1,12 @@
 pragma solidity ^0.8.4;
 // SPDX-License-Identifier: UNLICENSED
 
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "hardhat/console.sol";
 
 import "./interfaces/IEscrow.sol";
@@ -33,9 +30,7 @@ contract DynamicEscrow is
     }
 
     using SafeERC20Upgradeable for IERC20Upgradeable;
-    using SafeMathUpgradeable for uint256;
     using AddressUpgradeable for address payable;
-    using CountersUpgradeable for CountersUpgradeable.Counter;
     event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
     event Withdrawn(
         address indexed receiver,
@@ -54,13 +49,18 @@ contract DynamicEscrow is
     }
 
     address private _rewarder;
-    mapping(bytes => IEscrow.DynamicDeposit) private _deposits;
+
+    /* @dev Deposits always need to be tied to a pool. For now there is no check if
+     * the pool exists because it would limit the contract, but its something worth to ideate on.
+     */
+    mapping(uint256 => mapping(address => IEscrow.DynamicDeposit))
+        private _deposits;
 
     /* @dev Rewards introduce the notion of reward pools. Reward pools are
      * defined by their IDs as integers and every reward accrued must be associated
      * with a reward pool. The reward pool ID is used to identify the reward itself
-     * and can be used throughout multiple application.*/
-    mapping(bytes => uint256) private _accruedRewards;
+     * and can be used throughout multiple applications.*/
+    mapping(uint256 => mapping(address => uint256)) private _accruedRewards;
 
     /* @dev Read the configured rewarder address. */
     function getRewarder() public view returns (address) {
@@ -79,7 +79,7 @@ contract DynamicEscrow is
         override
         returns (IEscrow.DynamicDeposit memory)
     {
-        return _deposits[abi.encode(IEscrow.DepositIndex(payee, poolId))];
+        return _deposits[poolId][payee];
     }
 
     /*
@@ -92,7 +92,7 @@ contract DynamicEscrow is
         view
         returns (uint256)
     {
-        return _accruedRewards[abi.encode(IEscrow.DepositIndex(payee, poolId))];
+        return _accruedRewards[poolId][payee];
     }
 
     /*
@@ -106,9 +106,11 @@ contract DynamicEscrow is
         uint256 poolId,
         uint256 amount
     ) public onlyRewarder nonReentrant {
-        bytes memory index = abi.encode(IEscrow.DepositIndex(payee, poolId));
-        _accruedRewards[index] += amount;
-        require(_accruedRewards[index] >= amount, "AccruedRewardOverflow");
+        _accruedRewards[poolId][payee] += amount;
+        require(
+            _accruedRewards[poolId][payee] >= amount,
+            "AccruedRewardOverflow"
+        );
         emit RewardCredited(payee, amount, poolId);
     }
 
@@ -123,15 +125,17 @@ contract DynamicEscrow is
         address tokenAddress,
         uint256 poolId
     ) public nonReentrant {
-        bytes memory index = abi.encode(IEscrow.DepositIndex(msg.sender, poolId));
-        require(_accruedRewards[index] > 0, "Not enough accrued rewards");
-        uint256 _amount = _accruedRewards[index];
-        _accruedRewards[index] = 0;
+        require(
+            _accruedRewards[poolId][msg.sender] > 0,
+            "Not enough accrued rewards"
+        );
+        uint256 _amount = _accruedRewards[poolId][msg.sender];
+        _accruedRewards[poolId][msg.sender] = 0;
         if (tokenAddress != address(0)) {
             IERC20Upgradeable token = ERC20Upgradeable(tokenAddress);
             token.safeTransfer(receiver, _amount);
         } else {
-            payable(address(this)).sendValue(_amount);
+            payable(receiver).sendValue(_amount);
         }
         emit Withdrawn(receiver, _amount, poolId);
     }
@@ -150,7 +154,7 @@ contract DynamicEscrow is
         uint256 poolId,
         uint256 amount,
         address tokenAddress
-    ) public payable nonReentrant override {
+    ) public payable override nonReentrant {
         if (tokenAddress != address(0)) {
             IERC20Upgradeable token = ERC20Upgradeable(tokenAddress);
             uint256 balance = token.balanceOf(spender);
@@ -164,7 +168,7 @@ contract DynamicEscrow is
             tokenAddress,
             poolId
         );
-        _deposits[abi.encode(IEscrow.DepositIndex(spender, poolId))] = depo;
+        _deposits[poolId][spender] = depo;
         emit Deposited(spender, amount, poolId);
     }
 
@@ -180,21 +184,24 @@ contract DynamicEscrow is
         address payable receiver,
         uint256 poolId,
         uint256 amount
-    ) external nonReentrant override {
-        bytes memory index = abi.encode(IEscrow.DepositIndex(msg.sender, poolId));
-        IEscrow.DynamicDeposit memory _depo = _deposits[index];
-        require(_depo.weiAmount >= amount, "Not enough funds");
-        if (_depo.weiAmount == amount) {
-            delete _deposits[index];
+    ) external override nonReentrant {
+        require(
+            _deposits[poolId][msg.sender].weiAmount >= amount,
+            "Not enough funds"
+        );
+        if (_deposits[poolId][msg.sender].weiAmount == amount) {
+            delete _deposits[poolId][msg.sender];
         } else {
-            _depo.weiAmount -= amount;
-            _deposits[index].weiAmount -= amount;
+            _deposits[poolId][msg.sender].weiAmount -= amount;
+            _deposits[poolId][msg.sender].weiAmount -= amount;
         }
-        if (_depo.tokenAddress == address(0)) {
+        if (_deposits[poolId][msg.sender].tokenAddress == address(0)) {
             receiver.transfer(amount);
         } else {
-            IERC20Upgradeable token = ERC20Upgradeable(_depo.tokenAddress);
-            token.safeTransferFrom(receiver, address(this), amount);
+            IERC20Upgradeable token = ERC20Upgradeable(
+                _deposits[poolId][msg.sender].tokenAddress
+            );
+            token.safeTransferFrom(address(this), receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }

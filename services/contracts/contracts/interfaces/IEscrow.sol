@@ -8,11 +8,6 @@ interface IEscrow {
         uint256 poolId;
     }
 
-    struct DepositIndex {
-        address payee;
-        uint256 poolId;
-    }
-
     function depositsOf(address payee, uint256 poolId)
         external
         view
