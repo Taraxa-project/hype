@@ -14,11 +14,21 @@ describe("DynamicEscrow", function () {
   let depositorTwo: SignerWithAddress;
   let owner: SignerWithAddress;
   let erc20: ERC20Base;
-  
-  
+
   const POOL_ZERO = BigNumber.from("0");
   const POOL_ONE = BigNumber.from("1");
   const POOL_TWO = BigNumber.from("2");
+  const POOL_FOUR = BigNumber.from("4");
+  const SAMPLE_DATE = BigNumber.from(
+    new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000)
+      .getTime()
+      .toString()
+  );
+  const PAST_DATE = BigNumber.from(
+    new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000)
+      .getTime()
+      .toString()
+  );
 
   const oneEth = ethers.utils.parseEther("1");
   const twoEth = ethers.utils.parseEther("2");
@@ -65,69 +75,128 @@ describe("DynamicEscrow", function () {
     expect(result.address).to.be.equal(hypePool.address);
   });
 
-  it(`DepositorOne deposits 1 ETH into escrow for pool 1 and emits Deposited event`, async () => {
+  it("Depositor One Creates Pool 1 with the defined amount", async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    expect(currentPoolIndex).to.equal(POOL_ZERO);
+    const createPool = await hypePool
+      .connect(depositorOne)
+      .createPool(
+        "https://pool.data.json",
+        oneEth,
+        zeroAddress,
+        ethers.utils.parseEther("0.03"),
+        SAMPLE_DATE
+      );
+    expect(createPool).not.to.be.undefined;
+    await expect(createPool)
+      .to.emit(hypePool, "PoolCreated")
+      .withArgs(
+        POOL_ZERO,
+        depositorOne.address,
+        "https://pool.data.json",
+        oneEth,
+        zeroAddress,
+        ethers.utils.parseEther("0.03"),
+        SAMPLE_DATE
+      );
+  });
+
+  it(`Then DepositorOne deposits 1 ETH into escrow for pool 1 and emits Deposited event`, async () => {
     expect(
       await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
     ).to.equal(0);
 
     const currentPoolIndex = await hypePool.getCurrentIndex();
-    expect(currentPoolIndex).to.equal(POOL_ZERO);
+    expect(currentPoolIndex).to.equal(POOL_ONE);
     const deposit = await dynamicEscrow
       .connect(depositorOne)
-      .deposit(
-        depositorOne.address,
-        POOL_ZERO,
-        oneEth,
-        zeroAddress,
-        { value: oneEth }
-      );
+      .deposit(depositorOne.address, POOL_ZERO, oneEth, zeroAddress, {
+        value: oneEth,
+      });
     expect(deposit).not.to.be.undefined;
     await expect(deposit)
       .to.emit(dynamicEscrow, "Deposited")
-      .withArgs(
-        depositorOne.address,
-        oneEth,
-        POOL_ZERO
-      );
+      .withArgs(depositorOne.address, oneEth, POOL_ZERO);
     expect(
       await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
     ).to.equal(oneEth);
   });
 
-  it("Then Creates Pool 1 with the defined amount", async () => {
+  it("Finally, depositor one activates the pool", async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
-    expect(currentPoolIndex).to.equal(POOL_ZERO);
-    const createPool = await hypePool
+    expect(currentPoolIndex).to.equal(POOL_ONE);
+    const activation = await hypePool
       .connect(depositorOne)
-      .createPool("https://pool.data.json", oneEth, ethers.utils.parseEther("0.03"));
-    expect(createPool).not.to.be.undefined;
-    await expect(createPool)
-      .to.emit(hypePool, "PoolCreated")
-      .withArgs(POOL_ZERO, depositorOne.address, "https://pool.data.json", oneEth, zeroAddress, ethers.utils.parseEther("0.03"));
+      .activatePool(POOL_ZERO);
+    expect(activation).not.to.be.undefined;
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(POOL_ZERO, depositorOne.address);
   });
 
   it("Depositor one tries to create a pool with depositor two's payment", async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(currentPoolIndex).to.equal(POOL_ONE);
-    expect(hypePool
-      .connect(depositorOne)
-      .createPool("https://pool.data.json", oneEth, ethers.utils.parseEther("0.03"))).to.be.revertedWith("Deposited amount does not match pool cap");
+    expect(
+      hypePool
+        .connect(depositorOne)
+        .createPool(
+          "https://pool.data.json",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.03"),
+          SAMPLE_DATE
+        )
+    ).to.be.revertedWith("Deposited amount does not match pool cap");
   });
 
-  it('Checks data valitaions', async () => {
-    const currentPoolIndex = await hypePool.getCurrentIndex();
-    expect(currentPoolIndex).to.equal(POOL_ONE);
-    expect(hypePool
-      .connect(depositorOne)
-      .createPool("", oneEth, ethers.utils.parseEther("0.03"))).to.be.revertedWith("Missing metadata URI");
+  it("Checks data validations", async () => {
+    expect(
+      hypePool
+        .connect(depositorOne)
+        .createPool(
+          "",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.03"),
+          SAMPLE_DATE
+        )
+    ).to.be.revertedWith("Missing metadata URI");
 
-    expect(hypePool
-      .connect(depositorOne)
-      .createPool("as", oneEth, ethers.utils.parseEther("0.0"))).to.be.revertedWith("Invalid pool cap");
+    expect(
+      hypePool
+        .connect(depositorOne)
+        .createPool(
+          "as",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.0"),
+          SAMPLE_DATE
+        )
+    ).to.be.revertedWith("Invalid pool cap");
 
-    expect(hypePool
-      .connect(depositorOne)
-      .createPool("as", oneEth, ethers.utils.parseEther("0.03"))).to.be.revertedWith("Invalid minimal hype reward");
+    expect(
+      hypePool
+        .connect(depositorOne)
+        .createPool(
+          "as",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.03"),
+          SAMPLE_DATE
+        )
+    ).to.be.revertedWith("Invalid minimal hype reward");
+    expect(
+      hypePool
+        .connect(depositorOne)
+        .createPool(
+          "as",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.03"),
+          PAST_DATE
+        )
+    ).to.be.revertedWith("End date must be after current block time");
   });
 
   it("DepositorTwo deposits 1 ETH into escrow for pool 2 and emits Deposited event, then withdraws", async () => {
@@ -138,21 +207,13 @@ describe("DynamicEscrow", function () {
     const balanceOfInit = await depositorTwo.getBalance();
     const deposit = await dynamicEscrow
       .connect(depositorTwo)
-      .deposit(
-        depositorTwo.address,
-        POOL_ONE,
-        oneEth,
-        zeroAddress,
-        { value: oneEth }
-      );
+      .deposit(depositorTwo.address, POOL_ONE, oneEth, zeroAddress, {
+        value: oneEth,
+      });
     expect(deposit).not.to.be.undefined;
     await expect(deposit)
       .to.emit(dynamicEscrow, "Deposited")
-      .withArgs(
-        depositorTwo.address,
-        oneEth,
-        POOL_ONE
-      );
+      .withArgs(depositorTwo.address, oneEth, POOL_ONE);
 
     expect(
       await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
@@ -168,19 +229,11 @@ describe("DynamicEscrow", function () {
     expect(depositOf[0]).to.be.equal(oneEth);
     const withdrawal = await dynamicEscrow
       .connect(depositorTwo)
-      .withdraw(
-        depositorTwo.address,
-        POOL_ONE,
-        oneEth,
-      );
+      .withdraw(depositorTwo.address, POOL_ONE, oneEth);
     expect(withdrawal).not.to.be.undefined;
     await expect(withdrawal)
       .to.emit(dynamicEscrow, "Withdrawn")
-      .withArgs(
-        depositorTwo.address,
-        oneEth,
-        POOL_ONE
-      );
+      .withArgs(depositorTwo.address, oneEth, POOL_ONE);
 
     expect(
       await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
@@ -200,7 +253,7 @@ describe("DynamicEscrow", function () {
     const BaseERC20 = await ethers.getContractFactory("ERC20Base", {
       signer: owner,
     });
-    
+
     erc20 = await BaseERC20.deploy(initBalance);
     const result = await erc20.deployed();
     expect(result).not.to.be.undefined;
@@ -232,19 +285,12 @@ describe("DynamicEscrow", function () {
     expect(deposit).not.to.be.undefined;
     await expect(deposit)
       .to.emit(dynamicEscrow, "Deposited")
-      .withArgs(
-        owner.address,
-        ethers.utils.parseEther("13"),
-        POOL_TWO
-      );
+      .withArgs(owner.address, ethers.utils.parseEther("13"), POOL_TWO);
     const balanceOfOwner = await erc20.balanceOf(owner.address);
     expect(ethers.utils.parseEther("13")).to.be.equal(
       balanceOfOwnerBefore.sub(balanceOfOwner)
     );
-    const deposits = await dynamicEscrow.depositsOf(
-      owner.address,
-      POOL_TWO
-    );
+    const deposits = await dynamicEscrow.depositsOf(owner.address, POOL_TWO);
     const { weiAmount, poolId, tokenAddress } = deposits;
     expect(weiAmount).to.be.equal(ethers.utils.parseEther("13"));
     expect(poolId).to.be.equal(POOL_TWO);
@@ -254,19 +300,11 @@ describe("DynamicEscrow", function () {
   it("depositorTwo gets 3 ERC20 token worth of rewards, checks onlyRewarder modifier", async () => {
     const rewarderCall = await dynamicEscrow
       .connect(rewarder)
-      .accrueRewardFor(
-        depositorTwo.address,
-        POOL_TWO,
-        threeEth
-      );
+      .accrueRewardFor(depositorTwo.address, POOL_TWO, threeEth);
     expect(rewarderCall).not.to.be.undefined;
     await expect(rewarderCall)
       .to.emit(dynamicEscrow, "RewardCredited")
-      .withArgs(
-        depositorTwo.address,
-        threeEth,
-        POOL_TWO
-      );
+      .withArgs(depositorTwo.address, threeEth, POOL_TWO);
     const accruedForDepTwo = await dynamicEscrow.accruedRewardsOf(
       depositorTwo.address,
       POOL_TWO
@@ -276,11 +314,7 @@ describe("DynamicEscrow", function () {
     await expect(
       dynamicEscrow
         .connect(depositorTwo)
-        .accrueRewardFor(
-          depositorTwo.address,
-          POOL_TWO,
-          threeEth
-        )
+        .accrueRewardFor(depositorTwo.address, POOL_TWO, threeEth)
     ).to.be.revertedWith(`OnlyRewarder`);
   });
 
@@ -294,11 +328,7 @@ describe("DynamicEscrow", function () {
 
     await expect(giveOutRewardsFrom)
       .to.emit(dynamicEscrow, "Withdrawn")
-      .withArgs(
-        depositorTwo.address,
-        threeEth,
-        POOL_TWO
-      );
+      .withArgs(depositorTwo.address, threeEth, POOL_TWO);
     const balanceAfter = await erc20.balanceOf(depositorTwo.address);
     expect(balanceAfter).to.be.equal(threeEth);
     await expect(
@@ -308,4 +338,142 @@ describe("DynamicEscrow", function () {
     ).to.be.revertedWith("Not enough accrued rewards");
   });
 
+  it(`================================================================
+  SCENARIO: Multiple pools for the same token and depositor
+  ================================================================
+  Depositor One Creates Pool 3 with the defined amount`, async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    expect(currentPoolIndex).to.equal(POOL_FOUR);
+    const createPool = await hypePool
+      .connect(depositorOne)
+      .createPool(
+        "https://pool.data.json",
+        oneEth,
+        zeroAddress,
+        ethers.utils.parseEther("0.03"),
+        SAMPLE_DATE
+      );
+    expect(createPool).not.to.be.undefined;
+    await expect(createPool)
+      .to.emit(hypePool, "PoolCreated")
+      .withArgs(
+        POOL_FOUR,
+        depositorOne.address,
+        "https://pool.data.json",
+        oneEth,
+        zeroAddress,
+        ethers.utils.parseEther("0.03"),
+        SAMPLE_DATE
+      );
+  });
+
+  it(`Then DepositorOne deposits 1 ETH into escrow for pool 4 and emits Deposited event`, async () => {
+    expect(
+      await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
+    ).to.equal(oneEth);
+
+    const deposit = await dynamicEscrow
+      .connect(depositorOne)
+      .deposit(depositorOne.address, POOL_FOUR, oneEth, zeroAddress, {
+        value: oneEth,
+      });
+    expect(deposit).not.to.be.undefined;
+    await expect(deposit)
+      .to.emit(dynamicEscrow, "Deposited")
+      .withArgs(depositorOne.address, oneEth, POOL_FOUR);
+    expect(
+      await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
+    ).to.equal(twoEth);
+  });
+
+  it("Finally, depositor one activates pool 4", async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    expect(currentPoolIndex).to.equal(BigNumber.from("5"));
+    const activation = await hypePool
+      .connect(depositorOne)
+      .activatePool(POOL_FOUR);
+    expect(activation).not.to.be.undefined;
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(POOL_FOUR, depositorOne.address);
+  });
+
+  it("Tests data retrieval from depositor one's POW", async () => {
+    const getPoolOne = await hypePool.connect(depositorOne).getPool(POOL_ONE);
+    expect(getPoolOne).not.to.be.undefined;
+    expect(getPoolOne.id).to.equal(POOL_ONE);
+    expect(getPoolOne.creator).to.equal(depositorOne.address);
+    expect(getPoolOne.token).to.equal(zeroAddress);
+
+    const getPoolUri = await hypePool.connect(depositorOne).poolURI(POOL_ONE);
+    expect(getPoolUri).to.equal(getPoolOne.uri);
+  });
+  it("Tests data retrieval from depositor two's POW", async () => {
+    const getPoolOne = await hypePool.connect(depositorTwo).getPool(POOL_ONE);
+    expect(getPoolOne).not.to.be.undefined;
+    expect(getPoolOne.id).to.equal(POOL_ONE);
+    expect(getPoolOne.creator).to.equal(depositorOne.address);
+    expect(getPoolOne.token).to.equal(zeroAddress);
+
+    const getPoolUri = await hypePool.connect(depositorTwo).poolURI(POOL_ONE);
+    expect(getPoolUri).to.equal(getPoolOne.uri);
+  });
+
+  it(`The owner pauses the pool contract, all state modifiers should revert`, async () => {
+    const pause = await hypePool.connect(owner).pause();
+    await expect(pause).to.emit(hypePool, "Paused").withArgs(owner.address);
+
+    it("Pool creation should revert", async () => {
+      const currentPoolIndex = await hypePool.getCurrentIndex();
+      expect(currentPoolIndex).to.equal(BigNumber.from("4"));
+      const createPool = await hypePool
+        .connect(depositorOne)
+        .createPool(
+          "https://pool.data.json",
+          oneEth,
+          zeroAddress,
+          ethers.utils.parseEther("0.03"),
+          SAMPLE_DATE
+        );
+      await expect(createPool).to.be.revertedWith("Pausable: paused");
+      const activation = await hypePool
+        .connect(depositorOne)
+        .activatePool(BigNumber.from("4"));
+      expect(activation).to.be.revertedWith("Pausable: paused");
+    });
+  });
+
+  it("Non-owner address tries to unpause then pause, fails", async () => {
+    const unpause = hypePool.connect(depositorOne).unpause();
+    await expect(unpause).to.be.revertedWith(
+      "Ownable: caller is not the owner"
+    );
+    const pause = hypePool.connect(depositorOne).pause();
+    await expect(pause).to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it(`The owner resumes the pool contract, all state modifiers should apply as before`, async () => {
+    const pause = await hypePool.connect(owner).unpause();
+    await expect(pause).to.emit(hypePool, "Unpaused").withArgs(owner.address);
+
+    it("Pool creation should revert", async () => {
+      const currentPoolIndex = await hypePool.getCurrentIndex();
+      expect(currentPoolIndex).to.equal(BigNumber.from("4"));
+      expect(
+        hypePool
+          .connect(depositorOne)
+          .createPool(
+            "",
+            oneEth,
+            zeroAddress,
+            ethers.utils.parseEther("0.03"),
+            SAMPLE_DATE
+          )
+      ).to.be.revertedWith("Missing metadata URI");
+      const activation = await hypePool
+        .connect(depositorOne)
+        .activatePool(BigNumber.from("1"));
+      expect(activation).to.be.revertedWith("Pool is already active");
+    });
+  });
 });
