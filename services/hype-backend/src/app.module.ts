@@ -5,7 +5,9 @@ import { PoolModule, HypePool } from '@taraxa-hype/pool';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
-import { general, auth } from '@taraxa-hype/config';
+import { general, auth, ethereum } from '@taraxa-hype/config';
+import { BlockchainModule } from '@taraxa-hype/blockchain';
+import { RewardModule } from './modules/reward/reward.module';
 import { HypeUser, UserModule } from '@taraxa-hype/user';
 
 const getEnvFilePath = () => {
@@ -65,11 +67,13 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
-      load: [general, auth],
+      load: [general, auth, ethereum],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,
     PoolModule,
+    BlockchainModule,
+    RewardModule,
     UserModule,
   ],
 })
