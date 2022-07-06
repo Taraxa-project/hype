@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { PoolModule, HypePool } from '@taraxa-hype/pool';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
-import { general, auth } from '@taraxa-hype/config';
+import { general, auth, ethereum } from '@taraxa-hype/config';
+import { BlockchainModule } from '@taraxa-hype/blockchain';
+import { RewardModule } from './modules/reward/reward.module';
+import { HypeUser, UserModule } from '@taraxa-hype/user';
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -19,39 +22,44 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities: Function[] = [HypePool];
+export const entities: Function[] = [HypePool, HypeUser];
 
 const HypeAppTypeOrmModule = () => {
-  let ssl = {};
-  if (process.env.DATABASE_CERT) {
-    ssl = {
-      rejectUnauthorized: false,
-      ca: process.env.DATABASE_CERT,
-    };
-  }
-  return process.env.DATABASE_URL
-    ? TypeOrmModule.forRoot({
-        ssl,
+  let typeOrmOptions: TypeOrmModuleOptions;
+  const baseConnectionOptions: TypeOrmModuleOptions = process.env.DATABASE_URL
+    ? {
         type: 'postgres',
         url: process.env.DATABASE_URL,
         entities,
-        synchronize: !!process.env.TYPEORM_SYNC,
+        synchronize: false,
         autoLoadEntities: true,
         logging: ['info'],
-      })
-    : TypeOrmModule.forRoot({
-        ssl,
+      }
+    : {
         type: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
+        host: process.env.DB_HOST ?? 'localhost',
         port: Number(process.env.DB_PORT) || 5432,
         username: process.env.DB_USERNAME || 'postgres',
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_DATABASE || 'hypepool',
         entities,
-        synchronize: !!process.env.TYPEORM_SYNC,
+        synchronize: false,
         autoLoadEntities: true,
         logging: ['info'],
-      });
+      };
+
+  if (!!process.env.DATABASE_CERT) {
+    typeOrmOptions = {
+      ...baseConnectionOptions,
+      ssl: {
+        rejectUnauthorized: false,
+        ca: process.env.DATABASE_CERT,
+      },
+    };
+  } else {
+    typeOrmOptions = { ...baseConnectionOptions };
+  }
+  return TypeOrmModule.forRoot(typeOrmOptions);
 };
 
 @Module({
@@ -59,11 +67,14 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
-      load: [general, auth],
+      load: [general, auth, ethereum],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,
     PoolModule,
+    BlockchainModule,
+    RewardModule,
+    UserModule,
   ],
 })
 export class AppModule {}

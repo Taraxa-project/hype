@@ -22,6 +22,7 @@ export interface ModalContainerProps {
   children?: React.ReactNode;
   modalAction?: ModalAction;
   showCancel?: boolean;
+  closeOutside?: boolean;
 }
 
 export const ModalContainer: FC<ModalContainerProps> = ({
@@ -31,13 +32,18 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   closeModal,
   modalAction,
   showCancel,
+  closeOutside = true,
 }) => {
   return (
     <>
       {open && (
-        <>
+        <div
+          onClick={() => {
+            closeOutside && closeModal();
+          }}
+        >
           <BackgroundHover show={open} />
-          <StyledModal>
+          <StyledModal onClick={(e) => e.stopPropagation()}>
             <div>
               <ModalTitle {...titleProps} />
               <Box overflow="auto" height="100%">
@@ -76,7 +82,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               )}
             </Box>
           </StyledModal>
-        </>
+        </div>
       )}
     </>
   );
