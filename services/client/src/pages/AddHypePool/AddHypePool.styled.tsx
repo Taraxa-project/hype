@@ -1,5 +1,6 @@
 import Input from 'src/components/input/Input';
 import TitleText from 'src/components/TitleText/TitleText';
+import Tooltip from 'src/components/tooltip/Tooltip';
 
 import styled from 'styled-components';
 
@@ -8,11 +9,10 @@ export const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-
   width: 100%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: 1rem 2rem 2rem 2rem;
+    padding: 1rem 2rem 2rem;
   }
 `;
 
@@ -32,6 +32,7 @@ export const FormInput = styled(Input)`
 
 export const HowItWorksColumn = styled.div`
   max-width: 30.875rem;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
@@ -57,14 +58,13 @@ export const Label = styled.div`
   color: #5c5c5c;
   margin-top: 1rem;
   margin-bottom: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export const InfoCard = styled.div`
   background-color: #f1f1f1;
   border-radius: 1rem;
   padding: 0.875rem 1rem;
-  /* hype_neutral/700 */
   color: #787878;
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -96,7 +96,7 @@ export const Step = styled.div`
     left: 1rem;
     height: calc(
       100% - 0.5rem
-    ); // We need to substract 0.25 from the top and bottom. So 0.5 rem total
+    ); /* We need to substract 0.25 from the top and bottom. So 0.5 rem total */
     width: 0.063rem;
     background-color: #dadada;
   }
@@ -140,4 +140,8 @@ export const FormAction = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
+`;
+
+export const SpacedStyledTooltip = styled(Tooltip)`
+  margin-left: 0.625rem;
 `;

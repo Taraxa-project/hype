@@ -34,37 +34,44 @@ export const Home = () => {
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
-          <VideoPlayer url="https://www.youtube.com/embed/E7wJTI-1dvQ" width="" height="" controls={true} />
+          <VideoPlayer
+            url="https://www.youtube.com/embed/E7wJTI-1dvQ"
+            width=""
+            height=""
+            controls={true}
+          />
         </VideoContainer>
       </HeroContainer>
       <PoolContainer>
         <TitleText>Active Hype Pools</TitleText>
         <Input
-          Icon={<SearchIcon />}
+          icon={<SearchIcon />}
           placeholder="Search for hype pools..."
           onChange={debouncedResults}
         />
       </PoolContainer>
-      <CardContainer>
-        {data?.pages.map(
-          (data, i) =>
-            data && (
-              <Card
-                key={`${data.title}-${i}`}
-                projectName={data.projectName}
-                title={data.title}
-                pool={data.pool}
-                description={data.description}
-                rewardsAddress={data.rewardsAddress}
-                creatorAddress={data.creatorAddress}
-                minReward={data.minReward}
-                startDate={data.startDate}
-                endDate={data.endDate}
-                onClick={() => onClick(data)}
-              />
-            ),
-        )}
-      </CardContainer>
+      {(data || data?.pages?.length > 0) && (
+        <CardContainer>
+          {data?.pages.map(
+            (data, i) =>
+              data && (
+                <Card
+                  key={`${data.title}-${i}`}
+                  projectName={data.projectName}
+                  title={data.title}
+                  pool={data.pool}
+                  description={data.description}
+                  rewardsAddress={data.rewardsAddress}
+                  creatorAddress={data.creatorAddress}
+                  minReward={data.minReward}
+                  startDate={data.startDate}
+                  endDate={data.endDate}
+                  onClick={() => onClick(data)}
+                />
+              ),
+          )}
+        </CardContainer>
+      )}
       {isFetchingNextPage && (
         <Box display="flex" justifyContent="center" alignItems="center" my={3}>
           <LoadingSpinner />

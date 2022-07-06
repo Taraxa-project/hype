@@ -5,11 +5,14 @@ import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
 import { TelegramLogo } from 'src/assets/icons/Telegram';
 import Button from 'src/components/button/Button';
-import TLoginButton, { TLoginButtonSize, TUser } from '../../components/button/TelegramLoginButton';
+import TelegramLoginButton, {
+  TelegramLoginButtonSize,
+} from '../../components/button/TelegramLoginButton';
 import TelegramConfig from 'src/api/TelegramConfig';
 import Heading from '../../components/styles/Heading';
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
+import { TelegramUser } from 'src/models/HypeUser.model';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -22,7 +25,7 @@ export const Account = styled.p<{ theme: HypeThemeType }>`
 interface ProfileProps {
   address: string;
   telegramUsername: string;
-  connect: (user: TUser) => void;
+  connect: (user: TelegramUser) => void;
   disconnect: (user: any) => void;
 }
 
@@ -56,10 +59,12 @@ export const ProfileContainer = ({
       >
         Your profile
       </Heading>
-      <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
-        <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
-        <Account>{address}</Account>
-      </Box>
+      {address && (
+        <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
+          <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
+          <Account>{address}</Account>
+        </Box>
+      )}
       <Text color="greys.14" fontSize="0.875rem" fontWeight="600">
         Connected Apps:
       </Text>
@@ -75,7 +80,7 @@ export const ProfileContainer = ({
         mt="0.75rem"
       >
         <Box display="flex" flexDirection="row">
-          <TelegramLogo width='90' height='90'/>
+          <TelegramLogo width="90" height="54.75" />
           <Box
             display="flex"
             flexDirection="column"
@@ -87,9 +92,11 @@ export const ProfileContainer = ({
             <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
               Telegram:
             </Text>
-            <Text fontSize="0.875rem" color="greys.4">
-              @{telegramUsername}
-            </Text>
+            {telegramUsername && (
+              <Text fontSize="0.875rem" color="greys.4">
+                @{telegramUsername}
+              </Text>
+            )}
           </Box>
         </Box>
         {telegramUsername ? (
@@ -97,10 +104,10 @@ export const ProfileContainer = ({
             Disconnect this account
           </Button>
         ) : (
-          <TLoginButton
+          <TelegramLoginButton
             botName={TelegramConfig.botName}
             onAuthCallback={connect}
-            buttonSize={isMobile ? TLoginButtonSize.Small : TLoginButtonSize.Medium}
+            buttonSize={isMobile ? TelegramLoginButtonSize.Small : TelegramLoginButtonSize.Medium}
             usePic={false}
             lang="EN"
           />

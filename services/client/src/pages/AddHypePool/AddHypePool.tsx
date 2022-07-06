@@ -22,10 +22,10 @@ import {
   StepNumber,
   StepDescription,
   FormAction,
+  SpacedStyledTooltip,
 } from './AddHypePool.styled';
 import { Controller } from 'react-hook-form';
 import TextArea from '../../components/textarea/TextArea';
-import Tooltip from '../../components/tooltip/Tooltip';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
@@ -39,7 +39,7 @@ export const AddHypePool = () => {
           <TitleText>What is your project name!</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project name:</Label>
-            <Tooltip message="Project name" />
+            <SpacedStyledTooltip message="Project name" />
           </Box>
           <FormInput
             disabled={!isConnected}
@@ -58,7 +58,7 @@ export const AddHypePool = () => {
           </Example>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Hype pool name:</Label>
-            <Tooltip message="Hype pool name" />
+            <SpacedStyledTooltip message="Hype pool name" />
           </Box>
           <FormInput
             disabled={!isConnected}
@@ -84,7 +84,7 @@ export const AddHypePool = () => {
           </Example>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>What are you hyping?</Label>
-            <Tooltip message="What are you hyping?" />
+            <SpacedStyledTooltip message="What are you hyping?" />
           </Box>
           <TextArea
             disabled={!isConnected}
@@ -107,7 +107,7 @@ export const AddHypePool = () => {
           </InfoCard>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Rewards are in:</Label>
-            <Tooltip message="Rewards are in" />
+            <SpacedStyledTooltip message="Rewards are in" />
           </Box>
           <FormInput
             disabled={!isConnected}
@@ -122,7 +122,7 @@ export const AddHypePool = () => {
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Min reward per hype:</Label>
-            <Tooltip message="Min reward per hype" />
+            <SpacedStyledTooltip message="Min reward per hype" />
           </Box>
           <FormInput
             disabled={!isConnected}
@@ -137,7 +137,7 @@ export const AddHypePool = () => {
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Pool cap:</Label>
-            <Tooltip message="Pool cap" />
+            <SpacedStyledTooltip message="Pool cap" />
           </Box>
           <FormInput
             disabled={!isConnected}
@@ -152,14 +152,14 @@ export const AddHypePool = () => {
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Pool starts:</Label>
-            <Tooltip message="Pool starts" />
+            <SpacedStyledTooltip message="Pool starts" />
           </Box>
           <Controller
             name="startDate"
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool starts..."
                 disabled={!isConnected}
                 selected={value}
@@ -175,14 +175,14 @@ export const AddHypePool = () => {
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Pool ends:</Label>
-            <Tooltip message="Pool ends" />
+            <SpacedStyledTooltip message="Pool ends" />
           </Box>
           <Controller
             name="endDate"
             control={control}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DatePicker
-                wrapperClassName="datePicker"
+                wrapperClassName="date-picker"
                 placeholderText="Pool ends..."
                 disabled={!isConnected}
                 selected={value}

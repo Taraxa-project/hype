@@ -1,5 +1,5 @@
-import { HypePool } from '../../models';
-import { OrderDirection, PoolOrderByEnum } from '../../utils';
+import { HypePool } from '../models';
+import { OrderDirection, PoolOrderByEnum } from '../utils';
 
 export interface FetchHypesFilter {
   take: number;
@@ -14,4 +14,5 @@ export interface PoolPaginate {
   total: number;
 }
 
-export const API = `${process.env.REACT_APP_API_HOST}/api`;
+export const API = `${process.env.REACT_APP_API_HOST}`;
+export const AUTH_API = `${process.env.REACT_APP_WALLET_HOST}`;

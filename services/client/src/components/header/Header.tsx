@@ -83,13 +83,13 @@ const Header = React.memo(
         )}
         <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
           <div>
-            <div className="headerLeft">
+            <div className="header-left">
               <Link to="/">
                 <HypeIconSmall />
               </Link>
             </div>
 
-            <div className="headerRight">
+            <div className="header-right">
               {variant === 'mobile' ? (
                 connected ? (
                   <>

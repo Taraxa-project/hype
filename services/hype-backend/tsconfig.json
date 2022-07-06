@@ -27,7 +27,8 @@
       "@taraxa-hype/pool": ["src/modules/pool"],
       "@taraxa-hype/auth": ["src/modules/auth"],
       "@taraxa-hype/config": ["config"],
-      "@taraxa-hype/blockchain": ["src/modules/blockchain"]
+      "@taraxa-hype/blockchain": ["src/modules/blockchain"],
+      "@taraxa-hype/user": ["src/modules/user"],
     }
   },
   "include": ["src/**/*", "test/**/*", "migrations/*", "data-source.ts"],

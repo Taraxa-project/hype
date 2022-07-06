@@ -7,8 +7,8 @@ interface CustomStyledProps {
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${({variant}) => (variant === 'mobile' ? 'auto' : '23rem')};
-  height: ${({variant}) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
+  width: ${({ variant }) => (variant === 'mobile' ? 'auto' : '23rem')};
+  height: ${({ variant }) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;
@@ -18,13 +18,13 @@ export const StyledCard = styled.div<CustomStyledProps>`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 1rem 1rem;
+    padding: 1rem;
   }
 `;
 
 export const CardTitle = styled.h3`
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #292929;
   margin-bottom: 1.25rem;
   width: 100%;
@@ -35,7 +35,6 @@ export const CardDescription = styled.span`
   font-size: 0.875rem;
   color: #595959;
   width: 100%;
-  max-height: 3rem;
   margin-bottom: 1.5rem;
   display: block;
 `;
@@ -46,13 +45,17 @@ export const DataHeader = styled.span`
   text-align: right;
   font-weight: 700;
   line-height: 1.25rem;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.greys[7]};
 `;
 
 export const DataValue = styled.span<{ theme: HypeThemeType }>`
   flex: 1 0 50%;
   display: flex;
   font-weight: 400;
+  font-size: 0.875rem;
   justify-content: end;
+  color: ${({ theme }) => theme.colors.greys[7]};
 `;
 
 export const DataContainer = styled.div`

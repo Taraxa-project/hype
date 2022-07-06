@@ -2,19 +2,18 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 interface StyledInputProps {
-  Icon?: React.ReactNode;
+  icon?: React.ReactNode;
   theme?: HypeThemeType;
 }
 
 export const StyledSearchIcon = styled.div`
   position: absolute;
-  margin-top: 0.75rem;
-  margin-left: 0.75rem;
+  margin-top: 0.9rem;
+  margin-left: 1rem;
 `;
 
 export const StyledInput = styled.input<StyledInputProps>`
   box-sizing: border-box;
-
   border-radius: 0.75rem;
   border: ${({ theme }) => `0.125rem solid ${theme.input.base.border}`};
   background: ${({ theme }) => theme.input.base.background};
@@ -23,11 +22,12 @@ export const StyledInput = styled.input<StyledInputProps>`
   width: 100%;
   min-height: 2.5rem;
   text-align: left;
-  padding: 0.625rem;
-  padding-left: ${({ Icon }) => (Icon ? '3rem;' : '')};
+  padding: 0.75rem 1rem;
+  padding-left: ${({ icon }) => (icon ? '3rem;' : '1rem;')};
+  outline: none;
+
   :focus,
-  :active,
-  :hover {
+  :active {
     border: ${({ theme }) => `0.125rem solid ${theme.input.hover.border}`};
     background: ${({ theme }) => theme.input.hover.background};
   }

@@ -3,14 +3,18 @@ import { useMutation, useQueryClient } from 'react-query';
 import { AddHypePool, HypePool } from '../../models';
 import { UnpackNestedValue } from 'react-hook-form';
 import useWallet from '../../hooks/useWallet';
-import { API } from './types';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
+import { API } from '../types';
 
 const postNewPool = async (pool: HypePool) => {
   const url = `${API}/pools`;
-  const { data } = await axios.post(url, pool);
-  return data as HypePool;
+  try {
+    const { data } = await axios.post(url, pool);
+    return data as HypePool;
+  } catch (err) {
+    console.log('Error in postNewPool: ', err);
+  }
 };
 
 export const useAddHypePool = () => {
