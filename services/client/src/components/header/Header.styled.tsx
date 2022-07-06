@@ -15,6 +15,10 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   font-size: 1rem;
   background: #ffffff;
   height: 4.5rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
 
   > div {
     flex: 1 0 auto;

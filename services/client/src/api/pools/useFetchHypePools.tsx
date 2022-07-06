@@ -16,8 +16,12 @@ const computePage = (page: number, search?: string): FetchHypesFilter => {
 
 const fetchPools = async (params: FetchHypesFilter) => {
   const url = `${API}/pools`;
-  const { data } = await axios.get(url, { params });
-  return data as PoolPaginate;
+  try {
+    const { data } = await axios.get(url, { params });
+    return data as PoolPaginate;
+  } catch (err) {
+    console.log('Error in fetchPools: ', err);
+  }
 };
 
 export const useFetchHypePools = (search?: string) => {

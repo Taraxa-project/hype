@@ -16,10 +16,12 @@ const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   margin: 1.5rem auto;
+  margin-top: 6.5rem;
   width: ${({ theme }) => theme.breakpoints.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin: 2rem 1rem 1rem 2rem;
+    margin: 2rem;
+    margin-top: 6.5rem;
     width: unset;
   }
 `;

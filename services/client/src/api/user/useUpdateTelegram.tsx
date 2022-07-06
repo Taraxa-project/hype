@@ -8,8 +8,12 @@ import { HypeUser } from 'src/models/HypeUser.model';
 
 const updateUser = async (user: HypeUser) => {
   const url = `${API}/users/${user.address}`;
-  const { data } = await axios.post(url, user);
-  return data as HypeUser;
+  try {
+    const { data } = await axios.post(url, user);
+    return data as HypeUser;
+  } catch (err) {
+    console.log('Error in updateUser: ', err);
+  }
 };
 
 export const useUpdateTelegram = () => {
@@ -19,7 +23,7 @@ export const useUpdateTelegram = () => {
   const { mutate } = useMutation((values: HypeUser) => updateUser(values));
 
   const submitHandler = (values: UnpackNestedValue<HypeUser>) => {
-    const updatedUser: HypeUser = { ...values};
+    const updatedUser: HypeUser = { ...values };
     mutate(updatedUser, {
       onSuccess: () => {
         queryClient.resetQueries();

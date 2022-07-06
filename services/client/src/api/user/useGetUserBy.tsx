@@ -11,8 +11,12 @@ const getByAddress = async (publicAddress: string) => {
   const params = {
     publicAddress,
   };
-  const { data } = await axios.get(url, { params });
-  return data as HypeUser;
+  try {
+    const { data } = await axios.get(url, { params });
+    return data as HypeUser;
+  } catch (err) {
+    console.log('Error in getByAddress: ', err);
+  }
 };
 
 export const useGetHypeUserBy = (publicAddress: string) => {
