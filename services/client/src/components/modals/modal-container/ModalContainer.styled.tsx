@@ -11,7 +11,8 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   backdrop-filter: blur(1rem);
   width: auto;
   max-width: 500px !important;
-  height: 60%;
+  height: auto;
+  min-height: 550px;
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;

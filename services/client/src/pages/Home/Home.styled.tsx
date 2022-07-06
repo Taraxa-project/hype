@@ -7,18 +7,19 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin-top: 1rem;
   z-index: 1;
-  padding: 0 2rem 2rem;
+  padding: 0 3rem 2rem;
   margin-bottom: 1rem;
   overflow: auto;
   gap: 1rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    padding: 0 1.5rem 2rem;
     justify-content: space-evenly;
     margin-top: 1rem;
     margin-bottom: 3rem;
@@ -103,6 +104,9 @@ export const NotFoundContainer = styled.div`
   flex-direction: column;
   align-content: center;
   justify-content: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm  }) {
+    margin: 2rem 1.5rem;
+  }
 `;
 
 export const NotFoundText = styled.span`

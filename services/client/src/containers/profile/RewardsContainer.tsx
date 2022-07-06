@@ -27,7 +27,7 @@ export const RewardsContainer = (props: RewardProps) => {
       marginLeft={isMobile ? 'none' : '1rem'}
       marginRight={isMobile ? '1rem' : 'none'}
       marginBottom="1rem"
-      minWidth="340px"
+      minWidth={{ md: '340px', lg: '340px', xl: '340px' }}
     >
       <Heading
         fontSize="1.25rem"

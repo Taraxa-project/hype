@@ -1,36 +1,16 @@
 name: qa-hype
 region: sfo
-envs:
-  - key: DB_HOST
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.HOSTNAME}
-  - key: DB_PORT
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.PORT}
-  - key: DB_USERNAME
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.USERNAME}
-  - key: DB_PASSWORD
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.PASSWORD}
-  - key: DB_DATABASE
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.DATABASE}
-  - key: DATABASE_CERT
-    scope: RUN_TIME
-    type: SECRET
-    value: ${db.CA_CERT}
 domains:
   - domain: qa.hype.taraxa.io
     type: PRIMARY
     zone: qa.hype.taraxa.io
 databases:
-  - name: db
+  - name: db-api
+    engine: PG
+    num_nodes: 1
+    size: basic-xxs
+    version: "12"
+  - name: db-wallet
     engine: PG
     num_nodes: 1
     size: basic-xxs
@@ -47,6 +27,9 @@ static_sites:
       - key: REACT_APP_API_HOST
         scope: BUILD_TIME
         value: ${api.PUBLIC_URL}
+      - key: REACT_APP_WALLET_HOST
+        scope: BUILD_TIME
+        value: ${wallet.PUBLIC_URL}
     build_command: yarn workspace hype-client run build
     output_dir: services/client/build
     routes:
@@ -63,15 +46,80 @@ services:
       - key: SERVER_PORT
         scope: RUN_TIME
         value: "3000"
-      - key: TYPEORM_SYNC
-        scope: RUN_TIME
-        value: "true"
       - key: AUTH_SECRET
         scope: RUN_TIME
         type: SECRET
-        value: secret
+        value: thisisnotasecret
+      - key: DB_HOST
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.HOSTNAME}
+      - key: DB_PORT
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.PORT}
+      - key: DB_USERNAME
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.USERNAME}
+      - key: DB_PASSWORD
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.PASSWORD}
+      - key: DB_DATABASE
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.DATABASE}
+      - key: DATABASE_CERT
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-api.CA_CERT}
     instance_count: 1
     instance_size_slug: basic-xxs
     http_port: 3000
     routes:
-      - path: /api
+      - path: /backend-api
+  - name: wallet
+    github:
+      branch: develop
+      deploy_on_push: true
+      repo: Taraxa-project/wallet-auth
+    source_dir: /
+    dockerfile_path: Dockerfile
+    envs:
+      - key: SERVER_PORT
+        scope: RUN_TIME
+        value: "3000"
+      - key: AUTH_SECRET
+        scope: RUN_TIME
+        type: SECRET
+        value: thisisnotasecret
+      - key: DB_HOST
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.HOSTNAME}
+      - key: DB_PORT
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.PORT}
+      - key: DB_USERNAME
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.USERNAME}
+      - key: DB_PASSWORD
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.PASSWORD}
+      - key: DB_DATABASE
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.DATABASE}
+      - key: DATABASE_CERT
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-wallet.CA_CERT}
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 3000
+    routes:
+      - path: /wallet-api
