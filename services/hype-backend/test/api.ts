@@ -1,4 +1,4 @@
-import { ExecutionContext, Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { useContainer } from 'class-validator';
@@ -25,7 +25,7 @@ export const bootstrapTestInstance: any = async () => {
         port: Number(process.env.DB_PORT) ?? 5432,
         username: process.env.DB_USERNAME ?? 'postgres',
         password: process.env.DB_PASSWORD ?? 'postgres',
-        database: process.env.DB_TEST_DATABASE ?? 'origin',
+        database: process.env.DB_TEST_DATABASE ?? 'hypepool_test',
         entities,
         dropSchema: true,
         synchronize: true,
