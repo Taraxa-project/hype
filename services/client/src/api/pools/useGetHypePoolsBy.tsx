@@ -15,7 +15,6 @@ const getPoolsBy = async (creatorAddress: string) => {
     return data;
   } catch (err: any) {
     console.log('err', err);
-   
   }
 };
 

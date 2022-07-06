@@ -11,9 +11,12 @@ const sendSignature = async (login: LoginSignature) => {
     return;
   }
   const url = `${AUTH_API}/auth/login`;
-
-  const { data } = await axios.post(url, login);
-  return data;
+  try {
+    const { data } = await axios.post(url, login);
+    return data;
+  } catch (err) {
+    console.log('Error in sendSignature: ', err);
+  }
 };
 
 export const useLogin = () => {
