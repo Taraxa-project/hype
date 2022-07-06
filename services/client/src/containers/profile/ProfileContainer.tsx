@@ -59,10 +59,12 @@ export const ProfileContainer = ({
       >
         Your profile
       </Heading>
-      <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
-        <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
-        <Account>{address}</Account>
-      </Box>
+      {address && (
+        <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
+          <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
+          <Account>{address}</Account>
+        </Box>
+      )}
       <Text color="greys.14" fontSize="0.875rem" fontWeight="600">
         Connected Apps:
       </Text>
@@ -90,9 +92,11 @@ export const ProfileContainer = ({
             <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
               Telegram:
             </Text>
-            <Text fontSize="0.875rem" color="greys.4">
-              @{telegramUsername}
-            </Text>
+            {telegramUsername && (
+              <Text fontSize="0.875rem" color="greys.4">
+                @{telegramUsername}
+              </Text>
+            )}
           </Box>
         </Box>
         {telegramUsername ? (

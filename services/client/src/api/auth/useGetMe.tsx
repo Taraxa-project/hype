@@ -6,8 +6,12 @@ import { AUTH_API } from '../types';
 
 const getMe = async () => {
   const url = `${AUTH_API}/auth/me`;
-  const { data } = (await axios.get(url));
-  return data as User;
+  try {
+    const { data } = await axios.get(url);
+    return data as User;
+  } catch (err) {
+    console.log('Error in getMe: ', err);
+  }
 };
 
 export const useGetMe = () => {
