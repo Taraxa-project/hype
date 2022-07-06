@@ -47,6 +47,13 @@ contract HypePool is
         return _pools[tokenId];
     }
 
+    /** @dev Creates a Hype Pool after the necessary checks.
+     * @param _uri The URI of the Hype Pool Metadata.
+     * @param poolCap The cap of the Hype Pool.
+     * @param tokenAddress The address of the token to be used in the Hype Pool as reward.
+     * @param minHypeReward The minimum reward that can be redeemed for a Hype.
+     * @param endDate The end date of the reward period.
+     */
     function createPool(
         string memory uri,
         uint256 poolCap,
@@ -85,6 +92,11 @@ contract HypePool is
         return _pools[_counter];
     }
 
+    /** @dev Activates a pool, meaning that the cap has been filled in the associated escrow contract.
+     * @param poolId The id of the pool to activate.
+     * Can be called only be the pool owner.
+     * Short note: The escrow can be deposited by a third party (e.g. a sponsor). However, the pool owner is the only one who can activate it.
+     */
     function activatePool(uint256 id) external whenNotPaused {
         IHypePool.HypePool memory _pool = _pools[id];
         require(_pool.minReward != 0, "Pool doesn't exist");

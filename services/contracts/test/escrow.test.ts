@@ -55,7 +55,7 @@ describe("DynamicEscrow", function () {
     expect(result.address).to.be.equal(initialAddress);
   });
 
-  it("the contract owner should be the zero address since it was not specified", async () => {
+  it("the contract owner should be the owner signer's address", async () => {
     const cOwner = await dynamicEscrow.owner();
     expect(cOwner).to.equal(owner.address);
   });
