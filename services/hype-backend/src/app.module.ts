@@ -6,6 +6,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
 import { general, auth } from '@taraxa-hype/config';
+import { HypeUser, UserModule } from '@taraxa-hype/user';
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -19,16 +20,16 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities: Function[] = [HypePool];
+export const entities: Function[] = [HypePool, HypeUser];
 
 const HypeAppTypeOrmModule = () => {
-let typeOrmOptions: TypeOrmModuleOptions;
+  let typeOrmOptions: TypeOrmModuleOptions;
   const baseConnectionOptions: TypeOrmModuleOptions = process.env.DATABASE_URL
     ? {
         type: 'postgres',
         url: process.env.DATABASE_URL,
         entities,
-        synchronize: !!process.env.TYPEORM_SYNC,
+        synchronize: false,
         autoLoadEntities: true,
         logging: ['info'],
       }
@@ -40,7 +41,7 @@ let typeOrmOptions: TypeOrmModuleOptions;
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_DATABASE || 'hypepool',
         entities,
-        synchronize: !!process.env.TYPEORM_SYNC,
+        synchronize: false,
         autoLoadEntities: true,
         logging: ['info'],
       };
@@ -69,6 +70,7 @@ let typeOrmOptions: TypeOrmModuleOptions;
     HypeAppTypeOrmModule(),
     AuthModule,
     PoolModule,
+    UserModule,
   ],
 })
 export class AppModule {}

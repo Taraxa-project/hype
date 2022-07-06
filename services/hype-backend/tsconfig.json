@@ -26,6 +26,7 @@
     "paths": {
       "@taraxa-hype/pool": ["src/modules/pool"],
       "@taraxa-hype/auth": ["src/modules/auth"],
+      "@taraxa-hype/user": ["src/modules/user"],
       "@taraxa-hype/config": ["config"]
     }
   },

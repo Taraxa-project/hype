@@ -39,7 +39,7 @@ export class PoolsController {
   @ApiOkResponse({
     status: HttpStatus.OK,
     type: [PoolDTO],
-    description: 'Returns all hype pools',
+    description: 'Returns hype pool by address',
   })
   @Get('by')
   @UseGuards(WalletGuard)
@@ -54,7 +54,7 @@ export class PoolsController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,
-    description: `Returns a hype pool`,
+    description: `Returns a hype pool by id`,
   })
   public async getById(
     @Param('id', new ParseIntPipe()) id: number,
@@ -69,10 +69,7 @@ export class PoolsController {
     type: PoolDTO,
     description: 'Returns a new created pool',
   })
-  public async createPool(
-    @Body() poolToCreate: PoolDTO,
-    @GetAddress() address: string,
-  ): Promise<HypePool> {
+  public async createPool(@Body() poolToCreate: PoolDTO): Promise<HypePool> {
     return await this.poolsService.create(poolToCreate);
   }
 }

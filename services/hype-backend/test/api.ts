@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ExecutionContext, Logger, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { useContainer } from 'class-validator';
@@ -10,6 +10,9 @@ import { entities, AppModule } from '../src/app.module';
 import { PoolsService } from '../src/modules/pool/pool.service';
 import { ConfigService } from '@nestjs/config';
 import { HypePool } from '../src/modules/pool';
+import { HypeUser } from '../src/modules/user';
+import { UsersService } from '../src/modules/user/user.service';
+import { WalletGuard } from '../src/modules/auth/wallet.guard';
 
 const testLogger = new Logger('e2e');
 
@@ -27,13 +30,21 @@ export const bootstrapTestInstance: any = async () => {
         dropSchema: true,
         synchronize: true,
       }),
-      TypeOrmModule.forFeature([HypePool]),
+      TypeOrmModule.forFeature([HypePool, HypeUser]),
       AppModule,
     ],
-  }).compile();
+  })
+    .overrideGuard(WalletGuard)
+    .useValue({
+      canActivate: () => {
+        return true;
+      },
+    })
+    .compile();
 
   const app = moduleFixture.createNestApplication();
   const poolService = await app.resolve<PoolsService>(PoolsService);
+  const userService = await app.resolve<UsersService>(UsersService);
   const configService = await app.resolve<ConfigService>(ConfigService);
 
   app.useLogger(testLogger);

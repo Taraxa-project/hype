@@ -97,6 +97,7 @@
   "moduleNameMapper": {
     "@taraxa-hype/auth": "<rootDir>/src/modules/auth",
     "@taraxa-hype/pool": "<rootDir>/src/modules/pool",
-    "@taraxa-hype/config": "<rootDir>/config"
+    "@taraxa-hype/config": "<rootDir>/config",
+    "@taraxa-hype/user": "<rootDir>/src/modules/user"
   }
 }

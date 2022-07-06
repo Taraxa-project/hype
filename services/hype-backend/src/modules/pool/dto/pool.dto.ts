@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEthereumAddress } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IPool } from '../../../models';
 
@@ -20,12 +20,12 @@ export class PoolDTO implements IPool {
   
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  @IsEthereumAddress()
   creatorAddress: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  @IsEthereumAddress()
   rewardsAddress: string;
   
   @ApiProperty()
