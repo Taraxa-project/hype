@@ -20,8 +20,9 @@ export const BlockiesContainer = styled.div`
   margin-bottom: 2rem;
   padding-left: 0.5rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
     flex-direction: row;
+    padding-right: unset;
   }
 
   & > canvas {

@@ -8,7 +8,7 @@ export const Redeem = () => {
     useRedeemEffects();
 
   return (
-    <Box backgroundColor="background" height={!isConnected && '100vh'}>
+    <Box backgroundColor="background" height={!isConnected ? '100vh' : '100%'}>
       <Box
         backgroundColor="background"
         display="flex"

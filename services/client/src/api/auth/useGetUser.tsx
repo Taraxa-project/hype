@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { User } from '../../models';
 import { AUTH_API } from '../types';
 
-const login = async (publicAddress: string) => {
+const login = (publicAddress: string) => {
   if (!publicAddress) {
     return;
   }
@@ -11,23 +11,24 @@ const login = async (publicAddress: string) => {
   const params = {
     publicAddress,
   };
-  try {
-    const { data } = await axios.get(url, { params });
-    return data as User;
-  } catch (err) {
-    console.log('Error in login: ', err);
-  }
+  return axios.get(url, { params });
 };
 
 export const useGetUser = (publicAddress: string) => {
-  const { data, refetch } = useQuery(['user', publicAddress], () => login(publicAddress), {
-    enabled: false,
-    onError: (error) => {
-      console.log('ERROR: ', error);
+  const { data, refetch, isError, error } = useQuery(
+    ['user', publicAddress],
+    () => login(publicAddress),
+    {
+      enabled: false,
+      onError: (error) => {
+        console.log('ERROR: ', error);
+      },
     },
-  });
+  );
   return {
-    data,
+    data: data?.data as User,
     refetch,
+    isError,
+    error,
   };
 };

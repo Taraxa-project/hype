@@ -46,7 +46,9 @@ export const ModalContainer: FC<ModalContainerProps> = ({
           <StyledModal onClick={(e) => e.stopPropagation()}>
             <div>
               <ModalTitle {...titleProps} />
+              <Box overflow="auto" height="100%">
               {children}
+              </Box>
             </div>
             <Box
               display="flex"
@@ -55,6 +57,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               justifyContent="center"
               alignItems="center"
               gridGap="12px"
+              marginTop="1rem"
             >
               {modalAction && (
                 <Button

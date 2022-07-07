@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { HypePool } from '../../models';
 import { API } from '../types';
 
-const getPoolsBy = async (creatorAddress: string) => {
+const getPoolsBy = (creatorAddress: string) => {
   if (!creatorAddress) {
     return undefined;
   }
@@ -10,12 +11,7 @@ const getPoolsBy = async (creatorAddress: string) => {
   const params = {
     creatorAddress,
   };
-  try {
-    const { data } = await axios.get(url, { params });
-    return data;
-  } catch (err: any) {
-    console.log('err', err);
-  }
+  return axios.get(url, { params });
 };
 
 export const useGetHypePoolsBy = (creatorAddress: string) => {
@@ -31,7 +27,7 @@ export const useGetHypePoolsBy = (creatorAddress: string) => {
   return {
     isLoading,
     isError,
-    data,
+    data: data?.data as HypePool[],
     error,
   };
 };

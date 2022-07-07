@@ -4,28 +4,24 @@ import useAuth from '../../hooks/useAuth';
 import { User } from '../../models';
 import { AUTH_API } from '../types';
 
-const getMe = async () => {
+const getMe = () => {
   const url = `${AUTH_API}/auth/me`;
-  try {
-    const { data } = await axios.get(url);
-    return data as User;
-  } catch (err) {
-    console.log('Error in getMe: ', err);
-  }
+  return axios.get(url);
 };
 
 export const useGetMe = () => {
   const { authenticated } = useAuth();
-  const { data, refetch } = useQuery('me', () => getMe(), {
+  const { data, refetch, isError, error } = useQuery('me', getMe, {
     retry: false,
-    useErrorBoundary: true,
     enabled: authenticated,
     onError: (error) => {
       console.log('ERROR: ', error);
     },
   });
   return {
-    data,
+    data: data?.data as User,
     refetch,
+    isError,
+    error,
   };
 };
