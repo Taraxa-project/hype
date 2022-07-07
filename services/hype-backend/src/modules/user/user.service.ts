@@ -13,17 +13,17 @@ export class UsersService {
     private repository: Repository<HypeUser>,
   ) {}
 
-  async getUserBy({ address }: GetByDTO): Promise<HypeUser> {
+  async getUserBy({ publicAddress }: GetByDTO): Promise<HypeUser> {
     return await this.repository.findOne({
       where: {
-        address,
+        address: publicAddress,
       },
     });
   }
 
   async updateAccount(userDTO: UserDTO): Promise<HypeUser> {
-    const address = userDTO.address;
-    const user = await this.getUserBy({ address });
+    const publicAddress = userDTO.address;
+    const user = await this.getUserBy({ publicAddress });
     if (!user) {
       let newUser = new HypeUser();
       newUser.address = userDTO.address;
@@ -35,6 +35,6 @@ export class UsersService {
       username: userDTO.username,
       auth_date: userDTO.auth_date,
     });
-    return await this.getUserBy({ address });
+    return await this.getUserBy({ publicAddress });
   }
 }

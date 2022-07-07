@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { HypeUser } from 'src/models/HypeUser.model';
 import { API } from '../types';
 
-const getByAddress = async (publicAddress: string) => {
+const getByAddress = (publicAddress: string) => {
   if (!publicAddress) {
     return;
   }
@@ -11,22 +11,25 @@ const getByAddress = async (publicAddress: string) => {
   const params = {
     publicAddress,
   };
-  try {
-    const { data } = await axios.get(url, { params });
-    return data as HypeUser;
-  } catch (err) {
-    console.log('Error in getByAddress: ', err);
-  }
+  return axios.get(url, { params });
 };
 
 export const useGetHypeUserBy = (publicAddress: string) => {
-  const { data } = useQuery(['user', publicAddress], () => getByAddress(publicAddress), {
-    onError: (error) => {
-      console.log('ERROR: ', error);
+  const { data, isError, error, isLoading, isFetching } = useQuery(
+    ['hype-user', publicAddress],
+    () => getByAddress(publicAddress),
+    {
+      onError: (error) => {
+        console.log('ERROR: ', error);
+      },
+      enabled: !!publicAddress,
     },
-    enabled: !!publicAddress,
-  });
+  );
   return {
-    data,
+    data: data?.data as HypeUser,
+    isError,
+    error,
+    isLoading,
+    isFetching,
   };
 };

@@ -7,14 +7,9 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
 import { API } from '../types';
 
-const postNewPool = async (pool: HypePool) => {
+const postNewPool = (pool: HypePool) => {
   const url = `${API}/pools`;
-  try {
-    const { data } = await axios.post(url, pool);
-    return data as HypePool;
-  } catch (err) {
-    console.log('Error in postNewPool: ', err);
-  }
+  return axios.post(url, pool);
 };
 
 export const useAddHypePool = () => {

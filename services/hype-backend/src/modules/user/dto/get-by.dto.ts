@@ -5,5 +5,5 @@ export class GetByDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsEthereumAddress()
-  address: string;
+  publicAddress: string;
 }

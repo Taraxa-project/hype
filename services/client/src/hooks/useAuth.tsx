@@ -9,7 +9,7 @@ import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { useNavigate } from 'react-router';
 
 const useAuth = () => {
-  const { account, isConnected, disconnect } = useWallet();
+  const { account, isConnected, disconnect, isDisconnected } = useWallet();
   const { data: user, refetch } = useGetUser(account);
   const dispatchModals = useModalsDispatch();
   const navigate = useNavigate();
@@ -48,6 +48,12 @@ const useAuth = () => {
       setAuthenticated(true);
     }
   }, [tokenExists, isConnected]);
+
+  useEffect(() => {
+    if (isDisconnected || !isConnected) {
+      disconnect();
+    }
+  }, [isDisconnected, isConnected]);
 
   return {
     account,
