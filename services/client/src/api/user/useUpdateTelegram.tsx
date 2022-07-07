@@ -6,14 +6,9 @@ import { NotificationType } from '../../utils';
 import { API } from '../types';
 import { HypeUser } from 'src/models/HypeUser.model';
 
-const updateUser = async (user: HypeUser) => {
+const updateUser = (user: HypeUser) => {
   const url = `${API}/users/${user.address}`;
-  try {
-    const { data } = await axios.post(url, user);
-    return data as HypeUser;
-  } catch (err) {
-    console.log('Error in updateUser: ', err);
-  }
+  return axios.post(url, user);
 };
 
 export const useUpdateTelegram = () => {

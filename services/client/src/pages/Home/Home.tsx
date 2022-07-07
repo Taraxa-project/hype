@@ -52,7 +52,7 @@ export const Home = () => {
       </PoolContainer>
       {(data || data?.pages?.length > 0) && (
         <CardContainer>
-          {data?.pages.map(
+          {data?.pages?.map(
             (data, i) =>
               data && (
                 <Card

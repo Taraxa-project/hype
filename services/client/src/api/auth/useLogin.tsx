@@ -6,17 +6,12 @@ import { NotificationType } from '../../utils';
 import { setAuthenticationToken } from '../../utils';
 import { AUTH_API } from '../types';
 
-const sendSignature = async (login: LoginSignature) => {
+const sendSignature = (login: LoginSignature) => {
   if (!login) {
     return;
   }
   const url = `${AUTH_API}/auth/login`;
-  try {
-    const { data } = await axios.post(url, login);
-    return data;
-  } catch (err) {
-    console.log('Error in sendSignature: ', err);
-  }
+  return axios.post(url, login);
 };
 
 export const useLogin = () => {
@@ -28,8 +23,8 @@ export const useLogin = () => {
 
   const onLogin = (values: LoginSignature) => {
     mutate(values, {
-      onSuccess: ({ accessToken }) => {
-        setAuthenticationToken(accessToken);
+      onSuccess: ({ data }) => {
+        setAuthenticationToken(data?.accessToken);
         queryClient.resetQueries();
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
