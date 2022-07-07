@@ -74,6 +74,10 @@ services:
         scope: RUN_TIME
         type: SECRET
         value: ${db-api.CA_CERT}
+      - key: WALLET_HOST
+        scope: RUN_TIME
+        type: SECRET
+        value: ${wallet.PUBLIC_URL}
     instance_count: 1
     instance_size_slug: basic-xxs
     http_port: 3000
