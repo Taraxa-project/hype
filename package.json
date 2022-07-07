@@ -21,7 +21,7 @@
       "prettier --write"
     ],
     "services/client/**/*.{css,scss,sass,tsx,jsx}": [
-      "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client stylelint ."
+      "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client stylelint"
     ]
   },
   "dependencies": {
