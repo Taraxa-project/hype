@@ -15,6 +15,7 @@ import {
   chain,
 } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const { provider, webSocketProvider } = configureChains(
   [chain.mainnet, ...defaultChains],
@@ -56,6 +57,7 @@ root.render(
               <App />
             </ModalsProvider>
           </BrowserRouter>
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </WagmiConfig>
     </HypeThemeProvider>

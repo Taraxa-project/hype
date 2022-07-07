@@ -20,7 +20,7 @@ const getByAddress = async (publicAddress: string) => {
 };
 
 export const useGetHypeUserBy = (publicAddress: string) => {
-  const { data } = useQuery(['user', publicAddress], () => getByAddress(publicAddress), {
+  const { data } = useQuery(['hype-user', publicAddress], () => getByAddress(publicAddress), {
     onError: (error) => {
       console.log('ERROR: ', error);
     },

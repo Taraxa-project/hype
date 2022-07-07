@@ -41,12 +41,12 @@ describe('User tests', () => {
     expect(updatedUser.username).toBe(existingUser.username);
     expect(updatedUser.address).toBe(existingUser.address);
 
-    const address = '0xA2222D333C33333339999999911111111111eee1';
+    const publicAddress = '0xA2222D333C33333339999999911111111111eee1';
     const filter: GetByDTO = {
-      address,
+      publicAddress,
     };
     const { body: user } = await requestUserBy(HttpStatus.OK, filter);
-    expect(user.address).toBe(address);
+    expect(user.address).toBe(publicAddress);
   });
 
   const requestUserBy = async (
