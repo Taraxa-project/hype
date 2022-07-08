@@ -77,7 +77,7 @@ const Header = React.memo(
                   </SidebarMenuLink>
                 ))}
               </SidebarMenu>
-              <SidebarFooter>{!connected && <ConnectWalletBtn size="regular" />}</SidebarFooter>
+              <SidebarFooter>{!connected && <ConnectWalletBtn size="full-width" />}</SidebarFooter>
             </Sidebar>
           </SidebarHover>
         )}
