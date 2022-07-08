@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IHypePool.sol",
-  "tool": "mythril",
-  "start": 1657275842.1277175,
-  "end": 1657275843.252579,
-  "duration": 1.124861478805542,
-  "exit_code": 0
-}

@@ -1,5 +1,0 @@
-line 138:12 extraneous input 'payable' expecting {'~', 'from', '{', '}', '(', 'for', 'function', '[', 'address', 'mapping', 'if', 'while', 'assembly', 'do', 'return', 'throw', 'emit', 'var', 'bool', 'string', 'byte', '++', '--', 'new', '+', '-', 'after', 'delete', '!', Int, Uint, Byte, Fixed, Ufixed, BooleanLiteral, DecimalNumber, HexNumber, HexLiteral, 'break', 'continue', Identifier, StringLiteral}
-/data/DynamicEscrow.sol:138:20: Expected indentation of 12 spaces but found 19 [Error/indent]
-/data/DynamicEscrow.sol:145:2: Line length must be no more than 120 but current length is 128. [Error/max-line-length]
-
-2 problems

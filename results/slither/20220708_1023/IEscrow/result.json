@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
-  "duration": 0.8460454940795898,
-  "end": 1657275821.4763637,
-  "exit_code": 255,
-  "start": 1657275820.6303182,
-  "tool": "slither"
-}

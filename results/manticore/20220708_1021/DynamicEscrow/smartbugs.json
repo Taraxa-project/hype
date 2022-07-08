@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
-  "tool": "manticore",
-  "start": 1657275720.4466116,
-  "end": 1657275732.8389888,
-  "duration": 12.392377138137817,
-  "exit_code": 0
-}

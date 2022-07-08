@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
-  "tool": "osiris",
-  "start": 1657275807.0284452,
-  "end": 1657275807.8140473,
-  "duration": 0.7856020927429199,
-  "exit_code": 0
-}

@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/ERC20Base.sol",
-  "tool": "solhint",
-  "start": 1657275718.073277,
-  "end": 1657275718.870102,
-  "duration": 0.7968249320983887,
-  "exit_code": 0
-}

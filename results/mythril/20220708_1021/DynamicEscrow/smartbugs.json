@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
-  "tool": "mythril",
-  "start": 1657275808.5047922,
-  "end": 1657275809.7674801,
-  "duration": 1.2626879215240479,
-  "exit_code": 0
-}

@@ -1,9 +1,0 @@
-{
-  "analysis": [],
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
-  "duration": 1.7998716831207275,
-  "end": 1657275817.2203407,
-  "exit_code": 1,
-  "start": 1657275815.420469,
-  "tool": "conkas"
-}

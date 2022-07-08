@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/HypePool.sol",
-  "tool": "smartcheck",
-  "start": 1657275929.420865,
-  "end": 1657275932.0306342,
-  "duration": 2.609769105911255,
-  "exit_code": 0
-}

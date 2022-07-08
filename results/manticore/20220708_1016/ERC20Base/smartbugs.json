@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/ERC20Base.sol",
-  "tool": "manticore",
-  "start": 1657275696.5567014,
-  "end": 1657275708.6142278,
-  "duration": 12.057526350021362,
-  "exit_code": 0
-}
