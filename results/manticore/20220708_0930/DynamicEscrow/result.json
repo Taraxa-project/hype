@@ -1,0 +1,31 @@
+{
+  "analysis": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/DynamicEscrow.sol",
+  "duration": 15.363127708435059,
+  "end": 1657272685.2756329,
+  "exit_code": 0,
+  "start": 1657272669.9125051,
+  "tool": "manticore"
+}

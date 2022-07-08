@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "error": "input files do not contain any valid contracts",
+    "issues": [],
+    "success": false
+  },
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
+  "duration": 1.4857542514801025,
+  "end": 1657272766.474675,
+  "exit_code": 0,
+  "start": 1657272764.9889207,
+  "tool": "mythril"
+}

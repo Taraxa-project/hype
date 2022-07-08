@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
+  "tool": "smartcheck",
+  "start": 1657272560.9208055,
+  "end": 1657272564.0126255,
+  "duration": 3.091820001602173,
+  "exit_code": 0
+}

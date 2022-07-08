@@ -1,0 +1,9 @@
+{
+  "analysis": [],
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
+  "duration": 0.6438398361206055,
+  "end": 1657272789.3490164,
+  "exit_code": 0,
+  "start": 1657272788.7051766,
+  "tool": "manticore"
+}

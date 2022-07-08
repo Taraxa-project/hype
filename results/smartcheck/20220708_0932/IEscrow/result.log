@@ -1,0 +1,43 @@
+/data/IEscrow.sol
+line 24:16 mismatched input 'payable' expecting {',', ')'}
+line 24:32 no viable alternative at input 'receiver,'
+line 24:32 mismatched input ',' expecting {'solidity', 'experimental', 'from', 'constructor', 'block', 'coinbase', 'difficulty', 'gaslimit', 'number', 'timestamp', 'blockhash', 'msg', 'data', 'gas', 'sender', 'sig', 'value', 'now', 'this', 'tx', 'origin', 'gasprice', 'public', 'internal', 'external', 'private', 'constant', 'length', 'balance', 'emit', '_', 'revert', Identifier}
+line 25:22 mismatched input ',' expecting {';', '='}
+line 27:4 mismatched input ')' expecting {';', '='}
+jar:file:/usr/local/lib/node_modules/@smartdec/smartcheck/jdeploy-bundle/smartcheck-2.0-jar-with-dependencies.jar!/solidity-rules.xmlruleId: SOLIDITY_PRAGMAS_VERSION
+patternId: 23fc32
+severity: 1
+line: 2
+column: 16
+content: ^
+
+ruleId: SOLIDITY_VISIBILITY
+patternId: 910067
+severity: 1
+line: 23
+column: 4
+content: functionwithdraw(addresspayable
+
+ruleId: SOLIDITY_VISIBILITY
+patternId: b51ce0
+severity: 1
+line: 24
+column: 24
+content: receiver,
+
+ruleId: SOLIDITY_VISIBILITY
+patternId: b51ce0
+severity: 1
+line: 25
+column: 8
+content: uint256poolId,
+
+ruleId: SOLIDITY_VISIBILITY
+patternId: b51ce0
+severity: 1
+line: 26
+column: 8
+content: uint256amount)external;
+
+SOLIDITY_VISIBILITY :4
+SOLIDITY_PRAGMAS_VERSION :1

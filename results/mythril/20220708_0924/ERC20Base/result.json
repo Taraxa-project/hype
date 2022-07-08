@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "error": "Solc experienced a fatal error (code 1).\n\nError: Source \"@openzeppelin/contracts/token/ERC20/ERC20.sol\" not found: File not found. Searched the following locations: \"\".\n --> /data/ERC20Base.sol:4:1:\n  |\n4 | import \"@openzeppelin/contracts/token/ERC20/ERC20.sol\";\n  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n",
+    "issues": [],
+    "success": false
+  },
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
+  "duration": 2.8436474800109863,
+  "end": 1657272559.9993472,
+  "exit_code": 0,
+  "start": 1657272557.1556997,
+  "tool": "mythril"
+}

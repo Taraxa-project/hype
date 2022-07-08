@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "honeybadger",
+  "start": 1657272759.6585758,
+  "end": 1657272760.424201,
+  "duration": 0.7656252384185791,
+  "exit_code": 0
+}
