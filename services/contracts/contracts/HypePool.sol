@@ -48,7 +48,7 @@ contract HypePool is
     }
 
     /** @dev Creates a Hype Pool after the necessary checks.
-     * @param _uri The URI of the Hype Pool Metadata.
+     * @param uri The URI of the Hype Pool Metadata.
      * @param poolCap The cap of the Hype Pool.
      * @param tokenAddress The address of the token to be used in the Hype Pool as reward.
      * @param minHypeReward The minimum reward that can be redeemed for a Hype.
@@ -93,7 +93,7 @@ contract HypePool is
     }
 
     /** @dev Activates a pool, meaning that the cap has been filled in the associated escrow contract.
-     * @param poolId The id of the pool to activate.
+     * @param id The id of the pool to activate.
      * Can be called only be the pool owner.
      * Short note: The escrow can be deposited by a third party (e.g. a sponsor). However, the pool owner is the only one who can activate it.
      */

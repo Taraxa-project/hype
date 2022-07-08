@@ -30,6 +30,7 @@ describe("DynamicEscrow", function () {
       .toString()
   );
 
+  const halfEth = ethers.utils.parseEther("0.5");
   const oneEth = ethers.utils.parseEther("1");
   const twoEth = ethers.utils.parseEther("2");
   const threeEth = ethers.utils.parseEther("3");
@@ -234,6 +235,64 @@ describe("DynamicEscrow", function () {
     await expect(withdrawal)
       .to.emit(dynamicEscrow, "Withdrawn")
       .withArgs(depositorTwo.address, oneEth, POOL_ONE);
+
+    expect(
+      await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
+    ).to.equal(oneEth);
+
+    const balanceAfterWithdrawal = await depositorTwo.getBalance();
+    const lt = balanceOfAfter.lt(balanceAfterWithdrawal);
+    expect(lt).to.be.true;
+    const depositOfAfter = await dynamicEscrow.depositsOf(
+      depositorTwo.address,
+      POOL_ONE
+    );
+    expect(depositOfAfter[0]).to.be.equal(ethers.utils.parseEther("0"));
+  });
+
+  it("DepositorTwo deposits 1 ETH again into escrow for pool 2 and emits Deposited event, then withdraws in two batches", async () => {
+    expect(
+      await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
+    ).to.equal(oneEth);
+
+    const balanceOfInit = await depositorTwo.getBalance();
+    const deposit = await dynamicEscrow
+      .connect(depositorTwo)
+      .deposit(depositorTwo.address, POOL_ONE, oneEth, zeroAddress, {
+        value: oneEth,
+      });
+    expect(deposit).not.to.be.undefined;
+    await expect(deposit)
+      .to.emit(dynamicEscrow, "Deposited")
+      .withArgs(depositorTwo.address, oneEth, POOL_ONE);
+
+    expect(
+      await dynamicEscrow.provider.getBalance(dynamicEscrow.address)
+    ).to.equal(twoEth);
+
+    const balanceOfAfter = await depositorTwo.getBalance();
+    const greaterThan = balanceOfInit.gt(balanceOfAfter);
+    expect(greaterThan).to.be.true;
+    const depositOf = await dynamicEscrow.depositsOf(
+      depositorTwo.address,
+      POOL_ONE
+    );
+    expect(depositOf[0]).to.be.equal(oneEth);
+    const withdrawal1 = await dynamicEscrow
+      .connect(depositorTwo)
+      .withdraw(depositorTwo.address, POOL_ONE, halfEth);
+    expect(withdrawal1).not.to.be.undefined;
+    await expect(withdrawal1)
+      .to.emit(dynamicEscrow, "Withdrawn")
+      .withArgs(depositorTwo.address, halfEth, POOL_ONE);
+
+      const withdrawal2 = await dynamicEscrow
+      .connect(depositorTwo)
+      .withdraw(depositorTwo.address, POOL_ONE, halfEth);
+    expect(withdrawal2).not.to.be.undefined;
+    await expect(withdrawal2)
+      .to.emit(dynamicEscrow, "Withdrawn")
+      .withArgs(depositorTwo.address, halfEth, POOL_ONE);
 
     expect(
       await dynamicEscrow.provider.getBalance(dynamicEscrow.address)

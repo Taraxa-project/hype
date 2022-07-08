@@ -193,7 +193,6 @@ contract DynamicEscrow is
             delete _deposits[poolId][msg.sender];
         } else {
             _deposits[poolId][msg.sender].weiAmount -= amount;
-            _deposits[poolId][msg.sender].weiAmount -= amount;
         }
         if (_deposits[poolId][msg.sender].tokenAddress == address(0)) {
             receiver.transfer(amount);
