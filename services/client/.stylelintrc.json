@@ -1,10 +1,11 @@
 {
+  "processors": ["stylelint-processor-styled-components"],
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-recommended",
     "stylelint-config-styled-components"
   ],
-  "overrides": [ 
+  "overrides": [
     {
       "files": ["**/*.tsx"],
       "customSyntax": "@stylelint/postcss-css-in-js",
@@ -14,13 +15,15 @@
         "media-feature-range-operator-space-after": null,
         "color-hex-length": null,
         "function-no-unknown": [
-          true, {
-          "ignoreFunctions": ["${"]
-        }],
+          true,
+          {
+            "ignoreFunctions": ["${"]
+          }
+        ],
         "string-quotes": null,
         "declaration-block-no-redundant-longhand-properties": [
           true,
-          {"ignoreShorthands": ["/flex/"]}
+          { "ignoreShorthands": ["/flex/"] }
         ],
         "no-eol-whitespace": null,
         "alpha-value-notation": "number",
