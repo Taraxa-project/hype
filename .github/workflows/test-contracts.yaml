@@ -45,7 +45,7 @@ jobs:
           for sol in "${solidityFiles[@]}"
           do
             echo "Analysing $sol..."
-            python smartBugs.py --tool all --file $DIR/contracts/$sol
+            python smartBugs.py --tool all --file $DIR/$sol
           done
       - name: Move SmartBugs Results to Parent Directory
         run: |
