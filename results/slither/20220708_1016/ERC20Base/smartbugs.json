@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/ERC20Base.sol",
+  "tool": "slither",
+  "start": 1657275695.5639663,
+  "end": 1657275696.5546796,
+  "duration": 0.990713357925415,
+  "exit_code": 0
+}

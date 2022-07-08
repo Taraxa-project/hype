@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IRewarder.sol",
+  "tool": "solhint",
+  "start": 1657275828.7756991,
+  "end": 1657275829.4792805,
+  "duration": 0.7035813331604004,
+  "exit_code": 1
+}

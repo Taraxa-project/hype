@@ -1,0 +1,9 @@
+{
+  "analysis": [],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IRewarder.sol",
+  "duration": 1.7965121269226074,
+  "end": 1657275831.2763793,
+  "exit_code": 1,
+  "start": 1657275829.4798672,
+  "tool": "conkas"
+}

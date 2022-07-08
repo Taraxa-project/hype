@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/HypePool.sol",
-  "tool": "securify",
-  "start": 1657272822.2916095,
-  "end": 1657272823.0890841,
-  "duration": 0.7974746227264404,
-  "exit_code": 1
-}

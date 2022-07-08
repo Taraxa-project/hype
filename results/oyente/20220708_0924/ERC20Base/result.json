@@ -1,9 +1,0 @@
-{
-  "analysis": [],
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
-  "duration": 0.9281857013702393,
-  "end": 1657272581.600312,
-  "exit_code": 1,
-  "start": 1657272580.6721263,
-  "tool": "oyente"
-}

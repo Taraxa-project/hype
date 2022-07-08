@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/HypePool.sol",
-  "tool": "osiris",
-  "start": 1657272821.4294932,
-  "end": 1657272822.2904365,
-  "duration": 0.8609433174133301,
-  "exit_code": 0
-}

@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
-  "tool": "osiris",
-  "start": 1657272769.5370617,
-  "end": 1657272770.4557455,
-  "duration": 0.9186837673187256,
-  "exit_code": 0
-}

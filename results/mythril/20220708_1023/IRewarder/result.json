@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "error": "input files do not contain any valid contracts",
+    "issues": [],
+    "success": false
+  },
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IRewarder.sol",
+  "duration": 1.2207911014556885,
+  "end": 1657275828.2765312,
+  "exit_code": 0,
+  "start": 1657275827.05574,
+  "tool": "mythril"
+}

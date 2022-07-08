@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
-  "tool": "slither",
-  "start": 1657272792.1157959,
-  "end": 1657272793.1324718,
-  "duration": 1.0166759490966797,
-  "exit_code": 255
-}

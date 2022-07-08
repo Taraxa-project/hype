@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
-  "tool": "securify",
-  "start": 1657272579.9110563,
-  "end": 1657272580.671045,
-  "duration": 0.7599887847900391,
-  "exit_code": 1
-}

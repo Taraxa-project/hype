@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "smartcheck",
+  "start": 1657275810.5848374,
+  "end": 1657275812.7135081,
+  "duration": 2.1286706924438477,
+  "exit_code": 0
+}

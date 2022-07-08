@@ -1,0 +1,62 @@
+{
+  "analysis": {
+    "data/IEscrow.sol:IEscrow": {
+      "results": {
+        "DAO": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "DAOConstantGas": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "MissingInputValidation": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODAmount": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODReceiver": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODTransfer": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "UnhandledException": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "UnrestrictedEtherFlow": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        }
+      }
+    }
+  },
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
+  "duration": 0.829815149307251,
+  "end": 1657275813.544349,
+  "exit_code": 0,
+  "start": 1657275812.7145338,
+  "tool": "securify"
+}

@@ -1,9 +1,0 @@
-{
-  "analysis": [],
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
-  "duration": 0.8350663185119629,
-  "end": 1657272793.9681199,
-  "exit_code": 0,
-  "start": 1657272793.1330535,
-  "tool": "osiris"
-}

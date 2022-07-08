@@ -1,9 +1,0 @@
-{
-  "analysis": [],
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
-  "duration": 0.81321120262146,
-  "end": 1657272785.5113878,
-  "exit_code": 0,
-  "start": 1657272784.6981766,
-  "tool": "honeybadger"
-}

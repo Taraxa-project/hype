@@ -1,0 +1,18 @@
+{
+  "analysis": [
+    {
+      "column": 4,
+      "content": "constructor(uint256initialBalance)ERC20(\"Basic\",\"BSC\"){_mint(msg.sender,initialBalance);}",
+      "line": 8,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": 910067,
+      "severity": 1
+    }
+  ],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/ERC20Base.sol",
+  "duration": 2.751701831817627,
+  "end": 1657275714.5324395,
+  "exit_code": 0,
+  "start": 1657275711.7807376,
+  "tool": "smartcheck"
+}

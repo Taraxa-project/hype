@@ -1,0 +1,9 @@
+{
+  "analysis": [],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
+  "duration": 0.8473491668701172,
+  "end": 1657275733.6987383,
+  "exit_code": 0,
+  "start": 1657275732.8513892,
+  "tool": "slither"
+}

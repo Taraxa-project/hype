@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IRewarder.sol",
+  "tool": "securify",
+  "start": 1657275826.1581597,
+  "end": 1657275827.0538101,
+  "duration": 0.8956503868103027,
+  "exit_code": 0
+}

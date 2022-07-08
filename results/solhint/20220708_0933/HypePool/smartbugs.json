@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/HypePool.sol",
-  "tool": "solhint",
-  "start": 1657272800.6977248,
-  "end": 1657272801.85292,
-  "duration": 1.1551952362060547,
-  "exit_code": 1
-}

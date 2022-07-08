@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IHypePool.sol",
+  "tool": "smartcheck",
+  "start": 1657275838.6988804,
+  "end": 1657275840.8296337,
+  "duration": 2.1307532787323,
+  "exit_code": 0
+}

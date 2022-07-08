@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
-  "tool": "solhint",
-  "start": 1657272770.4568086,
-  "end": 1657272771.3984818,
-  "duration": 0.9416732788085938,
-  "exit_code": 0
-}

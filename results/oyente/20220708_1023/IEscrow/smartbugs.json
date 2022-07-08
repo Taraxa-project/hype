@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "oyente",
+  "start": 1657275814.0417187,
+  "end": 1657275814.7068334,
+  "duration": 0.6651146411895752,
+  "exit_code": 1
+}

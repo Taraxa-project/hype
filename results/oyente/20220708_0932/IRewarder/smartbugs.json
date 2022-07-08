@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
-  "tool": "oyente",
-  "start": 1657272772.5214658,
-  "end": 1657272773.3799644,
-  "duration": 0.8584985733032227,
-  "exit_code": 1
-}

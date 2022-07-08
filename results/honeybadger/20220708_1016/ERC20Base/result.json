@@ -1,0 +1,9 @@
+{
+  "analysis": [],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/ERC20Base.sol",
+  "duration": 0.8634135723114014,
+  "end": 1657275709.4889987,
+  "exit_code": 0,
+  "start": 1657275708.625585,
+  "tool": "honeybadger"
+}

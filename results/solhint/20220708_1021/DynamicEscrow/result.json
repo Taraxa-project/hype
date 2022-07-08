@@ -1,0 +1,26 @@
+{
+  "analysis": [
+    {
+      "column": "20",
+      "file": "/data/DynamicEscrow.sol",
+      "level": "Error",
+      "line": "138",
+      "message": "Expected indentation of 12 spaces but found 19",
+      "type": "indent"
+    },
+    {
+      "column": "2",
+      "file": "/data/DynamicEscrow.sol",
+      "level": "Error",
+      "line": "145",
+      "message": "Line length must be no more than 120 but current length is 128.",
+      "type": "max-line-length"
+    }
+  ],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
+  "duration": 1.0222597122192383,
+  "end": 1657275806.2013726,
+  "exit_code": 1,
+  "start": 1657275805.179113,
+  "tool": "solhint"
+}

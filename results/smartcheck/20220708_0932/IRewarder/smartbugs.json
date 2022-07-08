@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
-  "tool": "smartcheck",
-  "start": 1657272775.293442,
-  "end": 1657272777.8926446,
-  "duration": 2.5992026329040527,
-  "exit_code": 0
-}

@@ -1,0 +1,42 @@
+{
+  "analysis": [
+    {
+      "column": 4,
+      "content": "functionwithdraw(addresspayable",
+      "line": 23,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": 910067,
+      "severity": 1
+    },
+    {
+      "column": 24,
+      "content": "receiver,",
+      "line": 24,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": "b51ce0",
+      "severity": 1
+    },
+    {
+      "column": 8,
+      "content": "uint256poolId,",
+      "line": 25,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": "b51ce0",
+      "severity": 1
+    },
+    {
+      "column": 8,
+      "content": "uint256amount)external;",
+      "line": 26,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": "b51ce0",
+      "severity": 1
+    }
+  ],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
+  "duration": 2.1286706924438477,
+  "end": 1657275812.7135081,
+  "exit_code": 0,
+  "start": 1657275810.5848374,
+  "tool": "smartcheck"
+}

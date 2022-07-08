@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/DynamicEscrow.sol",
-  "tool": "solhint",
-  "start": 1657272664.938182,
-  "end": 1657272666.079912,
-  "duration": 1.1417298316955566,
-  "exit_code": 1
-}

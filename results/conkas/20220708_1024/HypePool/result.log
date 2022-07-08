@@ -1,0 +1,52 @@
+Traceback (most recent call last):
+  File "conkas.py", line 137, in <module>
+    main()
+  File "conkas.py", line 88, in main
+    contracts = compile_files([filename])
+  File "/usr/local/lib/python3.8/dist-packages/solcx/main.py", line 118, in compile_files
+    stdoutdata, stderrdata, command, proc = solc_wrapper(**compiler_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/solcx/utils/string.py", line 78, in inner
+    return force_obj_to_text(fn(*args, **kwargs))
+  File "/usr/local/lib/python3.8/dist-packages/solcx/wrapper.py", line 187, in solc_wrapper
+    raise SolcError(
+solcx.exceptions.SolcError: An error occurred during execution
+        > command: `/root/.solcx/solc-v0.8.14 --combined-json abi,asm,ast,bin,bin-runtime,devdoc,opcodes,userdoc /data/HypePool.sol`
+        > return code: `1`
+        > stderr:
+
+        > stdout:
+        Error: Source "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol" not found: File not found. Searched the following locations: "".
+ --> /data/HypePool.sol:4:1:
+  |
+4 | import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error: Source "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol" not found: File not found. Searched the following locations: "".
+ --> /data/HypePool.sol:5:1:
+  |
+5 | import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error: Source "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol" not found: File not found. Searched the following locations: "".
+ --> /data/HypePool.sol:6:1:
+  |
+6 | import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error: Source "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol" not found: File not found. Searched the following locations: "".
+ --> /data/HypePool.sol:7:1:
+  |
+7 | import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error: Source "/data/interfaces/IHypePool.sol" not found: File not found. Searched the following locations: "".
+ --> /data/HypePool.sol:9:1:
+  |
+9 | import "./interfaces/IHypePool.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error: Source "/data/interfaces/IEscrow.sol" not found: File not found. Searched the following locations: "".
+  --> /data/HypePool.sol:11:1:
+   |
+11 | import "./interfaces/IEscrow.sol";
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

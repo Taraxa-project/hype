@@ -1,8 +1,0 @@
-{
-  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/DynamicEscrow.sol",
-  "tool": "securify",
-  "start": 1657272659.9615734,
-  "end": 1657272660.748062,
-  "duration": 0.7864885330200195,
-  "exit_code": 1
-}

@@ -1,0 +1,31 @@
+{
+  "analysis": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/HypePool.sol",
+  "duration": 12.251677989959717,
+  "end": 1657275860.0181935,
+  "exit_code": 0,
+  "start": 1657275847.7665155,
+  "tool": "manticore"
+}

@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "is_lock_vulnerable": false,
+    "is_prodigal_vulnerable": false,
+    "is_suicidal_vulnerable": false
+  },
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IEscrow.sol",
+  "duration": 0.495084285736084,
+  "end": 1657275814.041254,
+  "exit_code": 0,
+  "start": 1657275813.5461698,
+  "tool": "maian"
+}

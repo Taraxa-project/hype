@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "is_lock_vulnerable": false,
+    "is_prodigal_vulnerable": false,
+    "is_suicidal_vulnerable": false
+  },
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/DynamicEscrow.sol",
+  "duration": 66.97387051582336,
+  "end": 1657275805.1777155,
+  "exit_code": 0,
+  "start": 1657275738.203845,
+  "tool": "maian"
+}

@@ -1,0 +1,9 @@
+{
+  "analysis": [],
+  "contract": "/home/runner/work/hype/hype/packages/contracts/contracts/interfaces/IHypePool.sol",
+  "duration": 0.6766788959503174,
+  "end": 1657275836.9285488,
+  "exit_code": 0,
+  "start": 1657275836.25187,
+  "tool": "honeybadger"
+}
