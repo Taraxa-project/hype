@@ -23,6 +23,8 @@ jobs:
         run: |
           yarn
           yarn 
+      - name: Compile contracts
+        run: yarn compile-contracts
       - name: Run Hardhat tests with coverage
         run: yarn test-contracts:coverage
       - name: Setup Python 3.8  
