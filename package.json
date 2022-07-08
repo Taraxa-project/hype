@@ -1,9 +1,15 @@
 {
   "name": "hype_project",
   "private": true,
-  "workspaces": [
-    "services/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "services/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@openzeppelin"
+    ]
+  },
   "scripts": {
     "start": "concurrently \"SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start & SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start\"",
     "start-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start",
