@@ -1,0 +1,13 @@
+{
+  "analysis": {
+    "error": "input files do not contain any valid contracts",
+    "issues": [],
+    "success": false
+  },
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
+  "duration": 1.4741840362548828,
+  "end": 1657272795.4435647,
+  "exit_code": 0,
+  "start": 1657272793.9693806,
+  "tool": "mythril"
+}

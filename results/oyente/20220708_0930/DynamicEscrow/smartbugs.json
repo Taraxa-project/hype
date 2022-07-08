@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/DynamicEscrow.sol",
+  "tool": "oyente",
+  "start": 1657272660.7498865,
+  "end": 1657272661.6140833,
+  "duration": 0.86419677734375,
+  "exit_code": 1
+}

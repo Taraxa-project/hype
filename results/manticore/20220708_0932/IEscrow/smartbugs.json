@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "manticore",
+  "start": 1657272767.4458566,
+  "end": 1657272768.1487544,
+  "duration": 0.7028977870941162,
+  "exit_code": 0
+}

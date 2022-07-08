@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
+  "tool": "slither",
+  "start": 1657272774.3105466,
+  "end": 1657272775.2928712,
+  "duration": 0.9823246002197266,
+  "exit_code": 255
+}

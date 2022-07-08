@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
+  "tool": "osiris",
+  "start": 1657272780.4318287,
+  "end": 1657272781.2597728,
+  "duration": 0.8279440402984619,
+  "exit_code": 0
+}

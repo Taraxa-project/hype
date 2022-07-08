@@ -1,0 +1,62 @@
+{
+  "analysis": {
+    "data/IRewarder.sol:IRewarder": {
+      "results": {
+        "DAO": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "DAOConstantGas": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "MissingInputValidation": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODAmount": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODReceiver": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "TODTransfer": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "UnhandledException": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        },
+        "UnrestrictedEtherFlow": {
+          "conflicts": [],
+          "safe": [],
+          "violations": [],
+          "warnings": []
+        }
+      }
+    }
+  },
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
+  "duration": 1.0562524795532227,
+  "end": 1657272778.9497232,
+  "exit_code": 0,
+  "start": 1657272777.8934708,
+  "tool": "securify"
+}

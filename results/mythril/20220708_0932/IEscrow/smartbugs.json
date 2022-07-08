@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "mythril",
+  "start": 1657272764.9889207,
+  "end": 1657272766.474675,
+  "duration": 1.4857542514801025,
+  "exit_code": 0
+}

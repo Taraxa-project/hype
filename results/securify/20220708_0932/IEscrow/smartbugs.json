@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IEscrow.sol",
+  "tool": "securify",
+  "start": 1657272758.5887723,
+  "end": 1657272759.6556215,
+  "duration": 1.0668492317199707,
+  "exit_code": 0
+}

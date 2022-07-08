@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol",
+  "tool": "mythril",
+  "start": 1657272778.9536898,
+  "end": 1657272780.4312608,
+  "duration": 1.4775710105895996,
+  "exit_code": 0
+}

@@ -1,0 +1,22 @@
+Arguments passed: ['smartBugs.py', '--tool', 'all', '--file', '/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol']
+Solc experienced a fatal error. Check the results file for more info
+oyente, /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol
+[1/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [oyente] in 0:00:01
+[2/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [solhint] in 0:00:01
+slither, /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol: Failing to copy /output.json from container to None.
+404 Client Error for http+docker://localhost/v1.41/containers/e9f283985ba8ca6f1930700e456fe057e659285b28359f4c8b7f65a65425e437/archive?path=%2Foutput.json: Not Found ("Could not find the file /output.json in container e9f283985ba8ca6f1930700e456fe057e659285b28359f4c8b7f65a65425e437")
+[3/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [slither] in 0:00:01
+[4/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [smartcheck] in 0:00:03
+[5/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [securify] in 0:00:01
+[6/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [mythril] in 0:00:01
+Solc experienced a fatal error. Check the results file for more info
+osiris, /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol
+[7/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [osiris] in 0:00:01
+[8/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [maian] in 0:00:01
+[9/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [manticore] in 0:00:01
+[10/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [conkas] in 0:00:02
+Solc experienced a fatal error. Check the results file for more info
+honeybadger, /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol
+[11/11] /home/runner/work/hype/hype/services/contracts/contracts/interfaces/IRewarder.sol [honeybadger] in 0:00:01
+Analysis completed. 
+It took 0:00:14 to analyse all files.

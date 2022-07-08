@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
+  "tool": "securify",
+  "start": 1657272791.0427408,
+  "end": 1657272792.114217,
+  "duration": 1.0714762210845947,
+  "exit_code": 0
+}

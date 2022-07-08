@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/DynamicEscrow.sol",
+  "tool": "smartcheck",
+  "start": 1657272666.0806534,
+  "end": 1657272668.9921923,
+  "duration": 2.91153883934021,
+  "exit_code": 0
+}

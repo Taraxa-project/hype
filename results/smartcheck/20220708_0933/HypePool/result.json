@@ -1,0 +1,50 @@
+{
+  "analysis": [
+    {
+      "column": 16,
+      "content": "^",
+      "line": 2,
+      "name": "SOLIDITY_PRAGMAS_VERSION",
+      "patternId": "23fc32",
+      "severity": 1
+    },
+    {
+      "column": 32,
+      "content": "private",
+      "line": 21,
+      "name": "SOLIDITY_PRIVATE_MODIFIER_DONT_HIDE_DATA",
+      "patternId": "5616b2",
+      "severity": 1
+    },
+    {
+      "column": 43,
+      "content": "private",
+      "line": 25,
+      "name": "SOLIDITY_PRIVATE_MODIFIER_DONT_HIDE_DATA",
+      "patternId": "5616b2",
+      "severity": 1
+    },
+    {
+      "column": 4,
+      "content": "constructor(){_disableInitializers();}",
+      "line": 28,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": 910067,
+      "severity": 1
+    },
+    {
+      "column": 4,
+      "content": "address_escrowContractAddress;",
+      "line": 23,
+      "name": "SOLIDITY_VISIBILITY",
+      "patternId": "b51ce0",
+      "severity": 1
+    }
+  ],
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/HypePool.sol",
+  "duration": 3.0476341247558594,
+  "end": 1657272821.4284303,
+  "exit_code": 0,
+  "start": 1657272818.3807962,
+  "tool": "smartcheck"
+}

@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
+  "tool": "conkas",
+  "start": 1657272654.3617408,
+  "end": 1657272656.6341667,
+  "duration": 2.272425889968872,
+  "exit_code": 1
+}

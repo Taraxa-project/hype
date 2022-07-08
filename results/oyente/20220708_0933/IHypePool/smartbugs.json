@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/interfaces/IHypePool.sol",
+  "tool": "oyente",
+  "start": 1657272789.3514853,
+  "end": 1657272790.2182605,
+  "duration": 0.8667752742767334,
+  "exit_code": 1
+}

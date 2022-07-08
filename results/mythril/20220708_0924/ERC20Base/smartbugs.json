@@ -1,0 +1,8 @@
+{
+  "contract": "/home/runner/work/hype/hype/services/contracts/contracts/ERC20Base.sol",
+  "tool": "mythril",
+  "start": 1657272557.1556997,
+  "end": 1657272559.9993472,
+  "duration": 2.8436474800109863,
+  "exit_code": 0
+}
