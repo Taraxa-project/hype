@@ -14,12 +14,14 @@ export const StyledCard = styled.div<CustomStyledProps>`
   border-radius: 1rem;
   background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
-  margin-bottom: 1.5rem;
   box-sizing: border-box;
 
+  flex: 1 1 auto;
+
   @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
-    height: unset;
+    height: auto;
     padding: 1rem;
+    min-height: 20rem;
   }
 `;
 
