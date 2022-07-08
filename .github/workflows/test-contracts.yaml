@@ -6,7 +6,7 @@ on:
   pull_request:
     paths:
       - services/contracts/**
-    types: [opened]
+    types: [opened, synchronize, closed]
 jobs:
   test-contracts:
     runs-on: ubuntu-latest
