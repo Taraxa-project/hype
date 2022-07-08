@@ -20,14 +20,22 @@
     "test-contracts:coverage": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts coverage",
     "storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client storybook",
     "build-storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build-storybook",
-    "format": "prettier . --write && eslint --fix '*.{js,jsx,ts,tsx}'",
+    "format": "prettier . --write && eslint --fix '*.{js,jsx,ts,tsx,json}'",
     "lint": "eslint services/*",
-    "postinstall": "husky install"
+    "pre-commit": "lint-staged",
+    "postinstall": "husky install",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint",
+      "prettier --write",
+      "eslint --max-warnings=0"
+    ],
+    "*.json": [
       "prettier --write"
+    ],
+    "services/client/**/*.{css,scss,sass,tsx,jsx}": [
+      "yarn workspace hype-client stylelint"
     ]
   },
   "dependencies": {
