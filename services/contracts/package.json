@@ -1,8 +1,10 @@
 {
-  "name": "hardhat-project",
+  "name": "hype-contracts",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
     "test": "yarn run hardhat test",
+    "coverage": "yarn run hardhat coverage",
     "deploy": "yarn run hardhat deploy",
     "compile": "yarn run hardhat compile",
     "docgen": "yarn run hardhat docgen"
@@ -43,6 +45,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
-    "@openzeppelin/hardhat-upgrades": "^1.19.0"
+    "@openzeppelin/hardhat-upgrades": "^1.19.0",
+    "solidity-coverage": "^0.7.21"
   }
 }
