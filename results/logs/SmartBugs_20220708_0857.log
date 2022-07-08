@@ -1,0 +1,3 @@
+Arguments passed: ['smartBugs.py', '--tool', 'all', '--file', '/home/runner/work/hype/hype/contracts/services/contracts/contracts/HypePool.sol']
+Analysis completed. 
+It took 0:00:00 to analyse all files.
