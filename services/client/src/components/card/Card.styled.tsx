@@ -17,9 +17,12 @@ export const StyledCard = styled.div<CustomStyledProps>`
   margin-bottom: 1.5rem;
   box-sizing: border-box;
 
+  flex: 1 1 auto;
+
   @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
-    height: unset;
+    height: auto;
     padding: 1rem;
+    min-height: 20rem;
   }
 `;
 

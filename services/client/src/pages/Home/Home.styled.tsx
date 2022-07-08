@@ -7,7 +7,7 @@ export const CardContainer = styled.div<{ theme: HypeThemeType }>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   margin-top: 1rem;
   z-index: 1;
   padding: 0 3rem 2rem;
@@ -76,7 +76,7 @@ export const VideoPlayer = styled(ReactPlayer)`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
-    height: 100%;
+    height: 16.75rem;
   }
 `;
 
@@ -103,7 +103,7 @@ export const NotFoundContainer = styled.div`
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm  }) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     margin: 2rem 1.5rem;
   }
 `;
