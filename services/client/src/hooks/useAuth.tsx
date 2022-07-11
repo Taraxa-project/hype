@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useGetUser } from '../api/auth/useGetUser';
 import { useEffect, useState } from 'react';
 import useWallet from './useWallet';
@@ -15,7 +16,8 @@ const useAuth = () => {
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState<boolean>(false);
 
-  const onLogin = useLogin();
+  const { onLogin, isLoading: isLoginLoading, isSuccess: isLoginSuccess } = useLogin();
+
   const { signMessage } = useSignMessage({
     onSuccess(data) {
       // Verify signature when sign message succeeds
@@ -63,6 +65,8 @@ const useAuth = () => {
     user,
     tokenExists,
     refetch,
+    isLoginLoading,
+    isLoginSuccess,
   };
 };
 

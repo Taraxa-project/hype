@@ -44,12 +44,12 @@ export const ModalContainer: FC<ModalContainerProps> = ({
         >
           <BackgroundHover show={open} />
           <StyledModal onClick={(e) => e.stopPropagation()}>
-            <div>
+            <Box height="100%">
               <ModalTitle {...titleProps} />
               <Box overflow="auto" height="100%">
-              {children}
+                {children}
               </Box>
-            </div>
+            </Box>
             <Box
               display="flex"
               flexDirection="column"
