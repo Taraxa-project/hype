@@ -20,6 +20,17 @@ import {
   StyledHeader,
   AddressContainer,
 } from './Header.styled';
+import LoadingSpinner from '../../assets/icons/Spinner';
+
+export interface HeaderProps {
+  children: React.ReactNode;
+  variant: 'mobile' | 'desktop';
+  headerElements?: HeaderLink[];
+  connected: boolean;
+  onConnect: () => void;
+  account?: string | null;
+  connectionLoading?: boolean;
+}
 
 const Header = React.memo(
   ({
@@ -29,14 +40,8 @@ const Header = React.memo(
     connected,
     onConnect,
     account,
-  }: {
-    children: React.ReactNode;
-    variant: 'mobile' | 'desktop';
-    headerElements?: HeaderLink[];
-    connected: boolean;
-    onConnect: () => void;
-    account?: string | null;
-  }) => {
+    connectionLoading,
+  }: HeaderProps) => {
     const {
       onSelect,
       onMenuOpen,
@@ -59,10 +64,10 @@ const Header = React.memo(
                 </MenuButton>
                 {connected && (
                   <Account>
-                    <>
+                    <Box>
                       <GreenDot />
                       {shortenAddress(account)}
-                    </>
+                    </Box>
                   </Account>
                 )}
               </SidebarHeader>
@@ -93,11 +98,24 @@ const Header = React.memo(
               {variant === 'mobile' ? (
                 connected ? (
                   <>
-                    {' '}
-                    <Account className="margin-right">
-                      <GreenDot />
-                      {shortenAddress(account)}
-                    </Account>
+                    <Box display="flex" alignItems="center">
+                      {connectionLoading ? (
+                        <Box
+                          display="flex"
+                          flex="1  1 auto"
+                          alignItems="center"
+                          justifyContent="center"
+                          mr="2rem"
+                        >
+                          <LoadingSpinner />
+                        </Box>
+                      ) : (
+                        <Account className="margin-right">
+                          <GreenDot />
+                          {shortenAddress(account)}
+                        </Account>
+                      )}
+                    </Box>
                     <MenuButton onClick={onMenuOpen}>
                       <HamburgerMenuIcon />
                     </MenuButton>
@@ -128,6 +146,16 @@ const Header = React.memo(
                   )}
                   {!connected ? (
                     <ConnectWalletBtn size="regular" />
+                  ) : connectionLoading ? (
+                    <Box
+                      display="flex"
+                      flex="1  1 auto"
+                      alignItems="center"
+                      justifyContent="center"
+                      mr="2rem"
+                    >
+                      <LoadingSpinner />
+                    </Box>
                   ) : (
                     <Account>
                       <GreenDot />

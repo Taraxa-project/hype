@@ -36,7 +36,7 @@ const Root = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   const { account, connect, isConnected } = useWallet();
   useAxiosInterceptors();
-  useSignUser();
+  const { isLoading } = useSignUser();
   useGetMe();
 
   return (
@@ -47,6 +47,7 @@ const Root = () => {
         account={account}
         onConnect={connect}
         children={null}
+        connectionLoading={isLoading}
       />
       <StyledAppContainer>
         <Routes>
