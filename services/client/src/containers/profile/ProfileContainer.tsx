@@ -108,6 +108,7 @@ export const ProfileContainer = ({
           ) : (
             <TelegramLoginButton
               botName={TelegramConfig.botName}
+              cornerRadius={20}
               onAuthCallback={connect}
               buttonSize={isMobile ? TelegramLoginButtonSize.Medium : TelegramLoginButtonSize.Large}
               usePic
