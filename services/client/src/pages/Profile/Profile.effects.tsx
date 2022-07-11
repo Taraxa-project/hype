@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
 import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import useWallet from 'src/hooks/useWallet';
@@ -37,13 +37,17 @@ export const useProfileEffects = () => {
       address: account,
       username: user.username,
     });
-    if(user && user.username && user.auth_date){
+    if (account && user && user.username && user.auth_date) {
       submitHandler({ address: account, username: user.username, auth_date: user.auth_date });
     }
   };
 
   const useDisconnect = async (user: TelegramUser) => {
     console.log('disconnected T user is', user);
+    setTelegramProfile({
+      address: account,
+      username: undefined,
+    });
     submitHandler({ address: account, username: null, auth_date: null });
   };
 
