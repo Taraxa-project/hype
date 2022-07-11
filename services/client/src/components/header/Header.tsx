@@ -23,7 +23,6 @@ import {
 import LoadingSpinner from '../../assets/icons/Spinner';
 
 export interface HeaderProps {
-  children: React.ReactNode;
   variant: 'mobile' | 'desktop';
   headerElements?: HeaderLink[];
   connected: boolean;
@@ -33,60 +32,49 @@ export interface HeaderProps {
 }
 
 const Header = React.memo(
-  ({
-    children,
-    variant,
-    headerElements,
-    connected,
-    onConnect,
-    account,
-    connectionLoading,
-  }: HeaderProps) => {
+  ({ variant, headerElements, connected, onConnect, account, connectionLoading }: HeaderProps) => {
     const {
       onSelect,
       onMenuOpen,
       onSidebarClick,
       onHoverClick,
       headerEntries,
-      isMobile,
       menuOpen,
       selected,
     } = useHeaderEffects(headerElements);
 
     return (
       <>
-        {(variant === 'mobile' || isMobile) && (
-          <SidebarHover onClick={onHoverClick} show={menuOpen}>
-            <Sidebar onClick={onSidebarClick} show={menuOpen}>
-              <SidebarHeader>
-                <MenuButton onClick={onMenuOpen}>
-                  <HamburgerMenuIcon />
-                </MenuButton>
-                {connected && (
-                  <Account>
-                    <Box>
-                      <GreenDot />
-                      {shortenAddress(account)}
-                    </Box>
-                  </Account>
-                )}
-              </SidebarHeader>
-              <SidebarMenu>
-                {headerEntries.map((e: HeaderLink) => (
-                  <SidebarMenuLink
-                    key={`menu-link-${e.name}-${Date.now()}`}
-                    selected={e.name === selected}
-                    onClick={() => onSelect(e)}
-                  >
-                    {e.name}
-                  </SidebarMenuLink>
-                ))}
-              </SidebarMenu>
-              <SidebarFooter>{!connected && <ConnectWalletBtn size="full-width" />}</SidebarFooter>
-            </Sidebar>
-          </SidebarHover>
-        )}
-        <StyledHeader variant={variant || isMobile ? 'mobile' : 'desktop'}>
+        <SidebarHover onClick={onHoverClick} show={menuOpen}>
+          <Sidebar onClick={onSidebarClick} show={menuOpen}>
+            <SidebarHeader>
+              <MenuButton onClick={onMenuOpen}>
+                <HamburgerMenuIcon />
+              </MenuButton>
+              {connected && (
+                <Account>
+                  <Box>
+                    <GreenDot />
+                    {shortenAddress(account)}
+                  </Box>
+                </Account>
+              )}
+            </SidebarHeader>
+            <SidebarMenu>
+              {headerEntries.map((e: HeaderLink) => (
+                <SidebarMenuLink
+                  key={`menu-link-${e.name}-${Date.now()}`}
+                  selected={e.name === selected}
+                  onClick={() => onSelect(e)}
+                >
+                  {e.name}
+                </SidebarMenuLink>
+              ))}
+            </SidebarMenu>
+            <SidebarFooter>{!connected && <ConnectWalletBtn size="full-width" />}</SidebarFooter>
+          </Sidebar>
+        </SidebarHover>
+        <StyledHeader>
           <div>
             <div className="header-left">
               <Link to="/">

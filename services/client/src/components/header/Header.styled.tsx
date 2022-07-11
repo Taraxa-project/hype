@@ -84,6 +84,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 `;
 
 export const SidebarHover = styled.div<SidebarProps>`
+  display: none;
   ${(props) => !props.show && `visibility: hidden;`}
   width: 100%;
   height: 100%;
@@ -93,6 +94,10 @@ export const SidebarHover = styled.div<SidebarProps>`
   bottom: 0;
   z-index: 999;
   background-color: rgba(45, 45, 45, 0.4);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: block;
+  }
 `;
 
 export const Sidebar = styled.div<SidebarProps>`

@@ -30,11 +30,11 @@ export const useFetchHypePools = (search?: string) => {
     ({ pageParam = 1 }) => fetchPools(computePage(pageParam, search)),
     {
       getNextPageParam: (lastPage, allPages) => {
-        const maxPages = lastPage.total / 5;
+        const maxPages = lastPage?.total / 5;
         const nextPage = allPages.length + 1;
         return nextPage <= maxPages ? nextPage : undefined;
       },
-      select: (data) => ({ ...data, pages: data.pages.flatMap((page) => page.data) }),
+      select: (data) => ({ ...data, pages: data.pages.flatMap((page) => page?.data) }),
     },
   );
 

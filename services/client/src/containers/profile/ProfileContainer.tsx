@@ -40,16 +40,16 @@ export const ProfileContainer = ({
   return (
     <Box
       backgroundColor="greys.1"
-      p={isMobile ? '1.5rem' : '2rem'}
+      p={{ sm: '1.5rem', md: '2rem' }}
       borderRadius="2rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       flex="1 1 auto"
       alignItems="left"
-      width={isMobile ? 'unset' : '100%'}
+      width={{ sm: 'unset', md: '100%' }}
       marginBottom="1rem"
-      marginRight={isMobile ? '1rem' : 'none'}
+      marginRight={{ sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"
@@ -75,7 +75,7 @@ export const ProfileContainer = ({
           p="1.5rem"
           borderRadius="1rem"
           display="flex"
-          flexDirection={isMobile ? 'column' : 'row'}
+          flexDirection={{ sm: 'column', md: 'row' }}
           justifyContent="space-between"
           alignItems="center"
           gridGap="1.1rem"
