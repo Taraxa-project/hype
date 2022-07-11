@@ -13,7 +13,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   max-width: 586px;
   min-width: 486px;
 
-  min-height: 550px;
+  height: 550px;
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;
