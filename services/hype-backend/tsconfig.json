@@ -28,9 +28,15 @@
       "@taraxa-hype/auth": ["src/modules/auth"],
       "@taraxa-hype/config": ["config"],
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
-      "@taraxa-hype/user": ["src/modules/user"],
+      "@taraxa-hype/user": ["src/modules/user"]
     }
   },
-  "include": ["src/**/*", "test/**/*", "migrations/*", "data-source.ts"],
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "migrations/*",
+    "data-source.ts",
+    ".eslintrc.js"
+  ],
   "exclude": ["node_modules", "dist"]
 }
