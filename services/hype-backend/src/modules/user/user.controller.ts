@@ -27,7 +27,7 @@ export class UserController {
   })
   @Get()
   @UseGuards(WalletGuard)
-  public getPoolsBy(
+  public getUserBy(
     @Query(ValidationPipe) filterDto: GetByDTO,
   ): Promise<HypeUser> {
     return this.service.getUserBy(filterDto);
@@ -40,7 +40,7 @@ export class UserController {
     type: UserDTO,
     description: 'Returns a new created or an updated user',
   })
-  public async createPool(@Body() userDTO: UserDTO): Promise<HypeUser> {
+  public async createOrUpdateUser(@Body() userDTO: UserDTO): Promise<HypeUser> {
     return await this.service.updateAccount(userDTO);
   }
 }

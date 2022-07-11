@@ -7,7 +7,7 @@ import { API } from '../types';
 import { HypeUser } from 'src/models/HypeUser.model';
 
 const updateUser = (user: HypeUser) => {
-  const url = `${API}/users/${user.address}`;
+  const url = `${API}/users`;
   return axios.post(url, user);
 };
 
@@ -21,7 +21,8 @@ export const useUpdateTelegram = () => {
     const updatedUser: HypeUser = { ...values };
     mutate(updatedUser, {
       onSuccess: () => {
-        queryClient.resetQueries();
+        // queryClient.resetQueries();
+        queryClient.invalidateQueries(['hype-user']);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {

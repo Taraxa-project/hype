@@ -13,6 +13,7 @@ import Heading from '../../components/styles/Heading';
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 import { TelegramUser } from 'src/models/HypeUser.model';
+import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -68,51 +69,55 @@ export const ProfileContainer = ({
       <Text color="greys.14" fontSize="0.875rem" fontWeight="600">
         Connected Apps:
       </Text>
-      <Box
-        backgroundColor="greys.0"
-        p="1.5rem"
-        borderRadius="1rem"
-        display="flex"
-        flexDirection={isMobile ? 'column' : 'row'}
-        justifyContent="space-between"
-        alignItems="center"
-        gridGap="1.1rem"
-        mt="0.75rem"
-      >
-        <Box display="flex" flexDirection="row">
-          <TelegramLogo width="90" height="54.75" />
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-evenly"
-            alignItems="center"
-            marginLeft="1rem"
-            width="100%"
-          >
-            <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
-              Telegram:
-            </Text>
-            {telegramUsername && (
-              <Text fontSize="0.875rem" color="greys.4">
-                @{telegramUsername}
+      {address ? (
+        <Box
+          backgroundColor="greys.0"
+          p="1.5rem"
+          borderRadius="1rem"
+          display="flex"
+          flexDirection={isMobile ? 'column' : 'row'}
+          justifyContent="space-between"
+          alignItems="center"
+          gridGap="1.1rem"
+          mt="0.75rem"
+        >
+          <Box display="flex" flexDirection="row">
+            <TelegramLogo width="90" height="54.75" />
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-evenly"
+              alignItems="center"
+              marginLeft="1rem"
+              width="100%"
+            >
+              <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+                Telegram:
               </Text>
-            )}
+              {telegramUsername && (
+                <Text fontSize="0.875rem" color="greys.4">
+                  @{telegramUsername}
+                </Text>
+              )}
+            </Box>
           </Box>
+          {telegramUsername ? (
+            <Button variant="secondary" size={isMobile ? 'small' : 'regular'} onClick={disconnect}>
+              Disconnect this account
+            </Button>
+          ) : (
+            <TelegramLoginButton
+              botName={TelegramConfig.botName}
+              onAuthCallback={connect}
+              buttonSize={isMobile ? TelegramLoginButtonSize.Medium : TelegramLoginButtonSize.Large}
+              usePic
+              lang="EN"
+            />
+          )}
         </Box>
-        {telegramUsername ? (
-          <Button variant="secondary" size={isMobile ? 'small' : 'regular'} onClick={disconnect}>
-            Disconnect this account
-          </Button>
-        ) : (
-          <TelegramLoginButton
-            botName={TelegramConfig.botName}
-            onAuthCallback={connect}
-            buttonSize={isMobile ? TelegramLoginButtonSize.Small : TelegramLoginButtonSize.Medium}
-            usePic={false}
-            lang="EN"
-          />
-        )}
-      </Box>
+      ) : (
+        <ConnectWalletBtn size="full-width" />
+      )}
     </Box>
   );
 };
