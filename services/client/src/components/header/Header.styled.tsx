@@ -145,6 +145,11 @@ export const SidebarFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  > * {
+    width: 100%;
+    margin: 1.5rem;
+  }
 `;
 
 export const MenuButton = styled.button`

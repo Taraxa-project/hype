@@ -3,16 +3,17 @@ import { HypeThemeType } from '../../../theme';
 
 export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   position: fixed;
-  left: 50%;
   top: 50%;
-  overflow: hidden; /* Enable scroll if needed */
+  left: 50%;
   transform: translate(-50%, -50%);
+  overflow: hidden; /* Enable scroll if needed */
   z-index: 1040;
   backdrop-filter: blur(1rem);
-  width: auto;
-  max-width: 500px !important;
-  height: auto;
-  min-height: 550px;
+
+  max-width: 586px;
+  min-width: 486px;
+
+  height: 550px;
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;
@@ -21,7 +22,9 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   justify-content: space-between;
   padding: 2rem;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    min-width: 400px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 70%;
+    max-width: unset;
+    min-width: unset;
   }
 `;

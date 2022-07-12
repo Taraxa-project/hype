@@ -27,7 +27,7 @@ export const RewardsContainer = (props: RewardProps) => {
       marginLeft={isMobile ? 'none' : '1rem'}
       marginRight={isMobile ? '1rem' : 'none'}
       marginBottom="1rem"
-      minWidth={{sm: "unset", md: "340px"}}
+      minWidth={{ sm: 'unset', md: '340px' }}
     >
       <Heading
         fontSize="1.25rem"
@@ -38,7 +38,7 @@ export const RewardsContainer = (props: RewardProps) => {
       >
         Redeem rewards
       </Heading>
-      <Box display="flex" flexDirection="column" gridGap="0.5rem">
+      <Box display="flex" flexDirection="column" gridGap="0.5rem" mb="3rem">
         <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
           Total unredeemed
         </Text>

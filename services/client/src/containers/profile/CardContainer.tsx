@@ -6,8 +6,32 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { HypePool } from '../../models';
 import Card from '../../components/card/Card';
+import styled from 'styled-components';
 
-export const CardContainer = (props: {
+const StyledCardContainer = styled.div`
+  position: relative;
+  margin-top: 2rem;
+  z-index: 1;
+  margin-bottom: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 29.5rem;
+  margin-top: 1rem;
+  border-radius: 1rem;
+
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
+  justify-content: start;
+  align-items: start;
+`;
+
+export const CardContainer = ({
+  title,
+  cards,
+  emptyMessage,
+  target,
+}: {
   title: string;
   cards: HypePool[];
   emptyMessage: string;
@@ -34,25 +58,12 @@ export const CardContainer = (props: {
         color="black"
         letterSpacing="-0.02em"
       >
-        {props.title}
+        {title}
       </Heading>
-      <Box
-        borderRadius="1rem"
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        justifyContent="space-evenly"
-        gridGap="2rem"
-        backgroundColor={props.cards.length > 0 ? 'greys.1' : 'greys.0'}
-        overflowY="auto"
-        overflowX="hidden"
-        height="29.5rem"
-        mt="1rem"
-      >
-        {props.cards.length > 0 ? (
-          props.cards.map((data, i) => (
+      {cards.length > 0 ? (
+        <StyledCardContainer>
+          {cards.map((data, i) => (
             <Card
-              variant={isMobile ? 'mobile' : 'desktop'}
               key={`${data.title}-${i}`}
               projectName={data.projectName}
               title={data.title}
@@ -68,16 +79,27 @@ export const CardContainer = (props: {
                   type: ModalsActionsEnum.SHOW_CARD_DETAILS,
                   payload: {
                     open: true,
-                    cardData: props.cards[i],
+                    cardData: cards[i],
                   },
                 });
               }}
             />
-          ))
-        ) : (
-          <NotAvailable message={props.emptyMessage} />
-        )}
-      </Box>
+          ))}
+        </StyledCardContainer>
+      ) : (
+        <Box
+          borderRadius="1rem"
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="space-evenly"
+          gridGap="2rem"
+          height="12rem"
+          mt="1rem"
+          backgroundColor={cards.length > 0 ? 'greys.1' : 'greys.0'}
+        >
+          <NotAvailable message={emptyMessage} />
+        </Box>
+      )}
     </Box>
   );
 };

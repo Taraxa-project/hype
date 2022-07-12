@@ -27,6 +27,9 @@
     "prepare": "husky install"
   },
   "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --quiet --cache --fix"
+    ],
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint --max-warnings=0"

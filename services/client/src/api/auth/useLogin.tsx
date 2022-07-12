@@ -16,9 +16,12 @@ const sendSignature = (login: LoginSignature) => {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation((values: LoginSignature) => sendSignature(values), {
-    useErrorBoundary: true,
-  });
+  const { mutate, isLoading, isSuccess } = useMutation(
+    (values: LoginSignature) => sendSignature(values),
+    {
+      useErrorBoundary: true,
+    },
+  );
   const dispatchModals = useModalsDispatch();
 
   const onLogin = (values: LoginSignature) => {
@@ -48,5 +51,5 @@ export const useLogin = () => {
       },
     });
   };
-  return onLogin;
+  return { isLoading, isSuccess, onLogin };
 };
