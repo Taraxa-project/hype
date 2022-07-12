@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from './components/header/Header';
-import { useMediaQuery } from 'react-responsive';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool, Profile } from './pages';
 import styled from 'styled-components';
@@ -33,7 +32,6 @@ const AppWrapper = styled.div`
 `;
 
 const Root = () => {
-  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
   const { account, connect, isConnected } = useWallet();
   useAxiosInterceptors();
   const { isLoading } = useSignUser();
@@ -42,7 +40,6 @@ const Root = () => {
   return (
     <AppWrapper>
       <Header
-        variant={isMobile ? 'mobile' : 'desktop'}
         connected={isConnected}
         account={account}
         onConnect={connect}

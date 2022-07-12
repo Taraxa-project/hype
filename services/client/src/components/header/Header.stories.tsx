@@ -31,7 +31,6 @@ const headerValues: HeaderLink[] = [
 
 export const MobileConnected = Template.bind({});
 MobileConnected.args = {
-  variant: 'mobile',
   headerElements: headerValues,
   connected: true,
   onConnect: () => {},
@@ -40,7 +39,6 @@ MobileConnected.args = {
 
 export const MobileDisconnected = Template.bind({});
 MobileDisconnected.args = {
-  variant: 'mobile',
   headerElements: headerValues,
   connected: false,
   onConnect: () => {},
@@ -48,7 +46,6 @@ MobileDisconnected.args = {
 
 export const MobileUnavailable = Template.bind({});
 MobileUnavailable.args = {
-  variant: 'mobile',
   headerElements: headerValues,
   connected: false,
   onConnect: () => {},
@@ -56,7 +53,6 @@ MobileUnavailable.args = {
 
 export const DesktopConnected = Template.bind({});
 DesktopConnected.args = {
-  variant: 'desktop',
   headerElements: headerValues,
   connected: true,
   onConnect: () => {},
@@ -65,7 +61,6 @@ DesktopConnected.args = {
 
 export const DesktopDisconnected = Template.bind({});
 DesktopDisconnected.args = {
-  variant: 'desktop',
   headerElements: headerValues,
   connected: false,
   onConnect: () => {},

@@ -23,7 +23,6 @@ import {
 import LoadingSpinner from '../../assets/icons/Spinner';
 
 export interface HeaderProps {
-  variant: 'mobile' | 'desktop';
   headerElements?: HeaderLink[];
   connected: boolean;
   onConnect: () => void;
@@ -32,7 +31,7 @@ export interface HeaderProps {
 }
 
 const Header = React.memo(
-  ({ variant, headerElements, connected, onConnect, account, connectionLoading }: HeaderProps) => {
+  ({ headerElements, connected, onConnect, account, connectionLoading }: HeaderProps) => {
     const {
       onSelect,
       onMenuOpen,

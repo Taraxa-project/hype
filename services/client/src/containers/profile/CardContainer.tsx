@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
@@ -38,7 +37,6 @@ export const CardContainer = ({
   target: string;
 }) => {
   const dispatchModals = useModalsDispatch();
-  const isMobile = useMediaQuery({ query: `(max-width: 950px)` });
 
   return (
     <Box
@@ -49,7 +47,7 @@ export const CardContainer = ({
       justifyContent="space-evenly"
       backgroundColor="greys.1"
       marginBottom="1rem"
-      marginRight={isMobile ? '1rem' : 'none'}
+      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"
