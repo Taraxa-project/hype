@@ -151,10 +151,10 @@ export const SidebarFooter = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-   >* {
+  > * {
     width: 100%;
     margin: 1.5rem;
-   } 
+  }
 `;
 
 export const MenuButton = styled.button`
@@ -176,11 +176,12 @@ export const Account = styled.div`
 
 export const GreenDot = styled.div`
   margin-left: 0.1rem;
-  margin-right: 0.2rem;
+  margin-right: 0.5rem;
   height: 0.375rem !important;
   width: 0.375rem !important;
   background: #15ac5b;
   border-radius: 50%;
+  display: inline-block;
 `;
 
 export const AddressContainer = styled.div<AddressContainerProps>`

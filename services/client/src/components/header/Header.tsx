@@ -53,7 +53,7 @@ const Header = React.memo(
               </MenuButton>
               {connected && (
                 <Account>
-                  <Box>
+                  <Box display="flex" alignItems="center">
                     <GreenDot />
                     {shortenAddress(account)}
                   </Box>
@@ -83,10 +83,10 @@ const Header = React.memo(
             </div>
 
             <div className="header-right">
-              {variant === 'mobile' ? (
-                connected ? (
+              <Box display={{ _: 'flex', sm: 'flex', md: 'none' }} m="0">
+                {connected ? (
                   <>
-                    <Box display={{ sm: 'flex', md: 'none' }} alignItems="center">
+                    <Box display="flex" alignItems="center">
                       {connectionLoading ? (
                         <Box
                           display="flex"
@@ -112,46 +112,45 @@ const Header = React.memo(
                   <MenuButton onClick={onMenuOpen}>
                     <HamburgerMenuIcon />
                   </MenuButton>
-                )
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
-                >
-                  {headerEntries.map((e: HeaderLink) =>
-                    e.name === selected ? (
-                      <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
-                        {e.name}
-                        <p className="underline" />
-                      </span>
-                    ) : (
-                      <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
-                        {e.name}
-                      </span>
-                    ),
-                  )}
-                  {!connected ? (
-                    <ConnectWalletBtn size="regular" />
-                  ) : connectionLoading ? (
-                    <Box
-                      display="flex"
-                      flex="1  1 auto"
-                      alignItems="center"
-                      justifyContent="center"
-                      mr="2rem"
-                    >
-                      <LoadingSpinner />
-                    </Box>
+                )}
+              </Box>
+              <Box
+                display={{ _: 'none', sm: 'none', md: 'flex' }}
+                flexDirection="row"
+                alignItems="center"
+                gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
+              >
+                {headerEntries.map((e: HeaderLink) =>
+                  e.name === selected ? (
+                    <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
+                      {e.name}
+                      <p className="underline" />
+                    </span>
                   ) : (
-                    <Account>
-                      <GreenDot />
-                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
-                    </Account>
-                  )}
-                </Box>
-              )}
+                    <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
+                      {e.name}
+                    </span>
+                  ),
+                )}
+                {!connected ? (
+                  <ConnectWalletBtn size="regular" />
+                ) : connectionLoading ? (
+                  <Box
+                    display="flex"
+                    flex="1  1 auto"
+                    alignItems="center"
+                    justifyContent="center"
+                    mr="2rem"
+                  >
+                    <LoadingSpinner />
+                  </Box>
+                ) : (
+                  <Account>
+                    <GreenDot />
+                    <AddressContainer address={account} shortAddress={shortenAddress(account)} />
+                  </Account>
+                )}
+              </Box>
             </div>
           </div>
         </StyledHeader>
