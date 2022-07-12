@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
@@ -36,7 +35,6 @@ export const ProfileContainer = ({
   connect,
   disconnect,
 }: ProfileProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
   return (
     <Box
       backgroundColor="greys.1"
@@ -102,7 +100,7 @@ export const ProfileContainer = ({
             </Box>
           </Box>
           {telegramUsername ? (
-            <Button variant="secondary" size={isMobile ? 'small' : 'regular'} onClick={disconnect}>
+            <Button variant="secondary" onClick={disconnect}>
               Disconnect this account
             </Button>
           ) : (
