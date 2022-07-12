@@ -38,16 +38,16 @@ export const ProfileContainer = ({
   return (
     <Box
       backgroundColor="greys.1"
-      p={{ sm: '1.5rem', md: '2rem' }}
+      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
       borderRadius="2rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       flex="1 1 auto"
       alignItems="left"
-      width={{ sm: 'unset', md: '100%' }}
+      width={{ _: 'unset', sm: 'unset', md: '100%' }}
       marginBottom="1rem"
-      marginRight={{ sm: '1rem', md: 'none' }}
+      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"
