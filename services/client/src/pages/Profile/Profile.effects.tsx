@@ -33,12 +33,13 @@ export const useProfileEffects = () => {
 
   const useConnect = async (user: TelegramUser) => {
     console.log('new T user is', user);
+    const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
       address: account,
-      username: user.username,
+      username: usernameTemp,
     });
-    if (account && user && user.username && user.auth_date) {
-      submitHandler({ address: account, username: user.username, auth_date: user.auth_date });
+    if (account && user && user.auth_date && usernameTemp) {
+      submitHandler({ address: account, username: usernameTemp, auth_date: user.auth_date });
     }
   };
 
