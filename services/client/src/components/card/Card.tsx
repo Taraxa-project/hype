@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import { HypePool } from '../../models';
 import { monthDiff, shortenText } from '../../utils';
 import Button from '../button/Button';
@@ -16,28 +15,24 @@ import { useToken } from 'wagmi';
 
 export interface CardProps extends HypePool {
   children?: JSX.Element | string;
-  variant?: 'mobile' | 'desktop';
   onClick?: () => void;
 }
 
-const Card = ({ children, variant, ...props }: CardProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+const Card = ({ children, ...props }: CardProps) => {
   const { title, description, rewardsAddress, pool, minReward, startDate, endDate, onClick } =
     props;
-  const {
-    data: poolTokenInfo,
-    isError: poolTokenIsError,
-    isLoading: poolTokenIsLoading,
-  } = useToken({ address: rewardsAddress });
+  const { data: poolTokenInfo } = useToken({ address: rewardsAddress });
   const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(startDate, endDate)} months left`;
 
   return (
-    <StyledCard variant={variant ? variant : isMobile ? 'mobile' : 'desktop'}>
+    <StyledCard>
       <Container>
         <div>
           <CardTitle>{title}</CardTitle>
-          <CardDescription key={`${description}-${Date.now()}`}>{shortenText(description)}</CardDescription>
+          <CardDescription key={`${description}-${Date.now()}`}>
+            {shortenText(description)}
+          </CardDescription>
           {pool && poolToken && (
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>

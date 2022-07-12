@@ -2,27 +2,18 @@ import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
-  variant?: 'mobile' | 'desktop';
   theme?: HypeThemeType;
 }
 
 export const StyledCard = styled.div<CustomStyledProps>`
-  width: ${({ variant }) => (variant === 'mobile' ? 'auto' : '23rem')};
-  height: ${({ variant }) => (variant === 'mobile' ? '21.938rem' : '24.438rem')};
+  max-width: 23rem;
+  height: 24.438rem;
   line-height: 1.25rem;
   display: flex;
   border-radius: 1rem;
   background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
   box-sizing: border-box;
-
-  flex: 1 1 auto;
-
-  @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
-    height: auto;
-    padding: 1rem;
-    min-height: 20rem;
-  }
 `;
 
 export const CardTitle = styled.h3`

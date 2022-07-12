@@ -1,32 +1,19 @@
 import styled from 'styled-components';
-import { HypeThemeType } from '../../theme';
 import ReactPlayer from 'react-player';
 
-export const CardContainer = styled.div<{ theme: HypeThemeType }>`
+export const CardContainer = styled.div`
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: start;
   margin-top: 2rem;
   z-index: 1;
   padding: 0 3rem 2rem;
   margin-bottom: 1rem;
   overflow: auto;
-  gap: 2rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    padding: 0 1.5rem 2rem;
-    margin-top: 1rem;
-    margin-bottom: 3rem;
-    overflow: auto;
-    z-index: 1;
-    position: relative;
-    gap: 1rem;
-  }
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
+  justify-content: start;
+  align-items: start;
 `;
 
 export const PageContainer = styled.div`
