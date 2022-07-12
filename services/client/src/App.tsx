@@ -46,7 +46,6 @@ const Root = () => {
         connected={isConnected}
         account={account}
         onConnect={connect}
-        children={null}
         connectionLoading={isLoading}
       />
       <StyledAppContainer>

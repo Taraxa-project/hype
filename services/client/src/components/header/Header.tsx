@@ -86,7 +86,7 @@ const Header = React.memo(
               {variant === 'mobile' ? (
                 connected ? (
                   <>
-                    <Box display="flex" alignItems="center">
+                    <Box display={{ sm: 'flex', md: 'none' }} alignItems="center">
                       {connectionLoading ? (
                         <Box
                           display="flex"
