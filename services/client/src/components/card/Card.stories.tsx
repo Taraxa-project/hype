@@ -19,12 +19,11 @@ Regular.args = {
   creatorAddress: '0x000000000000000000000000000000000000002',
   minReward: 1,
   startDate: new Date(),
-  endDate: new Date(new Date().setMonth(new Date().getMonth()+5)),
+  endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
 };
 
 export const Mobile = Template.bind({} as CardProps);
 Mobile.args = {
-  variant: 'mobile',
   projectName: 'ApeCoin Hype',
   title: 'ApeCoin Staking Launch!',
   description:
@@ -34,5 +33,5 @@ Mobile.args = {
   creatorAddress: '0x000000000000000000000000000000000000002',
   minReward: 1,
   startDate: new Date(),
-  endDate: new Date(new Date().setMonth(new Date().getMonth()+5)),
+  endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
 };
