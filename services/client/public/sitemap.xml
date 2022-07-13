@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://hype.taraxa.io/</loc>
+    <lastmod>2022-07-13</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://hype.taraxa.io/pool</loc>
+    <lastmod>2022-07-13</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://hype.taraxa.io/redeem</loc>
+    <lastmod>2022-07-13</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://hype.taraxa.io/profile</loc>
+    <lastmod>2022-07-13</lastmod>
+    <priority>0.80</priority>
+  </url>
+</urlset>
