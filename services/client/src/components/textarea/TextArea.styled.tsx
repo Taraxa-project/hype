@@ -12,6 +12,7 @@ export const StyledTextArea = styled.textarea<{ theme: HypeThemeType }>`
   min-height: 2.5rem;
   text-align: left;
   padding: 0.625rem;
+  font-family: Inter, sans-serif;
 
   :focus,
   :active,
