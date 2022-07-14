@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export interface CustomStyledProps {
@@ -54,7 +53,6 @@ const headerValues: HeaderLink[] = [
 export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
   let navigate = useNavigate();
   let location = useLocation();
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<HeaderValues>(
     headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
@@ -68,7 +66,7 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
 
   const onSelect = (e: HeaderLink) => {
     navigate(e.route);
-    setMenuOpen(false)
+    setMenuOpen(false);
   };
 
   const getShortAddress = (addr: string | null | undefined): string =>
@@ -95,7 +93,6 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
     onSidebarClick,
     onHoverClick,
     headerEntries,
-    isMobile,
     menuOpen,
     selected,
   };

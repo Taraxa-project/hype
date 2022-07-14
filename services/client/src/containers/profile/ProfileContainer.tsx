@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
@@ -36,20 +35,19 @@ export const ProfileContainer = ({
   connect,
   disconnect,
 }: ProfileProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
   return (
     <Box
       backgroundColor="greys.1"
-      p={isMobile ? '1.5rem' : '2rem'}
+      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
       borderRadius="2rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       flex="1 1 auto"
       alignItems="left"
-      width={isMobile ? 'unset' : '100%'}
+      width={{ _: 'unset', sm: 'unset', md: '100%' }}
       marginBottom="1rem"
-      marginRight={isMobile ? '1rem' : 'none'}
+      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"
@@ -75,7 +73,7 @@ export const ProfileContainer = ({
           p="1.5rem"
           borderRadius="1rem"
           display="flex"
-          flexDirection={isMobile ? 'column' : 'row'}
+          flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
           justifyContent="space-between"
           alignItems="center"
           gridGap="1.1rem"
@@ -102,7 +100,7 @@ export const ProfileContainer = ({
             </Box>
           </Box>
           {telegramUsername ? (
-            <Button variant="secondary" size={isMobile ? 'small' : 'regular'} onClick={disconnect}>
+            <Button variant="secondary" onClick={disconnect}>
               Disconnect this account
             </Button>
           ) : (
@@ -110,7 +108,7 @@ export const ProfileContainer = ({
               botName={TelegramConfig.botName}
               cornerRadius={20}
               onAuthCallback={connect}
-              buttonSize={isMobile ? TelegramLoginButtonSize.Medium : TelegramLoginButtonSize.Large}
+              buttonSize={TelegramLoginButtonSize.Medium}
               usePic
               lang="EN"
             />

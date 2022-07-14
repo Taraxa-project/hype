@@ -19,7 +19,7 @@ const Button = ({ children, variant, size, ...props }: ButtonProps) => {
 
 Button.defaultProps = {
   variant: 'primary',
-  size: 'small',
+  size: 'regular',
   disabled: false,
 };
 

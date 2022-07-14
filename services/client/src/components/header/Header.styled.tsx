@@ -84,6 +84,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
 `;
 
 export const SidebarHover = styled.div<SidebarProps>`
+  display: none;
   ${(props) => !props.show && `visibility: hidden;`}
   width: 100%;
   height: 100%;
@@ -93,6 +94,10 @@ export const SidebarHover = styled.div<SidebarProps>`
   bottom: 0;
   z-index: 999;
   background-color: rgba(45, 45, 45, 0.4);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: block;
+  }
 `;
 
 export const Sidebar = styled.div<SidebarProps>`
@@ -146,10 +151,10 @@ export const SidebarFooter = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-   >* {
+  > * {
     width: 100%;
     margin: 1.5rem;
-   } 
+  }
 `;
 
 export const MenuButton = styled.button`
@@ -171,11 +176,12 @@ export const Account = styled.div`
 
 export const GreenDot = styled.div`
   margin-left: 0.1rem;
-  margin-right: 0.2rem;
+  margin-right: 0.5rem;
   height: 0.375rem !important;
   width: 0.375rem !important;
   background: #15ac5b;
   border-radius: 50%;
+  display: inline-block;
 `;
 
 export const AddressContainer = styled.div<AddressContainerProps>`

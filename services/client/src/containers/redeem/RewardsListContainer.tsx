@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
 import useWallet from 'src/hooks/useWallet';
@@ -13,7 +12,6 @@ interface RewardProps {
 
 export const RewardsListContainer = ({ rewards }: RewardProps) => {
   const { isConnected } = useWallet();
-  const isMobile = useMediaQuery({ query: `(max-width: 1050px)` });
 
   return (
     <Box
@@ -22,7 +20,7 @@ export const RewardsListContainer = ({ rewards }: RewardProps) => {
       backgroundColor="greys.1"
       p="2rem"
       borderRadius="2rem"
-      width={isMobile || isConnected ? 'unset' : '100%'}
+      width={{ _: 'unset', sm: 'unset', md: isConnected ? 'unset' : '100%' }}
     >
       <Heading
         fontSize="1.25rem"
