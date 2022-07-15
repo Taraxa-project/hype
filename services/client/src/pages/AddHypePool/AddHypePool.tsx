@@ -1,4 +1,4 @@
-import TitleText from 'src/components/TitleText/TitleText';
+import TitleText from 'src/components/titletext/TitleText';
 import { Link } from 'src/components/styles/Link';
 import Button from '../../components/button/Button';
 import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
