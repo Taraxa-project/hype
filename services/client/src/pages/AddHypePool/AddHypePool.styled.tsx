@@ -1,5 +1,5 @@
 import Input from 'src/components/input/Input';
-import TitleText from 'src/components/TitleText/TitleText';
+import TitleText from 'src/components/titletext/TitleText';
 import Tooltip from 'src/components/tooltip/Tooltip';
 
 import styled from 'styled-components';
