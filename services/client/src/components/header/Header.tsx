@@ -25,13 +25,21 @@ import LoadingSpinner from '../../assets/icons/Spinner';
 export interface HeaderProps {
   headerElements?: HeaderLink[];
   connected: boolean;
+  authenticated: boolean;
   onConnect: () => void;
   account?: string | null;
   connectionLoading?: boolean;
 }
 
 const Header = React.memo(
-  ({ headerElements, connected, onConnect, account, connectionLoading }: HeaderProps) => {
+  ({
+    headerElements,
+    connected,
+    authenticated,
+    onConnect,
+    account,
+    connectionLoading,
+  }: HeaderProps) => {
     const {
       onSelect,
       onMenuOpen,
@@ -40,7 +48,7 @@ const Header = React.memo(
       headerEntries,
       menuOpen,
       selected,
-    } = useHeaderEffects(headerElements);
+    } = useHeaderEffects(connected, authenticated, headerElements);
 
     return (
       <>
@@ -60,15 +68,18 @@ const Header = React.memo(
               )}
             </SidebarHeader>
             <SidebarMenu>
-              {headerEntries.map((e: HeaderLink) => (
-                <SidebarMenuLink
-                  key={`menu-link-${e.name}-${Date.now()}`}
-                  selected={e.name === selected}
-                  onClick={() => onSelect(e)}
-                >
-                  {e.name}
-                </SidebarMenuLink>
-              ))}
+              {headerEntries.map(
+                (e: HeaderLink) =>
+                  e.display && (
+                    <SidebarMenuLink
+                      key={`menu-link-${e.name}-${Date.now()}`}
+                      selected={e.name === selected}
+                      onClick={() => onSelect(e)}
+                    >
+                      {e.name}
+                    </SidebarMenuLink>
+                  ),
+              )}
             </SidebarMenu>
             <SidebarFooter>{!connected && <ConnectWalletBtn size="full-width" />}</SidebarFooter>
           </Sidebar>
@@ -119,17 +130,20 @@ const Header = React.memo(
                 alignItems="center"
                 gridGap={{ sm: '0.5rem', md: '2rem', lg: '2.5rem', xl: '2.5rem' }}
               >
-                {headerEntries.map((e: HeaderLink) =>
-                  e.name === selected ? (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} className="selected">
-                      {e.name}
-                      <p className="underline" />
-                    </span>
-                  ) : (
-                    <span key={`menu-link-${e.name}-${Date.now()}`} onClick={() => onSelect(e)}>
-                      {e.name}
-                    </span>
-                  ),
+                {headerEntries.map(
+                  (e: HeaderLink) =>
+                    e.display && (
+                      <Box key={`menu-link-${e.name}-${Date.now()}`}>
+                        {e.name === selected ? (
+                          <span className="selected">
+                            {e.name}
+                            <p className="underline" />
+                          </span>
+                        ) : (
+                          <span onClick={() => onSelect(e)}>{e.name}</span>
+                        )}
+                      </Box>
+                    ),
                 )}
                 {!connected ? (
                   <ConnectWalletBtn size="regular" />

@@ -14,18 +14,22 @@ const headerValues: HeaderLink[] = [
   {
     route: '/farming',
     name: HeaderValues.HypeFarming,
+    display: true,
   },
   {
     route: '/pool',
     name: HeaderValues.HypePool,
+    display: true,
   },
   {
     route: '/redeem',
     name: HeaderValues.Redeem,
+    display: true,
   },
   {
     route: '/',
     name: HeaderValues.None,
+    display: true,
   },
 ];
 
