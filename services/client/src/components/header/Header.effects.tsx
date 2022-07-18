@@ -29,31 +29,40 @@ export enum HeaderValues {
 export interface HeaderLink {
   route: string;
   name: string;
+  display: boolean;
 }
 
-const headerValues: HeaderLink[] = [
-  {
-    route: '/',
-    name: HeaderValues.HypeFarming,
-  },
-  {
-    route: '/pool',
-    name: HeaderValues.HypePool,
-  },
-  {
-    route: '/redeem',
-    name: HeaderValues.Redeem,
-  },
-  {
-    route: '/profile',
-    name: HeaderValues.Profile,
-  },
-];
-
-export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
+export const useHeaderEffects = (
+  connected: boolean,
+  authenticated: boolean,
+  headerElements?: HeaderLink[],
+) => {
   let navigate = useNavigate();
   let location = useLocation();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const headerValues: HeaderLink[] = [
+    {
+      route: '/',
+      name: HeaderValues.HypeFarming,
+      display: true,
+    },
+    {
+      route: '/pool',
+      name: HeaderValues.HypePool,
+      display: true,
+    },
+    {
+      route: '/redeem',
+      name: HeaderValues.Redeem,
+      display: true,
+    },
+    {
+      route: '/profile',
+      name: HeaderValues.Profile,
+      display: connected && authenticated,
+    },
+  ];
+
   const [selected, setSelected] = useState<HeaderValues>(
     headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
   );
@@ -62,6 +71,7 @@ export const useHeaderEffects = (headerElements?: HeaderLink[]) => {
     setSelected(
       headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const onSelect = (e: HeaderLink) => {

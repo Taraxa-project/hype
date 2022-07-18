@@ -9,6 +9,7 @@ import useWallet from './hooks/useWallet';
 import useAxiosInterceptors from './hooks/useAxiosInterceptors';
 import { useGetMe } from './api/auth/useGetMe';
 import useSignUser from './hooks/useSignUser';
+import useAuth from './hooks/useAuth';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -33,7 +34,8 @@ const AppWrapper = styled.div`
 
 const Root = () => {
   const { account, connect, isConnected } = useWallet();
-  useAxiosInterceptors();
+  const { logout, authenticated } = useAuth();
+  useAxiosInterceptors(logout);
   const { isLoading } = useSignUser();
   useGetMe();
 
@@ -41,6 +43,7 @@ const Root = () => {
     <AppWrapper>
       <Header
         connected={isConnected}
+        authenticated={authenticated}
         account={account}
         onConnect={connect}
         connectionLoading={isLoading}
@@ -50,7 +53,7 @@ const Root = () => {
           <Route path="/" element={<Home />} />
           <Route path="/pool" element={<AddHypePool />} />
           <Route path="/redeem" element={<Redeem />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={isConnected && authenticated ? <Profile /> : <Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <ModalsCenter />
