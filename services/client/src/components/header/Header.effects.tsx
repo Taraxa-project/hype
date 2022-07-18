@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -72,6 +71,7 @@ export const useHeaderEffects = (
     setSelected(
       headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const onSelect = (e: HeaderLink) => {
