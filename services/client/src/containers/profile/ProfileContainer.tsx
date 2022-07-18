@@ -7,12 +7,12 @@ import Button from 'src/components/button/Button';
 import TelegramLoginButton, {
   TelegramLoginButtonSize,
 } from '../../components/button/TelegramLoginButton';
-import TelegramConfig from 'src/api/TelegramConfig';
 import Heading from '../../components/styles/Heading';
 import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
 import { TelegramUser } from 'src/models/HypeUser.model';
 import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
+import { TelegramBotName } from 'src/config';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -105,7 +105,7 @@ export const ProfileContainer = ({
             </Button>
           ) : (
             <TelegramLoginButton
-              botName={TelegramConfig.botName}
+              botName={TelegramBotName}
               cornerRadius={20}
               onAuthCallback={connect}
               buttonSize={TelegramLoginButtonSize.Medium}
