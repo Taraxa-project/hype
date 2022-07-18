@@ -7,20 +7,15 @@ import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import {
-  WagmiConfig,
-  createClient,
-  configureChains,
-  defaultChains,
-  chain,
-} from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { WagmiConfig, createClient, configureChains, defaultChains, chain } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { AuthProvider } from './context/auth-context';
 
 const { provider, webSocketProvider } = configureChains(
   [chain.mainnet, ...defaultChains],
   [publicProvider()],
-)
+);
 
 const metamaskConnector = new MetaMaskConnector({
   options: {
@@ -33,7 +28,7 @@ const client = createClient({
   provider,
   webSocketProvider,
   connectors: [metamaskConnector],
-})
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,7 +46,9 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <ModalsProvider>
-              <App />
+              <AuthProvider>
+                <App />
+              </AuthProvider>
             </ModalsProvider>
           </BrowserRouter>
           <ReactQueryDevtools />

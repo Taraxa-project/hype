@@ -29,7 +29,7 @@ import TextArea from '../../components/textarea/TextArea';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, submitHandler, onCancel, errors, isConnected, control } =
+  const { register, handleSubmit, submitHandler, onCancel, errors, authenticated, control } =
     useAddHypePoolEffects();
 
   return (
@@ -42,7 +42,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="Project name" />
           </Box>
           <FormInput
-            disabled={!isConnected}
+            disabled={!authenticated}
             placeholder="Project name..."
             name="projectName"
             {...register('projectName')}
@@ -61,7 +61,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="Hype pool name" />
           </Box>
           <FormInput
-            disabled={!isConnected}
+            disabled={!authenticated}
             placeholder="Pool name..."
             name="title"
             {...register('title')}
@@ -87,7 +87,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="What are you hyping?" />
           </Box>
           <TextArea
-            disabled={!isConnected}
+            disabled={!authenticated}
             rows={5}
             placeholder="Your message..."
             name="description"
@@ -110,7 +110,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="Rewards are in" />
           </Box>
           <FormInput
-            disabled={!isConnected}
+            disabled={!authenticated}
             placeholder="Asset address..."
             name="rewardsAddress"
             {...register('rewardsAddress')}
@@ -125,7 +125,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="Min reward per hype" />
           </Box>
           <FormInput
-            disabled={!isConnected}
+            disabled={!authenticated}
             placeholder="Min reward per hype..."
             name="minReward"
             {...register('minReward')}
@@ -140,7 +140,7 @@ export const AddHypePool = () => {
             <SpacedStyledTooltip message="Pool cap" />
           </Box>
           <FormInput
-            disabled={!isConnected}
+            disabled={!authenticated}
             placeholder="Pool cap..."
             name="pool"
             {...register('pool')}
@@ -161,7 +161,7 @@ export const AddHypePool = () => {
               <DatePicker
                 wrapperClassName="date-picker"
                 placeholderText="Pool starts..."
-                disabled={!isConnected}
+                disabled={!authenticated}
                 selected={value}
                 showTimeSelect
                 onChange={onChange}
@@ -184,7 +184,7 @@ export const AddHypePool = () => {
               <DatePicker
                 wrapperClassName="date-picker"
                 placeholderText="Pool ends..."
-                disabled={!isConnected}
+                disabled={!authenticated}
                 selected={value}
                 showTimeSelect
                 onChange={onChange}
@@ -196,7 +196,7 @@ export const AddHypePool = () => {
               {errors.endDate.message}
             </Text>
           )}
-          {isConnected ? (
+          {authenticated ? (
             <FormAction>
               <Button size="full-width" type="submit" variant="primary">
                 Confirm and Lock in Reward Pool
