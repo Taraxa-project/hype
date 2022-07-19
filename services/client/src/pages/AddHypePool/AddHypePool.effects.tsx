@@ -2,12 +2,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useEffect } from 'react';
-import useWallet from '../../hooks/useWallet';
 import { AddHypePool } from '../../models';
 import { useAddHypePool } from '../../api/pools/useAddHypePool';
+import useAuth from '../../hooks/useAuth';
 
 export const useAddHypePoolEffects = () => {
-  const { isConnected } = useWallet();
+  const { authenticated } = useAuth();
   const submitHandler = useAddHypePool();
 
   const defaultValues: AddHypePool = {
@@ -83,8 +83,8 @@ export const useAddHypePoolEffects = () => {
     handleSubmit,
     onCancel,
     errors,
-    isConnected,
     control,
     submitHandler,
+    authenticated,
   };
 };

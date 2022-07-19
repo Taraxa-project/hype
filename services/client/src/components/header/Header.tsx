@@ -32,14 +32,7 @@ export interface HeaderProps {
 }
 
 const Header = React.memo(
-  ({
-    headerElements,
-    connected,
-    authenticated,
-    onConnect,
-    account,
-    connectionLoading,
-  }: HeaderProps) => {
+  ({ headerElements, connected, authenticated, account, connectionLoading }: HeaderProps) => {
     const {
       onSelect,
       onMenuOpen,
@@ -48,7 +41,7 @@ const Header = React.memo(
       headerEntries,
       menuOpen,
       selected,
-    } = useHeaderEffects(connected, authenticated, headerElements);
+    } = useHeaderEffects(authenticated, headerElements);
 
     return (
       <>

@@ -8,7 +8,6 @@ import { HypeThemeType } from './theme';
 import useWallet from './hooks/useWallet';
 import useAxiosInterceptors from './hooks/useAxiosInterceptors';
 import { useGetMe } from './api/auth/useGetMe';
-import useSignUser from './hooks/useSignUser';
 import useAuth from './hooks/useAuth';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
@@ -34,9 +33,8 @@ const AppWrapper = styled.div`
 
 const Root = () => {
   const { account, connect, isConnected } = useWallet();
-  const { logout, authenticated } = useAuth();
+  const { logout, authenticated, isSignatureLoading } = useAuth();
   useAxiosInterceptors(logout);
-  const { isLoading } = useSignUser();
   useGetMe();
 
   return (
@@ -46,7 +44,7 @@ const Root = () => {
         authenticated={authenticated}
         account={account}
         onConnect={connect}
-        connectionLoading={isLoading}
+        connectionLoading={isSignatureLoading}
       />
       <StyledAppContainer>
         <Routes>
