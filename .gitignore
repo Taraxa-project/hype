@@ -16,4 +16,5 @@
 .DS_Store
 .vscode
 dist
+yarn-error.log
 .eslintcache
