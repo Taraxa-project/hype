@@ -110,6 +110,7 @@ contract HypePool is
             _deposit.weiAmount == _pool.cap,
             "Deposited amount does not match pool cap"
         );
+        require(_deposit.tokenAddress == _pool.token, "Deposited token address does not match pool token address");
         _pool.active = true;
         _pools[id] = _pool;
         emit PoolActivated(id, msg.sender);
