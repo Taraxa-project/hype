@@ -13,6 +13,7 @@ export interface ModalAction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onAction?: (value?: any) => void;
   closeButtonVariant?: ButtonVariant;
+  maxWidth?: string;
 }
 
 export interface ModalContainerProps {
@@ -23,6 +24,7 @@ export interface ModalContainerProps {
   modalAction?: ModalAction;
   showCancel?: boolean;
   closeOutside?: boolean;
+  height?: string;
 }
 
 export const ModalContainer: FC<ModalContainerProps> = ({
@@ -33,6 +35,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   modalAction,
   showCancel,
   closeOutside = true,
+  height,
 }) => {
   return (
     <>
@@ -43,7 +46,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
           }}
         >
           <BackgroundHover show={open} />
-          <StyledModal onClick={(e) => e.stopPropagation()}>
+          <StyledModal props={{ height }} onClick={(e) => e.stopPropagation()}>
             <Box height="100%">
               <ModalTitle {...titleProps} />
               <Box overflow="auto" height="100%">
@@ -57,7 +60,9 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               justifyContent="center"
               alignItems="center"
               gridGap="12px"
+              margin="0 auto"
               marginTop="1rem"
+              maxWidth={modalAction.maxWidth || 'unset'}
             >
               {modalAction && (
                 <Button
