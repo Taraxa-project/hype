@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "start:dev": "cross-env HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem PORT=80 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test -- --config=jest.config.ts",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
