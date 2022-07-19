@@ -1,5 +1,5 @@
 import { render, screen } from 'src/testUtils';
-import Button from 'src/components/button/Button';
+import Button from '../Button';
 
 describe('Button', () => {
   it('should render a button with it children as content', () => {
