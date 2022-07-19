@@ -6,4 +6,9 @@ describe('Button', () => {
     render(<Button>Test</Button>);
     expect(screen.getByRole('button')).toHaveTextContent('Test');
   });
+
+  it('should render a disabled button if contains a disabled prop', () => {
+    render(<Button disabled>Test</Button>);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
 });
