@@ -32,6 +32,7 @@ static_sites:
         value: ${wallet.PUBLIC_URL}
     build_command: yarn workspace hype-client run build
     output_dir: services/client/build
+    catchall_document: index.html
     routes:
       - path: /
 services:
@@ -46,6 +47,9 @@ services:
       - key: SERVER_PORT
         scope: RUN_TIME
         value: "3000"
+      - key: WALLET_HOST
+        scope: RUN_TIME
+        value: ${wallet.PUBLIC_URL}
       - key: AUTH_SECRET
         scope: RUN_TIME
         type: SECRET
@@ -74,10 +78,6 @@ services:
         scope: RUN_TIME
         type: SECRET
         value: ${db-api.CA_CERT}
-      - key: WALLET_HOST
-        scope: RUN_TIME
-        type: SECRET
-        value: ${wallet.PUBLIC_URL}
     instance_count: 1
     instance_size_slug: basic-xxs
     http_port: 3000
