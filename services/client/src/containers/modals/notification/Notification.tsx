@@ -8,18 +8,19 @@ import Text from '../../../components/styles/Text';
 import { useNotificationEffects } from './Notification.effects';
 
 export const Notification = () => {
-  const { open, type, message, closeModal, closeButtonVariant, notificationIcon } =
-    useNotificationEffects();
+  const { open, type, message, closeModal, notificationIcon } = useNotificationEffects();
 
   const titleProps: ModalTitleProps = {
     title: type,
     close: closeModal,
+    icon: notificationIcon,
   };
 
   const modalAction: ModalAction = {
     name: 'OK',
     onAction: closeModal,
-    closeButtonVariant,
+    closeButtonVariant: 'primary',
+    maxWidth: '17rem',
   };
 
   return (
@@ -28,17 +29,12 @@ export const Notification = () => {
       open={open}
       closeModal={closeModal}
       modalAction={modalAction}
+      height="20rem"
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100%"
-        gridGap="2rem"
-      >
-        {notificationIcon}
-        <Text>{message}</Text>
+      <Box>
+        <Text fontWeight="600" fontSize="14px" color="greys.11">
+          {message}
+        </Text>
       </Box>
     </ModalContainer>
   );

@@ -23,6 +23,11 @@ const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
     margin-top: 6.5rem;
     width: unset;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    margin: 1rem;
+    margin-top: 5.5rem;
+  }
 `;
 
 const AppWrapper = styled.div`

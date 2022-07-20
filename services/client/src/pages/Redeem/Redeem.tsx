@@ -13,8 +13,7 @@ export const Redeem = () => {
         backgroundColor="background"
         display="flex"
         flexDirection={{
-          xs: 'column',
-          sm: 'column',
+          _: 'column',
           md: isConnected ? 'column' : 'row',
           lg: isConnected ? 'column' : 'row',
           xl: isConnected ? 'column' : 'row',

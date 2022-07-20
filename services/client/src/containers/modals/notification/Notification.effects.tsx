@@ -1,9 +1,8 @@
-import CheckMarkIcon from '../../../assets/icons/Check';
-import CloseIcon from '../../../assets/icons/Close';
+import ErrorIcon from '../../../assets/icons/Error';
 import InfoIcon from '../../../assets/icons/Info';
+import SuccessIcon from '../../../assets/icons/Success';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
-import { theme } from '../../../theme';
-import { ButtonVariant, NotificationType } from '../../../utils';
+import { NotificationType } from '../../../utils';
 
 export const useNotificationEffects = () => {
   const {
@@ -22,54 +21,40 @@ export const useNotificationEffects = () => {
     });
   };
 
-  const iconSize = '6rem';
+  const iconSize = '20px';
 
   const getNotificationProps = (
     type: NotificationType,
   ): {
-    closeButtonVariant: ButtonVariant;
     notificationIcon: JSX.Element;
   } => {
     switch (type) {
       case NotificationType.ERROR:
         return {
-          closeButtonVariant: 'danger',
-          notificationIcon: (
-            <CloseIcon color={theme.colors.danger} width={iconSize} height={iconSize} />
-          ),
+          notificationIcon: <ErrorIcon width={iconSize} height={iconSize} />,
         };
       case NotificationType.INFO:
         return {
-          closeButtonVariant: 'secondary',
-          notificationIcon: (
-            <InfoIcon color={theme.colors.secondary} width={iconSize} height={iconSize} />
-          ),
+          notificationIcon: <InfoIcon width={iconSize} height={iconSize} />,
         };
       case NotificationType.SUCCESS:
         return {
-          closeButtonVariant: 'success',
-          notificationIcon: (
-            <CheckMarkIcon color={theme.colors.success} width={iconSize} height={iconSize} />
-          ),
+          notificationIcon: <SuccessIcon width={iconSize} height={iconSize} />,
         };
       default:
         return {
-          closeButtonVariant: 'secondary',
-          notificationIcon: (
-            <InfoIcon color={theme.colors.secondary} width={iconSize} height={iconSize} />
-          ),
+          notificationIcon: <InfoIcon width={iconSize} height={iconSize} />,
         };
     }
   };
 
-  const { closeButtonVariant, notificationIcon } = getNotificationProps(type);
+  const { notificationIcon } = getNotificationProps(type);
 
   return {
     open,
     type,
     message,
     closeModal,
-    closeButtonVariant,
     notificationIcon,
   };
 };
