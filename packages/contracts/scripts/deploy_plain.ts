@@ -16,21 +16,23 @@ async function main() {
   // await hre.run('compile');
   const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", ethers.provider);
   console.log("signer address: ", signer.address);
-  // Get the contract factory connected to signer so it uses hardcoded fee data and
-  // should deploy using the signer and the hardcoded fees.
+  //   Get the contract factory connected to signer so it uses hardcoded fee data and
+  //   should deploy using the signer and the hardcoded fees.
   const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow");
-
-  const dynamicEscrow = await DynamicEscrow.connect(signer).deploy("0xc6a808A6EC3103548f0b38d32DCb6a705B734c89", {
-    maxFeePerGas: 1000000000000000,
-    maxPriorityFeePerGas: 1000000000000000,
+  const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address, {
+    gasLimit: 100000000,
+    gasPrice: 100000000,
   });
+
+  console.log(deployFunc);
+  const dynamicEscrow = await deployFunc;
 
   await dynamicEscrow.deployed();
   console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
   const HypePool = await ethers.getContractFactory("HypePool");
-  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow?.address, {
-    maxFeePerGas: 1000000000000000,
-    maxPriorityFeePerGas: 1000000000000000,
+  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address, {
+    gasLimit: 100000000,
+    gasPrice: 100000000,
   });
 
   await hypePool.deployed();

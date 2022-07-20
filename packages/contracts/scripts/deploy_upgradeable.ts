@@ -15,8 +15,8 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
   console.log("hardhat network id is:", hre.network.config.chainId);
-  hre.network.config.gas = 1000000000000000;
-  hre.network.config.gasPrice = 1000000000000000;
+  hre.network.config.gas = 100000000;
+  hre.network.config.gasPrice = 100000000;
   hre.network.config.gasMultiplier = 50;
   console.log("config is now:", hre.network.config);
   // Create the signer for the mnemonic, connected to the provider with hardcoded fee data
@@ -25,7 +25,7 @@ async function main() {
 
   // Get the contract factory connected to signer so it uses hardcoded fee data and
   // should deploy using the signer and the hardcoded fees.
-  const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow", signer);
+  const DynamicEscrow = await ethers.getContractFactory("DynamicEscrowUpgradeable", signer);
 
   let dynamicEscrow;
   try {
@@ -38,7 +38,7 @@ async function main() {
     console.log("==============================");
     console.error(dynamicEscrow);
   }
-  const HypePool = await ethers.getContractFactory("HypePool", signer);
+  const HypePool = await ethers.getContractFactory("HypePoolUpgradeable", signer);
   let hypePool;
   try {
     hypePool = await upgrades.deployProxy(HypePool, [dynamicEscrow?.address]);
