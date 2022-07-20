@@ -1,6 +1,5 @@
 export const LightenColor = (color: string, percent?: number): string => {
-
-  const formmatedPercent = percent || 10;
+  const formmatedPercent = percent || 5;
 
   if (color) {
     const num = parseInt(color.replace('#', ''), 16);

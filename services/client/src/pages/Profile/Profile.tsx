@@ -10,42 +10,43 @@ export const Profile = () => {
     currentReward,
     onRedeem,
     telegramProfile,
-    useConnect,
-    useDisconnect,
+    connect,
+    disconnect,
   } = useProfileEffects();
   const { username, address } = telegramProfile;
   return (
-    <Box display="flex" flexDirection="column" backgroundColor="background" justifyContent="center">
+    <Box
+      display="flex"
+      flexDirection="column"
+      backgroundColor="background"
+      justifyContent="center"
+      gridGap="1rem"
+    >
       <Box
         display="flex"
-        flexDirection={{
-          xs: 'column',
-          sm: 'column',
-          md: 'row',
-          lg: 'row',
-          xl: 'row',
-        }}
+        flexDirection={{ _: 'column', md: 'row', xl: 'row' }}
         backgroundColor="background"
         justifyContent="space-between"
+        gridGap="1rem"
       >
         <ProfileContainer
           telegramUsername={username}
           address={address}
-          connect={useConnect}
-          disconnect={useDisconnect}
+          connect={connect}
+          disconnect={disconnect}
         />
         <RewardsContainer rewardAmount={currentReward} onRedeem={onRedeem} />
       </Box>
       <CardContainer
         title={`Created Pools (${createdPools?.length})`}
         cards={createdPools}
-        emptyMessage="Looks like you haven’t created any pools yet..."
+        emptyMessage="Looks like you haven`t created any pools yet..."
         target="/createdPools"
       />
       <CardContainer
         title={`Joined Pools (${joinedPools?.length})`}
         cards={joinedPools}
-        emptyMessage="Looks like you haven’t joined any pools yet..."
+        emptyMessage="Looks like you haven`t joined any pools yet..."
         target="/joinedPools"
       />
     </Box>

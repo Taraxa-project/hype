@@ -65,7 +65,7 @@ export const InfoCard = styled.div`
   background-color: #f1f1f1;
   border-radius: 1rem;
   padding: 0.875rem 1rem;
-  color: #787878;
+  color: ${({ theme }) => theme.colors.greys[11]};
   font-size: 0.875rem;
   line-height: 1.25rem;
   margin-bottom: 2rem;
@@ -120,7 +120,7 @@ export const StepNumber = styled.div`
   width: 2rem;
   height: 2rem;
   background-color: #e0e0e0;
-  color: #797979;
+  color: ${({ theme }) => theme.colors.greys[14]};
   font-size: 0.875rem;
   line-height: 1.25rem;
 `;
@@ -130,7 +130,7 @@ export const StepDescription = styled.div`
   margin-left: 1.625rem;
   display: flex;
   align-items: center;
-  color: #787878;
+  color: ${({ theme }) => theme.colors.greys[11]};
   font-size: 0.875rem;
   line-height: 1.25rem;
 `;

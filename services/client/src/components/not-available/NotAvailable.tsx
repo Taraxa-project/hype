@@ -12,10 +12,10 @@ export const NotAvailable = ({ ...props }: NotAvailableProps) => {
     <Box
       {...props}
       backgroundColor="greys.0"
-      p="4.5rem"
+      p={{ _: '2rem', md: '4.5rem' }}
       borderRadius="1rem"
       display="flex"
-      flexDirection="row"
+      flexDirection={{ _: 'column', md: 'row' }}
       justifyContent="center"
       alignItems="center"
       gridGap="1.1rem"

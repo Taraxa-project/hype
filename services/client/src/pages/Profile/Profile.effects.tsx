@@ -4,6 +4,7 @@ import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import useWallet from 'src/hooks/useWallet';
 import { TelegramUser } from 'src/models/HypeUser.model';
 import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
+import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 
 interface TelegramProfile {
@@ -20,6 +21,7 @@ export const useProfileEffects = () => {
   const { data } = useGetHypePoolsBy(account);
   const { data: hypeUser } = useGetHypeUserBy(account);
   const submitHandler = useUpdateTelegram();
+  const dispatchModals = useModalsDispatch();
 
   useEffect(() => {
     if (data?.length) {
@@ -31,20 +33,50 @@ export const useProfileEffects = () => {
     console.log('Bazinga! You clicked the button!');
   };
 
-  const useConnect = async (user: TelegramUser) => {
+  const connect = async (user: TelegramUser) => {
     console.log('new T user is', user);
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
       address: account,
       username: usernameTemp,
     });
-    if (account && user && user.auth_date && usernameTemp) {
-      submitHandler({ address: account, username: usernameTemp, auth_date: user.auth_date });
+    try {
+      if (account && user && user.auth_date && usernameTemp) {
+        submitHandler({ address: account, username: usernameTemp, auth_date: user.auth_date });
+      }
+    } catch (err: any) {
+      setTelegramProfile({
+        address: account,
+        username: undefined,
+      });
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_TELEGRAM_INFO,
+        payload: {
+          open: true,
+          title: 'Connect telegram',
+          text: 'Error',
+          message: err?.error || err?.message,
+        },
+      });
     }
   };
 
-  const useDisconnect = async (user: TelegramUser) => {
+  const disconnect = async (user: TelegramUser) => {
+    const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM,
+      payload: {
+        open: true,
+        title: 'Disconnect account',
+        text: 'Are you sure you want to disconnect this account?',
+        username: usernameTemp,
+        onDisconnect,
+      },
+    });
     console.log('disconnected T user is', user);
+  };
+
+  const onDisconnect = () => {
     setTelegramProfile({
       address: account,
       username: undefined,
@@ -107,7 +139,7 @@ export const useProfileEffects = () => {
     currentReward,
     onRedeem,
     telegramProfile,
-    useConnect,
-    useDisconnect,
+    connect,
+    disconnect,
   };
 };

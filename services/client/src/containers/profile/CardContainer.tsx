@@ -9,13 +9,12 @@ import styled from 'styled-components';
 
 const StyledCardContainer = styled.div`
   position: relative;
-  margin-top: 2rem;
   z-index: 1;
   margin-bottom: 1rem;
   overflow-y: auto;
   overflow-x: hidden;
   height: 29.5rem;
-  margin-top: 1rem;
+  margin-top: 3rem;
   border-radius: 1rem;
 
   display: grid;
@@ -23,6 +22,10 @@ const StyledCardContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
   justify-content: start;
   align-items: start;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 0;
+  }
 `;
 
 export const CardContainer = ({
@@ -40,14 +43,12 @@ export const CardContainer = ({
 
   return (
     <Box
-      p="2rem"
+      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
       borderRadius="2rem"
       display="flex"
       flexDirection="column"
       justifyContent="space-evenly"
       backgroundColor="greys.1"
-      marginBottom="1rem"
-      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"

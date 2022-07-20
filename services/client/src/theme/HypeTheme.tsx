@@ -13,6 +13,7 @@ import {
 } from './types';
 
 const breakpoints: HypeBreakpoints = {
+  xs: '465px',
   sm: '768px',
   md: '900px',
   lg: '1316px',
@@ -88,21 +89,21 @@ const fonts: HypeFonts = {
 
 const input: HypeInput = {
   base: {
-    color:  '#595959',
+    color: '#595959',
     background: colors.greys[13],
-    border: '#e0e0e0'
+    border: '#e0e0e0',
   },
   hover: {
-    color:  '#595959',
+    color: '#595959',
     background: colors.greys[13],
-    border: '#eb8f4c'
+    border: '#eb8f4c',
   },
   disabled: {
-    color:  '#e0e0e0',
+    color: '#e0e0e0',
     background: colors.greys[0],
-    border: '#e0e0e0'
-  }
-}
+    border: '#e0e0e0',
+  },
+};
 
 export const theme: HypeThemeType = {
   colors,
@@ -115,7 +116,7 @@ export const theme: HypeThemeType = {
     0, 4, 8, 16, 32, 64, 128, 256,
   ],
   breakpoints,
-  input
+  input,
 };
 
 type HypeThemeProps = {

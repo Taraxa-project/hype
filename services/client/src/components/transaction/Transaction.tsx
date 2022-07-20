@@ -47,9 +47,9 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
           <Box
             mt={2}
             display="flex"
-            flexDirection={{ xs: 'column', md: 'row', xl: 'row' }}
+            flexDirection={{ _: 'column', md: 'row', xl: 'row' }}
             justifyContent="space-between"
-            gridGap={{ xs: '1rem', md: '1rem' }}
+            gridGap={{ _: '1rem', md: '1rem' }}
           >
             <Box display="flex" flexDirection="column">
               <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>

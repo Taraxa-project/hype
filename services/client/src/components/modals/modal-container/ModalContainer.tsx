@@ -59,15 +59,15 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               width="100%"
               justifyContent="center"
               alignItems="center"
-              gridGap="12px"
+              gridGap="0.75rem"
               margin="0 auto"
               marginTop="1rem"
-              maxWidth={modalAction.maxWidth || 'unset'}
+              maxWidth={modalAction?.maxWidth || '23rem'}
             >
               {modalAction && (
                 <Button
                   type={modalAction.type || 'button'}
-                  variant={modalAction.closeButtonVariant || 'secondary'}
+                  variant={modalAction.closeButtonVariant || 'primary'}
                   size="full-width"
                   onClick={modalAction.onAction}
                   disabled={modalAction.disabled}

@@ -6,7 +6,7 @@ export const Account = styled.div`
   font-size: 0.75rem;
   display: flex;
   align-items: center;
-  color: #787878;
+  color: ${({ theme }) => theme.colors.greys[11]};
   padding: 0.375rem 1.5rem;
   margin-left: 2rem;
   word-break: break-word;
@@ -17,10 +17,10 @@ export const BlockiesContainer = styled.div`
   flex-direction: row;
   margin-top: 1rem;
   padding-right: 3rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   padding-left: 0.5rem;
 
-  @media (max-width: ${({theme}) => theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex-direction: row;
     padding-right: unset;
   }
@@ -41,9 +41,9 @@ export const CardSubheader = styled.div`
 export const CardDescription = styled.div`
   font-weight: 400;
   font-size: 0.875rem;
-  color: #595959;
+  color: ${({ theme }) => theme.colors.greys[7]};
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   display: block;
   overflow: hidden;
 `;

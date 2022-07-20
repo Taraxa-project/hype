@@ -16,7 +16,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
 
   max-width: 36rem;
   min-width: 30rem;
-  min-height: ${({ props }) => props.height || '550px'};
+  height: ${({ props }) => props.height || '34rem'};
 
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
@@ -28,6 +28,16 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 70%;
+    height: ${({ props }) => props.height || '38rem'};
+    min-height: 17rem;
+    max-width: unset;
+    min-width: unset;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    width: 70%;
+    height: auto;
+    min-height: 17rem;
     max-width: unset;
     min-width: unset;
   }

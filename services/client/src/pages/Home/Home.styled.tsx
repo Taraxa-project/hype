@@ -14,6 +14,10 @@ export const CardContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
   justify-content: start;
   align-items: start;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 0 1rem;
+  }
 `;
 
 export const PageContainer = styled.div`

@@ -29,7 +29,7 @@ export const Notification = () => {
       open={open}
       closeModal={closeModal}
       modalAction={modalAction}
-      height="23rem"
+      height="20rem"
     >
       <Box>
         <Text fontWeight="600" fontSize="14px" color="greys.11">
