@@ -1,11 +1,13 @@
+import React from 'react';
+import SearchIcon from 'src/assets/icons/Search';
 import { render, screen } from 'src/testUtils';
 import Input from '../Input';
 
 describe('Input', () => {
-  // it('should render a button with it children as content', () => {
-  //   render(<Input />);
-  //   expect(screen.getByRole('input')).toHaveTextContent('Test');
-  // });
+  it('should render a search icon if icon prop is set', () => {
+    render(<Input icon={<SearchIcon />} />);
+    expect(screen.getByTitle('Search Icon').parentElement).toBeTruthy();
+  });
 
   it('should render a placeholder in input if contains a placeholder prop', () => {
     render(<Input placeholder="Test" />);

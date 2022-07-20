@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-import SearchIcon from '../../assets/icons/Search';
 import { StyledInput, StyledSearchIcon } from './Input.styled';
 
 export interface InputProps
@@ -12,10 +11,8 @@ export interface InputProps
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ ...props }, ref) => {
   return props.icon ? (
-    <div style={{ width: '100%'}}>
-      <StyledSearchIcon>
-        <SearchIcon />
-      </StyledSearchIcon>
+    <div style={{ width: '100%' }}>
+      <StyledSearchIcon>{props.icon}</StyledSearchIcon>
       <StyledInput {...props} placeholder={props.placeholder} ref={ref} />
     </div>
   ) : (
