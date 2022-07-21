@@ -44,7 +44,7 @@ const config: HardhatUserConfig = {
     mainnet: {
       chainId: 1,
       url: process.env.TARA_MAINNET_URL || "",
-      accounts: [process.env.MAINNET_PRIV_KEY || ""],
+      accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
       gas: 10000000,
       gasPrice: 10000000,
       allowUnlimitedContractSize: true,
@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
     testnet: {
       chainId: 2,
       url: process.env.TARA_TESTNET_URL || "",
-      accounts: [process.env.MAINNET_PRIV_KEY || ""],
+      accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
       gas: 2100000,
       gasPrice: 8000000000,
       gasMultiplier: 20,
