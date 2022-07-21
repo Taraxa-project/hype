@@ -1,13 +1,13 @@
 pragma solidity 0.8.14;
 // SPDX-License-Identifier: UNLICENSED
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "hardhat/console.sol";
-import "./interfaces/IEscrow.sol";
-import "./interfaces/IHypePool.sol";
+import "../interfaces/IEscrow.sol";
+import "../interfaces/IHypePool.sol";
 
 /**
  * @title ERC20Basic
@@ -38,12 +38,20 @@ abstract contract ERC20 is ERC20Basic {
     function approve(address spender, uint256 value) public virtual;
 }
 
-contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
-    using Address for address payable;
-    constructor(address rewarder) {
+contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+    function __DynamicEscrow_init() internal onlyInitializing {
+        __Ownable_init_unchained();
+    }
+
+    function __DynamicEscrow_init_unchained() internal onlyInitializing {}
+
+    function initialize(address rewarder) public initializer {
+        __DynamicEscrow_init();
+        __ReentrancyGuard_init();
         _rewarder = rewarder;
     }
 
+    using AddressUpgradeable for address payable;
     event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
     event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
     event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
@@ -185,11 +193,10 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         emit Withdrawn(receiver, amount, poolId);
     }
 
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
+    /**
+     * @dev This empty reserved space is put in place to allow future versions to add new
+     * variables without shifting down storage in the inheritance chain.
+     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
+     */
+    uint256[49] private __gap;
 }

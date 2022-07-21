@@ -4,6 +4,8 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -12,10 +14,26 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
+  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", ethers.provider);
+  console.log("signer address: ", signer.address);
+  //   Get the contract factory connected to signer so it uses hardcoded fee data and
+  //   should deploy using the signer and the hardcoded fees.
+  const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow");
+  const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address, {
+    gasLimit: 100000000,
+    gasPrice: 100000000,
+  });
 
-  // We get the contract to deploy
+  console.log(deployFunc);
+  const dynamicEscrow = await deployFunc;
+
+  await dynamicEscrow.deployed();
+  console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
   const HypePool = await ethers.getContractFactory("HypePool");
-  const hypePool = await HypePool.deploy();
+  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address, {
+    gasLimit: 100000000,
+    gasPrice: 100000000,
+  });
 
   await hypePool.deployed();
 

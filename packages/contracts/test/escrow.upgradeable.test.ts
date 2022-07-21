@@ -1,12 +1,12 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { BigNumber } from "ethers";
-import { ethers } from "hardhat";
-import { DynamicEscrow, ERC20Base, HypePool } from "../typechain";
+import { BigNumber, Contract } from "ethers";
+import { ethers, upgrades } from "hardhat";
+import { ERC20Base } from "../typechain";
 
-describe("DynamicEscrow", function () {
-  let dynamicEscrow: DynamicEscrow;
-  let hypePool: HypePool;
+describe("DynamicEscrowUpgradeable", function () {
+  let dynamicEscrow: Contract;
+  let hypePool: Contract;
   let initialAddress: string;
   const zeroAddress = "0x0000000000000000000000000000000000000000";
   let rewarder: SignerWithAddress;
@@ -46,10 +46,10 @@ describe("DynamicEscrow", function () {
       rewarder = dep3;
       owner = signer;
 
-      const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow", {
+      const DynamicEscrow = await ethers.getContractFactory("DynamicEscrowUpgradeable", {
         signer: owner,
       });
-      dynamicEscrow = await DynamicEscrow.deploy(rewarder.address);
+      dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, [rewarder.address]);
       const result = await dynamicEscrow.deployed();
       initialAddress = dynamicEscrow.address;
       console.log("DynamicEscrow deployed to: ", initialAddress);
@@ -69,10 +69,10 @@ describe("DynamicEscrow", function () {
   });
 
   it("Deploys the HypePool contract too", async () => {
-    const HypePool = await ethers.getContractFactory("HypePool", {
+    const HypePool = await ethers.getContractFactory("HypePoolUpgradeable", {
       signer: owner,
     });
-    hypePool = await HypePool.deploy(dynamicEscrow.address);
+    hypePool = await upgrades.deployProxy(HypePool, [dynamicEscrow.address]);
     const result = await hypePool.deployed();
     expect(result).not.to.be.undefined;
     expect(result.address).to.be.equal(hypePool.address);

@@ -21,6 +21,14 @@ jobs:
         run: node -v
       - name: Install and Build 🔧 🚚
         run: yarn
+      - name: Set up environment variables
+        run: |
+          touch .env
+          echo PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
+          echo MAINNET_PRIV_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
+          echo TARA_MAINNET_URL=https://rpc.mainnet.taraxa.io/ >> .env
+          echo TARA_TESTNET_URL=https://rpc.testnet.taraxa.io/ >> .env
+          cat .env
       - name: Compile contracts
         run: yarn compile-contracts
       - name: Run Hardhat tests with coverage

@@ -1,9 +1,9 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { Contract } from "ethers";
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
-describe("HypePool", function () {
+describe("HypePoolUpgradeable", function () {
   let hypePool: Contract;
   let owner: SignerWithAddress;
   let escrow: SignerWithAddress;
@@ -14,10 +14,10 @@ describe("HypePool", function () {
     escrow = add1;
     console.log(owner.address);
 
-    const HypePool = await ethers.getContractFactory("HypePool", {
+    const HypePool = await ethers.getContractFactory("HypePoolUpgradeable", {
       signer: owner,
     });
-    hypePool = await HypePool.connect(owner).deploy(add1.address);
+    hypePool = await upgrades.deployProxy(HypePool, [add1.address]);
     const result = await hypePool.deployed();
     expect(result).not.to.be.undefined;
     expect(result.address).to.be.equal(hypePool.address);
