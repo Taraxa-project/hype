@@ -27,6 +27,16 @@ jobs:
       - name: Install and Build 🔧 🚚
         run: yarn
       - name: Compile contracts
+        env:
+          NODE_ENV: test
+          TARA_MAINNET_URL: https://rpc.mainnet.taraxa.io/
+          TARA_TESTNET_URL: https://rpc.testnet.taraxa.io/
+          PRIVATE_KEY: "0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca"
         run: yarn compile-contracts
       - name: Run Hardhat tests with coverage
+        env:
+          NODE_ENV: test
+          TARA_MAINNET_URL: https://rpc.mainnet.taraxa.io/
+          TARA_TESTNET_URL: https://rpc.testnet.taraxa.io/
+          PRIVATE_KEY: "0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca"
         run: yarn test-contracts:coverage
