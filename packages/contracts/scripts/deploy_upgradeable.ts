@@ -5,6 +5,7 @@
 // Runtime Environment's members available in the global scope.
 import hre, { ethers, upgrades } from "hardhat";
 import * as dotenv from "dotenv";
+import { BigNumber } from "ethers";
 dotenv.config();
 
 async function main() {
@@ -14,13 +15,23 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
+  // const FEE_DATA = {
+  //   maxFeePerGas: ethers.BigNumber.from("10000000"),
+  //   maxPriorityFeePerGas: ethers.BigNumber.from("10000000"),
+  //   gasPrice: ethers.BigNumber.from("10000000"),
+  // };
+
+  // Wrap the provider so we can override fee data.
+  const provider = new ethers.providers.FallbackProvider([ethers.provider], 1);
+  // provider.getFeeData = async () => FEE_DATA;
+  provider.estimateGas = async (tx) => BigNumber.from("10000000");
+
+  console.log(await provider.getFeeData());
+
   console.log("hardhat network id is:", hre.network.config.chainId);
-  hre.network.config.gas = 100000000;
-  hre.network.config.gasPrice = 100000000;
-  hre.network.config.gasMultiplier = 50;
   console.log("config is now:", hre.network.config);
   // Create the signer for the mnemonic, connected to the provider with hardcoded fee data
-  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", hre.ethers.provider);
+  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", provider);
   console.log("signer address: ", signer.address);
 
   // Get the contract factory connected to signer so it uses hardcoded fee data and
@@ -29,7 +40,10 @@ async function main() {
 
   let dynamicEscrow;
   try {
-    dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, ["0xc6a808A6EC3103548f0b38d32DCb6a705B734c89"]);
+    dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, ["0xc6a808A6EC3103548f0b38d32DCb6a705B734c89"], {
+      kind: "transparent",
+      initializer: "initialize",
+    });
 
     await dynamicEscrow.deployed();
     console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
@@ -41,7 +55,10 @@ async function main() {
   const HypePool = await ethers.getContractFactory("HypePoolUpgradeable", signer);
   let hypePool;
   try {
-    hypePool = await upgrades.deployProxy(HypePool, [dynamicEscrow?.address]);
+    hypePool = await upgrades.deployProxy(HypePool, [dynamicEscrow?.address], {
+      kind: "transparent",
+      initializer: "initialize",
+    });
 
     await hypePool.deployed();
 

@@ -34,20 +34,19 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    local: {
+      url: "http://127.0.0.1:8545/",
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    local: {
-      url: "http://127.0.0.1:8545/",
     },
     mainnet: {
       chainId: 1,
       url: process.env.TARA_MAINNET_URL || "",
       accounts: [process.env.MAINNET_PRIV_KEY || ""],
-      gas: 2100000,
-      gasPrice: 8000000000,
-      gasMultiplier: 20,
+      gas: 10000000,
+      gasPrice: 10000000,
       allowUnlimitedContractSize: true,
     },
     testnet: {
