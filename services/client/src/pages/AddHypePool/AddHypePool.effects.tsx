@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AddHypePool } from '../../models';
 import { useAddHypePool } from '../../api/pools/useAddHypePool';
 import useAuth from '../../hooks/useAuth';
+import useContractCreatePool from '../../hooks/useContractCreatePool';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
-  const submitHandler = useAddHypePool();
+  const { data: createdPoolUri, submitHandler } = useAddHypePool();
+  const { write: mintPool } = useContractCreatePool();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -20,6 +22,8 @@ export const useAddHypePoolEffects = () => {
     startDate: null,
     endDate: null,
   };
+
+  const [createdPool, setCreatedPool] = useState<AddHypePool>(defaultValues);
 
   const validationSchema = yup
     .object({
@@ -68,6 +72,12 @@ export const useAddHypePoolEffects = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const onSubmit = async (data: AddHypePool) => {
+    submitHandler(data);
+    setCreatedPool(data);
+    reset();
+  };
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
@@ -78,6 +88,30 @@ export const useAddHypePoolEffects = () => {
     reset();
   };
 
+  useEffect(() => {
+    if (createdPoolUri && createdPool) {
+      // Get the form data
+      // Create the pool model and add the URI
+      // Pass it as args to write function
+
+      // string memory uri,
+      // uint256 poolCap,
+      // address tokenAddress,
+      // uint256 minHypeReward,
+      // uint256 endDate
+
+      const poolToMint = {
+        uri: createdPoolUri,
+        poolCap: createdPool.pool,
+        tokenAddress: createdPool.rewardsAddress,
+        minHypeReward: createdPool.minReward,
+        endDate: createdPool.endDate,
+      };
+      mintPool({ args: poolToMint });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createdPoolUri, createdPool]);
+
   return {
     register,
     handleSubmit,
@@ -86,5 +120,6 @@ export const useAddHypePoolEffects = () => {
     control,
     submitHandler,
     authenticated,
+    onSubmit,
   };
 };

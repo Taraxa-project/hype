@@ -29,13 +29,13 @@ import TextArea from '../../components/textarea/TextArea';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, submitHandler, onCancel, errors, authenticated, control } =
+  const { register, handleSubmit, onSubmit, onCancel, errors, authenticated, control } =
     useAddHypePoolEffects();
 
   return (
     <Wrapper>
       <FormColumn>
-        <form autoComplete="off" onSubmit={handleSubmit(submitHandler)}>
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TitleText>What is your project name!</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project name:</Label>

@@ -1,1 +1,1 @@
-export const TelegramBotName = process.env.TELEGRAM_BOT_NAME || 'HypeAppBot';
+export const TelegramBotName = process.env.REACT_APP_TELEGRAM_BOT_NAME || 'HypeAppBot';
