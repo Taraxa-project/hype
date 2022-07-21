@@ -1,4 +1,3 @@
-import React from 'react';
 import SearchIcon from 'src/assets/icons/Search';
 import { render, screen } from 'src/testUtils';
 import Input from '../Input';
