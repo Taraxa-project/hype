@@ -14,7 +14,7 @@ jobs:
       NODE_ENV: test
       TARA_MAINNET_URL: https://rpc.mainnet.taraxa.io/
       TARA_TESTNET_URL: https://rpc.testnet.taraxa.io/
-      PRIVATE_KEY: 0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca
+      PRIVATE_KEY: "0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca"
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
