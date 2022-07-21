@@ -1,0 +1,13 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+.openzeppelin
+
+#Hardhat files
+cache
+*.dbg.json
+artifacts/@openzeppelin/
+artifacts/build-info/
+artifacts/hardhat/
