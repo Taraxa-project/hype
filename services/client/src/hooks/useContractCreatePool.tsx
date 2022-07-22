@@ -1,7 +1,7 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite } from 'wagmi';
+import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { NotificationType } from '../utils';
 
@@ -14,8 +14,20 @@ const useContractCreatePool = () => {
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
     functionName: 'createPool',
+  });
+
+  useWaitForTransaction({
+    hash: data?.hash,
     onSuccess(data) {
       console.log('Successfully minted Hype Pool', data);
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: false,
+          title: null,
+          text: null,
+        },
+      });
       dispatchModals({
         type: ModalsActionsEnum.SHOW_NOTIFICATION,
         payload: {
@@ -28,7 +40,6 @@ const useContractCreatePool = () => {
   });
 
   return {
-    data,
     isError,
     isLoading,
     write,

@@ -6,11 +6,14 @@ import { AddHypePool } from '../../models';
 import { useAddHypePool } from '../../api/pools/useAddHypePool';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool from '../../hooks/useContractCreatePool';
+import { API } from '../../api/types';
+import { useModalsDispatch, ModalsActionsEnum } from '../../context';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
-  const { data: createdPoolUri, submitHandler } = useAddHypePool();
+  const { data: createdPoolResponse, submitHandler } = useAddHypePool();
   const { write: mintPool } = useContractCreatePool();
+  const dispatchModals = useModalsDispatch();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -89,28 +92,25 @@ export const useAddHypePoolEffects = () => {
   };
 
   useEffect(() => {
-    if (createdPoolUri && createdPool) {
-      // Get the form data
-      // Create the pool model and add the URI
-      // Pass it as args to write function
-
-      // string memory uri,
-      // uint256 poolCap,
-      // address tokenAddress,
-      // uint256 minHypeReward,
-      // uint256 endDate
-
-      const poolToMint = {
-        uri: createdPoolUri,
-        poolCap: createdPool.pool,
-        tokenAddress: createdPool.rewardsAddress,
-        minHypeReward: createdPool.minReward,
-        endDate: createdPool.endDate,
-      };
-      mintPool({ args: poolToMint });
+    if (createdPoolResponse?.data && createdPool) {
+      const uri = `${API}/${createdPoolResponse?.data}`;
+      const poolCap = createdPool.pool;
+      const tokenAddress = createdPool.rewardsAddress;
+      const minHypeReward = createdPool.minReward;
+      const endDate = createdPool.endDate?.getTime();
+      mintPool({ args: [uri, poolCap, tokenAddress, minHypeReward, endDate] });
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: true,
+          title: 'Minting Hype Pool',
+          text: 'Please, sign the message...',
+        },
+      });
+      setCreatedPool(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createdPoolUri, createdPool]);
+  }, [createdPoolResponse, createdPool]);
 
   return {
     register,
