@@ -38,7 +38,7 @@ export class PoolsService {
     return found;
   }
 
-  public async create(pool: PoolDTO): Promise<HypePool> {
+  public async create(pool: PoolDTO): Promise<string> {
     const newPool = new HypePool({ ...pool });
     const startDate = new Date(pool.startDate);
     const endDate = new Date(pool.endDate);
@@ -47,7 +47,7 @@ export class PoolsService {
       startDate,
       endDate,
     });
-    return stored;
+    return this.generatePoolUrl(stored);
   }
 
   public async findBy({ creatorAddress }: GetByDTO): Promise<HypePool[]> {
@@ -112,5 +112,10 @@ export class PoolsService {
       );
       throw new InternalServerErrorException('Internal server exception');
     }
+  }
+
+  private generatePoolUrl(pool: HypePool): string {
+    const url = `pools/${pool.id}`;
+    return url;
   }
 }

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { AddHypePool, HypePool } from '../../models';
-import { UnpackNestedValue } from 'react-hook-form';
 import useWallet from '../../hooks/useWallet';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
@@ -17,9 +16,11 @@ export const useAddHypePool = () => {
   const { account } = useWallet();
   const dispatchModals = useModalsDispatch();
 
-  const { mutate } = useMutation((values: HypePool) => postNewPool(values));
+  const { data, error, isError, isIdle, isLoading, isPaused, isSuccess, mutate } = useMutation(
+    (values: HypePool) => postNewPool(values),
+  );
 
-  const submitHandler = (values: UnpackNestedValue<AddHypePool>) => {
+  const submitHandler = (values: AddHypePool) => {
     const newHypePool: HypePool = { ...values, creatorAddress: account };
     mutate(newHypePool, {
       onSuccess: () => {
@@ -46,5 +47,5 @@ export const useAddHypePool = () => {
       },
     });
   };
-  return submitHandler;
+  return { data, error, isError, isIdle, isLoading, isPaused, isSuccess, submitHandler };
 };

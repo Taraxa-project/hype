@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PoolPaginate } from '../../models';
-import { GetAddress } from '../auth/get-address.decorator';
 import { WalletGuard } from '../auth/wallet.guard';
 import { GetFilterDto, PoolDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
@@ -50,7 +49,6 @@ export class PoolsController {
   }
 
   @Get(':id')
-  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,
@@ -69,7 +67,7 @@ export class PoolsController {
     type: PoolDTO,
     description: 'Returns a new created pool',
   })
-  public async createPool(@Body() poolToCreate: PoolDTO): Promise<HypePool> {
+  public async createPool(@Body() poolToCreate: PoolDTO): Promise<string> {
     return await this.poolsService.create(poolToCreate);
   }
 }

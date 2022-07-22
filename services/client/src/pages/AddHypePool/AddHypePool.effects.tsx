@@ -1,14 +1,19 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AddHypePool } from '../../models';
 import { useAddHypePool } from '../../api/pools/useAddHypePool';
 import useAuth from '../../hooks/useAuth';
+import useContractCreatePool from '../../hooks/useContractCreatePool';
+import { API } from '../../api/types';
+import { useModalsDispatch, ModalsActionsEnum } from '../../context';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
-  const submitHandler = useAddHypePool();
+  const { data: createdPoolResponse, submitHandler } = useAddHypePool();
+  const { write: mintPool } = useContractCreatePool();
+  const dispatchModals = useModalsDispatch();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -20,6 +25,8 @@ export const useAddHypePoolEffects = () => {
     startDate: null,
     endDate: null,
   };
+
+  const [createdPool, setCreatedPool] = useState<AddHypePool>(defaultValues);
 
   const validationSchema = yup
     .object({
@@ -68,6 +75,12 @@ export const useAddHypePoolEffects = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const onSubmit = async (data: AddHypePool) => {
+    submitHandler(data);
+    setCreatedPool(data);
+    reset();
+  };
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
@@ -78,6 +91,27 @@ export const useAddHypePoolEffects = () => {
     reset();
   };
 
+  useEffect(() => {
+    if (createdPoolResponse?.data && createdPool) {
+      const uri = `${API}/${createdPoolResponse?.data}`;
+      const poolCap = createdPool.pool;
+      const tokenAddress = createdPool.rewardsAddress;
+      const minHypeReward = createdPool.minReward;
+      const endDate = createdPool.endDate?.getTime();
+      mintPool({ args: [uri, poolCap, tokenAddress, minHypeReward, endDate] });
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: true,
+          title: 'Minting Hype Pool',
+          text: 'Please, sign the message...',
+        },
+      });
+      setCreatedPool(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createdPoolResponse, createdPool]);
+
   return {
     register,
     handleSubmit,
@@ -86,5 +120,6 @@ export const useAddHypePoolEffects = () => {
     control,
     submitHandler,
     authenticated,
+    onSubmit,
   };
 };

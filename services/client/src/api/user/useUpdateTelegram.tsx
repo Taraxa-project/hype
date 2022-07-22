@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { UnpackNestedValue } from 'react-hook-form';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
 import { API } from '../types';
@@ -17,7 +16,7 @@ export const useUpdateTelegram = () => {
 
   const { mutate } = useMutation((values: HypeUser) => updateUser(values));
 
-  const submitHandler = (values: UnpackNestedValue<HypeUser>) => {
+  const submitHandler = (values: HypeUser) => {
     const updatedUser: HypeUser = { ...values };
     mutate(updatedUser, {
       onSuccess: () => {
