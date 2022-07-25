@@ -8,10 +8,10 @@ import Text from '../../../components/styles/Text';
 import { useNotificationEffects } from './Notification.effects';
 
 export const Notification = () => {
-  const { open, type, message, closeModal, notificationIcon } = useNotificationEffects();
+  const { open, type, message, closeModal, notificationIcon, title } = useNotificationEffects();
 
   const titleProps: ModalTitleProps = {
-    title: type,
+    title: title || type,
     close: closeModal,
     icon: notificationIcon,
   };
@@ -31,10 +31,12 @@ export const Notification = () => {
       modalAction={modalAction}
       height="20rem"
     >
-      <Box>
-        <Text fontWeight="600" fontSize="14px" color="greys.11">
-          {message}
-        </Text>
+      <Box display="flex" flexDirection="column" gridGap="1rem">
+        {message?.map((text: string) => (
+          <Text key={text} fontWeight="600" fontSize="14px" color="greys.11">
+            {text}
+          </Text>
+        ))}
       </Box>
     </ModalContainer>
   );
