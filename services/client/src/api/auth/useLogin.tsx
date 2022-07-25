@@ -34,7 +34,7 @@ export const useLogin = () => {
           payload: {
             open: true,
             type: NotificationType.SUCCESS,
-            message: 'Login successful!',
+            message: ['Login successful!'],
           },
         });
       },

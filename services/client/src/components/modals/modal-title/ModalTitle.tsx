@@ -31,9 +31,11 @@ export const ModalTitle: FC<ModalTitleProps> = ({ title, close, icon }: ModalTit
         </Text>
       </Box>
       {close && (
-        <CloseContainer onClick={close}>
-          <CloseIcon />
-        </CloseContainer>
+        <Box display="flex" justifyContent="center" alignItems="center" ml="1.3rem" onClick={close}>
+          <CloseContainer onClick={close}>
+            <CloseIcon />
+          </CloseContainer>
+        </Box>
       )}
     </TitleContainer>
   );

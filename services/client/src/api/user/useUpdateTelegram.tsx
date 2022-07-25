@@ -27,7 +27,7 @@ export const useUpdateTelegram = () => {
           payload: {
             open: true,
             type: NotificationType.SUCCESS,
-            message: 'User successfully updated!',
+            message: ['User successfully updated!'],
           },
         });
       },

@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useGetUser } from '../api/auth/useGetUser';
 import { useLogin } from '../api/auth/useLogin';
 import useWallet from '../hooks/useWallet';
-import { getAuthenticationToken, removeAuthenticationToken } from '../utils';
+import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
 import { useSignMessage } from 'wagmi';
 import { LoginSignature, User } from '../models';
 import { SignMessageArgs } from '@wagmi/core';
 import { RefetchOptions, RefetchQueryFilters } from 'react-query';
+import { ModalsActionsEnum, useModalsDispatch } from './modal';
 
 export interface IAuthContext {
   account: string;
@@ -43,8 +44,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [isSignatureLoading, setIsSignatureLoading] = useState<boolean>(false);
   const { onLogin, isLoading: isLoginLoading, isSuccess: isLoginSuccess } = useLogin();
+  const dispatchModals = useModalsDispatch();
 
-  const { signMessage } = useSignMessage({
+  const { signMessage, error: signMessageError } = useSignMessage({
     onSuccess(data) {
       // Verify signature when sign message succeeds
       const loginPayload: LoginSignature = {
@@ -54,6 +56,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       onLogin(loginPayload);
     },
   });
+
+  useEffect(() => {
+    if (signMessageError) {
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_NOTIFICATION,
+        payload: {
+          open: true,
+          type: NotificationType.ERROR,
+          message: [
+            'Please consider reloading this page and sign in again.',
+            'You have to sign the request in your Metamask wallet in order to access your profile.',
+          ],
+          title: 'Login failed',
+        },
+      });
+    }
+  }, [signMessageError, dispatchModals]);
 
   const tokenExists = Boolean(getAuthenticationToken());
 

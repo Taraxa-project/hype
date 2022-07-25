@@ -6,7 +6,7 @@ import { NotificationType } from '../../../utils';
 
 export const useNotificationEffects = () => {
   const {
-    notification: { open, type, message },
+    notification: { open, type, message, title },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
@@ -56,5 +56,6 @@ export const useNotificationEffects = () => {
     message,
     closeModal,
     notificationIcon,
+    title,
   };
 };
