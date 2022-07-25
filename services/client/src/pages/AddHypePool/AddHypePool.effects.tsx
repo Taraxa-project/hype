@@ -103,7 +103,7 @@ export const useAddHypePoolEffects = () => {
         type: ModalsActionsEnum.SHOW_LOADING,
         payload: {
           open: true,
-          title: 'Minting Hype Pool',
+          title: 'Action required',
           text: 'Please, sign the message...',
         },
       });

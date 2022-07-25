@@ -65,6 +65,12 @@ export class PoolsService {
     return hypePools;
   }
 
+  public async update(id: number, tokenId: number): Promise<HypePool> {
+    const pool = await this.findById(id);
+    pool.tokenId = tokenId;
+    return await this.repository.save(pool);
+  }
+
   private async getByFilters(
     filterDto: GetFilterDto,
   ): Promise<[HypePool[], number]> {

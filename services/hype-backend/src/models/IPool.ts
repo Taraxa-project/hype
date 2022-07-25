@@ -9,6 +9,7 @@ export interface IPool {
   minReward: number;
   startDate: Date;
   endDate: Date;
+  tokenId?: number;
 }
 
 export interface PoolPaginate {

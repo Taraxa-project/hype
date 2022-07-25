@@ -10,16 +10,22 @@ const useContractCreatePool = () => {
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
 
-  const { data, isError, isLoading, write } = useContractWrite({
+  const {
+    data: mintedPool,
+    isError,
+    isLoading,
+    write,
+  } = useContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
     functionName: 'createPool',
   });
 
   useWaitForTransaction({
-    hash: data?.hash,
+    hash: mintedPool?.hash,
     onSuccess(data) {
-      console.log('Successfully minted Hype Pool', data);
+      // console.log('Successfully minted Hype Pool data', data);
+      // console.log('Successfully minted Hype Pool mintedPool', mintedPool );
       dispatchModals({
         type: ModalsActionsEnum.SHOW_LOADING,
         payload: {
@@ -36,6 +42,12 @@ const useContractCreatePool = () => {
           message: 'Successfully minted Hype Pool',
         },
       });
+    },
+    onError(error) {
+      console.log('Error', error);
+    },
+    onSettled(data, error) {
+      console.log('Settled', { data, error });
     },
   });
 

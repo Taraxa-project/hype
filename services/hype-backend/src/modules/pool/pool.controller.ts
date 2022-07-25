@@ -5,12 +5,18 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PoolPaginate } from '../../models';
 import { WalletGuard } from '../auth/wallet.guard';
 import { GetFilterDto, PoolDTO } from './dto';
@@ -69,5 +75,20 @@ export class PoolsController {
   })
   public async createPool(@Body() poolToCreate: PoolDTO): Promise<string> {
     return await this.poolsService.create(poolToCreate);
+  }
+
+  @Patch('/:id')
+  @UseGuards(WalletGuard)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PoolDTO,
+    description: 'Returns an updated pool',
+  })
+  @ApiNotFoundResponse({ description: `No pool found` })
+  public async update(
+    @Param('id') id: number,
+    @Body() tokenId: number,
+  ): Promise<PoolDTO> {
+    return await this.poolsService.update(id, tokenId);
   }
 }

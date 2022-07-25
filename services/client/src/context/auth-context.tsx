@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetUser } from '../api/auth/useGetUser';
 import { useLogin } from '../api/auth/useLogin';
 import useWallet from '../hooks/useWallet';
-import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
-import { ModalsActionsEnum, useModalsDispatch } from './modal';
+import { getAuthenticationToken, removeAuthenticationToken } from '../utils';
 import { useSignMessage } from 'wagmi';
 import { LoginSignature, User } from '../models';
 import { SignMessageArgs } from '@wagmi/core';
@@ -40,7 +39,6 @@ export const AuthContext = createContext<IAuthContext>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { account, connector, isConnected, disconnect, isDisconnected } = useWallet();
   const { data: user, refetch } = useGetUser(account);
-  const dispatchModals = useModalsDispatch();
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [isSignatureLoading, setIsSignatureLoading] = useState<boolean>(false);
@@ -63,14 +61,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setAuthenticated(false);
     disconnect();
     removeAuthenticationToken();
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_NOTIFICATION,
-      payload: {
-        open: true,
-        type: NotificationType.ERROR,
-        message: 'User must be logged in to access profile!',
-      },
-    });
     navigate('/');
   };
 

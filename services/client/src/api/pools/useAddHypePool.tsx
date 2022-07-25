@@ -25,14 +25,14 @@ export const useAddHypePool = () => {
     mutate(newHypePool, {
       onSuccess: () => {
         queryClient.resetQueries();
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_NOTIFICATION,
-          payload: {
-            open: true,
-            type: NotificationType.SUCCESS,
-            message: 'Hype Pool created!',
-          },
-        });
+        // dispatchModals({
+        //   type: ModalsActionsEnum.SHOW_NOTIFICATION,
+        //   payload: {
+        //     open: true,
+        //     type: NotificationType.SUCCESS,
+        //     message: 'Hype Pool created!',
+        //   },
+        // });
       },
       onError: (error: any) => {
         console.log('Error: ', error);
