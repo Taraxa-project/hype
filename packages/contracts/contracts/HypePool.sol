@@ -47,13 +47,13 @@ contract HypePool is IHypePool, Pausable, Ownable {
         address tokenAddress,
         uint256 minHypeReward,
         uint256 endDate
-    ) external override whenNotPaused returns (HypePool memory) {
+    ) external override whenNotPaused returns (IHypePool.HypePool memory) {
         require(bytes(uri).length > 0, "Missing metadata URI");
         require(poolCap > 0, "Invalid pool cap");
         require(endDate > block.timestamp, "End date must be after current block time");
         require(minHypeReward > 0, "Invalid minimal hype reward");
         uint256 _counter = _poolIds.current();
-        _pools[_counter] = HypePool(_counter, msg.sender, false, uri, poolCap, tokenAddress, minHypeReward, endDate);
+        _pools[_counter] = IHypePool.HypePool(_counter, msg.sender, false, uri, poolCap, tokenAddress, minHypeReward, endDate);
         _poolIds.increment();
         emit PoolCreated(_counter, msg.sender, uri, poolCap, tokenAddress, minHypeReward, endDate);
         return _pools[_counter];
