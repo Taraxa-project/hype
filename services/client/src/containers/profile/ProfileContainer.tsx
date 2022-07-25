@@ -46,8 +46,6 @@ export const ProfileContainer = ({
       flex="1 1 auto"
       alignItems="left"
       width={{ _: 'unset', sm: 'unset', md: '100%' }}
-      marginBottom="1rem"
-      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
     >
       <Heading
         fontSize="1.25rem"

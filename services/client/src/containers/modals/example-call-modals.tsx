@@ -5,6 +5,7 @@ import { NotificationType } from '../../utils';
 
 export const ExampleCallModals = () => {
   const dispatchModals = useModalsDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const callModalExample = () => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_CARD_DETAILS,
@@ -66,8 +67,8 @@ export const ExampleCallModals = () => {
       payload: {
         open: true,
         type: NotificationType.ERROR,
-        message: 'Username already registered',
+        message: ['Username already registered'],
       },
     });
-  }
+  };
 };

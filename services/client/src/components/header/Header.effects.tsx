@@ -32,11 +32,7 @@ export interface HeaderLink {
   display: boolean;
 }
 
-export const useHeaderEffects = (
-  connected: boolean,
-  authenticated: boolean,
-  headerElements?: HeaderLink[],
-) => {
+export const useHeaderEffects = (authenticated: boolean, headerElements?: HeaderLink[]) => {
   let navigate = useNavigate();
   let location = useLocation();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -59,7 +55,7 @@ export const useHeaderEffects = (
     {
       route: '/profile',
       name: HeaderValues.Profile,
-      display: connected && authenticated,
+      display: authenticated,
     },
   ];
 

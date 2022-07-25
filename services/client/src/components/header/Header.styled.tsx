@@ -13,7 +13,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   justify-content: space-evenly;
   align-items: center;
   font-size: 1rem;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
   height: 4.5rem;
   position: fixed;
   top: 0;
@@ -50,12 +50,12 @@ export const StyledHeader = styled.header<CustomStyledProps>`
   .selected {
     font-weight: 700;
     font-size: 1rem;
-    color: #292929;
+    color: ${({ theme }) => theme.colors.greys[6]};
     cursor: pointer;
   }
 
   .underline {
-    background: #dda25d;
+    background: ${({ theme }) => theme.colors.primary};
     min-height: 8px;
     width: 100%;
     margin: 0;
@@ -78,7 +78,7 @@ export const StyledHeader = styled.header<CustomStyledProps>`
     :active {
       font-weight: 700;
       font-size: 1rem;
-      color: #292929;
+      color: ${({ theme }) => theme.colors.greys[6]};
     }
   }
 `;
@@ -108,7 +108,7 @@ export const Sidebar = styled.div<SidebarProps>`
   top: 0;
   height: 100%;
   width: 20.375rem;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 export const SidebarHeader = styled.div`
@@ -142,7 +142,7 @@ export const SidebarMenuLink = styled.li<SidebarMenuLinkProps>`
     content: ${(props) => (props.selected ? `""` : 'none')};
     width: 1rem;
     height: 1.5rem;
-    background-color: #dda25d;
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -170,7 +170,7 @@ export const Account = styled.div`
   font-size: 0.75rem;
   display: flex;
   align-items: center;
-  color: #787878;
+  color: ${({ theme }) => theme.colors.greys[11]};
   padding: 0.375rem 1.5rem;
 `;
 

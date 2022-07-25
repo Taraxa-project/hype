@@ -22,9 +22,6 @@ export const RewardsContainer = (props: RewardProps) => {
       flexDirection="column"
       justifyContent="space-between"
       backgroundColor="greys.1"
-      marginLeft={{ _: 'none', sm: 'none', md: '1rem' }}
-      marginRight={{ _: '1rem', sm: '1rem', md: 'none' }}
-      marginBottom="1rem"
       minWidth={{ sm: 'unset', md: '340px' }}
     >
       <Heading

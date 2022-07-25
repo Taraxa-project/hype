@@ -1,14 +1,26 @@
 {
   "name": "hype_project",
   "private": true,
-  "workspaces": [
-    "services/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "services/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@openzeppelin"
+    ]
+  },
   "scripts": {
     "start": "concurrently \"SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start & SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start\"",
     "start-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start",
     "build-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build",
     "start-server": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start",
+    "compile-contracts": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts compile",
+    "test-contracts": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts test",
+    "test-contracts:coverage": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts coverage",
+    "deploy-local": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-local",
+    "deploy-mainnet": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-mainnet",
+    "deploy-testnet": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-testnet",
     "storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client storybook",
     "build-storybook": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build-storybook",
     "format": "prettier . --write && eslint --fix '*.{js,jsx,ts,tsx,json}'",
@@ -23,7 +35,7 @@
     ],
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint --max-warnings=0"
+      "eslint --max-warnings=1 --ignore-path '.eslintignore'"
     ],
     "*.json": [
       "prettier --write"

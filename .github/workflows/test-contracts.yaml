@@ -1,0 +1,35 @@
+name: Build and Deploy
+on:
+  push:
+    paths:
+      - packages/contracts/**
+  pull_request:
+    paths:
+      - packages/contracts/**
+    types: [opened, synchronize, closed]
+jobs:
+  test-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Setup NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: Show NodeJS version    
+        run: node -v
+      - name: Install and Build 🔧 🚚
+        run: yarn
+      - name: Set up environment variables
+        run: |
+          touch .env
+          echo PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
+          echo MAINNET_PRIV_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
+          echo TARA_MAINNET_URL=https://rpc.mainnet.taraxa.io/ >> .env
+          echo TARA_TESTNET_URL=https://rpc.testnet.taraxa.io/ >> .env
+          cat .env
+      - name: Compile contracts
+        run: yarn compile-contracts
+      - name: Run Hardhat tests with coverage
+        run: yarn test-contracts:coverage

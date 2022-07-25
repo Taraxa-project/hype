@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { HypeThemeType } from '../../../theme';
 
-export const StyledModal = styled.div<{ theme: HypeThemeType }>`
+interface StyledModalProps {
+  height?: string;
+}
+
+export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModalProps }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -10,20 +14,30 @@ export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   z-index: 1040;
   backdrop-filter: blur(1rem);
 
-  max-width: 586px;
-  min-width: 486px;
+  max-width: 36rem;
+  min-width: 30rem;
+  height: ${({ props }) => props.height || '34rem'};
 
-  height: 550px;
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 2.7rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 70%;
+    height: ${({ props }) => props.height || '38rem'};
+    min-height: 17rem;
+    max-width: unset;
+    min-width: unset;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    width: 70%;
+    height: auto;
+    min-height: 17rem;
     max-width: unset;
     min-width: unset;
   }

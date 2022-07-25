@@ -10,6 +10,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WagmiConfig, createClient, configureChains, defaultChains, chain } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { AuthProvider } from './context/auth-context';
 
 const { provider, webSocketProvider } = configureChains(
   [chain.mainnet, ...defaultChains],
@@ -45,7 +46,9 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <ModalsProvider>
-              <App />
+              <AuthProvider>
+                <App />
+              </AuthProvider>
             </ModalsProvider>
           </BrowserRouter>
           <ReactQueryDevtools />

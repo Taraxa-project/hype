@@ -42,7 +42,7 @@ export const TransactionsContainer = ({
     >
       <Box
         display="flex"
-        flexDirection={{ xs: 'column', md: 'column', lg: 'row', xl: 'row' }}
+        flexDirection={{ _: 'column', lg: 'row', xl: 'row' }}
         justifyContent="space-between"
         alignItems="start"
       >
@@ -70,12 +70,7 @@ export const TransactionsContainer = ({
           </Heading>
         </Box>
         {isConnected && !!pendingTransactions?.length && (
-          <Box
-            display="flex"
-            flexDirection="column"
-            width="100%"
-            mt={{ xs: '3.5rem', sm: '3.5rem', md: '3.5rem', lg: '0' }}
-          >
+          <Box display="flex" flexDirection="column" width="100%" mt={{ _: '3.5rem', lg: '0' }}>
             <Heading
               fontSize="1.25rem"
               fontWeight="700"
