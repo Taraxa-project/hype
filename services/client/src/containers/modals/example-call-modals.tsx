@@ -66,8 +66,8 @@ export const ExampleCallModals = () => {
       payload: {
         open: true,
         type: NotificationType.ERROR,
-        message: 'Username already registered',
+        message: ['Username already registered'],
       },
     });
-  }
+  };
 };

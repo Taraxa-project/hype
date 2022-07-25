@@ -29,7 +29,7 @@ export const useAddHypePool = () => {
           payload: {
             open: true,
             type: NotificationType.SUCCESS,
-            message: 'Hype Pool created!',
+            message: ['Hype Pool created!'],
           },
         });
       },

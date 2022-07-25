@@ -40,8 +40,9 @@ export type TDisconnectTelegram = {
 export type TNotification = {
   open: boolean;
   type: NotificationType;
-  message: string;
-}
+  message: string[];
+  title?: string;
+};
 
 export interface IModalsStore {
   hypeDetails: TCardDetails;
@@ -81,7 +82,6 @@ interface TNotificationAction {
   type: ModalsActionsEnum.SHOW_NOTIFICATION;
   payload: TNotification;
 }
-
 
 export type TModalsAction =
   | ICardDetailsAction
