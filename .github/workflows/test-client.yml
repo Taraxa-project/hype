@@ -1,0 +1,21 @@
+name: Client Tests
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install and Test
+        run: |
+          yarn
+          yarn test-client
