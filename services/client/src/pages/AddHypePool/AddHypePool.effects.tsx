@@ -7,13 +7,11 @@ import { useAddHypePool } from '../../api/pools/useAddHypePool';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool from '../../hooks/useContractCreatePool';
 import { API } from '../../api/types';
-import { useModalsDispatch, ModalsActionsEnum } from '../../context';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
   const { data: createdPoolResponse, submitHandler } = useAddHypePool();
   const { write: mintPool } = useContractCreatePool();
-  const dispatchModals = useModalsDispatch();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -98,13 +96,10 @@ export const useAddHypePoolEffects = () => {
       const tokenAddress = createdPool.rewardsAddress;
       const minHypeReward = createdPool.minReward;
       const endDate = createdPool.endDate?.getTime();
-      mintPool({ args: [uri, poolCap, tokenAddress, minHypeReward, endDate] });
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: true,
-          title: 'Action required',
-          text: 'Please, sign the message...',
+      mintPool({
+        args: [uri, poolCap, tokenAddress, minHypeReward, endDate],
+        overrides: {
+          gasLimit: 9999999,
         },
       });
       setCreatedPool(null);
