@@ -19,8 +19,17 @@ export interface CardProps extends HypePool {
 }
 
 const Card = ({ children, ...props }: CardProps) => {
-  const { title, description, rewardsAddress, pool, minReward, startDate, endDate, onClick } =
-    props;
+  const {
+    title,
+    description,
+    rewardsAddress,
+    pool,
+    minReward,
+    startDate,
+    endDate,
+    projectName,
+    onClick,
+  } = props;
   const { data: poolTokenInfo } = useToken({ address: rewardsAddress });
   const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(startDate, endDate)} months left`;
@@ -33,6 +42,12 @@ const Card = ({ children, ...props }: CardProps) => {
           <CardDescription key={`${description}-${Date.now()}`}>
             {shortenText(description)}
           </CardDescription>
+          {projectName && (
+            <DataContainer>
+              <DataHeader>Project Name:</DataHeader>
+              <DataValue>{projectName}</DataValue>
+            </DataContainer>
+          )}
           {pool && poolToken && (
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
