@@ -18,6 +18,7 @@ export const CardDetails = () => {
     description,
     rewardsAddress,
     creatorAddress,
+    projectName,
     pool,
     minReward,
     startDate,
@@ -55,6 +56,12 @@ export const CardDetails = () => {
       </BlockiesContainer>
       <CardSubheader>Description:</CardSubheader>
       <CardDescription>{description}</CardDescription>
+      {projectName && (
+        <DataContainer>
+          <DataHeader>Project Name:</DataHeader>
+          <DataValue>{projectName}</DataValue>
+        </DataContainer>
+      )}
       {pool && poolToken && (
         <DataContainer>
           <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
