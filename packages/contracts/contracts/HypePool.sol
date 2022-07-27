@@ -16,8 +16,6 @@ contract HypePool is IHypePool, Pausable, Ownable {
 
     address _escrowContractAddress;
 
-    // Mapping from pool ID to owner address
-    mapping(uint256 => address) private _owners;
     mapping(uint256 => IHypePool.HypePool) private _pools;
     mapping(uint256 => string) private _tokenURIs;
 
@@ -37,10 +35,6 @@ contract HypePool is IHypePool, Pausable, Ownable {
         return _pools[tokenId];
     }
 
-    function _exists(uint256 tokenId) internal view virtual returns (bool) {
-        return _owners[tokenId] != address(0);
-    }
-
     function _setPool(
         uint256 tokenId,
         string projectName,
@@ -50,7 +44,6 @@ contract HypePool is IHypePool, Pausable, Ownable {
         uint256 minHypeReward,
         uint256 endDate
     ) internal virtual {
-        require(_exists(tokenId), "Pool set of nonexistent token");
         _pools[tokenId] = IHypePool.HypePool(
             tokenId,
             msg.sender,
@@ -66,7 +59,6 @@ contract HypePool is IHypePool, Pausable, Ownable {
     }
 
     function _setPoolURI(uint256 tokenId, string memory _tokenURI) internal virtual {
-        require(_exists(tokenId), "URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
         emit PoolUriSet(tokenId, _tokenURI);
     }
@@ -92,7 +84,6 @@ contract HypePool is IHypePool, Pausable, Ownable {
         require(endDate > block.timestamp, "End date must be after current block time");
         require(minHypeReward > 0, "Invalid minimal hype reward");
         uint256 _counter = _poolIds.current();
-        _owners[_counter] = msg.sender;
         _setPool(_counter, projectName, title, false, poolCap, tokenAddress, minHypeReward, endDate);
         _setPoolURI(_counter, uri);
         _poolIds.increment();
