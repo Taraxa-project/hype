@@ -16,8 +16,8 @@ interface IHypePool {
 
     function createPool(
         string memory uri,
-        string projectName,
-        string title,
+        string memory projectName,
+        string memory title,
         uint256 poolCap,
         address tokenAddress,
         uint256 minHypeReward,
@@ -33,6 +33,7 @@ interface IHypePool {
     event PoolCreated(
         uint256 poolId,
         address creator,
+        string uri,
         string projectName,
         string title,
         bool active,
@@ -45,7 +46,7 @@ interface IHypePool {
     event PoolUriSet(
         uint256 poolId,
         string uri
-    )
+    );
 
     event PoolActivated(uint256 poolId, address activator);
 }

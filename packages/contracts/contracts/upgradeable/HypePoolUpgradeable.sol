@@ -8,12 +8,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "../interfaces/IHypePool.sol";
 import "../interfaces/IEscrow.sol";
 
-contract HypePoolUpgradeable is
-    IHypePool,
-    Initializable,
-    PausableUpgradeable,
-    OwnableUpgradeable
-{
+contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _poolIds;
@@ -21,6 +16,7 @@ contract HypePoolUpgradeable is
     address _escrowContractAddress;
 
     mapping(uint256 => IHypePool.HypePool) private _pools;
+    mapping(uint256 => string) private _tokenURIs;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -38,11 +34,51 @@ contract HypePoolUpgradeable is
     }
 
     function poolURI(uint256 tokenId) public view returns (string memory) {
-        return _pools[tokenId].uri;
+        return _tokenURIs[tokenId];
     }
 
     function getPool(uint256 tokenId) public view returns (HypePool memory) {
         return _pools[tokenId];
+    }
+
+    function _setPool(
+        uint256 tokenId,
+        string memory _tokenURI,
+        string memory projectName,
+        string memory title,
+        uint256 poolCap,
+        address tokenAddress,
+        uint256 minHypeReward,
+        uint256 endDate
+    ) internal virtual {
+        _pools[tokenId] = IHypePool.HypePool(
+            tokenId,
+            msg.sender,
+            projectName,
+            title,
+            false,
+            poolCap,
+            tokenAddress,
+            minHypeReward,
+            endDate
+        );
+        emit PoolCreated(
+            tokenId,
+            msg.sender,
+            _tokenURI,
+            projectName,
+            title,
+            false,
+            poolCap,
+            tokenAddress,
+            minHypeReward,
+            endDate
+        );
+    }
+
+    function _setPoolURI(uint256 tokenId, string memory _tokenURI) internal virtual {
+        _tokenURIs[tokenId] = _tokenURI;
+        emit PoolUriSet(tokenId, _tokenURI);
     }
 
     /** @dev Creates a Hype Pool after the necessary checks.
@@ -54,6 +90,8 @@ contract HypePoolUpgradeable is
      */
     function createPool(
         string memory uri,
+        string memory projectName,
+        string memory title,
         uint256 poolCap,
         address tokenAddress,
         uint256 minHypeReward,
@@ -61,32 +99,12 @@ contract HypePoolUpgradeable is
     ) external override whenNotPaused returns (HypePool memory) {
         require(bytes(uri).length > 0, "Missing metadata URI");
         require(poolCap > 0, "Invalid pool cap");
-        require(
-            endDate > block.timestamp,
-            "End date must be after current block time"
-        );
+        require(endDate > block.timestamp, "End date must be after current block time");
         require(minHypeReward > 0, "Invalid minimal hype reward");
         uint256 _counter = _poolIds.current();
-        _pools[_counter] = HypePool(
-            _counter,
-            msg.sender,
-            false,
-            uri,
-            poolCap,
-            tokenAddress,
-            minHypeReward,
-            endDate
-        );
+        _setPool(_counter, uri, projectName, title, poolCap, tokenAddress, minHypeReward, endDate);
+        _setPoolURI(_counter, uri);
         _poolIds.increment();
-        emit PoolCreated(
-            _counter,
-            msg.sender,
-            uri,
-            poolCap,
-            tokenAddress,
-            minHypeReward,
-            endDate
-        );
         return _pools[_counter];
     }
 
@@ -100,14 +118,8 @@ contract HypePoolUpgradeable is
         require(_pool.minReward != 0, "Pool doesn't exist");
         require(_pool.active == false, "Pool is already active");
         IEscrow escrowContract = IEscrow(_escrowContractAddress);
-        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(
-            msg.sender,
-            id
-        );
-        require(
-            _deposit.weiAmount == _pool.cap,
-            "Deposited amount does not match pool cap"
-        );
+        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, id);
+        require(_deposit.weiAmount == _pool.cap, "Deposited amount does not match pool cap");
         require(_deposit.tokenAddress == _pool.token, "Deposited token address does not match pool token address");
         _pool.active = true;
         _pools[id] = _pool;
