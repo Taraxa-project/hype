@@ -17,6 +17,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
     address _escrowContractAddress;
 
     mapping(uint256 => IHypePool.HypePool) private _pools;
+    mapping(uint256 => string) private _tokenURIs;
 
     constructor(address escrowContractAddress) {
         _escrowContractAddress = escrowContractAddress;
@@ -27,11 +28,40 @@ contract HypePool is IHypePool, Pausable, Ownable {
     }
 
     function poolURI(uint256 tokenId) public view returns (string memory) {
-        return _pools[tokenId].uri;
+        return _tokenURIs[tokenId];
     }
 
     function getPool(uint256 tokenId) public view returns (HypePool memory) {
         return _pools[tokenId];
+    }
+
+    function _setPool(
+        uint256 tokenId,
+        string memory _tokenURI,
+        string memory projectName,
+        string memory title,
+        uint256 poolCap,
+        address tokenAddress,
+        uint256 minHypeReward,
+        uint256 endDate
+    ) internal virtual {
+        _pools[tokenId] = IHypePool.HypePool(
+            tokenId,
+            msg.sender,
+            projectName,
+            title,
+            false,
+            poolCap,
+            tokenAddress,
+            minHypeReward,
+            endDate
+        );
+        emit PoolCreated(tokenId, msg.sender, _tokenURI, projectName, title, false, poolCap, tokenAddress, minHypeReward, endDate);
+    }
+
+    function _setPoolURI(uint256 tokenId, string memory _tokenURI) internal virtual {
+        _tokenURIs[tokenId] = _tokenURI;
+        emit PoolUriSet(tokenId, _tokenURI);
     }
 
     /** @dev Creates a Hype Pool after the necessary checks.
@@ -43,6 +73,8 @@ contract HypePool is IHypePool, Pausable, Ownable {
      */
     function createPool(
         string memory uri,
+        string memory projectName,
+        string memory title,
         uint256 poolCap,
         address tokenAddress,
         uint256 minHypeReward,
@@ -53,9 +85,9 @@ contract HypePool is IHypePool, Pausable, Ownable {
         require(endDate > block.timestamp, "End date must be after current block time");
         require(minHypeReward > 0, "Invalid minimal hype reward");
         uint256 _counter = _poolIds.current();
-        _pools[_counter] = IHypePool.HypePool(_counter, msg.sender, false, uri, poolCap, tokenAddress, minHypeReward, endDate);
+        _setPool(_counter, uri, projectName, title, poolCap, tokenAddress, minHypeReward, endDate);
+        _setPoolURI(_counter, uri);
         _poolIds.increment();
-        emit PoolCreated(_counter, msg.sender, uri, poolCap, tokenAddress, minHypeReward, endDate);
         return _pools[_counter];
     }
 

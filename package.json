@@ -18,6 +18,7 @@
     "compile-contracts": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts compile",
     "test-contracts": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts test",
     "test-contracts:coverage": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts coverage",
+    "test-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client test --watchAll=false",
     "deploy-local": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-local",
     "deploy-mainnet": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-mainnet",
     "deploy-testnet": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts deploy-testnet",
