@@ -50,6 +50,7 @@
     "axios": "^0.27.2",
     "cross-env": "^7.0.3",
     "ethers": "^5.6.9",
+    "ipfs-http-client": "^57.0.3",
     "lodash.debounce": "^4.0.8",
     "luxon": "^2.4.0",
     "postcss-syntax": "^0.36.2",

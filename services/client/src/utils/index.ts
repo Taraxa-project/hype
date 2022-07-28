@@ -5,3 +5,4 @@ export * from './monthDiff';
 export * from './shortenAddress';
 export * from './shortenText';
 export * from './localStorage';
+export * from './fullIpfsUrl';

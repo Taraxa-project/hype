@@ -1,17 +1,18 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AddHypePool } from '../../models';
-import { useAddHypePool } from '../../api/pools/useAddHypePool';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool from '../../hooks/useContractCreatePool';
-import { API } from '../../api/types';
+import { ipfsClient } from '../../constants';
+import { fullIpfsUrl } from '../../utils';
+import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
-  const { data: createdPoolResponse, submitHandler } = useAddHypePool();
   const { write: mintPool } = useContractCreatePool();
+  const dispatchModals = useModalsDispatch();
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -23,8 +24,6 @@ export const useAddHypePoolEffects = () => {
     startDate: null,
     endDate: null,
   };
-
-  const [createdPool, setCreatedPool] = useState<AddHypePool>(defaultValues);
 
   const validationSchema = yup
     .object({
@@ -74,9 +73,61 @@ export const useAddHypePoolEffects = () => {
   });
 
   const onSubmit = async (data: AddHypePool) => {
-    submitHandler(data);
-    setCreatedPool(data);
+    const url = await uploadToIpfs(data);
+    console.log('URL after upload: ', url);
+    createPool(data, url);
     reset();
+  };
+
+  const uploadToIpfs = async (data: AddHypePool) => {
+    if (!data) {
+      return;
+    }
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_LOADING,
+      payload: {
+        open: true,
+        title: 'Loading',
+        text: 'Uploading description to IPFS',
+      },
+    });
+    let url: string;
+    try {
+      const uploaded = await ipfsClient.add(data?.description);
+      url = `${fullIpfsUrl(uploaded.path)}`;
+      console.log('uploaded: ', uploaded);
+      console.log('url: ', url);
+    } catch (error) {
+      console.log('Error uploading to IPFS: ', error);
+    } finally {
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: false,
+          title: null,
+          text: null,
+        },
+      });
+      return url;
+    }
+  };
+
+  const createPool = (data: AddHypePool, ipfsFileUrl: string) => {
+    if (!data || !ipfsFileUrl) {
+      return;
+    }
+    const poolCap = data.pool;
+    const projectName = data.projectName;
+    const title = data.title;
+    const tokenAddress = data.rewardsAddress;
+    const minHypeReward = data.minReward;
+    const endDate = data.endDate?.getTime();
+    mintPool({
+      args: [ipfsFileUrl, projectName, title, poolCap, tokenAddress, minHypeReward, endDate],
+      overrides: {
+        gasLimit: 9999999,
+      },
+    });
   };
 
   useEffect(() => {
@@ -89,31 +140,12 @@ export const useAddHypePoolEffects = () => {
     reset();
   };
 
-  useEffect(() => {
-    if (createdPoolResponse?.data && createdPool) {
-      const uri = `${API}/${createdPoolResponse?.data}`;
-      const poolCap = createdPool.pool;
-      const tokenAddress = createdPool.rewardsAddress;
-      const minHypeReward = createdPool.minReward;
-      const endDate = createdPool.endDate?.getTime();
-      mintPool({
-        args: [uri, poolCap, tokenAddress, minHypeReward, endDate],
-        overrides: {
-          gasLimit: 9999999,
-        },
-      });
-      setCreatedPool(null);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createdPoolResponse, createdPool]);
-
   return {
     register,
     handleSubmit,
     onCancel,
     errors,
     control,
-    submitHandler,
     authenticated,
     onSubmit,
   };
