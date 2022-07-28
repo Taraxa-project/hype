@@ -11,8 +11,15 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const useAddHypePoolEffects = () => {
   const { authenticated } = useAuth();
-  const { write: mintPool } = useContractCreatePool();
+  const { write: mintPool, waitForTransaction } = useContractCreatePool();
   const dispatchModals = useModalsDispatch();
+
+  console.log(
+    'waitForTransaction: ',
+    waitForTransaction.data,
+    waitForTransaction.status,
+    waitForTransaction.isSuccess,
+  );
 
   const defaultValues: AddHypePool = {
     projectName: '',
