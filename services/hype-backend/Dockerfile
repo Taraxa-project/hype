@@ -7,6 +7,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json yarn.lock ./
+COPY packages/contracts/package.json /app/packages/contracts/
 COPY services/hype-backend/package.json /app/services/hype-backend/
 
 RUN yarn install --frozen-lockfile \
