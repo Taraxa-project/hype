@@ -1,7 +1,7 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useContractWrite, useWaitForTransaction, useProvider } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { NotificationType } from '../utils';
 import { useEffect } from 'react';
@@ -10,6 +10,8 @@ const useContractCreatePool = () => {
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
+  const provider = useProvider();
+  console.log('provider: ', provider);
 
   const {
     data: poolData,
@@ -21,6 +23,7 @@ const useContractCreatePool = () => {
   } = useContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
+    chainId: 3,
     functionName: 'createPool',
     overrides: {
       gasLimit: 10000000,
@@ -44,9 +47,18 @@ const useContractCreatePool = () => {
     },
   });
 
+  useEffect(() => {
+    if (poolData?.hash) {
+      provider.waitForTransaction(poolData?.hash).then((res) => {
+        console.log('txData1: ', res);
+      });
+    }
+  }, [poolData]);
+
   const waitForTransaction = useWaitForTransaction({
     hash: poolData?.hash,
-    wait: poolData?.wait,
+    chainId: 3,
+    // wait: poolData?.wait,
     onSuccess(transactionData) {
       console.log('Successfully minted Hype Pool mintedPool', poolData);
       console.log('Successfully minted Hype Pool transactionData', transactionData);
@@ -74,6 +86,8 @@ const useContractCreatePool = () => {
       });
     },
   });
+
+  console.log('waitForTransaction status: ', waitForTransaction?.status);
 
   // Workaround this will be removed
   useEffect(() => {

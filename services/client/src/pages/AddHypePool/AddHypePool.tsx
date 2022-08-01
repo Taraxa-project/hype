@@ -164,6 +164,7 @@ export const AddHypePool = () => {
                 disabled={!authenticated}
                 selected={value}
                 showTimeSelect
+                dateFormat="MM/dd/yyyy HH:mm"
                 onChange={onChange}
               />
             )}
@@ -187,6 +188,7 @@ export const AddHypePool = () => {
                 disabled={!authenticated}
                 selected={value}
                 showTimeSelect
+                dateFormat="MM/dd/yyyy HH:mm"
                 onChange={onChange}
               />
             )}
