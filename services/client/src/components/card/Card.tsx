@@ -11,7 +11,9 @@ import {
   DataContainer,
   Container,
 } from './Card.styled';
-import { useToken } from 'wagmi';
+import { useNetwork, useToken } from 'wagmi';
+import SuccessIcon from '../../assets/icons/Success';
+import ErrorIcon from '../../assets/icons/Error';
 
 export interface CardProps extends HypePool {
   children?: JSX.Element | string;
@@ -19,20 +21,12 @@ export interface CardProps extends HypePool {
 }
 
 const Card = ({ children, ...props }: CardProps) => {
-  const {
-    title,
-    description,
-    rewardsAddress,
-    pool,
-    minReward,
-    startDate,
-    endDate,
-    projectName,
-    onClick,
-  } = props;
-  const { data: poolTokenInfo } = useToken({ address: rewardsAddress });
+  const { title, description, token, cap, active, minReward, endDate, projectName, onClick } =
+    props;
+  const { chain } = useNetwork();
+  const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
   const poolToken = poolTokenInfo?.symbol;
-  const duration = `${monthDiff(startDate, endDate)} months left`;
+  const duration = `${monthDiff(new Date(), endDate)} months left`;
 
   return (
     <StyledCard>
@@ -48,15 +42,15 @@ const Card = ({ children, ...props }: CardProps) => {
               <DataValue>{projectName}</DataValue>
             </DataContainer>
           )}
-          {pool && poolToken && (
+          {cap && (
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-              <DataValue key={`${pool}-${Date.now()}`}>
-                {pool} {poolToken}
+              <DataValue key={`${cap}-${Date.now()}`}>
+                {cap} {poolToken}
               </DataValue>
             </DataContainer>
           )}
-          {minReward && poolToken && (
+          {minReward && (
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
               <DataValue key={`${minReward}-${Date.now()}`}>
@@ -64,12 +58,24 @@ const Card = ({ children, ...props }: CardProps) => {
               </DataValue>
             </DataContainer>
           )}
-          {startDate && endDate && duration && (
+          {endDate && duration && (
             <DataContainer>
               <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
               <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
             </DataContainer>
           )}
+          <DataContainer>
+            <DataHeader>Active:</DataHeader>
+            {active ? (
+              <DataValue key={`active-${Date.now()}`}>
+                <SuccessIcon />
+              </DataValue>
+            ) : (
+              <DataValue key={`active-${Date.now()}`}>
+                <ErrorIcon />
+              </DataValue>
+            )}
+          </DataContainer>
         </div>
         <div>
           <Button size="full-width" onClick={onClick}>

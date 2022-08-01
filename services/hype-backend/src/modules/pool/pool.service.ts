@@ -10,7 +10,7 @@ import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { FindManyOptions } from 'typeorm';
 import { OrderDirection, PoolOrderByEnum } from '../../utils';
-import { PoolPaginate } from '../../models';
+import { ContractHypePool, PoolPaginate } from '../../models';
 import { GetByDTO } from './dto/get-by.dto';
 
 @Injectable()
@@ -24,18 +24,21 @@ export class PoolsService {
 
   public async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
     const [pools, total] = await this.getByFilters(filterDto);
+    const formmatedPools: ContractHypePool[] = pools?.map((pool: HypePool) => {
+      return this.formatPoolToFrontend(pool);
+    });
     return {
-      data: pools || [],
+      data: formmatedPools || [],
       total,
     };
   }
 
-  public findById(id: number): Promise<HypePool> {
-    const found = this.repository.findOne({ where: { id } });
+  public async findById(id: number): Promise<ContractHypePool> {
+    const found = await this.repository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(`Hype Pool with ${id} not found!`);
     }
-    return found;
+    return this.formatPoolToFrontend(found);
   }
 
   public async create(pool: PoolDTO): Promise<string> {
@@ -123,5 +126,24 @@ export class PoolsService {
   private generatePoolUrl(pool: HypePool): string {
     const url = `pools/${pool.id}`;
     return url;
+  }
+
+  private formatPoolToFrontend(pool: HypePool): ContractHypePool {
+    if (!pool) {
+      return;
+    }
+    return {
+      id: pool?.id,
+      projectName: pool?.projectName,
+      title: pool?.title,
+      description: pool?.description,
+      creator: pool?.creatorAddress,
+      token: pool?.rewardsAddress,
+      cap: pool?.pool,
+      minReward: pool?.minReward,
+      endDate: pool?.endDate,
+      tokenId: pool?.tokenId,
+      active: true,
+    } as ContractHypePool;
   }
 }

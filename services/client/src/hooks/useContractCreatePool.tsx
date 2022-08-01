@@ -4,7 +4,6 @@ import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, useProvider } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { NotificationType } from '../utils';
-import { useEffect } from 'react';
 
 const useContractCreatePool = () => {
   const { abi } = ABIs.contracts.HypePool;
@@ -18,12 +17,9 @@ const useContractCreatePool = () => {
     isError,
     isLoading,
     write,
-    status,
-    isSuccess,
   } = useContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
-    chainId: 3,
     functionName: 'createPool',
     overrides: {
       gasLimit: 10000000,
@@ -42,78 +38,67 @@ const useContractCreatePool = () => {
     onSuccess(data) {
       console.log('Successfully called', data);
     },
-    onError(data) {
-      console.log('On error: ', data);
+    onError(error) {
+      console.log('On error: ', error);
+      hideLoadingModal();
+      showErrorModal(error?.message);
     },
   });
 
-  useEffect(() => {
-    if (poolData?.hash) {
-      provider.waitForTransaction(poolData?.hash).then((res) => {
-        console.log('txData1: ', res);
-      });
-    }
-  }, [poolData]);
-
   const waitForTransaction = useWaitForTransaction({
     hash: poolData?.hash,
-    chainId: 3,
     // wait: poolData?.wait,
     onSuccess(transactionData) {
       console.log('Successfully minted Hype Pool mintedPool', poolData);
       console.log('Successfully minted Hype Pool transactionData', transactionData);
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: false,
-          title: null,
-          text: null,
-        },
-      });
+      hideLoadingModal();
+      showSuccessModal();
     },
     onError(error) {
       console.log('Error', error);
+      hideLoadingModal();
+      showErrorModal(error?.message);
     },
     onSettled(data, error) {
       console.log('Settled', { data, error });
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_NOTIFICATION,
-        payload: {
-          open: true,
-          type: NotificationType.SUCCESS,
-          message: ['Successfully minted Hype Pool'],
-        },
-      });
+      hideLoadingModal();
     },
   });
 
   console.log('waitForTransaction status: ', waitForTransaction?.status);
 
-  // Workaround this will be removed
-  useEffect(() => {
-    if (status !== 'idle' && status !== 'loading') {
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: false,
-          title: null,
-          text: null,
-        },
-      });
-    }
+  const hideLoadingModal = () => {
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_LOADING,
+      payload: {
+        open: false,
+        title: null,
+        text: null,
+      },
+    });
+  };
 
-    if (isSuccess || status === 'success') {
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_NOTIFICATION,
-        payload: {
-          open: true,
-          type: NotificationType.SUCCESS,
-          message: ['Successfully minted Hype Pool'],
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, isError, isSuccess]);
+  const showSuccessModal = () => {
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      payload: {
+        open: true,
+        type: NotificationType.SUCCESS,
+        message: ['Successfully minted Hype Pool'],
+      },
+    });
+  };
+
+  const showErrorModal = (err: string) => {
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      payload: {
+        open: true,
+        type: NotificationType.ERROR,
+        message: [err],
+      },
+    });
+  };
 
   return {
     isError,

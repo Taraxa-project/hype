@@ -10,18 +10,20 @@ import Blockies from 'react-blockies';
 import { monthDiff } from '../../../utils';
 import { useToken } from 'wagmi';
 import useWallet from '../../../hooks/useWallet';
+import SuccessIcon from '../../../assets/icons/Success';
+import ErrorIcon from '../../../assets/icons/Error';
 
 export const CardDetails = () => {
   const {
     open,
     title,
     description,
-    rewardsAddress,
-    creatorAddress,
+    token,
+    creator,
     projectName,
-    pool,
+    cap,
     minReward,
-    startDate,
+    active,
     endDate,
     closeModal,
   } = useCardDetailsEffects();
@@ -31,9 +33,9 @@ export const CardDetails = () => {
     close: closeModal,
   };
   const { isConnected, connect } = useWallet();
-  const { data: poolTokenInfo } = useToken({ address: rewardsAddress });
+  const { data: poolTokenInfo } = useToken({ address: token });
   const poolToken = poolTokenInfo?.symbol;
-  const duration = `${monthDiff(startDate, endDate)} months left`;
+  const duration = `${monthDiff(new Date(), endDate)} months left`;
 
   const modalAction: ModalAction = {
     name: 'Connect Wallet',
@@ -52,7 +54,7 @@ export const CardDetails = () => {
       <CardSubheader>Pool creator:</CardSubheader>
       <BlockiesContainer>
         <Blockies seed="Jeremy" />
-        <Account>{creatorAddress}</Account>
+        <Account>{creator}</Account>
       </BlockiesContainer>
       <CardSubheader>Description:</CardSubheader>
       <CardDescription>{description}</CardDescription>
@@ -62,11 +64,11 @@ export const CardDetails = () => {
           <DataValue>{projectName}</DataValue>
         </DataContainer>
       )}
-      {pool && poolToken && (
+      {cap && poolToken && (
         <DataContainer>
           <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-          <DataValue key={`${pool}-${Date.now()}`}>
-            {pool} {poolToken}
+          <DataValue key={`${cap}-${Date.now()}`}>
+            {cap} {poolToken}
           </DataValue>
         </DataContainer>
       )}
@@ -78,12 +80,24 @@ export const CardDetails = () => {
           </DataValue>
         </DataContainer>
       )}
-      {startDate && endDate && duration && (
+      {endDate && duration && (
         <DataContainer>
           <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
           <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
         </DataContainer>
       )}
+      <DataContainer>
+        <DataHeader>Active:</DataHeader>
+        {active ? (
+          <DataValue key={`active-${Date.now()}`}>
+            <SuccessIcon />
+          </DataValue>
+        ) : (
+          <DataValue key={`active-${Date.now()}`}>
+            <ErrorIcon />
+          </DataValue>
+        )}
+      </DataContainer>
     </ModalContainer>
   );
 };

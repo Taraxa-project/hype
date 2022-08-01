@@ -59,12 +59,12 @@ export const Home = () => {
                   key={`${data.title}-${i}`}
                   projectName={data.projectName}
                   title={data.title}
-                  pool={data.pool}
+                  cap={data.cap}
                   description={data.description}
-                  rewardsAddress={data.rewardsAddress}
-                  creatorAddress={data.creatorAddress}
+                  token={data.token}
+                  creator={data.creator}
                   minReward={data.minReward}
-                  startDate={data.startDate}
+                  active={data.active}
                   endDate={data.endDate}
                   onClick={() => onClick(data)}
                 />

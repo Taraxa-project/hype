@@ -25,10 +25,9 @@ export const useAddHypePoolEffects = () => {
     projectName: '',
     title: '',
     description: '',
-    rewardsAddress: null,
-    pool: null,
+    token: null,
+    cap: null,
     minReward: null,
-    startDate: null,
     endDate: null,
   };
 
@@ -37,7 +36,7 @@ export const useAddHypePoolEffects = () => {
       projectName: yup.string().required('Project Name is required').label('Project Name'),
       title: yup.string().required('Title is required').label('Title'),
       description: yup.string().required('Message is required').label('Your message'),
-      rewardsAddress: yup
+      token: yup
         .string()
         .typeError('Address is required and must be a wallet address!')
         .min(42)
@@ -45,7 +44,7 @@ export const useAddHypePoolEffects = () => {
         .notOneOf(['0x0'])
         .required('Address is required')
         .label('Address'),
-      pool: yup
+      cap: yup
         .number()
         .typeError('Pool cap is required')
         .required('Pool cap is required')
@@ -55,11 +54,6 @@ export const useAddHypePoolEffects = () => {
         .typeError('Min reward is required')
         .required('Min reward is required')
         .label('Min reward per hype'),
-      startDate: yup
-        .date()
-        .typeError('Pool starts is required')
-        .required('Pool starts is required')
-        .label('Pool starts'),
       endDate: yup
         .date()
         .typeError('Pool ends is required')
@@ -123,10 +117,10 @@ export const useAddHypePoolEffects = () => {
     if (!data || !ipfsFileUrl) {
       return;
     }
-    const poolCap = data.pool;
+    const poolCap = data.cap;
     const projectName = data.projectName;
     const title = data.title;
-    const tokenAddress = data.rewardsAddress;
+    const tokenAddress = data.token;
     const minHypeReward = data.minReward;
     const endDate = data.endDate?.getTime();
     mintPool({

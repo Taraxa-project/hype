@@ -6,17 +6,8 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
-  const {
-    projectName,
-    title,
-    description,
-    rewardsAddress,
-    creatorAddress,
-    pool,
-    minReward,
-    startDate,
-    endDate,
-  } = cardData;
+  const { projectName, title, description, token, creator, cap, minReward, active, endDate } =
+    cardData;
 
   const closeModal = () => {
     dispatchModals({
@@ -27,11 +18,11 @@ export const useCardDetailsEffects = () => {
           projectName: null,
           title: null,
           description: null,
-          creatorAddress: null,
-          rewardsAddress: null,
-          pool: 0,
+          creator: null,
+          token: null,
+          cap: 0,
           minReward: 0,
-          startDate: null,
+          active: null,
           endDate: null,
         },
       },
@@ -43,11 +34,11 @@ export const useCardDetailsEffects = () => {
     projectName,
     title,
     description,
-    rewardsAddress,
-    creatorAddress,
-    pool,
+    token,
+    creator,
+    cap,
     minReward,
-    startDate,
+    active,
     endDate,
     closeModal,
   };

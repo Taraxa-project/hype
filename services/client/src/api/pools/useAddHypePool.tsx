@@ -21,21 +21,12 @@ export const useAddHypePool = () => {
   );
 
   const submitHandler = (values: AddHypePool) => {
-    const newHypePool: HypePool = { ...values, creatorAddress: account };
+    const newHypePool: HypePool = { ...values, creator: account, active: false };
     mutate(newHypePool, {
       onSuccess: () => {
         queryClient.resetQueries();
-        // dispatchModals({
-        //   type: ModalsActionsEnum.SHOW_NOTIFICATION,
-        //   payload: {
-        //     open: true,
-        //     type: NotificationType.SUCCESS,
-        //     message: ['Hype Pool created!'],
-        //   },
-        // });
       },
       onError: (error: any) => {
-        console.log('Error: ', error);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {

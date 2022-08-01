@@ -17,7 +17,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PoolPaginate } from '../../models';
+import { ContractHypePool, PoolPaginate } from '../../models';
 import { WalletGuard } from '../auth/wallet.guard';
 import { GetFilterDto, PoolDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
@@ -62,7 +62,7 @@ export class PoolsController {
   })
   public async getById(
     @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<HypePool | null> {
+  ): Promise<ContractHypePool | null> {
     return await this.poolsService.findById(id);
   }
 
