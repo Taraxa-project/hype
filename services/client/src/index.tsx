@@ -14,7 +14,10 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { taraxaChains } from './utils';
 
 const { provider, webSocketProvider } = configureChains(
-  [chain.mainnet, ...taraxaChains],
+  [
+    // chain.mainnet,
+    ...taraxaChains,
+  ],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
@@ -25,7 +28,10 @@ const { provider, webSocketProvider } = configureChains(
 );
 
 const metamaskConnector = new MetaMaskConnector({
-  chains: [chain.mainnet, ...taraxaChains],
+  chains: [
+    // chain.mainnet,
+    ...taraxaChains,
+  ],
   options: {
     shimDisconnect: true,
   },
