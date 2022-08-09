@@ -10,7 +10,7 @@ export type TaraxaChainName = keyof typeof chainIdTr;
 const taraxaChainDev: Chain = {
   id: chainIdTr.taraxaDevnet,
   name: 'Taraxa Devnet',
-  network: 'taraxa-devnet',
+  network: 'devnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Taraxa Coin',
@@ -29,7 +29,7 @@ const taraxaChainDev: Chain = {
 const taraxaChainTest: Chain = {
   id: chainIdTr.taraxaTestnet,
   name: 'Taraxa Testnet',
-  network: 'taraxa-testnet',
+  network: 'testnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Taraxa Coin',
@@ -48,7 +48,7 @@ const taraxaChainTest: Chain = {
 const taraxaChainMain: Chain = {
   id: chainIdTr.taraxaMainnet,
   name: 'Taraxa Mainnet',
-  network: 'taraxa-mainnet',
+  network: 'mainnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Taraxa Coin',

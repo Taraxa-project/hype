@@ -151,10 +151,6 @@ export const AddHypePool = () => {
             </Text>
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-            <Label>Pool starts:</Label>
-            <SpacedStyledTooltip message="Pool starts" />
-          </Box>
-          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Pool ends:</Label>
             <SpacedStyledTooltip message="Pool ends" />
           </Box>

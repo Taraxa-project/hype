@@ -1,17 +1,19 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
 const useContractActivatePool = () => {
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
 
-  const { data, isError, isLoading, write } = useContractWrite({
+  const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
     functionName: 'activatePool',
   });
+
+  const { data, isError, isLoading, write } = useContractWrite(config);
 
   return {
     data,

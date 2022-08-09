@@ -1,29 +1,57 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite, useWaitForTransaction, useProvider } from 'wagmi';
+import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { NotificationType } from '../utils';
+import { useEffect } from 'react';
 
-const useContractCreatePool = () => {
+export interface WritePoolArgs {
+  uri: string;
+  projectName: string;
+  title: string;
+  poolCap: number;
+  tokenAddress: string;
+  minHypeReward: number;
+  endDate: number;
+}
+
+const useContractCreatePool = (
+  args: WritePoolArgs,
+  enabled: boolean,
+  resetWriteContract: () => void,
+) => {
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
-  const provider = useProvider();
-  console.log('provider: ', provider);
+
+  const { config } = usePrepareContractWrite({
+    addressOrName: hypeAddress,
+    contractInterface: hypeInterface,
+    functionName: 'createPool',
+    args: [
+      args.uri,
+      args.projectName,
+      args.title,
+      args.poolCap,
+      args.tokenAddress,
+      args.minHypeReward,
+      args.endDate,
+    ],
+    overrides: {
+      gasLimit: 9999999,
+    },
+    enabled,
+  });
 
   const {
     data: poolData,
     isError,
     isLoading,
     write,
+    writeAsync,
   } = useContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
-    functionName: 'createPool',
-    overrides: {
-      gasLimit: 10000000,
-    },
+    ...config,
     onMutate() {
       console.log('On mutate');
       dispatchModals({
@@ -35,10 +63,10 @@ const useContractCreatePool = () => {
         },
       });
     },
-    onSuccess(data) {
+    onSuccess(data: any) {
       console.log('Successfully called', data);
     },
-    onError(error) {
+    onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
       showErrorModal(error?.message);
@@ -47,25 +75,25 @@ const useContractCreatePool = () => {
 
   const waitForTransaction = useWaitForTransaction({
     hash: poolData?.hash,
-    // wait: poolData?.wait,
+    wait: poolData?.wait,
     onSuccess(transactionData) {
       console.log('Successfully minted Hype Pool mintedPool', poolData);
       console.log('Successfully minted Hype Pool transactionData', transactionData);
       hideLoadingModal();
       showSuccessModal();
+      resetWriteContract();
     },
     onError(error) {
       console.log('Error', error);
       hideLoadingModal();
       showErrorModal(error?.message);
+      resetWriteContract();
     },
     onSettled(data, error) {
       console.log('Settled', { data, error });
       hideLoadingModal();
     },
   });
-
-  console.log('waitForTransaction status: ', waitForTransaction?.status);
 
   const hideLoadingModal = () => {
     dispatchModals({
@@ -100,10 +128,18 @@ const useContractCreatePool = () => {
     });
   };
 
+  useEffect(() => {
+    if (enabled && args.uri) {
+      write();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, args]);
+
   return {
     isError,
     isLoading,
     write,
+    writeAsync,
     waitForTransaction,
   };
 };

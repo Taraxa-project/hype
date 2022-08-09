@@ -21,7 +21,7 @@ async function main() {
   const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow");
   const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address, {
     gasLimit: 100000000,
-    gasPrice: 100000000,
+    gasPrice: 0,
   });
 
   console.log(deployFunc);
@@ -32,7 +32,7 @@ async function main() {
   const HypePool = await ethers.getContractFactory("HypePool");
   const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address, {
     gasLimit: 100000000,
-    gasPrice: 100000000,
+    gasPrice: 0,
   });
 
   await hypePool.deployed();

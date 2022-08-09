@@ -1,25 +1,33 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AddHypePool } from '../../models';
 import useAuth from '../../hooks/useAuth';
-import useContractCreatePool from '../../hooks/useContractCreatePool';
+import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
 import { fullIpfsUrl } from '../../utils';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const useAddHypePoolEffects = () => {
+  const defaultContractArgs: WritePoolArgs = {
+    uri: null,
+    projectName: null,
+    title: null,
+    poolCap: null,
+    tokenAddress: null,
+    minHypeReward: null,
+    endDate: null,
+  };
   const { authenticated } = useAuth();
-  const { write: mintPool, waitForTransaction } = useContractCreatePool();
+  const resetWriteContract = (): void => {
+    setWritePoolArgs(defaultContractArgs);
+    setContractEnabled(false);
+  };
+  const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
+  const [contractEnabled, setContractEnabled] = useState<boolean>(false);
+  useContractCreatePool(writePoolArgs, contractEnabled, resetWriteContract);
   const dispatchModals = useModalsDispatch();
-
-  console.log(
-    'waitForTransaction: ',
-    waitForTransaction.data,
-    waitForTransaction.status,
-    waitForTransaction.isSuccess,
-  );
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -123,12 +131,16 @@ export const useAddHypePoolEffects = () => {
     const tokenAddress = data.token;
     const minHypeReward = data.minReward;
     const endDate = data.endDate?.getTime();
-    mintPool({
-      args: [ipfsFileUrl, projectName, title, poolCap, tokenAddress, minHypeReward, endDate],
-      overrides: {
-        gasLimit: 9999999,
-      },
+    setWritePoolArgs({
+      uri: ipfsFileUrl,
+      projectName: projectName,
+      title: title,
+      poolCap: poolCap,
+      tokenAddress: tokenAddress,
+      minHypeReward: minHypeReward,
+      endDate: endDate,
     });
+    setContractEnabled(true);
   };
 
   useEffect(() => {

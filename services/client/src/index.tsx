@@ -18,7 +18,8 @@ const { provider, webSocketProvider } = configureChains(
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: `https://rpc.${chain?.network}.taraxa.io`,
+        // http: `https://rpc.${chain?.network}.taraxa.io`,
+        http: chain.rpcUrls.default,
       }),
     }),
   ],
