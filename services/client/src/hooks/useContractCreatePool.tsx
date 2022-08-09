@@ -49,7 +49,6 @@ const useContractCreatePool = (
     isError,
     isLoading,
     write,
-    writeAsync,
   } = useContractWrite({
     ...config,
     onMutate() {
@@ -70,12 +69,13 @@ const useContractCreatePool = (
       console.log('On error: ', error);
       hideLoadingModal();
       showErrorModal(error?.message);
+      resetWriteContract();
     },
   });
 
   const waitForTransaction = useWaitForTransaction({
     hash: poolData?.hash,
-    wait: poolData?.wait,
+    // wait: poolData?.wait,
     onSuccess(transactionData) {
       console.log('Successfully minted Hype Pool mintedPool', poolData);
       console.log('Successfully minted Hype Pool transactionData', transactionData);
@@ -129,17 +129,16 @@ const useContractCreatePool = (
   };
 
   useEffect(() => {
-    if (enabled && args.uri) {
+    if (enabled && args && typeof write === 'function') {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args]);
+  }, [enabled, args, write]);
 
   return {
     isError,
     isLoading,
     write,
-    writeAsync,
     waitForTransaction,
   };
 };

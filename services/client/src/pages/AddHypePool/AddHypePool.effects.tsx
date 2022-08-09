@@ -83,6 +83,7 @@ export const useAddHypePoolEffects = () => {
 
   const onSubmit = async (data: AddHypePool) => {
     const url = await uploadToIpfs(data);
+    // const url = 'https://ipfs.infura.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
     createPool(data, url);
     reset();
