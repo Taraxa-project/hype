@@ -1,9 +1,9 @@
 import { Chain } from 'wagmi';
 
 export const chainIdTr = {
-  taraxaMainnet: 1,
-  taraxaTestnet: 2,
-  taraxaDevnet: 3,
+  taraxaMainnet: 841,
+  taraxaTestnet: 842,
+  taraxaDevnet: 843,
 } as const;
 export type TaraxaChainName = keyof typeof chainIdTr;
 
