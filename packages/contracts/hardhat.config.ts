@@ -67,6 +67,15 @@ const config: HardhatUserConfig = {
       gasMultiplier: 20,
       allowUnlimitedContractSize: true,
     },
+    rpcprnet: {
+      chainId: 200,
+      url: process.env.TARA_PR_RPC_URL || "",
+      accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
+      gas: 2100000,
+      gasPrice: 0,
+      gasMultiplier: 0,
+      allowUnlimitedContractSize: true,
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,

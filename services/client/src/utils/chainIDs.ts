@@ -4,8 +4,28 @@ export const chainIdTr = {
   taraxaMainnet: 841,
   taraxaTestnet: 842,
   taraxaDevnet: 843,
+  taraxaPrnet: 200,
 } as const;
 export type TaraxaChainName = keyof typeof chainIdTr;
+
+const taraxaChainPrNet: Chain = {
+  id: chainIdTr.taraxaPrnet,
+  name: 'Taraxa PR Net',
+  network: 'prnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Taraxa Coin',
+    symbol: 'TARA',
+  },
+  rpcUrls: {
+    default: 'https://rpc-pr-1926.prnet.taraxa.io',
+    public: '	https://rpc-pr-1926.prnet.taraxa.io',
+  },
+  blockExplorers: {
+    default: { name: 'Taraxa Pr Net Explorer', url: 'https://explorer-pr-1926.prnet.taraxa.io' },
+  },
+  testnet: true,
+};
 
 const taraxaChainDev: Chain = {
   id: chainIdTr.taraxaDevnet,
@@ -63,4 +83,4 @@ const taraxaChainMain: Chain = {
   },
 };
 
-export const taraxaChains = [taraxaChainDev, taraxaChainTest, taraxaChainMain];
+export const taraxaChains = [taraxaChainDev, taraxaChainTest, taraxaChainMain, taraxaChainPrNet];
