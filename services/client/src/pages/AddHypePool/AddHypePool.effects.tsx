@@ -6,7 +6,6 @@ import { AddHypePool } from '../../models';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
-import { fullIpfsUrl } from '../../utils';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const useAddHypePoolEffects = () => {
@@ -83,7 +82,8 @@ export const useAddHypePoolEffects = () => {
 
   const onSubmit = async (data: AddHypePool) => {
     const url = await uploadToIpfs(data);
-    // const url = 'https://ipfs.infura.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
+    // const url = 'https://hype.infura-ipfs.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
+    // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
     createPool(data, url);
     reset();
@@ -103,8 +103,8 @@ export const useAddHypePoolEffects = () => {
     });
     let url: string;
     try {
-      const uploaded = await ipfsClient.add(data?.description);
-      url = `${fullIpfsUrl(uploaded.path)}`;
+      const uploaded = await ipfsClient.add(JSON.stringify({ description: data?.description }));
+      url = uploaded.path;
       console.log('uploaded: ', uploaded);
       console.log('url: ', url);
     } catch (error) {

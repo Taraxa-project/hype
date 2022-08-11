@@ -5,12 +5,12 @@ const ipfsSecret = `${process.env.REACT_APP_IPFS_SECRET}`;
 const ipfsProject = `${process.env.REACT_APP_IPFS_PROJECT_ID}`;
 const authorization = 'Basic ' + Buffer.from(ipfsProject + ':' + ipfsSecret).toString('base64');
 
-const ipfsEndpoint = `https://ipfs.infura.io:5001`;
-
-export const ipfsBaseUrl = `https://ipfs.infura.io/ipfs/`;
+export const ipfsBaseUrl = `https://hype.infura-ipfs.io/ipfs/`;
 
 export const ipfsClient = create({
-  url: ipfsEndpoint,
+  host: `ipfs.infura.io`,
+  port: 5001,
+  protocol: `https`,
   headers: {
     authorization,
   },
