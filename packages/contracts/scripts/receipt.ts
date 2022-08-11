@@ -18,7 +18,7 @@ async function main() {
   const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", ethers.provider);
   console.log("signer address: ", signer.address);
 
-  const txHash = "0x047829bb70944eb30a690121f1d11c5cf214ff062d6f1de7a9387e378f3755fe";
+  const txHash = "0xdbc8ec105e36519c7f3cb3bbaff4f5662e96b8e42fbe5761a3c11d8efe9974ac";
   const txReceipt = await ethers.provider.getTransactionReceipt(txHash);
   const tx = await ethers.provider.getTransaction(txHash);
   console.log(tx);

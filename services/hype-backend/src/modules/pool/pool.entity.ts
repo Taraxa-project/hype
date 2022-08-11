@@ -59,6 +59,11 @@ export class HypePool extends BaseEntity implements IPool {
   @IsDate()
   endDate: Date;
 
+  @Column({ nullable: true })
+  @IsNotEmpty()
+  @IsNumber()
+  tokenId: number;
+
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

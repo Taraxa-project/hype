@@ -7,17 +7,26 @@ import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WagmiConfig, createClient, configureChains, defaultChains, chain } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
+import { WagmiConfig, createClient, configureChains, chain } from 'wagmi';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthProvider } from './context/auth-context';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { taraxaChains } from './utils';
 
 const { provider, webSocketProvider } = configureChains(
-  [chain.mainnet, ...defaultChains],
-  [publicProvider()],
+  [chain.mainnet, ...taraxaChains],
+  [
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        // http: `https://rpc.${chain?.network}.taraxa.io`,
+        http: chain.rpcUrls.default,
+      }),
+    }),
+  ],
 );
 
 const metamaskConnector = new MetaMaskConnector({
+  chains: [chain.mainnet, ...taraxaChains],
   options: {
     shimDisconnect: true,
   },

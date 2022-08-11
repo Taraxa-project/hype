@@ -47,7 +47,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
         >
           <BackgroundHover show={open} />
           <StyledModal props={{ height }} onClick={(e) => e.stopPropagation()}>
-            <Box height="100%">
+            <Box>
               <ModalTitle {...titleProps} />
               <Box overflow="auto" height="100%">
                 {children}
