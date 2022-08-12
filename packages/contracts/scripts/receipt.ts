@@ -22,6 +22,7 @@ async function main() {
   const txReceipt = await ethers.provider.getTransactionReceipt(txHash);
   const tx = await ethers.provider.getTransaction(txHash);
   console.log(tx);
+  console.log("receipt: ", txReceipt);
   const hypeI = new ethers.utils.Interface(HypePool.abi);
   const txDataAscii = await hypeI.parseTransaction(tx);
   console.log(txDataAscii);
