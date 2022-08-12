@@ -1,0 +1,33 @@
+specVersion: 0.0.4
+description: HypePool for Taraxa
+features:
+  - fullTextSearch
+  - ipfsOnEthereumContracts
+  - nonFatalErrors
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: HypePool
+    network: taraxa
+    source:
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      abi: HypePool
+      startBlock: 1862
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - HypePool
+      abis:
+        - name: HypePool
+          file: ./abis/HypePool.json
+      eventHandlers:
+        - event: PoolActivated(uint256,address)
+          handler: handlePoolActivated
+        - event: PoolCreated(uint256,address,string,string,string,bool,uint256,address,uint256,uint256)
+          handler: handlePoolCreated
+        - event: PoolUriSet(uint256,string)
+          handler: handlePoolUriSet
+      file: ./src/hype-pool.ts

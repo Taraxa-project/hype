@@ -29,13 +29,13 @@ import TextArea from '../../components/textarea/TextArea';
 import Box from '../../components/styles/Box';
 
 export const AddHypePool = () => {
-  const { register, handleSubmit, submitHandler, onCancel, errors, authenticated, control } =
+  const { register, handleSubmit, onSubmit, onCancel, errors, authenticated, control } =
     useAddHypePoolEffects();
 
   return (
     <Wrapper>
       <FormColumn>
-        <form autoComplete="off" onSubmit={handleSubmit(submitHandler)}>
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TitleText>What is your project name!</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project name:</Label>
@@ -112,12 +112,12 @@ export const AddHypePool = () => {
           <FormInput
             disabled={!authenticated}
             placeholder="Asset address..."
-            name="rewardsAddress"
-            {...register('rewardsAddress')}
+            name="token"
+            {...register('token')}
           />
-          {errors.rewardsAddress && (
+          {errors.token && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.rewardsAddress.message}
+              {errors.token.message}
             </Text>
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
@@ -142,35 +142,12 @@ export const AddHypePool = () => {
           <FormInput
             disabled={!authenticated}
             placeholder="Pool cap..."
-            name="pool"
-            {...register('pool')}
+            name="cap"
+            {...register('cap')}
           />
-          {errors.pool && (
+          {errors.cap && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.pool.message}
-            </Text>
-          )}
-          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-            <Label>Pool starts:</Label>
-            <SpacedStyledTooltip message="Pool starts" />
-          </Box>
-          <Controller
-            name="startDate"
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DatePicker
-                wrapperClassName="date-picker"
-                placeholderText="Pool starts..."
-                disabled={!authenticated}
-                selected={value}
-                showTimeSelect
-                onChange={onChange}
-              />
-            )}
-          />
-          {errors.startDate && (
-            <Text color="danger" fontSize="0.8rem">
-              {errors.startDate.message}
+              {errors.cap.message}
             </Text>
           )}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
@@ -187,6 +164,7 @@ export const AddHypePool = () => {
                 disabled={!authenticated}
                 selected={value}
                 showTimeSelect
+                dateFormat="MM/dd/yyyy HH:mm"
                 onChange={onChange}
               />
             )}

@@ -10,7 +10,7 @@ import { GetFilterDto, PoolDTO } from './dto';
 import { HypePool } from './pool.entity';
 import { FindManyOptions } from 'typeorm';
 import { OrderDirection, PoolOrderByEnum } from '../../utils';
-import { PoolPaginate } from '../../models';
+import { ContractHypePool, PoolPaginate } from '../../models';
 import { GetByDTO } from './dto/get-by.dto';
 
 @Injectable()
@@ -24,21 +24,24 @@ export class PoolsService {
 
   public async findAll(filterDto: GetFilterDto): Promise<PoolPaginate> {
     const [pools, total] = await this.getByFilters(filterDto);
+    const formmatedPools: ContractHypePool[] = pools?.map((pool: HypePool) => {
+      return this.formatPoolToFrontend(pool);
+    });
     return {
-      data: pools || [],
+      data: formmatedPools || [],
       total,
     };
   }
 
-  public findById(id: number): Promise<HypePool> {
-    const found = this.repository.findOne({ where: { id } });
+  public async findById(id: number): Promise<ContractHypePool> {
+    const found = await this.repository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(`Hype Pool with ${id} not found!`);
     }
-    return found;
+    return this.formatPoolToFrontend(found);
   }
 
-  public async create(pool: PoolDTO): Promise<HypePool> {
+  public async create(pool: PoolDTO): Promise<string> {
     const newPool = new HypePool({ ...pool });
     const startDate = new Date(pool.startDate);
     const endDate = new Date(pool.endDate);
@@ -47,7 +50,7 @@ export class PoolsService {
       startDate,
       endDate,
     });
-    return stored;
+    return this.generatePoolUrl(stored);
   }
 
   public async findBy({ creatorAddress }: GetByDTO): Promise<HypePool[]> {
@@ -63,6 +66,12 @@ export class PoolsService {
   ): Promise<HypePool[]> {
     const hypePools = await this.repository.find(conditions);
     return hypePools;
+  }
+
+  public async update(id: number, tokenId: number): Promise<HypePool> {
+    const pool = await this.findById(id);
+    pool.tokenId = tokenId;
+    return await this.repository.save(pool);
   }
 
   private async getByFilters(
@@ -112,5 +121,29 @@ export class PoolsService {
       );
       throw new InternalServerErrorException('Internal server exception');
     }
+  }
+
+  private generatePoolUrl(pool: HypePool): string {
+    const url = `pools/${pool.id}`;
+    return url;
+  }
+
+  private formatPoolToFrontend(pool: HypePool): ContractHypePool {
+    if (!pool) {
+      return;
+    }
+    return {
+      id: pool?.id,
+      projectName: pool?.projectName,
+      title: pool?.title,
+      description: pool?.description,
+      creator: pool?.creatorAddress,
+      token: pool?.rewardsAddress,
+      cap: pool?.pool,
+      minReward: pool?.minReward,
+      endDate: pool?.endDate,
+      tokenId: pool?.tokenId,
+      active: true,
+    } as ContractHypePool;
   }
 }

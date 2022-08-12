@@ -1,0 +1,26 @@
+type _Schema_
+  @fulltext(
+    name: "poolSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "HypePool", fields: [{ name: "projectName" }, { name: "title" }, { name: "description"}] }]
+  )
+
+type HypePool @entity(immutable: true) {
+  id: String!
+  creator: Bytes!
+  projectName: String!
+  description: String!
+  uri: String!
+  title: String!
+  active: Boolean!
+  cap: BigInt!
+  token: Bytes!
+  minReward: BigInt!
+  endDate: BigInt!
+}
+
+type HypeUri @entity(immutable: true) {
+  id: String!
+  uri: String!
+}

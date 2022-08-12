@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { AddHypePool, HypePool } from '../../models';
-import { UnpackNestedValue } from 'react-hook-form';
 import useWallet from '../../hooks/useWallet';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
@@ -17,24 +16,17 @@ export const useAddHypePool = () => {
   const { account } = useWallet();
   const dispatchModals = useModalsDispatch();
 
-  const { mutate } = useMutation((values: HypePool) => postNewPool(values));
+  const { data, error, isError, isIdle, isLoading, isPaused, isSuccess, mutate } = useMutation(
+    (values: HypePool) => postNewPool(values),
+  );
 
-  const submitHandler = (values: UnpackNestedValue<AddHypePool>) => {
-    const newHypePool: HypePool = { ...values, creatorAddress: account };
+  const submitHandler = (values: AddHypePool) => {
+    const newHypePool: HypePool = { ...values, creator: account, active: false };
     mutate(newHypePool, {
       onSuccess: () => {
         queryClient.resetQueries();
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_NOTIFICATION,
-          payload: {
-            open: true,
-            type: NotificationType.SUCCESS,
-            message: ['Hype Pool created!'],
-          },
-        });
       },
       onError: (error: any) => {
-        console.log('Error: ', error);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {
@@ -46,5 +38,5 @@ export const useAddHypePool = () => {
       },
     });
   };
-  return submitHandler;
+  return { data, error, isError, isIdle, isLoading, isPaused, isSuccess, submitHandler };
 };

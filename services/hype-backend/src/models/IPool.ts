@@ -9,9 +9,23 @@ export interface IPool {
   minReward: number;
   startDate: Date;
   endDate: Date;
+  tokenId?: number;
 }
 
 export interface PoolPaginate {
-  data: any[];
+  data: ContractHypePool[];
   total: number;
+}
+
+export interface ContractHypePool {
+  projectName: string;
+  title: string;
+  description: string;
+  token: string;
+  cap: number;
+  minReward: number;
+  endDate: Date;
+  creator: string;
+  active: boolean;
+  tokenId?: number;
 }

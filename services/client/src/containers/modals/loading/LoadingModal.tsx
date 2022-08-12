@@ -12,7 +12,12 @@ export const LoadingModal = () => {
     title,
   };
   return (
-    <ModalContainer titleProps={titleProps} open={open} closeModal={closeModal}>
+    <ModalContainer
+      titleProps={titleProps}
+      closeOutside={false}
+      open={open}
+      closeModal={closeModal}
+    >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>
         <Box display="flex" flex="1  1 auto" alignItems="center" justifyContent="center">

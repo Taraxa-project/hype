@@ -5,14 +5,19 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PoolPaginate } from '../../models';
-import { GetAddress } from '../auth/get-address.decorator';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ContractHypePool, PoolPaginate } from '../../models';
 import { WalletGuard } from '../auth/wallet.guard';
 import { GetFilterDto, PoolDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
@@ -50,7 +55,6 @@ export class PoolsController {
   }
 
   @Get(':id')
-  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolDTO,
@@ -58,7 +62,7 @@ export class PoolsController {
   })
   public async getById(
     @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<HypePool | null> {
+  ): Promise<ContractHypePool | null> {
     return await this.poolsService.findById(id);
   }
 
@@ -69,7 +73,22 @@ export class PoolsController {
     type: PoolDTO,
     description: 'Returns a new created pool',
   })
-  public async createPool(@Body() poolToCreate: PoolDTO): Promise<HypePool> {
+  public async createPool(@Body() poolToCreate: PoolDTO): Promise<string> {
     return await this.poolsService.create(poolToCreate);
+  }
+
+  @Patch('/:id')
+  @UseGuards(WalletGuard)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PoolDTO,
+    description: 'Returns an updated pool',
+  })
+  @ApiNotFoundResponse({ description: `No pool found` })
+  public async update(
+    @Param('id') id: number,
+    @Body() tokenId: number,
+  ): Promise<PoolDTO> {
+    return await this.poolsService.update(id, tokenId);
   }
 }
