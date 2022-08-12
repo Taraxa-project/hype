@@ -12,6 +12,8 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthProvider } from './context/auth-context';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { taraxaChains } from './utils';
+import { createClient as urqlCreatClient, Provider as UrqlProvider } from 'urql';
+import { GRAPHQL_API } from './api/types';
 
 const { provider, webSocketProvider } = configureChains(
   [chain.mainnet, ...taraxaChains],
@@ -47,21 +49,27 @@ const queryClient = new QueryClient({
   },
 });
 
+export const graphQLClient = urqlCreatClient({
+  url: GRAPHQL_API,
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <HypeThemeProvider>
       <WagmiConfig client={client}>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <ModalsProvider>
-              <AuthProvider>
-                <App />
-              </AuthProvider>
-            </ModalsProvider>
-          </BrowserRouter>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <UrqlProvider value={graphQLClient}>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <ModalsProvider>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </ModalsProvider>
+            </BrowserRouter>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </UrqlProvider>
       </WagmiConfig>
     </HypeThemeProvider>
   </React.StrictMode>,

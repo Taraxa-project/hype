@@ -14,6 +14,21 @@ const computePage = (page: number, search?: string): FetchHypesFilter => {
   };
 };
 
+// const poolsQuery = `
+//   query {
+//     hypePools(first: 10, skip: 0) {
+//       id
+//       projectName
+//       description
+//       uri
+//       title
+//       creator
+//       endDate
+//       minReward
+//     }
+//   }
+// `;
+
 const fetchPools = async (params: FetchHypesFilter) => {
   const url = `${API}/pools`;
   try {
