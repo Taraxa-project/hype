@@ -3,7 +3,7 @@ import { useQuery } from 'urql';
 
 const hypePoolsPerPage = 3;
 
-const computePage = (page: number, search?: string): FetchHypesFilter => {
+const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   const first = hypePoolsPerPage;
   const skip = (page - 1) * hypePoolsPerPage;
 
@@ -55,16 +55,15 @@ const poolsQuery = `
   }
 `;
 
-export const useFetchHypePools = (pageNumber: number, search?: string) => {
-  const page = search ? 1 : pageNumber;
-  const query = search ? poolsSearchQuery : poolsQuery;
-  const filters: FetchHypesFilter = computePage(page, search);
-  const [{ data, fetching, error }] = useQuery({
+export const useFetchHypePools = (filters: { page: number; searchString: string }) => {
+  const query = filters.searchString ? poolsSearchQuery : poolsQuery;
+  const computedFilters: FetchHypesFilter = computeFilters(filters.page, filters.searchString);
+  const [result] = useQuery({
     query: query,
-    variables: filters,
+    variables: computedFilters,
   });
 
-  console.log('useFetchHypePools result: ', data, fetching, error);
+  const { data, fetching, error } = result;
 
   return {
     data,

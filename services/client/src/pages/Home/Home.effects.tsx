@@ -5,21 +5,22 @@ import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
-  const [searchString, setSearchString] = useState('');
-  const [pageNumber, setPageNumber] = useState(1);
+  const [filters, setFilters] = useState<{ page: number; searchString: string }>({
+    page: 1,
+    searchString: '',
+  });
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
   const dispatchModals = useModalsDispatch();
-  const { data, fetching } = useFetchHypePools(pageNumber, searchString);
+  const { data, fetching: isFetchingNextPage } = useFetchHypePools(filters);
 
   useEffect(() => {
-    let fetching = false;
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-
-      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
-        fetching = true;
-        setPageNumber(pageNumber + 1);
-        fetching = false;
+      if (!isFetchingNextPage && scrollHeight - scrollTop <= clientHeight * 1.5) {
+        setFilters({
+          page: filters.page + 1,
+          searchString: filters.searchString,
+        });
       }
     };
 
@@ -28,10 +29,10 @@ export const useHomeEffects = () => {
       document.removeEventListener('scroll', onScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFetchingNextPage]);
 
   useEffect(() => {
-    if (searchString) {
+    if (filters.searchString) {
       if (data?.poolSearch) {
         setHypePools(hypePools.concat(data?.poolSearch));
       }
@@ -41,12 +42,14 @@ export const useHomeEffects = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, searchString]);
+  }, [data, filters.searchString]);
 
   const handleChange = (e: any) => {
     setHypePools([]);
-    setSearchString(e.target.value);
-    setPageNumber(1);
+    setFilters({
+      page: 1,
+      searchString: e.target.value,
+    });
   };
 
   const debouncedResults = useMemo(() => {
@@ -73,6 +76,6 @@ export const useHomeEffects = () => {
     debouncedResults,
     hypePools,
     onClick,
-    isFetchingNextPage: fetching,
+    isFetchingNextPage,
   };
 };

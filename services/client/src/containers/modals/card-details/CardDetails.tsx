@@ -10,8 +10,7 @@ import Blockies from 'react-blockies';
 import { monthDiff } from '../../../utils';
 import { useNetwork, useToken } from 'wagmi';
 import useWallet from '../../../hooks/useWallet';
-import SuccessIcon from '../../../assets/icons/Success';
-import ErrorIcon from '../../../assets/icons/Error';
+import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
   const {
@@ -88,14 +87,14 @@ export const CardDetails = () => {
         </DataContainer>
       )}
       <DataContainer>
-        <DataHeader>Active:</DataHeader>
+        <DataHeader>Status:</DataHeader>
         {active ? (
           <DataValue key={`active-${Date.now()}`}>
-            <SuccessIcon />
+            <DotIcon color="#DDA25D" /> Active
           </DataValue>
         ) : (
           <DataValue key={`active-${Date.now()}`}>
-            <ErrorIcon />
+            <DotIcon color="#C2C2C2" /> Inactive
           </DataValue>
         )}
       </DataContainer>
