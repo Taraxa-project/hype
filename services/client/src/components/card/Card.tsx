@@ -26,7 +26,7 @@ const Card = ({ children, ...props }: CardProps) => {
   const { chain } = useNetwork();
   const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
   const poolToken = poolTokenInfo?.symbol;
-  const duration = `${monthDiff(new Date(), endDate)} months left`;
+  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   return (
     <StyledCard>

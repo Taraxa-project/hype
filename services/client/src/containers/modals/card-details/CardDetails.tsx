@@ -8,7 +8,7 @@ import { useCardDetailsEffects } from './CardDetails.effects';
 import { Account, BlockiesContainer, CardDescription, CardSubheader } from './CardDetails.styled';
 import Blockies from 'react-blockies';
 import { monthDiff } from '../../../utils';
-import { useToken } from 'wagmi';
+import { useNetwork, useToken } from 'wagmi';
 import useWallet from '../../../hooks/useWallet';
 import SuccessIcon from '../../../assets/icons/Success';
 import ErrorIcon from '../../../assets/icons/Error';
@@ -33,9 +33,10 @@ export const CardDetails = () => {
     close: closeModal,
   };
   const { isConnected, connect } = useWallet();
-  const { data: poolTokenInfo } = useToken({ address: token });
+  const { chain } = useNetwork();
+  const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
   const poolToken = poolTokenInfo?.symbol;
-  const duration = `${monthDiff(new Date(), endDate)} months left`;
+  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   const modalAction: ModalAction = {
     name: 'Connect Wallet',
@@ -64,7 +65,7 @@ export const CardDetails = () => {
           <DataValue>{projectName}</DataValue>
         </DataContainer>
       )}
-      {cap && poolToken && (
+      {cap && (
         <DataContainer>
           <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
           <DataValue key={`${cap}-${Date.now()}`}>
@@ -72,7 +73,7 @@ export const CardDetails = () => {
           </DataValue>
         </DataContainer>
       )}
-      {minReward && poolToken && (
+      {minReward && (
         <DataContainer>
           <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
           <DataValue key={`${minReward}-${Date.now()}`}>

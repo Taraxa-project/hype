@@ -1,63 +1,74 @@
-import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
-import { API, FetchHypesFilter, PoolPaginate } from '../types';
+import { FetchHypesFilter, PoolPaginate } from '../types';
+import { useQuery } from 'urql';
 
-const hypePoolsPerPage = 6;
+const hypePoolsPerPage = 3;
 
 const computePage = (page: number, search?: string): FetchHypesFilter => {
-  const take = hypePoolsPerPage;
+  const first = hypePoolsPerPage;
   const skip = (page - 1) * hypePoolsPerPage;
-  return {
-    take,
+
+  const filters: FetchHypesFilter = {
+    first,
     skip,
-    search,
   };
-};
 
-// const poolsQuery = `
-//   query {
-//     hypePools(first: 10, skip: 0) {
-//       id
-//       projectName
-//       description
-//       uri
-//       title
-//       creator
-//       endDate
-//       minReward
-//     }
-//   }
-// `;
-
-const fetchPools = async (params: FetchHypesFilter) => {
-  const url = `${API}/pools`;
-  try {
-    const { data } = await axios.get(url, { params });
-    return data as PoolPaginate;
-  } catch (err) {
-    console.log('Error in fetchPools: ', err);
+  if (search) {
+    filters.text = search;
   }
+
+  return filters;
 };
 
-export const useFetchHypePools = (search?: string) => {
-  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ['pools', search],
-    ({ pageParam = 1 }) => fetchPools(computePage(pageParam, search)),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const maxPages = lastPage?.total / 5;
-        const nextPage = allPages.length + 1;
-        return nextPage <= maxPages ? nextPage : undefined;
-      },
-      select: (data) => ({ ...data, pages: data.pages.flatMap((page) => page?.data) }),
-    },
-  );
+const poolsSearchQuery = `
+  query($first: Int!, $skip: Int!, $text: String) {
+    poolSearch(first: $first, skip: $skip, text: $text) {
+      id
+      title
+      projectName
+      description
+      active
+      uri
+      token
+      cap
+      creator
+      endDate
+      minReward
+    }
+  }
+`;
+
+const poolsQuery = `
+  query($first: Int!, $skip: Int!, $text: String) {
+    hypePools(first: $first, skip: $skip, text: $text) {
+      id
+      title
+      projectName
+      description
+      active
+      uri
+      token
+      cap
+      creator
+      endDate
+      minReward
+    }
+  }
+`;
+
+export const useFetchHypePools = (pageNumber: number, search?: string) => {
+  const page = search ? 1 : pageNumber;
+  const query = search ? poolsSearchQuery : poolsQuery;
+  const filters: FetchHypesFilter = computePage(page, search);
+  const [{ data, fetching, error }] = useQuery({
+    query: query,
+    variables: filters,
+  });
+
+  console.log('useFetchHypePools result: ', data, fetching, error);
 
   return {
     data,
-    isLoading,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
+    fetching,
+    error,
   };
 };

@@ -6,8 +6,10 @@ import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hypePools, setHypePools] = useState<HypePool[]>([]);
   const dispatchModals = useModalsDispatch();
-  const { data, isFetchingNextPage, fetchNextPage } = useFetchHypePools(searchString);
+  const { data, fetching } = useFetchHypePools(pageNumber, searchString);
 
   useEffect(() => {
     let fetching = false;
@@ -16,7 +18,7 @@ export const useHomeEffects = () => {
 
       if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
         fetching = true;
-        await fetchNextPage();
+        setPageNumber(pageNumber + 1);
         fetching = false;
       }
     };
@@ -28,8 +30,23 @@ export const useHomeEffects = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (searchString) {
+      if (data?.poolSearch) {
+        setHypePools(hypePools.concat(data?.poolSearch));
+      }
+    } else {
+      if (data?.hypePools) {
+        setHypePools(hypePools.concat(data?.hypePools));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, searchString]);
+
   const handleChange = (e: any) => {
+    setHypePools([]);
     setSearchString(e.target.value);
+    setPageNumber(1);
   };
 
   const debouncedResults = useMemo(() => {
@@ -54,8 +71,8 @@ export const useHomeEffects = () => {
 
   return {
     debouncedResults,
-    data,
+    hypePools,
     onClick,
-    isFetchingNextPage,
+    isFetchingNextPage: fetching,
   };
 };

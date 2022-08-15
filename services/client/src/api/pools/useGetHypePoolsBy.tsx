@@ -9,7 +9,10 @@ const profilePoolsQuery = `
       title
       projectName
       description
+      active
       uri
+      token
+      cap
       creator
       endDate
       minReward

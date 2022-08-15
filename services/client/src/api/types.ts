@@ -2,9 +2,9 @@ import { HypePool } from '../models';
 import { OrderDirection, PoolOrderByEnum } from '../utils';
 
 export interface FetchHypesFilter {
-  take: number;
+  first: number;
   skip: number;
-  search?: string;
+  text?: string;
   orderBy?: PoolOrderByEnum;
   order?: OrderDirection;
 }

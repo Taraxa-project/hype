@@ -18,9 +18,10 @@ import {
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
+import { HypePool } from '../../models';
 
 export const Home = () => {
-  const { debouncedResults, data, onClick, isFetchingNextPage } = useHomeEffects();
+  const { debouncedResults, hypePools, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
     <>
@@ -50,10 +51,10 @@ export const Home = () => {
           onChange={debouncedResults}
         />
       </PoolContainer>
-      {(data || data?.pages?.length > 0) && (
+      {hypePools?.length > 0 && (
         <CardContainer>
-          {data?.pages?.map(
-            (data, i) =>
+          {hypePools?.map(
+            (data: HypePool, i: number) =>
               data && (
                 <Card
                   key={`${data.title}-${i}`}
@@ -77,7 +78,7 @@ export const Home = () => {
           <LoadingSpinner />
         </Box>
       )}
-      {(!data || data?.pages?.length === 0) && (
+      {(!hypePools || hypePools?.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
             <NotFoundIcon /> Nothing found...
