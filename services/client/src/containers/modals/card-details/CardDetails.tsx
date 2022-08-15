@@ -24,6 +24,7 @@ export const CardDetails = () => {
     minReward,
     active,
     endDate,
+    cardModalAction,
     closeModal,
   } = useCardDetailsEffects();
 
@@ -49,7 +50,7 @@ export const CardDetails = () => {
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={modalAction}
+      modalAction={cardModalAction || modalAction}
     >
       <CardSubheader>Pool creator:</CardSubheader>
       <BlockiesContainer>

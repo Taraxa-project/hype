@@ -1,3 +1,4 @@
+import { ModalAction } from '../../components/modals/modal-container/ModalContainer';
 import { HypePool } from '../../models';
 import { NotificationType } from '../../utils';
 import { ModalsActionsEnum } from './reducer';
@@ -5,6 +6,7 @@ import { ModalsActionsEnum } from './reducer';
 export type TCardDetails = {
   open: boolean;
   cardData: HypePool;
+  cardModalAction?: ModalAction;
 };
 
 export type TLoading = {

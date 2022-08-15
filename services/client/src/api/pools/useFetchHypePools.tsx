@@ -1,4 +1,4 @@
-import { FetchHypesFilter, PoolPaginate } from '../types';
+import { FetchHypesFilter } from '../types';
 import { useQuery } from 'urql';
 
 const hypePoolsPerPage = 3;

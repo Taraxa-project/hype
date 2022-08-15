@@ -6,6 +6,7 @@ import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { HypePool } from '../../models';
 import Card from '../../components/card/Card';
 import styled from 'styled-components';
+import { ModalAction } from '../../components/modals/modal-container/ModalContainer';
 
 const StyledCardContainer = styled.div`
   position: relative;
@@ -33,11 +34,13 @@ export const CardContainer = ({
   cards,
   emptyMessage,
   target,
+  poolModalAction,
 }: {
   title: string;
   cards: HypePool[];
   emptyMessage: string;
   target: string;
+  poolModalAction: ModalAction;
 }) => {
   const dispatchModals = useModalsDispatch();
 
@@ -64,6 +67,7 @@ export const CardContainer = ({
           {cards.map((data, i) => (
             <Card
               key={`${data.title}-${i}`}
+              id={data.id}
               projectName={data.projectName}
               title={data.title}
               cap={data.cap}
@@ -79,6 +83,7 @@ export const CardContainer = ({
                   payload: {
                     open: true,
                     cardData: cards[i],
+                    cardModalAction: poolModalAction,
                   },
                 });
               }}

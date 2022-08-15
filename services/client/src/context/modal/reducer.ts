@@ -13,6 +13,7 @@ export const modalsInitialState: IModalsStore = {
   hypeDetails: {
     open: false,
     cardData: {
+      id: null,
       projectName: null,
       title: null,
       description: null,

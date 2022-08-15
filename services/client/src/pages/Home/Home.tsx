@@ -58,6 +58,7 @@ export const Home = () => {
               data && (
                 <Card
                   key={`${data.title}-${i}`}
+                  id={data.id}
                   projectName={data.projectName}
                   title={data.title}
                   cap={data.cap}

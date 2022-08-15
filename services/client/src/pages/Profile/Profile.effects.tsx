@@ -4,6 +4,7 @@ import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import useWallet from 'src/hooks/useWallet';
 import { TelegramUser } from 'src/models/HypeUser.model';
 import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
+import { ModalAction } from '../../components/modals/modal-container/ModalContainer';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 
@@ -86,6 +87,16 @@ export const useProfileEffects = () => {
     submitHandler({ address: account, username: null, auth_date: null });
   };
 
+  const onActivatePool = () => {
+    console.log('ACTIVATE POOL!');
+  };
+
+  const poolModalAction: ModalAction = {
+    name: 'Activate hype pool',
+    onAction: onActivatePool,
+    closeButtonVariant: 'primary',
+  };
+
   useEffect(() => {
     setTelegramProfile({
       address: account,
@@ -101,5 +112,6 @@ export const useProfileEffects = () => {
     telegramProfile,
     connect,
     disconnect,
+    poolModalAction,
   };
 };

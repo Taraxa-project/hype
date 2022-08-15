@@ -2,7 +2,7 @@ import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../c
 
 export const useCardDetailsEffects = () => {
   const {
-    hypeDetails: { open, cardData },
+    hypeDetails: { open, cardData, cardModalAction },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
@@ -15,6 +15,7 @@ export const useCardDetailsEffects = () => {
       payload: {
         open: false,
         cardData: {
+          id: null,
           projectName: null,
           title: null,
           description: null,
@@ -40,6 +41,7 @@ export const useCardDetailsEffects = () => {
     minReward,
     active,
     endDate,
+    cardModalAction,
     closeModal,
   };
 };
