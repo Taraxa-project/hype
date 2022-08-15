@@ -13,6 +13,7 @@ export const useAddHypePoolEffects = () => {
     uri: null,
     projectName: null,
     title: null,
+    description: null,
     poolCap: null,
     tokenAddress: null,
     minHypeReward: null,
@@ -36,14 +37,6 @@ export const useAddHypePoolEffects = () => {
     cap: null,
     minReward: null,
     endDate: null,
-    // projectName: 'FoxCoin Hype 1',
-    // title: 'FoxCoin Staking Launch! 1',
-    // description:
-    //   'FOX is an Ethereum token that governs ShapeShift, a decentralized exchange. By participating in the ShapeShift DAO (decentralized autonomous organization), FOX holders can vote on future asset integrations, products, and fee structures for the platform.',
-    // token: '0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d',
-    // cap: 100000,
-    // minReward: 2,
-    // endDate: new Date('2022-11-06T11:17:10.927Z'),
   };
 
   const validationSchema = yup
@@ -136,6 +129,7 @@ export const useAddHypePoolEffects = () => {
     }
     const poolCap = data.cap;
     const projectName = data.projectName;
+    const description = data.description;
     const title = data.title;
     const tokenAddress = data.token;
     const minHypeReward = data.minReward;
@@ -144,6 +138,7 @@ export const useAddHypePoolEffects = () => {
       uri: ipfsFileUrl,
       projectName: projectName,
       title: title,
+      description: description,
       poolCap: poolCap,
       tokenAddress: tokenAddress,
       minHypeReward: minHypeReward,

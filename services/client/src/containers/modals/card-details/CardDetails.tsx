@@ -53,10 +53,12 @@ export const CardDetails = () => {
       modalAction={cardModalAction || modalAction}
     >
       <CardSubheader>Pool creator:</CardSubheader>
-      <BlockiesContainer>
-        <Blockies seed="Jeremy" />
-        <Account>{creator}</Account>
-      </BlockiesContainer>
+      {creator && (
+        <BlockiesContainer>
+          <Blockies seed={creator} />
+          <Account>{creator}</Account>
+        </BlockiesContainer>
+      )}
       <CardSubheader>Description:</CardSubheader>
       <CardDescription>{description}</CardDescription>
       {projectName && (
