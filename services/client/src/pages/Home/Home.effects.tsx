@@ -64,10 +64,10 @@ export const useHomeEffects = () => {
 
   const onClick = (cardData: HypePool) => {
     dispatchModals({
-      type: ModalsActionsEnum.SHOW_POOL_CREATED,
+      type: ModalsActionsEnum.SHOW_CARD_DETAILS,
       payload: {
         open: true,
-        pool: cardData,
+        cardData,
       },
     });
   };
