@@ -44,7 +44,11 @@ export const RewardsContainer = (props: RewardProps) => {
           color="black"
           letterSpacing="-0.02em"
         >
-          {isConnected ? `${formatNumber(props.rewardAmount)} TARA` : `N/A`}
+          {isConnected
+            ? formatNumber(props.rewardAmount)
+              ? `${formatNumber(props.rewardAmount)} TARA`
+              : `N/A`
+            : `N/A`}
         </Heading>
       </Box>
       <Button

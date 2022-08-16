@@ -1,48 +1,40 @@
-import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
-import { API, FetchHypesFilter, PoolPaginate } from '../types';
+import { FetchHypesFilter } from '../types';
+import { useQuery } from 'urql';
+import { HYPEPOOL_QUERIES } from './query-collector';
 
 const hypePoolsPerPage = 6;
 
-const computePage = (page: number, search?: string): FetchHypesFilter => {
-  const take = hypePoolsPerPage;
+const computeFilters = (page: number, search?: string): FetchHypesFilter => {
+  const first = hypePoolsPerPage;
   const skip = (page - 1) * hypePoolsPerPage;
-  return {
-    take,
+
+  const filters: FetchHypesFilter = {
+    first,
     skip,
-    search,
   };
-};
 
-const fetchPools = async (params: FetchHypesFilter) => {
-  const url = `${API}/pools`;
-  try {
-    const { data } = await axios.get(url, { params });
-    return data as PoolPaginate;
-  } catch (err) {
-    console.log('Error in fetchPools: ', err);
+  if (search) {
+    filters.text = search;
   }
+
+  return filters;
 };
 
-export const useFetchHypePools = (search?: string) => {
-  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ['pools', search],
-    ({ pageParam = 1 }) => fetchPools(computePage(pageParam, search)),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const maxPages = lastPage?.total / 5;
-        const nextPage = allPages.length + 1;
-        return nextPage <= maxPages ? nextPage : undefined;
-      },
-      select: (data) => ({ ...data, pages: data.pages.flatMap((page) => page?.data) }),
-    },
-  );
+export const useFetchHypePools = (filters: { page: number; searchString: string }) => {
+  const query = filters.searchString
+    ? HYPEPOOL_QUERIES.poolsSearchQuery
+    : HYPEPOOL_QUERIES.poolsQuery;
+  const computedFilters: FetchHypesFilter = computeFilters(filters.page, filters.searchString);
+  const [result] = useQuery({
+    query: query,
+    variables: computedFilters,
+  });
+
+  const { data, fetching, error } = result;
 
   return {
     data,
-    isLoading,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
+    fetching,
+    error,
   };
 };

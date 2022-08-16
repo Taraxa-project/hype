@@ -12,8 +12,7 @@ import {
   Container,
 } from './Card.styled';
 import { useNetwork, useToken } from 'wagmi';
-import SuccessIcon from '../../assets/icons/Success';
-import ErrorIcon from '../../assets/icons/Error';
+import DotIcon from '../../assets/icons/Dot';
 
 export interface CardProps extends HypePool {
   children?: JSX.Element | string;
@@ -26,7 +25,7 @@ const Card = ({ children, ...props }: CardProps) => {
   const { chain } = useNetwork();
   const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
   const poolToken = poolTokenInfo?.symbol;
-  const duration = `${monthDiff(new Date(), endDate)} months left`;
+  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   return (
     <StyledCard>
@@ -65,14 +64,14 @@ const Card = ({ children, ...props }: CardProps) => {
             </DataContainer>
           )}
           <DataContainer>
-            <DataHeader>Active:</DataHeader>
+            <DataHeader>Status:</DataHeader>
             {active ? (
               <DataValue key={`active-${Date.now()}`}>
-                <SuccessIcon />
+                <DotIcon color="#DDA25D" /> Active
               </DataValue>
             ) : (
               <DataValue key={`active-${Date.now()}`}>
-                <ErrorIcon />
+                <DotIcon color="#C2C2C2" /> Inactive
               </DataValue>
             )}
           </DataContainer>

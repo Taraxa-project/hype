@@ -1,33 +1,10 @@
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import { HypePool } from '../../models';
-import { API } from '../types';
+import { useQuery } from 'urql';
+import { HYPEPOOL_QUERIES } from './query-collector';
 
-const getPoolsBy = (creatorAddress: string) => {
-  if (!creatorAddress) {
-    return undefined;
-  }
-  const url = `${API}/pools/by`;
-  const params = {
-    creatorAddress,
-  };
-  return axios.get(url, { params });
-};
-
-export const useGetHypePoolsBy = (creatorAddress: string) => {
-  const { isLoading, isError, data, error } = useQuery(
-    ['pools', creatorAddress],
-    () => getPoolsBy(creatorAddress),
-    {
-      retry: false,
-      enabled: !!creatorAddress,
-    },
-  );
-
-  return {
-    isLoading,
-    isError,
-    data: data?.data as HypePool[],
-    error,
-  };
+export const useGetHypePoolsBy = async (creatorAddress: string) => {
+  const [result] = useQuery({
+    query: HYPEPOOL_QUERIES.profilePoolsQuery,
+    variables: { creator: creatorAddress },
+  });
+  return result;
 };

@@ -5,19 +5,32 @@ import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
-  const [searchString, setSearchString] = useState('');
+  const [filters, setFilters] = useState<{
+    page: number;
+    searchString: string;
+    maxReached: boolean;
+  }>({
+    page: 1,
+    searchString: '',
+    maxReached: false,
+  });
+  const [hypePools, setHypePools] = useState<HypePool[]>([]);
   const dispatchModals = useModalsDispatch();
-  const { data, isFetchingNextPage, fetchNextPage } = useFetchHypePools(searchString);
+  const { data, fetching: isFetchingNextPage } = useFetchHypePools(filters);
 
   useEffect(() => {
-    let fetching = false;
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-
-      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
-        fetching = true;
-        await fetchNextPage();
-        fetching = false;
+      if (
+        !isFetchingNextPage &&
+        !filters.maxReached &&
+        scrollHeight - scrollTop <= clientHeight * 1.5
+      ) {
+        setFilters({
+          page: filters.page + 1,
+          searchString: filters.searchString,
+          maxReached: filters.maxReached,
+        });
       }
     };
 
@@ -25,11 +38,34 @@ export const useHomeEffects = () => {
     return () => {
       document.removeEventListener('scroll', onScroll);
     };
+  }, [isFetchingNextPage, filters]);
+
+  useEffect(() => {
+    if (data?.poolSearch?.length === 0 || data?.hypePools?.length === 0) {
+      setFilters({
+        ...filters,
+        maxReached: true,
+      });
+    }
+    if (filters.searchString) {
+      if (data?.poolSearch) {
+        setHypePools(hypePools.concat(data?.poolSearch));
+      }
+    } else {
+      if (data?.hypePools) {
+        setHypePools(hypePools.concat(data?.hypePools));
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data, filters.searchString]);
 
   const handleChange = (e: any) => {
-    setSearchString(e.target.value);
+    setHypePools([]);
+    setFilters({
+      page: 1,
+      searchString: e.target.value || '',
+      maxReached: false,
+    });
   };
 
   const debouncedResults = useMemo(() => {
@@ -54,7 +90,7 @@ export const useHomeEffects = () => {
 
   return {
     debouncedResults,
-    data,
+    hypePools,
     onClick,
     isFetchingNextPage,
   };

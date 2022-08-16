@@ -18,6 +18,8 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
   min-width: 30rem;
   height: ${({ props }) => props.height || '37rem'};
 
+  maxheight: 100vh;
+
   background: ${({ theme }) => theme.colors.greys[1]};
   border-radius: 2rem;
   display: flex;

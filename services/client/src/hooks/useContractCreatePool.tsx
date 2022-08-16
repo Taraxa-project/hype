@@ -10,6 +10,7 @@ export interface WritePoolArgs {
   uri: string;
   projectName: string;
   title: string;
+  description: string;
   poolCap: number;
   tokenAddress: string;
   minHypeReward: number;
@@ -108,11 +109,15 @@ const useContractCreatePool = (
 
   const showSuccessModal = () => {
     dispatchModals({
-      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      type: ModalsActionsEnum.SHOW_POOL_CREATED,
       payload: {
         open: true,
-        type: NotificationType.SUCCESS,
-        message: ['Successfully minted Hype Pool'],
+        pool: {
+          projectName: args.projectName,
+          title: args.title,
+          token: args.tokenAddress,
+          description: args.description,
+        },
       },
     });
   };

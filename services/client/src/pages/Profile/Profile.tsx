@@ -12,6 +12,7 @@ export const Profile = () => {
     telegramProfile,
     connect,
     disconnect,
+    poolModalAction,
   } = useProfileEffects();
   const { username, address } = telegramProfile;
   return (
@@ -42,12 +43,14 @@ export const Profile = () => {
         cards={createdPools}
         emptyMessage="Looks like you haven`t created any pools yet..."
         target="/createdPools"
+        poolModalAction={poolModalAction}
       />
       <CardContainer
         title={`Joined Pools (${joinedPools?.length})`}
         cards={joinedPools}
         emptyMessage="Looks like you haven`t joined any pools yet..."
         target="/joinedPools"
+        poolModalAction={null}
       />
     </Box>
   );

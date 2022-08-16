@@ -12,6 +12,7 @@ export const ExampleCallModals = () => {
       payload: {
         open: true,
         cardData: {
+          id: null,
           projectName: null,
           title: null,
           description: null,

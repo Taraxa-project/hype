@@ -23,6 +23,7 @@ export interface ModalContainerProps {
   children?: React.ReactNode;
   modalAction?: ModalAction;
   showCancel?: boolean;
+  cancelButtonText?: string;
   closeOutside?: boolean;
   height?: string;
 }
@@ -34,6 +35,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   closeModal,
   modalAction,
   showCancel,
+  cancelButtonText,
   closeOutside = true,
   height,
 }) => {
@@ -82,7 +84,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
                   autoFocus
                   onClick={closeModal}
                 >
-                  Cancel
+                  {cancelButtonText || 'Cancel'}
                 </Button>
               )}
             </Box>

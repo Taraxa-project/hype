@@ -13,6 +13,7 @@ export const useAddHypePoolEffects = () => {
     uri: null,
     projectName: null,
     title: null,
+    description: null,
     poolCap: null,
     tokenAddress: null,
     minHypeReward: null,
@@ -128,6 +129,7 @@ export const useAddHypePoolEffects = () => {
     }
     const poolCap = data.cap;
     const projectName = data.projectName;
+    const description = data.description;
     const title = data.title;
     const tokenAddress = data.token;
     const minHypeReward = data.minReward;
@@ -136,6 +138,7 @@ export const useAddHypePoolEffects = () => {
       uri: ipfsFileUrl,
       projectName: projectName,
       title: title,
+      description: description,
       poolCap: poolCap,
       tokenAddress: tokenAddress,
       minHypeReward: minHypeReward,
