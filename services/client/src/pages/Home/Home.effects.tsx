@@ -5,9 +5,14 @@ import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
-  const [filters, setFilters] = useState<{ page: number; searchString: string }>({
+  const [filters, setFilters] = useState<{
+    page: number;
+    searchString: string;
+    maxReached: boolean;
+  }>({
     page: 1,
     searchString: '',
+    maxReached: false,
   });
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
   const dispatchModals = useModalsDispatch();
@@ -16,10 +21,15 @@ export const useHomeEffects = () => {
   useEffect(() => {
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-      if (!isFetchingNextPage && scrollHeight - scrollTop <= clientHeight * 1.5) {
+      if (
+        !isFetchingNextPage &&
+        !filters.maxReached &&
+        scrollHeight - scrollTop <= clientHeight * 1.5
+      ) {
         setFilters({
           page: filters.page + 1,
           searchString: filters.searchString,
+          maxReached: filters.maxReached,
         });
       }
     };
@@ -28,10 +38,15 @@ export const useHomeEffects = () => {
     return () => {
       document.removeEventListener('scroll', onScroll);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetchingNextPage]);
+  }, [isFetchingNextPage, filters]);
 
   useEffect(() => {
+    if (data?.poolSearch?.length === 0 || data?.hypePools?.length === 0) {
+      setFilters({
+        ...filters,
+        maxReached: true,
+      });
+    }
     if (filters.searchString) {
       if (data?.poolSearch) {
         setHypePools(hypePools.concat(data?.poolSearch));
@@ -48,7 +63,8 @@ export const useHomeEffects = () => {
     setHypePools([]);
     setFilters({
       page: 1,
-      searchString: e.target.value,
+      searchString: e.target.value || '',
+      maxReached: false,
     });
   };
 

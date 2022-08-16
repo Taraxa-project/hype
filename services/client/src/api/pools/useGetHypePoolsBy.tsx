@@ -1,28 +1,9 @@
 import { useQuery } from 'urql';
-
-const profilePoolsQuery = `
-  query($creator: String) {
-    hypePools(
-      creator: $creator
-    ) {
-      id
-      title
-      projectName
-      description
-      active
-      uri
-      token
-      cap
-      creator
-      endDate
-      minReward
-    }
-  }
-`;
+import { HYPEPOOL_QUERIES } from './query-collector';
 
 export const useGetHypePoolsBy = async (creatorAddress: string) => {
   const [result] = useQuery({
-    query: profilePoolsQuery,
+    query: HYPEPOOL_QUERIES.profilePoolsQuery,
     variables: { creator: creatorAddress },
   });
   return result;
