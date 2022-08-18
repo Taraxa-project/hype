@@ -1,19 +1,61 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import { useModalsDispatch } from '../context';
+import useLoadingModals from './useLoadingModals';
 
-const useContractActivatePool = () => {
+const useContractActivatePool = (id: number) => {
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
+  const dispatchModals = useModalsDispatch();
+  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
     functionName: 'activatePool',
+    args: [id],
+    overrides: {
+      gasLimit: 9999999,
+    },
+    enabled: !!id,
   });
 
-  const { data, isError, isLoading, write } = useContractWrite(config);
+  const { data, isError, isLoading, write } = useContractWrite({
+    ...config,
+    onMutate() {
+      showLoading();
+    },
+    onSuccess(data: any) {
+      console.log('Successfully called', data);
+    },
+    onError(error: any) {
+      console.log('On error: ', error);
+      hideLoadingModal();
+      showErrorModal(error?.message);
+    },
+  });
+
+  const waitForTransaction = useWaitForTransaction({
+    hash: data?.hash,
+    // wait: poolData?.wait,
+    onSuccess(transactionData) {
+      hideLoadingModal();
+      showSuccessModal();
+    },
+    onError(error) {
+      console.log('Error', error);
+      hideLoadingModal();
+      showErrorModal(error?.message);
+    },
+    onSettled(data, error) {
+      console.log('Settled', { data, error });
+      hideLoadingModal();
+    },
+  });
+
+  const showSuccessModal = () => {};
 
   return {
     data,

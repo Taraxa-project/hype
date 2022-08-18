@@ -87,8 +87,8 @@ export const useProfileEffects = () => {
     submitHandler({ address: account, username: null, auth_date: null });
   };
 
-  const onActivatePool = () => {
-    console.log('ACTIVATE POOL!');
+  const onActivatePool = (hypePool: HypePool) => {
+    console.log('ACTIVATE POOL!: ', hypePool);
   };
 
   const poolModalAction: ModalAction = {

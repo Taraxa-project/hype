@@ -3,8 +3,8 @@ import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
-import { NotificationType } from '../utils';
 import { useEffect } from 'react';
+import useLoadingModals from './useLoadingModals';
 
 export interface WritePoolArgs {
   uri: string;
@@ -25,6 +25,7 @@ const useContractCreatePool = (
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
+  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
@@ -54,14 +55,7 @@ const useContractCreatePool = (
     ...config,
     onMutate() {
       console.log('On mutate');
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: true,
-          title: 'Action required',
-          text: 'Please, sign the message...',
-        },
-      });
+      showLoading();
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -96,17 +90,6 @@ const useContractCreatePool = (
     },
   });
 
-  const hideLoadingModal = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_LOADING,
-      payload: {
-        open: false,
-        title: null,
-        text: null,
-      },
-    });
-  };
-
   const showSuccessModal = () => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_POOL_CREATED,
@@ -118,17 +101,6 @@ const useContractCreatePool = (
           token: args.tokenAddress,
           description: args.description,
         },
-      },
-    });
-  };
-
-  const showErrorModal = (err: string) => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_NOTIFICATION,
-      payload: {
-        open: true,
-        type: NotificationType.ERROR,
-        message: [err],
       },
     });
   };

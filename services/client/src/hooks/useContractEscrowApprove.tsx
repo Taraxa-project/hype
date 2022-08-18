@@ -5,7 +5,7 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
 
-const useContractEscrowDeposit = (
+const useContractEscrowApprove = (
   spender: string,
   poolId: number,
   amount: number,
@@ -19,9 +19,9 @@ const useContractEscrowDeposit = (
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
     contractInterface: hypeInterface,
-    functionName: 'deposit',
-    args: [spender, poolId, amount, tokenAddress],
-    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
+    functionName: 'approve',
+    args: [spender, amount],
+    enabled: !!spender || !!amount,
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
@@ -57,6 +57,8 @@ const useContractEscrowDeposit = (
     },
   });
 
+  console.log('waitForTransaction: ', waitForTransaction);
+
   const showSuccessModal = () => {};
 
   return {
@@ -67,4 +69,4 @@ const useContractEscrowDeposit = (
   };
 };
 
-export default useContractEscrowDeposit;
+export default useContractEscrowApprove;
