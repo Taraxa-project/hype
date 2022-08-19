@@ -1,6 +1,6 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
-import { hypeAddress } from '../constants';
+import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
@@ -9,7 +9,7 @@ const useContractEscrowDeposit = (
   spender: string,
   poolId: number,
   amount: number,
-  tokenAddress: number,
+  tokenAddress: string,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const hypeInterface = new utils.Interface(abi);
@@ -17,7 +17,7 @@ const useContractEscrowDeposit = (
   const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
+    addressOrName: escrowAddress,
     contractInterface: hypeInterface,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],

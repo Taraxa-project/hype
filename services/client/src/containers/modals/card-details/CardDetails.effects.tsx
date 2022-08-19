@@ -1,4 +1,8 @@
+import { ModalAction } from '../../../components/modals/modal-container/ModalContainer';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
+import useContractActivatePool from '../../../hooks/useContractActivatePool';
+import useContractERC20Approve from '../../../hooks/useContractERC20Approve';
+import useContractEscrowDeposit from '../../../hooks/useContractEscrowDeposit';
 
 export const useCardDetailsEffects = () => {
   const {
@@ -6,8 +10,11 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
-  const { projectName, title, description, token, creator, cap, minReward, active, endDate } =
+  const { id, projectName, title, description, token, creator, cap, minReward, active, endDate } =
     cardData;
+  // const { data, isError, isLoading, write } = useContractERC20Approve(creator, id, cap, token);
+  // const { data, isError, isLoading, write } = useContractEscrowDeposit(creator, id, cap, token);
+  // const { data, isError, isLoading, write } = useContractActivatePool(id);
 
   const closeModal = () => {
     dispatchModals({
@@ -30,8 +37,16 @@ export const useCardDetailsEffects = () => {
     });
   };
 
+  // const modalAction: ModalAction = {
+  //   name: 'Deposit rewards',
+  //   // name: 'Activate',
+  //   onAction: write,
+  //   closeButtonVariant: 'primary',
+  // }
+
   return {
     open,
+    id,
     projectName,
     title,
     description,

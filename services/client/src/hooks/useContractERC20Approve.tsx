@@ -1,26 +1,28 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
-import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
 
-const useContractEscrowApprove = (
+const useContractERC20Approve = (
   spender: string,
   poolId: number,
   amount: number,
-  tokenAddress: number,
+  tokenAddress: string,
 ) => {
-  const { abi } = ABIs.contracts.DynamicEscrow;
+  const { abi } = ABIs.contracts.ERC20;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
+    addressOrName: tokenAddress,
     contractInterface: hypeInterface,
     functionName: 'approve',
     args: [spender, amount],
+    overrides: {
+      gasLimit: 9999999,
+    },
     enabled: !!spender || !!amount,
   });
 
@@ -69,4 +71,4 @@ const useContractEscrowApprove = (
   };
 };
 
-export default useContractEscrowApprove;
+export default useContractERC20Approve;
