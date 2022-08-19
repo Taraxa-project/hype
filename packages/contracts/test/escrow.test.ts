@@ -2,7 +2,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
-import { DynamicEscrow, ERC20Base, HypePool } from "../typechain";
+import { DynamicEscrow, HypeToken, HypePool } from "../typechain";
 
 describe("DynamicEscrow", function () {
   let dynamicEscrow: DynamicEscrow;
@@ -13,8 +13,8 @@ describe("DynamicEscrow", function () {
   let depositorOne: SignerWithAddress;
   let depositorTwo: SignerWithAddress;
   let owner: SignerWithAddress;
-  let erc20: ERC20Base;
-  let fakeErc20: ERC20Base;
+  let erc20: HypeToken;
+  let fakeErc20: HypeToken;
 
   const POOL_ZERO = BigNumber.from("0");
   const POOL_ONE = BigNumber.from("1");
@@ -291,7 +291,7 @@ describe("DynamicEscrow", function () {
   SCENARIO: ERC20
   ===========================================================
   Owner address deploys a sample ERC20`, async () => {
-    const BaseERC20 = await ethers.getContractFactory("ERC20Base", {
+    const BaseERC20 = await ethers.getContractFactory("HypeToken", {
       signer: owner,
     });
 
@@ -307,7 +307,7 @@ describe("DynamicEscrow", function () {
   });
 
   it("Owner address deploys a second sample ERC20", async () => {
-    const BaseERC20 = await ethers.getContractFactory("ERC20Base", {
+    const BaseERC20 = await ethers.getContractFactory("HypeToken", {
       signer: owner,
     });
 
