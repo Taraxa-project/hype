@@ -10,7 +10,7 @@ const useContractERC20Approve = (
   amount: number,
   tokenAddress: string,
 ) => {
-  const { abi } = ABIs.contracts.ERC20;
+  const { abi } = ABIs.contracts.HypeToken;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
