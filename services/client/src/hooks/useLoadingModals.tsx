@@ -4,13 +4,13 @@ import { NotificationType } from '../utils';
 const useLoadingModals = () => {
   const dispatchModals = useModalsDispatch();
 
-  const showLoading = (text?: string) => {
+  const showLoading = (text?: string[]) => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
       payload: {
         open: true,
         title: 'Action required',
-        text: text || 'Please, sign the message...',
+        text: text || ['Please, sign the message...'],
       },
     });
   };
@@ -26,13 +26,24 @@ const useLoadingModals = () => {
     });
   };
 
-  const showErrorModal = (err: string) => {
+  const hideNotificationModal = (type: NotificationType) => {
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      payload: {
+        open: false,
+        type,
+        message: null,
+      },
+    });
+  };
+
+  const showNotificationModal = (type: NotificationType, msg: string) => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_NOTIFICATION,
       payload: {
         open: true,
-        type: NotificationType.ERROR,
-        message: [err],
+        type,
+        message: [msg],
       },
     });
   };
@@ -40,7 +51,8 @@ const useLoadingModals = () => {
   return {
     showLoading,
     hideLoadingModal,
-    showErrorModal,
+    showNotificationModal,
+    hideNotificationModal,
   };
 };
 

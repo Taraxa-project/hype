@@ -1,8 +1,9 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
+import useContractEscrowDeposit from './useContractEscrowDeposit';
+import { NotificationType } from '../utils';
 
 const useContractERC20Approve = (
   spender: string,
@@ -12,8 +13,8 @@ const useContractERC20Approve = (
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
   const hypeInterface = new utils.Interface(abi);
-  const dispatchModals = useModalsDispatch();
-  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
+  const { write: deposit } = useContractEscrowDeposit(spender, poolId, amount, tokenAddress);
 
   const { config } = usePrepareContractWrite({
     addressOrName: tokenAddress,
@@ -23,13 +24,16 @@ const useContractERC20Approve = (
     overrides: {
       gasLimit: 9999999,
     },
-    enabled: !!spender || !!amount,
+    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading();
+      showLoading([
+        'Please, sign the message...',
+        'You need to approve in order to deposit your funds',
+      ]);
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -37,21 +41,22 @@ const useContractERC20Approve = (
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
   });
 
   const waitForTransaction = useWaitForTransaction({
     hash: data?.hash,
-    // wait: poolData?.wait,
+    wait: data?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
-      showSuccessModal();
+      deposit();
+      console.log('Success', transactionData);
     },
-    onError(error) {
+    onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
       console.log('Settled', { data, error });
@@ -60,8 +65,6 @@ const useContractERC20Approve = (
   });
 
   console.log('waitForTransaction: ', waitForTransaction);
-
-  const showSuccessModal = () => {};
 
   return {
     data,

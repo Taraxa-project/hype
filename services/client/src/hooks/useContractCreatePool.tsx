@@ -5,6 +5,7 @@ import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { useEffect } from 'react';
 import useLoadingModals from './useLoadingModals';
+import { NotificationType } from '../utils';
 
 export interface WritePoolArgs {
   uri: string;
@@ -25,7 +26,7 @@ const useContractCreatePool = (
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
-  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
@@ -63,7 +64,7 @@ const useContractCreatePool = (
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
   });
@@ -78,10 +79,10 @@ const useContractCreatePool = (
       showSuccessModal();
       resetWriteContract();
     },
-    onError(error) {
+    onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {

@@ -4,12 +4,13 @@ import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
+import { NotificationType } from '../utils';
 
 const useContractActivatePool = (id: number) => {
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
-  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
@@ -33,7 +34,7 @@ const useContractActivatePool = (id: number) => {
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
   });
 
@@ -42,20 +43,18 @@ const useContractActivatePool = (id: number) => {
     // wait: poolData?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
-      showSuccessModal();
+      // showSuccessModal();
     },
-    onError(error) {
+    onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
       console.log('Settled', { data, error });
       hideLoadingModal();
     },
   });
-
-  const showSuccessModal = () => {};
 
   return {
     data,

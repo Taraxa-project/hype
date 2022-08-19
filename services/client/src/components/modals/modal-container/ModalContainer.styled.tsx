@@ -28,6 +28,8 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
   justify-content: space-between;
   padding: 2.7rem;
 
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 70%;
     height: ${({ props }) => props.height || '38rem'};

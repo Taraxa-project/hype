@@ -2,8 +2,8 @@ import ABIs from '../abi';
 import { utils } from 'ethers';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
+import { NotificationType } from '../utils';
 
 const useContractEscrowDeposit = (
   spender: string,
@@ -11,14 +11,17 @@ const useContractEscrowDeposit = (
   amount: number,
   tokenAddress: string,
 ) => {
+  console.log('spender: ', spender);
+  console.log('poolId: ', poolId);
+  console.log('amount: ', amount);
+  console.log('tokenAddress: ', tokenAddress);
   const { abi } = ABIs.contracts.DynamicEscrow;
-  const hypeInterface = new utils.Interface(abi);
-  const dispatchModals = useModalsDispatch();
-  const { showLoading, hideLoadingModal, showErrorModal } = useLoadingModals();
+  const contractInterface = new utils.Interface(abi);
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: escrowAddress,
-    contractInterface: hypeInterface,
+    contractInterface: contractInterface,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
@@ -27,7 +30,7 @@ const useContractEscrowDeposit = (
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading();
+      showLoading(['Please, sign the message...', 'Depositing rewards...']);
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -35,29 +38,28 @@ const useContractEscrowDeposit = (
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
   });
 
   const waitForTransaction = useWaitForTransaction({
     hash: data?.hash,
-    // wait: poolData?.wait,
+    wait: data?.wait,
     onSuccess(transactionData) {
+      console.log('Success', transactionData);
       hideLoadingModal();
-      showSuccessModal();
+      showNotificationModal(NotificationType.SUCCESS, 'Funds successfully deposited');
     },
-    onError(error) {
+    onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
       console.log('Settled', { data, error });
       hideLoadingModal();
     },
   });
-
-  const showSuccessModal = () => {};
 
   return {
     data,

@@ -3,4 +3,4 @@ export const hypeAddress: string =
 export const escrowAddress: string =
   `${process.env.REACT_APP_ESCROW_ADDRESS}` || '0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E';
 export const hypeTokenAddress: string =
-  `${process.env.REACT_APP_TOKEN_ADDRESS}` || '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+  `${process.env.REACT_APP_TOKEN_ADDRESS}` || '0xEca5F00B313Efcb203fC01046BFa47710E8E55F3';

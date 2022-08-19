@@ -37,10 +37,14 @@ export const useCardDetailsEffects = () => {
     });
   };
 
+  // const onModalAction = () => {
+  //   // closeModal();
+  //   write();
+  // }
+
   // const modalAction: ModalAction = {
   //   name: 'Deposit rewards',
-  //   // name: 'Activate',
-  //   onAction: write,
+  //   onAction: onModalAction,
   //   closeButtonVariant: 'primary',
   // }
 
