@@ -4,9 +4,12 @@ dotenv.config();
 
 async function main() {
   const totalSupply = "10000000000000000000000"; // 10000 * 1e18
+  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", ethers.provider);
+  console.log("signer address: ", signer.address);
+
   const HypeToken = await ethers.getContractFactory("HypeToken");
   console.log("Deploying HypeToken...");
-  const token = await HypeToken.deploy(totalSupply, {
+  const token = await HypeToken.connect(signer).deploy(totalSupply, {
     gasLimit: 100000000,
     gasPrice: 0,
   });

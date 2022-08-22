@@ -3,8 +3,9 @@ import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
-import { NotificationType } from '../utils';
 import { useEffect } from 'react';
+import useLoadingModals from './useLoadingModals';
+import { NotificationType } from '../utils';
 
 export interface WritePoolArgs {
   uri: string;
@@ -25,6 +26,7 @@ const useContractCreatePool = (
   const { abi } = ABIs.contracts.HypePool;
   const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     addressOrName: hypeAddress,
@@ -54,14 +56,7 @@ const useContractCreatePool = (
     ...config,
     onMutate() {
       console.log('On mutate');
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: true,
-          title: 'Action required',
-          text: 'Please, sign the message...',
-        },
-      });
+      showLoading();
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -69,7 +64,7 @@ const useContractCreatePool = (
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
   });
@@ -84,10 +79,10 @@ const useContractCreatePool = (
       showSuccessModal();
       resetWriteContract();
     },
-    onError(error) {
+    onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {
@@ -95,17 +90,6 @@ const useContractCreatePool = (
       hideLoadingModal();
     },
   });
-
-  const hideLoadingModal = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_LOADING,
-      payload: {
-        open: false,
-        title: null,
-        text: null,
-      },
-    });
-  };
 
   const showSuccessModal = () => {
     dispatchModals({
@@ -118,17 +102,6 @@ const useContractCreatePool = (
           token: args.tokenAddress,
           description: args.description,
         },
-      },
-    });
-  };
-
-  const showErrorModal = (err: string) => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_NOTIFICATION,
-      payload: {
-        open: true,
-        type: NotificationType.ERROR,
-        message: [err],
       },
     });
   };

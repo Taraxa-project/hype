@@ -88,7 +88,7 @@ export const useProfileEffects = () => {
   };
 
   const onActivatePool = () => {
-    console.log('ACTIVATE POOL!');
+    console.log('ACTIVATE POOL!: ');
   };
 
   const poolModalAction: ModalAction = {

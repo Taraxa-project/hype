@@ -1,32 +1,39 @@
 import ABIs from '../abi';
 import { utils } from 'ethers';
-import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { useModalsDispatch } from '../context';
 import useLoadingModals from './useLoadingModals';
+import useContractEscrowDeposit from './useContractEscrowDeposit';
 import { NotificationType } from '../utils';
 
-const useContractActivatePool = (id: number) => {
-  const { abi } = ABIs.contracts.HypePool;
+const useContractERC20Approve = (
+  spender: string,
+  poolId: number,
+  amount: number,
+  tokenAddress: string,
+) => {
+  const { abi } = ABIs.contracts.HypeToken;
   const hypeInterface = new utils.Interface(abi);
-  const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
+  const { write: deposit } = useContractEscrowDeposit(spender, poolId, amount, tokenAddress);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
+    addressOrName: tokenAddress,
     contractInterface: hypeInterface,
-    functionName: 'activatePool',
-    args: [id],
+    functionName: 'approve',
+    args: [spender, amount],
     overrides: {
       gasLimit: 9999999,
     },
-    enabled: !!id,
+    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading();
+      showLoading([
+        'Please, sign the message...',
+        'You need to approve in order to deposit your funds',
+      ]);
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -40,10 +47,11 @@ const useContractActivatePool = (id: number) => {
 
   const waitForTransaction = useWaitForTransaction({
     hash: data?.hash,
-    // wait: poolData?.wait,
+    wait: data?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
-      // showSuccessModal();
+      deposit();
+      console.log('Success', transactionData);
     },
     onError(error: any) {
       console.log('Error', error);
@@ -56,6 +64,8 @@ const useContractActivatePool = (id: number) => {
     },
   });
 
+  console.log('waitForTransaction: ', waitForTransaction);
+
   return {
     data,
     isError,
@@ -64,4 +74,4 @@ const useContractActivatePool = (id: number) => {
   };
 };
 
-export default useContractActivatePool;
+export default useContractERC20Approve;

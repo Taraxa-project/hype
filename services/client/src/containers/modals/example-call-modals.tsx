@@ -30,7 +30,7 @@ export const ExampleCallModals = () => {
       payload: {
         open: true,
         title: 'Action required...',
-        text: 'Please, sign the message',
+        text: ['Please, sign the message'],
       },
     });
     dispatchModals({

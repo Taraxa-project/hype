@@ -99,7 +99,7 @@ export const useAddHypePoolEffects = () => {
       payload: {
         open: true,
         title: 'Loading',
-        text: 'Uploading description to IPFS',
+        text: ['Uploading description to IPFS'],
       },
     });
     let url: string;

@@ -12,7 +12,7 @@ export type TCardDetails = {
 export type TLoading = {
   open: boolean;
   title: string;
-  text: string;
+  text: string[];
   onClose?: () => void;
 };
 
