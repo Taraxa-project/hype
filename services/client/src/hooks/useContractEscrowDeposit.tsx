@@ -1,5 +1,5 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
+import { ethers, utils } from 'ethers';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import useLoadingModals from './useLoadingModals';
@@ -25,6 +25,11 @@ const useContractEscrowDeposit = (
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
+    overrides: {
+      from: spender,
+      gasLimit: 9999999,
+      // value: ethers.utils.parseEther(amount?.toString()),
+    },
   });
 
   const { data, isError, isLoading, write } = useContractWrite({

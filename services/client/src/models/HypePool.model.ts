@@ -9,7 +9,7 @@ export interface AddHypePool {
 }
 
 export interface HypePool extends AddHypePool {
-  id: number;
+  id?: number;
   creator: string;
   active: boolean;
 }
