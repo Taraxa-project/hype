@@ -10,6 +10,12 @@ export enum ContractTypes {
   HYPE_POOL,
 }
 
+export enum ProviderType {
+  PROVIDER,
+  SIGNER,
+  WALLET,
+}
+
 export type ContractInstance = { [address: string]: Contract };
 
 @Injectable()
@@ -46,10 +52,16 @@ export class BlockchainService {
     return this.wallet;
   }
 
-  getContractInstance(type: ContractTypes, address: string): Contract {
+  getContractInstance(
+    type: ContractTypes,
+    address: string,
+    providerType: ProviderType,
+  ): Contract {
     if (this.contractInstances[address]) {
       return this.contractInstances[address];
     }
+    const provider = this.getProviderType(providerType);
+
     switch (type) {
       case ContractTypes.ESCROW:
         return (this.contractInstances[address] = new Contract(
@@ -57,14 +69,27 @@ export class BlockchainService {
           new utils.Interface(
             ABIs.contracts.DynamicEscrow.abi,
           ) as ContractInterface,
-          this.wallet,
+          provider,
         ));
       case ContractTypes.HYPE_POOL:
         return (this.contractInstances[address] = new Contract(
           address,
           new utils.Interface(ABIs.contracts.HypePool.abi) as ContractInterface,
-          this.wallet,
+          provider,
         ));
+    }
+  }
+
+  getProviderType(
+    providerType: ProviderType,
+  ): ethers.providers.JsonRpcProvider | ethers.Signer | ethers.Wallet {
+    switch (providerType) {
+      case ProviderType.PROVIDER:
+        return this.getProvider();
+      case ProviderType.SIGNER:
+        return this.getSigner();
+      case ProviderType.WALLET:
+        return this.getWallet();
     }
   }
 }

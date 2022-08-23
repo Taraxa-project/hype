@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { ethers } from 'ethers';
 import { ethereum } from '@taraxa-hype/config';
-import { BlockchainService, ContractTypes } from '../blockchain';
+import { BlockchainService, ContractTypes, ProviderType } from '../blockchain';
 
 @Injectable()
 export class RewardService {
@@ -16,6 +15,7 @@ export class RewardService {
     const escrowContractInstance = this.blockchainService.getContractInstance(
       ContractTypes.ESCROW,
       this.ethereumConfig.escrowContractAddress,
+      ProviderType.WALLET,
     );
     return escrowContractInstance;
   }

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { ethereum, ipfs } from '../../../config';
-import { BlockchainService, ContractTypes } from '../blockchain';
+import { BlockchainService, ContractTypes, ProviderType } from '../blockchain';
 import { ContractPoolDTO, IContractPool } from './dto';
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 
@@ -42,6 +42,7 @@ export class ContractPoolsService {
     const hypeContractInstance = this.blockchainService.getContractInstance(
       ContractTypes.HYPE_POOL,
       this.ethereumConfig.hypeContractAddress,
+      ProviderType.WALLET,
     );
     const ipfsUri = await this.uploadToIpfs(pool.description);
     const formatedEndDate = new Date(pool.endDate).getTime();
