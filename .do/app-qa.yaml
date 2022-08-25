@@ -15,6 +15,10 @@ databases:
     num_nodes: 1
     size: basic-xxs
     version: "12"
+  - name: db-indexer
+    engine: PG
+    production: true
+    cluster_name: qa-indexer
 static_sites:
   - name: frontend
     github:
@@ -127,3 +131,54 @@ services:
     http_port: 3000
     routes:
       - path: /wallet-api
+  - name: indexer
+    image:
+      registry_type: DOCKER_HUB
+      registry: graphprotocol
+      repository: graph-node
+      tag: latest
+    envs:
+      - key: GRAPH_LOG
+        scope: RUN_TIME
+        value: "info"
+      - key: GRAPH_ALLOW_NON_DETERMINISTIC_IPFS
+        scope: RUN_TIME
+        value: "1"
+      - key: GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH
+        scope: RUN_TIME
+        value: "1"
+      - key: ethereum
+        scope: RUN_TIME
+        value: "taraxa:https://rpc.devnet.taraxa.io"
+      - key: postgres_host
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-indexer.HOSTNAME}
+      - key: postgres_port
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-indexer.PORT}
+      - key: postgres_user
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-indexer.USERNAME}
+      - key: postgres_pass
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-indexer.PASSWORD}
+      - key: postgres_db
+        scope: RUN_TIME
+        type: SECRET
+        value: ${db-indexer.DATABASE}
+      - key: ipfs
+        scope: RUN_TIME
+        type: SECRET
+        value: https://ipfs.infura.io:5001
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8000
+    health_check:
+      initial_delay_seconds: 900
+
+    routes:
+      - path: /indexer
