@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import { useAddHypePool } from '../../api/pools/useAddHypePools';
 
 export const useAddHypePoolEffects = () => {
   const defaultContractArgs: WritePoolArgs = {
@@ -28,6 +29,8 @@ export const useAddHypePoolEffects = () => {
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   useContractCreatePool(writePoolArgs, contractEnabled, resetWriteContract);
   const dispatchModals = useModalsDispatch();
+  // const { data, submitHandler } = useAddHypePool();
+  // console.log('DATA FROM API: ', data);
 
   const defaultValues: AddHypePool = {
     projectName: '',
@@ -87,6 +90,7 @@ export const useAddHypePoolEffects = () => {
     // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
     createPool(data, url);
+    // submitHandler(data);
     reset();
   };
 

@@ -14,11 +14,7 @@ describe('Pools tests', () => {
   let configService: ConfigService;
 
   beforeAll(async () => {
-    ({
-      app,
-      poolService,
-      configService,
-    } = await bootstrapTestInstance());
+    ({ app, poolService, configService } = await bootstrapTestInstance());
     await app.init();
     await seedTestData(poolService);
   });
@@ -73,7 +69,10 @@ describe('Pools tests', () => {
     expect(pools.length).toBe(7);
     expect(pools[0].creatorAddress).toBe(creatorAddress);
 
-    const { body: poolById } = await requestPoolById(pools[0].id,  HttpStatus.OK);
+    const { body: poolById } = await requestPoolById(
+      pools[0].id,
+      HttpStatus.OK,
+    );
     expect(poolById.creatorAddress).toBe(creatorAddress);
   });
 
@@ -113,22 +112,15 @@ describe('Pools tests', () => {
       startDate: new Date(),
       endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
     };
-    const { status } = await postPool(
-      '',
-      HttpStatus.BAD_REQUEST,
-      newPool,
-    );
+    const { status } = await postPool('', HttpStatus.BAD_REQUEST, newPool);
     expect(status).toBe(400);
   });
-
 
   const requestPoolById = async (
     id: string,
     status: HttpStatus,
   ): Promise<any> =>
-    await request(app.getHttpServer())
-      .get(`/pools/${id}`)
-      .expect(status);
+    await request(app.getHttpServer()).get(`/pools/${id}`).expect(status);
 
   const requestPools = async (
     url: string,

@@ -12,13 +12,13 @@ const useContractERC20Approve = (
   tokenAddress: string,
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
-  const hypeInterface = new utils.Interface(abi);
+  const contractInterface = new utils.Interface(abi);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { write: deposit } = useContractEscrowDeposit(spender, poolId, amount, tokenAddress);
 
   const { config } = usePrepareContractWrite({
     addressOrName: tokenAddress,
-    contractInterface: hypeInterface,
+    contractInterface: contractInterface,
     functionName: 'approve',
     args: [spender, amount],
     overrides: {
