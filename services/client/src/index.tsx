@@ -31,6 +31,7 @@ const metamaskConnector = new MetaMaskConnector({
   chains: [...defaultChains, ...taraxaChains],
   options: {
     shimDisconnect: true,
+    shimChainChangedDisconnect: true,
   },
 });
 

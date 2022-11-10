@@ -6,6 +6,10 @@ import {
   SidebarProps,
 } from './Header.effects';
 
+export const Logo = styled.div`
+  font-size: 3rem;
+`;
+
 export const StyledHeader = styled.header<CustomStyledProps>`
   font-weight: 600;
   display: flex;

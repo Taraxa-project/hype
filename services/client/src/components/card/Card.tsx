@@ -14,7 +14,7 @@ import {
 import { useNetwork, useToken } from 'wagmi';
 import DotIcon from '../../assets/icons/Dot';
 
-export interface CardProps extends HypePool {
+export interface CardProps extends Partial<HypePool> {
   children?: JSX.Element | string;
   onClick?: () => void;
 }

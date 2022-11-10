@@ -15,6 +15,8 @@ import {
   NotFoundText,
   CardContainer,
   VideoPlayer,
+  Logo,
+  LogoText,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
@@ -27,7 +29,10 @@ export const Home = () => {
     <>
       <HeroContainer>
         <IntroContainer>
-          <HypeIconBig />
+          {/* <HypeIconBig /> */}
+          <Logo>
+            📣 <LogoText>Hype</LogoText>
+          </Logo>
           <TitleText>What is hype farming?</TitleText>
           <DescriptionContainer>
             APE is launching it's testnet, and we'd like everyone to come & check it out! All

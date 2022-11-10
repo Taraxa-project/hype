@@ -1,14 +1,13 @@
-import Input from 'src/components/input/Input';
-import TitleText from 'src/components/titletext/TitleText';
-import Tooltip from 'src/components/tooltip/Tooltip';
-
 import styled from 'styled-components';
+import Input from 'src/components/input/Input';
+import Tooltip from 'src/components/tooltip/Tooltip';
+import Select from '../../components/select/Select';
 
 export const Wrapper = styled.div`
-  padding: 4.688rem 5rem;
+  padding: 5rem;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
@@ -24,24 +23,22 @@ export const FormColumn = styled.div`
   }
 `;
 
+export const FormElement = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+`;
+
 export const FormInput = styled(Input)`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 100%;
   }
 `;
 
-export const HowItWorksColumn = styled.div`
-  max-width: 30.875rem;
-
+export const FormSelect = styled(Select)`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    display: none;
+    width: 100%;
   }
-`;
-
-export const HowItWorksWrapper = styled.div`
-  background-color: #f1f1f1;
-  border-radius: 1.5rem;
-  padding: 1.5rem 2.25rem;
 `;
 
 export const Example = styled.div`
@@ -50,8 +47,9 @@ export const Example = styled.div`
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #797979;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   max-width: 25rem;
+  font-style: italic;
 `;
 
 export const Label = styled.div`
@@ -68,40 +66,39 @@ export const InfoCard = styled.div`
   color: ${({ theme }) => theme.colors.greys[11]};
   font-size: 0.875rem;
   line-height: 1.25rem;
-  margin-bottom: 2rem;
-`;
-
-export const HowItWorksTitle = styled(TitleText)`
-  font-size: 1.25rem;
-  line-height: 1.625rem;
-  margin-top: 0;
+  margin-bottom: 1rem;
 `;
 
 export const Steps = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 40rem;
 `;
 
 export const Step = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-bottom: 2rem;
+  flex-direction: column;
   position: relative;
+  width: 100%;
 
   ::after {
     content: '';
     display: block;
     position: absolute;
-    top: 2.25rem;
-    left: 1rem;
-    height: calc(
-      100% - 0.5rem
-    ); /* We need to substract 0.25 from the top and bottom. So 0.5 rem total */
-    width: 0.063rem;
+    top: 1rem;
+    left: 3rem;
+    height: 0.063rem;
+    width: calc(100% - 4rem);
     background-color: #dadada;
   }
 
   :last-child {
+    margin-right: 0;
+    width: auto !important;
+    min-width: 6rem;
     ::after {
       content: none;
     }
@@ -110,7 +107,9 @@ export const Step = styled.div`
   }
 `;
 
-export const StepNumber = styled.div`
+export const StepTitle = styled.div<{
+  active: boolean;
+}>`
   flex: 0 1 auto;
   border-radius: 50%;
   display: flex;
@@ -119,20 +118,33 @@ export const StepNumber = styled.div`
   min-width: 2rem;
   width: 2rem;
   height: 2rem;
-  background-color: #e0e0e0;
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.primary : theme.colors.secondary};
   color: ${({ theme }) => theme.colors.greys[14]};
   font-size: 0.875rem;
   line-height: 1.25rem;
 `;
 
-export const StepDescription = styled.div`
-  flex: 1 1 auto;
-  margin-left: 1.625rem;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.greys[11]};
+export const StepSubTitle = styled.div<{
+  active: boolean;
+}>`
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.greys[14])}};
   font-size: 0.875rem;
   line-height: 1.25rem;
+  max-width: 6rem;
+  margin-top: 1rem;
+  text-align: center;
+  margin-left: -1.5rem;
+  :last-child {
+    max-width: 6.2rem;
+  }
+`;
+
+export const StepContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4rem;
 `;
 
 export const FormAction = styled.div`
