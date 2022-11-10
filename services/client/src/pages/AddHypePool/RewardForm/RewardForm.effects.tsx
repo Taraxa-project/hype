@@ -1,20 +1,38 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { AddHypePool } from '../../../models';
 import useAuth from '../../../hooks/useAuth';
 import { useSwitchNetwork } from '../../../hooks/useSwitchNetwork';
+import debounce from 'lodash.debounce';
+import { useNetwork, useToken } from 'wagmi';
 
 export interface HypePoolRewardForm
   extends Pick<
     AddHypePool,
     'network' | 'token' | 'minReward' | 'impressionReward' | 'cap' | 'endDate'
-  > {}
+  > {
+  tokenAddress?: string;
+  tokenName?: string;
+
+  // Some examples:
+  // SHIBA INU: 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE
+  // FoxCoin: 0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d
+  // ApeCoin: 0x4d224452801ACEd8B2F0aebE155379bb5D594381
+  // ENS: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72
+}
 
 export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
   const { authenticated } = useAuth();
   const [showToken, setShowToken] = useState<boolean>(false);
+  const [tokenAddress, setTokenAddress] = useState<`0x${string}`>(null);
+  const { chain } = useNetwork();
+  const isEthNetwork = chain?.name === 'Ethereum';
+  const { data: ERC0tokenInfo } = useToken({
+    address: tokenAddress,
+    enabled: !!tokenAddress && isEthNetwork,
+  });
   const { changeNetwork } = useSwitchNetwork();
 
   const networkOptions = [
@@ -37,7 +55,20 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
       name: 'ETH',
       value: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
     },
+    {
+      name: 'Other',
+      value: 'other',
+    },
   ];
+
+  useEffect(() => {
+    if (ERC0tokenInfo) {
+      setValue('token', ERC0tokenInfo.address, {
+        shouldValidate: true,
+      });
+      setValue('tokenName', ERC0tokenInfo.name);
+    }
+  }, [ERC0tokenInfo]);
 
   const validationSchema = yup
     .object({
@@ -50,6 +81,14 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
         .notOneOf(['0x0'])
         .required('Address is required')
         .label('Rewards are in this token'),
+      tokenAddress: yup
+        .string()
+        .typeError('Address is required and must be a wallet address!')
+        .min(42)
+        .max(42)
+        .notOneOf(['0x0'])
+        .label('Custom Token address'),
+      tokenName: yup.string().label('Custom Token name'),
       cap: yup
         .number()
         .typeError('Pool cap is required')
@@ -113,8 +152,31 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
 
   const handleTokenSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const token = event.target.value;
-    console.log('Token changed!', token);
+    setValue('tokenAddress', null);
+    setValue('tokenName', null);
+    if (token === tokensOptions[2].value) {
+      setShowToken(true);
+    } else {
+      setShowToken(false);
+    }
   };
+
+  const handleTokenAddressInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const tokenAddress = event.target.value?.trim();
+    if (tokenAddress && tokenAddress.length === 42) {
+      setTokenAddress(tokenAddress as `0x${string}`);
+    }
+  };
+
+  const debouncedResults = useMemo(() => {
+    return debounce(handleTokenAddressInput, 300);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
 
   return {
     register,
@@ -128,5 +190,8 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     tokensOptions,
     handleTokenSelect,
     getValues,
+    showToken,
+    debouncedResults,
+    isEthNetwork,
   };
 };

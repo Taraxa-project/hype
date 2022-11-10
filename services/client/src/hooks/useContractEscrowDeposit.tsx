@@ -1,5 +1,4 @@
 import ABIs from '../abi';
-import { ethers, utils } from 'ethers';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import useLoadingModals from './useLoadingModals';
@@ -16,18 +15,17 @@ const useContractEscrowDeposit = (
   console.log('amount: ', amount);
   console.log('tokenAddress: ', tokenAddress);
   const { abi } = ABIs.contracts.DynamicEscrow;
-  const contractInterface = new utils.Interface(abi);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: escrowAddress,
-    contractInterface: contractInterface,
+    address: escrowAddress,
+    abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
     overrides: {
-      from: spender,
-      gasLimit: 9999999,
+      from: spender as `0x${string}`,
+      // gasLimit: 9999999,
       // value: ethers.utils.parseEther(amount?.toString()),
     },
   });

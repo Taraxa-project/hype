@@ -35,6 +35,9 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
     handleNetworkSelect,
     tokensOptions,
     handleTokenSelect,
+    showToken,
+    debouncedResults,
+    isEthNetwork,
   } = useRewardFormEffects(defaultValues);
 
   return (
@@ -96,7 +99,11 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
               Please select your token
             </option>
             {tokensOptions.map((option) => (
-              <option key={`${option.value}-${option.name}`} value={option.value}>
+              <option
+                key={`${option.value}-${option.name}`}
+                value={option.value}
+                disabled={option.value === 'other' && !isEthNetwork}
+              >
                 {option.name}
               </option>
             ))}
@@ -107,6 +114,47 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
             </Text>
           )}
         </FormElement>
+
+        {/* Custom token address */}
+        {showToken && (
+          <FormElement>
+            <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+              <Label>Address for ERC20 token:</Label>
+            </Box>
+            <FormInput
+              disabled={!authenticated}
+              placeholder="ERC20 Token address"
+              name="tokenAddress"
+              {...register('tokenAddress')}
+              onChange={debouncedResults}
+            />
+            {errors.tokenAddress && (
+              <Text color="danger" fontSize="0.8rem">
+                {errors.tokenAddress.message}
+              </Text>
+            )}
+          </FormElement>
+        )}
+
+        {/* Custom token name */}
+        {showToken && (
+          <FormElement>
+            <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+              <Label>Name for ERC20 token:</Label>
+            </Box>
+            <FormInput
+              disabled
+              placeholder="ERC20 Token name"
+              name="tokenName"
+              {...register('tokenName')}
+            />
+            {errors.tokenName && (
+              <Text color="danger" fontSize="0.8rem">
+                {errors.tokenName.message}
+              </Text>
+            )}
+          </FormElement>
+        )}
 
         {/* Min reward */}
         <FormElement>

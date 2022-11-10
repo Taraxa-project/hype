@@ -30,14 +30,21 @@ export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
-    title: '',
-    projectName: '',
-    tokenName: null,
-    description: '',
-    projectDescription: '',
-    word: '',
+    title: 'Dragon Ball',
+    projectName: 'Dragon Ball Super, Dragon Ball, DBS',
+    tokenName: 'DBS',
+    description: 'Dragon Ball super NFT marketplace',
+    projectDescription: 'Something nice about DBS',
+    word: 'testnet',
   });
-  const [poolReward, setPoolReward] = useState<HypePoolRewardForm>();
+  const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
+    network: '',
+    token: null,
+    minReward: null,
+    impressionReward: null,
+    cap: null,
+    endDate: null,
+  });
 
   // const { data, submitHandler } = useAddHypePool();
 
@@ -121,7 +128,7 @@ export const useAddHypePoolEffects = () => {
   };
 
   const onBackFromRewards = () => {
-    setCurrentStep(2);
+    setCurrentStep(1);
   };
 
   return {

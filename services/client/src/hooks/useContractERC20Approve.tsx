@@ -1,5 +1,4 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import useLoadingModals from './useLoadingModals';
 import useContractEscrowDeposit from './useContractEscrowDeposit';
@@ -12,18 +11,17 @@ const useContractERC20Approve = (
   tokenAddress: string,
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
-  const contractInterface = new utils.Interface(abi);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { write: deposit } = useContractEscrowDeposit(spender, poolId, amount, tokenAddress);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: tokenAddress,
-    contractInterface: contractInterface,
+    address: tokenAddress,
+    abi,
     functionName: 'approve',
     args: [spender, amount],
-    overrides: {
-      gasLimit: 9999999,
-    },
+    // overrides: {
+    //   gasLimit: 9999999,
+    // },
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
   });
 

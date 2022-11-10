@@ -5,11 +5,12 @@ import { useContractRead } from 'wagmi';
 
 const useContractPoolURI = (tokenId: number) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
+  // const hypeInterface = new utils.Interface(abi);
 
   const { data, isError, isLoading } = useContractRead({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
+    // contractInterface: hypeInterface,
     functionName: 'poolURI',
     args: [tokenId],
   });

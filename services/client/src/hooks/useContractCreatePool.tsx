@@ -1,5 +1,4 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
@@ -24,13 +23,12 @@ const useContractCreatePool = (
   resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'createPool',
     args: [
       args.uri,
@@ -41,9 +39,9 @@ const useContractCreatePool = (
       args.minHypeReward,
       args.endDate,
     ],
-    overrides: {
-      gasLimit: 9999999,
-    },
+    // overrides: {
+    //   gasLimit: 9999999,
+    // },
     enabled,
   });
 

@@ -1,5 +1,4 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useModalsDispatch } from '../context';
@@ -8,18 +7,17 @@ import { NotificationType } from '../utils';
 
 const useContractActivatePool = (id: number) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
   const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'activatePool',
     args: [id],
-    overrides: {
-      gasLimit: 9999999,
-    },
+    // overrides: {
+    //   gasLimit: 9999999,
+    // },
     enabled: !!id,
   });
 

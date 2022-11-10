@@ -34,7 +34,10 @@ export const CardDetails = () => {
   };
   const { isConnected, connect } = useWallet();
   const { chain } = useNetwork();
-  const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
+  const { data: poolTokenInfo } = useToken({
+    address: token as `0x${string}`,
+    enabled: chain?.name === 'Ethereum',
+  });
   const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 

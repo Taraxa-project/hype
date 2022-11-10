@@ -43,7 +43,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
-    "ethers": "^5.6.9",
+    "ethers": "^5.7.2",
     "ipfs-http-client": "56.0.3",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
