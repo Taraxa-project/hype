@@ -40,6 +40,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
     isEthNetwork,
   } = useRewardFormEffects(defaultValues);
 
+  console.log('Errors: ', errors);
   return (
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <FormColumn>
@@ -191,12 +192,12 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
           <FormInput
             disabled={!authenticated}
             placeholder="ex: 200,000"
-            name="minReward"
-            {...register('minReward')}
+            name="impressionReward"
+            {...register('impressionReward')}
           />
-          {errors.minReward && (
+          {errors.impressionReward && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.minReward.message}
+              {errors.impressionReward.message}
             </Text>
           )}
         </FormElement>

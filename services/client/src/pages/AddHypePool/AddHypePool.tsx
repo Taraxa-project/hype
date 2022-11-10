@@ -12,6 +12,7 @@ import {
   StepContent,
   FormAction,
   StepSubTitle,
+  Label,
 } from './AddHypePool.styled';
 import Box from '../../components/styles/Box';
 import { HowItWorks } from '../../components/how-it-works/HowItWorks';
@@ -72,13 +73,13 @@ export const AddHypePool = () => {
           <FormColumn>
             <TitleText>Fund and activate the Hype Pool!</TitleText>
             <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-              {/* <Label>
-                Deposit {getValues('minReward')} {getValues('token')} into the pool.
-              </Label> */}
+              <Label>
+                Deposit {poolReward.minReward} {poolReward.tokenName} into the pool.
+              </Label>
             </Box>
             <FormAction>
               <Button size="full-width" type="submit" onClick={() => setCurrentStep(4)}>
-                Next
+                Fund & Activate the Pool
               </Button>
             </FormAction>
           </FormColumn>

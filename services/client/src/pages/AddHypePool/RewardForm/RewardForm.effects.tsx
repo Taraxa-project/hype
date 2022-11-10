@@ -142,11 +142,13 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
       setValue('token', tokensOptions[0].value, {
         shouldValidate: true,
       });
+      setValue('tokenName', tokensOptions[0].name);
     }
     if (+network === networkOptions[1].value) {
       setValue('token', tokensOptions[1].value, {
         shouldValidate: true,
       });
+      setValue('tokenName', tokensOptions[1].name);
     }
   };
 
@@ -157,6 +159,10 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     if (token === tokensOptions[2].value) {
       setShowToken(true);
     } else {
+      const currentTokenInfo = tokensOptions.find((option) => option.value === token);
+      setValue('tokenAddress', currentTokenInfo?.value);
+      setValue('tokenName', currentTokenInfo?.name);
+      // Should add the values back to tokenAddress and tokenName?
       setShowToken(false);
     }
   };
