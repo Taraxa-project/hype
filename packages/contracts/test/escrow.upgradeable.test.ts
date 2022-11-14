@@ -88,11 +88,15 @@ describe("DynamicEscrowUpgradeable", function () {
       .connect(depositorOne)
       .createPool(
         "https://pool.data.json",
-        "title",
         "project name test",
+        "title",
+        "TARA",
+        "testnet",
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
     expect(createPool).not.to.be.undefined;
@@ -104,10 +108,14 @@ describe("DynamicEscrowUpgradeable", function () {
         "https://pool.data.json",
         "title",
         "project name test",
+        "TARA",
+        "testnet",
         false,
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
     const afterPoolIndex = await hypePool.getCurrentIndex();
@@ -144,11 +152,15 @@ describe("DynamicEscrowUpgradeable", function () {
       .connect(depositorOne)
       .createPool(
         "https://pool.data.json",
-        "title",
         "project name test",
+        "title",
+        "TARA",
+        "testnet",
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
     expect(secondaryCreation).not.to.be.undefined;
@@ -160,10 +172,14 @@ describe("DynamicEscrowUpgradeable", function () {
         "https://pool.data.json",
         "title",
         "project name test",
+        "TARA",
+        "testnet",
         false,
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
     const afterPoolIndex = await hypePool.getCurrentIndex();
@@ -177,7 +193,19 @@ describe("DynamicEscrowUpgradeable", function () {
     await expect(
       hypePool
         .connect(depositorOne)
-        .createPool("", "title", "project name test", oneEth, zeroAddress, ethers.utils.parseEther("0.03"), SAMPLE_DATE)
+        .createPool(
+          "",
+          "title",
+          "project name test",
+          "TARA",
+          "testnet",
+          oneEth,
+          zeroAddress,
+          843,
+          ethers.utils.parseEther("0.03"),
+          ethers.utils.parseEther("0.03"),
+          SAMPLE_DATE
+        )
     ).to.be.revertedWith("Missing metadata URI");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
@@ -186,10 +214,14 @@ describe("DynamicEscrowUpgradeable", function () {
         .connect(depositorOne)
         .createPool(
           "as",
-          "title",
           "project name test",
+          "title",
+          "TARA",
+          "testnet",
           ethers.utils.parseEther("0.0"),
           zeroAddress,
+          843,
+          ethers.utils.parseEther("0.0"),
           ethers.utils.parseEther("0.0"),
           SAMPLE_DATE
         )
@@ -199,7 +231,19 @@ describe("DynamicEscrowUpgradeable", function () {
     await expect(
       hypePool
         .connect(depositorOne)
-        .createPool("as", "title", "project name test", oneEth, zeroAddress, ethers.utils.parseEther("0"), SAMPLE_DATE)
+        .createPool(
+          "as",
+          "project name test",
+          "title",
+          "TARA",
+          "testnet",
+          oneEth,
+          zeroAddress,
+          843,
+          ethers.utils.parseEther("0"),
+          ethers.utils.parseEther("0"),
+          SAMPLE_DATE
+        )
     ).to.be.revertedWith("Invalid minimal hype reward");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
@@ -207,7 +251,19 @@ describe("DynamicEscrowUpgradeable", function () {
     await expect(
       hypePool
         .connect(depositorOne)
-        .createPool("as", "title", "project name test", oneEth, zeroAddress, ethers.utils.parseEther("0.03"), PAST_DATE)
+        .createPool(
+          "as",
+          "project name test",
+          "title",
+          "TARA",
+          "testnet",
+          oneEth,
+          zeroAddress,
+          843,
+          ethers.utils.parseEther("0.03"),
+          ethers.utils.parseEther("0.03"),
+          PAST_DATE
+        )
     ).to.be.revertedWith("End date must be after current block time");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
@@ -330,10 +386,14 @@ describe("DynamicEscrowUpgradeable", function () {
       .connect(owner)
       .createPool(
         "https://pool.data.json",
-        "title",
         "project name test",
+        "title",
+        "TARA",
+        "testnet",
         ethers.utils.parseEther("13"),
         erc20.address,
+        843,
+        ethers.utils.parseEther("1"),
         ethers.utils.parseEther("1"),
         SAMPLE_DATE
       );
@@ -346,9 +406,13 @@ describe("DynamicEscrowUpgradeable", function () {
         "https://pool.data.json",
         "title",
         "project name test",
+        "TARA",
+        "testnet",
         false,
         ethers.utils.parseEther("13"),
         erc20.address,
+        843,
+        ethers.utils.parseEther("1"),
         ethers.utils.parseEther("1"),
         SAMPLE_DATE
       );
@@ -454,11 +518,15 @@ describe("DynamicEscrowUpgradeable", function () {
       .connect(depositorOne)
       .createPool(
         "https://pool.data.json",
-        "title",
         "project name test",
+        "title",
+        "TARA",
+        "testnet",
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
     expect(createPool).not.to.be.undefined;
@@ -470,10 +538,14 @@ describe("DynamicEscrowUpgradeable", function () {
         "https://pool.data.json",
         "title",
         "project name test",
+        "TARA",
+        "testnet",
         false,
         oneEth,
         zeroAddress,
+        843,
         ethers.utils.parseEther("0.03"),
+        ethers.utils.parseEther("0.05"),
         SAMPLE_DATE
       );
   });
@@ -504,7 +576,7 @@ describe("DynamicEscrowUpgradeable", function () {
     expect(getPoolOne).not.to.be.undefined;
     expect(getPoolOne.id).to.equal(POOL_ONE);
     expect(getPoolOne.creator).to.equal(depositorOne.address);
-    expect(getPoolOne.token).to.equal(zeroAddress);
+    expect(getPoolOne.tokenAddress).to.equal(zeroAddress);
 
     const getPoolUri = await hypePool.connect(depositorOne).poolURI(POOL_ONE);
     expect(getPoolUri).to.equal("https://pool.data.json");
@@ -514,7 +586,7 @@ describe("DynamicEscrowUpgradeable", function () {
     expect(getPoolOne).not.to.be.undefined;
     expect(getPoolOne.id).to.equal(POOL_ONE);
     expect(getPoolOne.creator).to.equal(depositorOne.address);
-    expect(getPoolOne.token).to.equal(zeroAddress);
+    expect(getPoolOne.tokenAddress).to.equal(zeroAddress);
 
     const getPoolUri = await hypePool.connect(depositorTwo).poolURI(POOL_ONE);
     expect(getPoolUri).to.equal("https://pool.data.json");
@@ -531,11 +603,15 @@ describe("DynamicEscrowUpgradeable", function () {
         .connect(depositorOne)
         .createPool(
           "https://pool.data.json",
-          "title",
           "project name test",
+          "title",
+          "TARA",
+          "testnet",
           oneEth,
           zeroAddress,
+          843,
           ethers.utils.parseEther("0.03"),
+          ethers.utils.parseEther("0.05"),
           SAMPLE_DATE
         );
       await expect(createPool).to.be.revertedWith("Pausable: paused");
@@ -563,11 +639,15 @@ describe("DynamicEscrowUpgradeable", function () {
           .connect(depositorOne)
           .createPool(
             "",
-            "title",
             "project name test",
+            "title",
+            "TARA",
+            "testnet",
             oneEth,
             zeroAddress,
+            843,
             ethers.utils.parseEther("0.03"),
+            ethers.utils.parseEther("0.05"),
             SAMPLE_DATE
           )
       ).to.be.revertedWith("Missing metadata URI");

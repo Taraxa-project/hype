@@ -87,9 +87,9 @@
         },
         {
           "indexed": false,
-          "internalType": "address",
+          "internalType": "uint256",
           "name": "network",
-          "type": "address"
+          "type": "uint256"
         },
         {
           "indexed": false,
@@ -183,9 +183,9 @@
           "type": "address"
         },
         {
-          "internalType": "address",
+          "internalType": "uint256",
           "name": "network",
-          "type": "address"
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
@@ -238,9 +238,9 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "uint256",
               "name": "network",
-              "type": "address"
+              "type": "uint256"
             },
             {
               "internalType": "bool",
@@ -337,9 +337,9 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "uint256",
               "name": "network",
-              "type": "address"
+              "type": "uint256"
             },
             {
               "internalType": "bool",

@@ -7828,7 +7828,7 @@
               name: "PoolActivated",
               type: "event",
             },
-            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,address,uint256,uint256,uint256)":
+            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,uint256,uint256,uint256,uint256)":
               {
                 anonymous: !1,
                 inputs: [
@@ -7842,7 +7842,7 @@
                   { indexed: !1, internalType: "bool", name: "active", type: "bool" },
                   { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
                   { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
-                  { indexed: !1, internalType: "address", name: "network", type: "address" },
+                  { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
@@ -7878,7 +7878,7 @@
                 id: "The id of the pool to activate. Can be called only be the pool owner. Short note: The escrow can be deposited by a third party (e.g. a sponsor). However, the pool owner is the only one who can activate it.",
               },
             },
-            "createPool(string,string,string,string,string,uint256,address,address,uint256,uint256,uint256)": {
+            "createPool(string,string,string,string,string,uint256,address,uint256,uint256,uint256,uint256)": {
               inputs: [
                 { internalType: "string", name: "uri", type: "string" },
                 { internalType: "string", name: "projectName", type: "string" },
@@ -7887,7 +7887,7 @@
                 { internalType: "string", name: "word", type: "string" },
                 { internalType: "uint256", name: "cap", type: "uint256" },
                 { internalType: "address", name: "tokenAddress", type: "address" },
-                { internalType: "address", name: "network", type: "address" },
+                { internalType: "uint256", name: "network", type: "uint256" },
                 { internalType: "uint256", name: "minReward", type: "uint256" },
                 { internalType: "uint256", name: "impressionReward", type: "uint256" },
                 { internalType: "uint256", name: "endDate", type: "uint256" },
@@ -7902,7 +7902,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },
@@ -7951,7 +7951,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },
@@ -8221,7 +8221,7 @@
               name: "PoolActivated",
               type: "event",
             },
-            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,address,uint256,uint256,uint256)":
+            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,uint256,uint256,uint256,uint256)":
               {
                 anonymous: !1,
                 inputs: [
@@ -8235,7 +8235,7 @@
                   { indexed: !1, internalType: "bool", name: "active", type: "bool" },
                   { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
                   { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
-                  { indexed: !1, internalType: "address", name: "network", type: "address" },
+                  { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
@@ -8261,7 +8261,7 @@
               stateMutability: "nonpayable",
               type: "function",
             },
-            "createPool(string,string,string,string,string,uint256,address,address,uint256,uint256,uint256)": {
+            "createPool(string,string,string,string,string,uint256,address,uint256,uint256,uint256,uint256)": {
               inputs: [
                 { internalType: "string", name: "uri", type: "string" },
                 { internalType: "string", name: "projectName", type: "string" },
@@ -8270,7 +8270,7 @@
                 { internalType: "string", name: "word", type: "string" },
                 { internalType: "uint256", name: "cap", type: "uint256" },
                 { internalType: "address", name: "tokenAddress", type: "address" },
-                { internalType: "address", name: "network", type: "address" },
+                { internalType: "uint256", name: "network", type: "uint256" },
                 { internalType: "uint256", name: "minHypeReward", type: "uint256" },
                 { internalType: "uint256", name: "impressionReward", type: "uint256" },
                 { internalType: "uint256", name: "endDate", type: "uint256" },
@@ -8285,7 +8285,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },
@@ -8320,7 +8320,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },
@@ -8700,7 +8700,7 @@
               name: "PoolActivated",
               type: "event",
             },
-            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,address,uint256,uint256,uint256)":
+            "PoolCreated(uint256,address,string,string,string,string,string,bool,uint256,address,uint256,uint256,uint256,uint256)":
               {
                 anonymous: !1,
                 inputs: [
@@ -8714,7 +8714,7 @@
                   { indexed: !1, internalType: "bool", name: "active", type: "bool" },
                   { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
                   { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
-                  { indexed: !1, internalType: "address", name: "network", type: "address" },
+                  { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
                   { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
@@ -8750,7 +8750,7 @@
                 id: "The id of the pool to activate. Can be called only be the pool owner. Short note: The escrow can be deposited by a third party (e.g. a sponsor). However, the pool owner is the only one who can activate it.",
               },
             },
-            "createPool(string,string,string,string,string,uint256,address,address,uint256,uint256,uint256)": {
+            "createPool(string,string,string,string,string,uint256,address,uint256,uint256,uint256,uint256)": {
               inputs: [
                 { internalType: "string", name: "uri", type: "string" },
                 { internalType: "string", name: "projectName", type: "string" },
@@ -8759,7 +8759,7 @@
                 { internalType: "string", name: "word", type: "string" },
                 { internalType: "uint256", name: "cap", type: "uint256" },
                 { internalType: "address", name: "tokenAddress", type: "address" },
-                { internalType: "address", name: "network", type: "address" },
+                { internalType: "uint256", name: "network", type: "uint256" },
                 { internalType: "uint256", name: "minReward", type: "uint256" },
                 { internalType: "uint256", name: "impressionReward", type: "uint256" },
                 { internalType: "uint256", name: "endDate", type: "uint256" },
@@ -8774,7 +8774,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },
@@ -8823,7 +8823,7 @@
                     { internalType: "string", name: "projectName", type: "string" },
                     { internalType: "string", name: "tokenName", type: "string" },
                     { internalType: "string", name: "word", type: "string" },
-                    { internalType: "address", name: "network", type: "address" },
+                    { internalType: "uint256", name: "network", type: "uint256" },
                     { internalType: "bool", name: "active", type: "bool" },
                     { internalType: "uint256", name: "cap", type: "uint256" },
                     { internalType: "address", name: "tokenAddress", type: "address" },

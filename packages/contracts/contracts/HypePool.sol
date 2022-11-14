@@ -44,7 +44,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
         string memory word,
         uint256 cap,
         address tokenAddress,
-        address network,
+        uint256 network,
         uint256 minReward,
         uint256 impressionReward,
         uint256 endDate
@@ -108,7 +108,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
         string memory word,
         uint256 cap,
         address tokenAddress,
-        address network,
+        uint256 network,
         uint256 minReward,
         uint256 impressionReward,
         uint256 endDate

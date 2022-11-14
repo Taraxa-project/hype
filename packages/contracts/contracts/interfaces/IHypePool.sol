@@ -9,7 +9,7 @@ interface IHypePool {
         string projectName;
         string tokenName;
         string word;
-        address network;
+        uint256 network;
         bool active;
         uint256 cap;
         address tokenAddress;
@@ -26,7 +26,7 @@ interface IHypePool {
         string memory word,
         uint256 cap,
         address tokenAddress,
-        address network,
+        uint256 network,
         uint256 minHypeReward,
         uint256 impressionReward,
         uint256 endDate
@@ -49,7 +49,7 @@ interface IHypePool {
         bool active,
         uint256 cap,
         address tokenAddress,
-        address network,
+        uint256 network,
         uint256 minReward,
         uint256 impressionReward,
         uint256 endDate
