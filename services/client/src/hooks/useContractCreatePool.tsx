@@ -9,11 +9,16 @@ import { NotificationType } from '../utils';
 export interface WritePoolArgs {
   uri: string;
   projectName: string;
+  tokenName?: string;
   title: string;
+  projectDescription: string;
   description: string;
   poolCap: number;
+  word: string;
+  network: string;
   tokenAddress: string;
   minHypeReward: number;
+  impressionReward: number;
   endDate: number;
 }
 

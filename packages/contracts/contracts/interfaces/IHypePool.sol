@@ -5,12 +5,16 @@ interface IHypePool {
     struct HypePool {
         uint256 id;
         address creator;
-        string projectName;
         string title;
+        string projectName;
+        string tokenName;
+        string word;
+        address network;
         bool active;
         uint256 cap;
-        address token;
+        address tokenAddress;
         uint256 minReward;
+        uint256 impressionReward;
         uint256 endDate;
     }
 
@@ -18,9 +22,13 @@ interface IHypePool {
         string memory uri,
         string memory projectName,
         string memory title,
-        uint256 poolCap,
+        string memory tokenName,
+        string memory word,
+        uint256 cap,
         address tokenAddress,
+        address network,
         uint256 minHypeReward,
+        uint256 impressionReward,
         uint256 endDate
     ) external returns (HypePool memory);
 
@@ -34,12 +42,16 @@ interface IHypePool {
         uint256 poolId,
         address creator,
         string uri,
-        string projectName,
         string title,
+        string projectName,
+        string tokenName,
+        string word,
         bool active,
-        uint256 poolCap,
-        address poolToken,
-        uint256 minHypeReward,
+        uint256 cap,
+        address tokenAddress,
+        address network,
+        uint256 minReward,
+        uint256 impressionReward,
         uint256 endDate
     );
 

@@ -14,8 +14,12 @@ export const useAddHypePoolEffects = () => {
     projectName: null,
     title: null,
     description: null,
+    projectDescription: null,
+    word: null,
+    network: null,
     poolCap: null,
     tokenAddress: null,
+    impressionReward: null,
     minHypeReward: null,
     endDate: null,
   };
@@ -48,7 +52,7 @@ export const useAddHypePoolEffects = () => {
 
   // const { data, submitHandler } = useAddHypePool();
 
-  const onFinalize = async (data: AddHypePool) => {
+  const onUploadToIpfs = async (data: AddHypePool) => {
     const url = await uploadToIpfs(data);
     // const url = 'https://hype.infura-ipfs.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
@@ -56,6 +60,10 @@ export const useAddHypePoolEffects = () => {
     createPool(data, url);
     // submitHandler(data);
     // reset();
+  };
+
+  const fundAndActivate = () => {
+    console.log('Fund & Activate');
   };
 
   const uploadToIpfs = async (data: AddHypePool) => {
@@ -91,6 +99,12 @@ export const useAddHypePoolEffects = () => {
     }
   };
 
+  const onFinalize = () => {
+    console.log('Finalize');
+    console.log('Details: ', poolDetails);
+    console.log('Rewards: ', poolReward);
+  };
+
   const createPool = (data: AddHypePool, ipfsFileUrl: string) => {
     if (!data || !ipfsFileUrl) {
       return;
@@ -100,13 +114,23 @@ export const useAddHypePoolEffects = () => {
     const description = data.description;
     const title = data.title;
     const tokenAddress = data.token;
+    const tokenName = data.tokenName;
+    const projectDescription = data.projectDescription;
+    const word = data.word;
+    const network = data.network;
+    const impressionReward = data.impressionReward;
     const minHypeReward = data.minReward;
     const endDate = data.endDate?.getTime();
     setWritePoolArgs({
       uri: ipfsFileUrl,
       projectName: projectName,
       title: title,
+      tokenName: tokenName,
+      projectDescription: projectDescription,
       description: description,
+      word: word,
+      network: network,
+      impressionReward: impressionReward,
       poolCap: poolCap,
       tokenAddress: tokenAddress,
       minHypeReward: minHypeReward,
@@ -141,5 +165,6 @@ export const useAddHypePoolEffects = () => {
     onBackFromRewards,
     poolDetails,
     poolReward,
+    fundAndActivate,
   };
 };

@@ -24,8 +24,8 @@ async function main() {
     gasPrice: 0,
   });
 
-  console.log(deployFunc);
   const dynamicEscrow = await deployFunc;
+  console.log(dynamicEscrow);
 
   await dynamicEscrow.deployed();
   console.log("DynamicEscrow deployed to:", dynamicEscrow.address);

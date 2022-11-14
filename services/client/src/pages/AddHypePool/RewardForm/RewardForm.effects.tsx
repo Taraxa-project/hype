@@ -38,7 +38,15 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
   const networkOptions = [
     {
       name: 'Taraxa Network',
+      value: 841,
+    },
+    {
+      name: 'Taraxa Devnet',
       value: 843,
+    },
+    {
+      name: 'Taraxa Testnet',
+      value: 842,
     },
     {
       name: 'Ethereum Network',

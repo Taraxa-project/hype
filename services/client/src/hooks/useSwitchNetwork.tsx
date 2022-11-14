@@ -1,9 +1,6 @@
-import { useProvider } from 'wagmi';
 import { networks } from '../utils';
 
 export const useSwitchNetwork = () => {
-  const provider = useProvider();
-
   const changeNetwork = async (chainId: number) => {
     const chain = networks[chainId] ? chainId : 1;
     const hexChainId = `0x${chainId.toString(16)}`;

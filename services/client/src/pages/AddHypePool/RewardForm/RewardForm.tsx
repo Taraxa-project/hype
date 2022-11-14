@@ -40,19 +40,12 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
     isEthNetwork,
   } = useRewardFormEffects(defaultValues);
 
-  console.log('Errors: ', errors);
   return (
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <FormColumn>
         {/* Network */}
         <FormElement>
           <TitleText>How do you want to reward the community?</TitleText>
-          {/* <InfoCard>
-                  Taraxa`s social listening algorithms automatically account for factors such as{' '}
-                  <strong>relevance </strong>
-                  and <strong>impressions </strong> to incentivize real and impactful discussions,
-                  not bounty hunters. <Link text="Learn more" href={'/'} />
-                </InfoCard> */}
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Rewards are on this network:</Label>
           </Box>
@@ -236,7 +229,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
           <Controller
             name="endDate"
             control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value } }) => (
               <DatePicker
                 wrapperClassName="date-picker"
                 placeholderText="ex: 30 Days"
@@ -245,6 +238,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
                 showTimeSelect
                 dateFormat="MM/dd/yyyy HH:mm"
                 onChange={onChange}
+                minDate={new Date()}
               />
             )}
           />

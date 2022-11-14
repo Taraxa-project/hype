@@ -46,13 +46,25 @@
         {
           "indexed": false,
           "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
           "name": "projectName",
           "type": "string"
         },
         {
           "indexed": false,
           "internalType": "string",
-          "name": "title",
+          "name": "tokenName",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "word",
           "type": "string"
         },
         {
@@ -64,19 +76,31 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "poolCap",
+          "name": "cap",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "address",
-          "name": "poolToken",
+          "name": "tokenAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "network",
           "type": "address"
         },
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "minHypeReward",
+          "name": "minReward",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "impressionReward",
           "type": "uint256"
         },
         {
@@ -139,8 +163,18 @@
           "type": "string"
         },
         {
+          "internalType": "string",
+          "name": "tokenName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "word",
+          "type": "string"
+        },
+        {
           "internalType": "uint256",
-          "name": "poolCap",
+          "name": "cap",
           "type": "uint256"
         },
         {
@@ -149,8 +183,18 @@
           "type": "address"
         },
         {
+          "internalType": "address",
+          "name": "network",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
           "name": "minHypeReward",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "impressionReward",
           "type": "uint256"
         },
         {
@@ -175,13 +219,28 @@
             },
             {
               "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
               "name": "projectName",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "title",
+              "name": "tokenName",
               "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "word",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "network",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -195,12 +254,17 @@
             },
             {
               "internalType": "address",
-              "name": "token",
+              "name": "tokenAddress",
               "type": "address"
             },
             {
               "internalType": "uint256",
               "name": "minReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "impressionReward",
               "type": "uint256"
             },
             {
@@ -254,13 +318,28 @@
             },
             {
               "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
               "name": "projectName",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "title",
+              "name": "tokenName",
               "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "word",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "network",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -274,12 +353,17 @@
             },
             {
               "internalType": "address",
-              "name": "token",
+              "name": "tokenAddress",
               "type": "address"
             },
             {
               "internalType": "uint256",
               "name": "minReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "impressionReward",
               "type": "uint256"
             },
             {
