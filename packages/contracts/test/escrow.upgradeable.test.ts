@@ -84,21 +84,21 @@ describe("DynamicEscrowUpgradeable", function () {
   Depositor One Creates Pool 0 with the defined amount`, async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(currentPoolIndex).to.equal(POOL_ZERO);
-    const createPool = await hypePool
-      .connect(depositorOne)
-      .createPool(
-        "https://pool.data.json",
-        "project name test",
-        "title",
-        "TARA",
-        "testnet",
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
-      );
+    const details = {
+      projectName: "project name test",
+      title: "title",
+      tokenName: "TARA",
+      word: "testnet",
+    };
+    const rewards = {
+      cap: oneEth,
+      tokenAddress: zeroAddress,
+      network: 843,
+      minReward: ethers.utils.parseEther("0.03"),
+      impressionReward: ethers.utils.parseEther("0.05"),
+      endDate: SAMPLE_DATE,
+    };
+    const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
@@ -106,17 +106,17 @@ describe("DynamicEscrowUpgradeable", function () {
         POOL_ZERO,
         depositorOne.address,
         "https://pool.data.json",
-        "title",
-        "project name test",
-        "TARA",
-        "testnet",
         false,
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
+        details.title,
+        details.projectName,
+        details.tokenName,
+        details.word,
+        rewards.cap,
+        rewards.tokenAddress,
+        rewards.network,
+        rewards.minReward,
+        rewards.impressionReward,
+        rewards.endDate
       );
     const afterPoolIndex = await hypePool.getCurrentIndex();
     expect(afterPoolIndex).to.equal(POOL_ONE);
@@ -148,21 +148,23 @@ describe("DynamicEscrowUpgradeable", function () {
   it("Depositor one creates pool 1", async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(currentPoolIndex).to.equal(POOL_ONE);
+    const details = {
+      projectName: "project name test",
+      title: "title",
+      tokenName: "TARA",
+      word: "testnet",
+    };
+    const rewards = {
+      cap: oneEth,
+      tokenAddress: zeroAddress,
+      network: 843,
+      minReward: ethers.utils.parseEther("0.03"),
+      impressionReward: ethers.utils.parseEther("0.05"),
+      endDate: SAMPLE_DATE,
+    };
     const secondaryCreation = await hypePool
       .connect(depositorOne)
-      .createPool(
-        "https://pool.data.json",
-        "project name test",
-        "title",
-        "TARA",
-        "testnet",
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
-      );
+      .createPool("https://pool.data.json", details, rewards);
     expect(secondaryCreation).not.to.be.undefined;
     await expect(secondaryCreation)
       .to.emit(hypePool, "PoolCreated")
@@ -170,17 +172,17 @@ describe("DynamicEscrowUpgradeable", function () {
         POOL_ONE,
         depositorOne.address,
         "https://pool.data.json",
-        "title",
-        "project name test",
-        "TARA",
-        "testnet",
         false,
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
+        details.title,
+        details.projectName,
+        details.tokenName,
+        details.word,
+        rewards.cap,
+        rewards.tokenAddress,
+        rewards.network,
+        rewards.minReward,
+        rewards.impressionReward,
+        rewards.endDate
       );
     const afterPoolIndex = await hypePool.getCurrentIndex();
     expect(afterPoolIndex).to.equal(POOL_TWO);
@@ -190,80 +192,59 @@ describe("DynamicEscrowUpgradeable", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
-    await expect(
-      hypePool
-        .connect(depositorOne)
-        .createPool(
-          "",
-          "title",
-          "project name test",
-          "TARA",
-          "testnet",
-          oneEth,
-          zeroAddress,
-          843,
-          ethers.utils.parseEther("0.03"),
-          ethers.utils.parseEther("0.03"),
-          SAMPLE_DATE
-        )
-    ).to.be.revertedWith("Missing metadata URI");
+    const details = {
+      projectName: "project name test",
+      title: "title",
+      tokenName: "TARA",
+      word: "testnet",
+    };
+    const rewards = {
+      cap: oneEth,
+      tokenAddress: zeroAddress,
+      network: 843,
+      minReward: ethers.utils.parseEther("0.03"),
+      impressionReward: ethers.utils.parseEther("0.03"),
+      endDate: SAMPLE_DATE,
+    };
+    await expect(hypePool.connect(depositorOne).createPool("", details, rewards)).to.be.revertedWith(
+      "Missing metadata URI"
+    );
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
     await expect(
-      hypePool
-        .connect(depositorOne)
-        .createPool(
-          "as",
-          "project name test",
-          "title",
-          "TARA",
-          "testnet",
-          ethers.utils.parseEther("0.0"),
-          zeroAddress,
-          843,
-          ethers.utils.parseEther("0.0"),
-          ethers.utils.parseEther("0.0"),
-          SAMPLE_DATE
-        )
+      hypePool.connect(depositorOne).createPool("as", details, {
+        tokenAddress: zeroAddress,
+        network: 843,
+        cap: ethers.utils.parseEther("0.0"),
+        minReward: ethers.utils.parseEther("0.0"),
+        impressionReward: ethers.utils.parseEther("0.0"),
+        endDate: SAMPLE_DATE,
+      })
     ).to.be.revertedWith("Invalid pool cap");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
     await expect(
-      hypePool
-        .connect(depositorOne)
-        .createPool(
-          "as",
-          "project name test",
-          "title",
-          "TARA",
-          "testnet",
-          oneEth,
-          zeroAddress,
-          843,
-          ethers.utils.parseEther("0"),
-          ethers.utils.parseEther("0"),
-          SAMPLE_DATE
-        )
+      hypePool.connect(depositorOne).createPool("as", details, {
+        tokenAddress: zeroAddress,
+        network: 843,
+        cap: oneEth,
+        minReward: ethers.utils.parseEther("0.0"),
+        impressionReward: ethers.utils.parseEther("0.1"),
+        endDate: SAMPLE_DATE,
+      })
     ).to.be.revertedWith("Invalid minimal hype reward");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
     console.log("date is", PAST_DATE);
     await expect(
-      hypePool
-        .connect(depositorOne)
-        .createPool(
-          "as",
-          "project name test",
-          "title",
-          "TARA",
-          "testnet",
-          oneEth,
-          zeroAddress,
-          843,
-          ethers.utils.parseEther("0.03"),
-          ethers.utils.parseEther("0.03"),
-          PAST_DATE
-        )
+      hypePool.connect(depositorOne).createPool("as", details, {
+        cap: oneEth,
+        tokenAddress: zeroAddress,
+        network: 843,
+        minReward: ethers.utils.parseEther("0.03"),
+        impressionReward: ethers.utils.parseEther("0.03"),
+        endDate: PAST_DATE,
+      })
     ).to.be.revertedWith("End date must be after current block time");
     console.log("Pool index is: ", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
@@ -382,21 +363,21 @@ describe("DynamicEscrowUpgradeable", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     console.log("currentPoolIndex", currentPoolIndex);
     expect(currentPoolIndex).to.equal(POOL_TWO);
-    const createPool = await hypePool
-      .connect(owner)
-      .createPool(
-        "https://pool.data.json",
-        "project name test",
-        "title",
-        "TARA",
-        "testnet",
-        ethers.utils.parseEther("13"),
-        erc20.address,
-        843,
-        ethers.utils.parseEther("1"),
-        ethers.utils.parseEther("1"),
-        SAMPLE_DATE
-      );
+    const details = {
+      projectName: "project name test",
+      title: "title",
+      tokenName: "TARA",
+      word: "testnet",
+    };
+    const rewards = {
+      cap: ethers.utils.parseEther("13"),
+      tokenAddress: erc20.address,
+      network: 843,
+      minReward: ethers.utils.parseEther("1"),
+      impressionReward: ethers.utils.parseEther("1"),
+      endDate: SAMPLE_DATE,
+    };
+    const createPool = await hypePool.connect(owner).createPool("https://pool.data.json", details, rewards);
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
@@ -404,17 +385,17 @@ describe("DynamicEscrowUpgradeable", function () {
         POOL_TWO,
         owner.address,
         "https://pool.data.json",
-        "title",
-        "project name test",
-        "TARA",
-        "testnet",
         false,
-        ethers.utils.parseEther("13"),
-        erc20.address,
-        843,
-        ethers.utils.parseEther("1"),
-        ethers.utils.parseEther("1"),
-        SAMPLE_DATE
+        details.title,
+        details.projectName,
+        details.tokenName,
+        details.word,
+        rewards.cap,
+        rewards.tokenAddress,
+        rewards.network,
+        rewards.minReward,
+        rewards.impressionReward,
+        rewards.endDate
       );
   });
 
@@ -514,21 +495,21 @@ describe("DynamicEscrowUpgradeable", function () {
   Depositor One Creates Pool 3 with the defined amount`, async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(currentPoolIndex).to.equal(POOL_THREE);
-    const createPool = await hypePool
-      .connect(depositorOne)
-      .createPool(
-        "https://pool.data.json",
-        "project name test",
-        "title",
-        "TARA",
-        "testnet",
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
-      );
+    const details = {
+      projectName: "project name test",
+      title: "title",
+      tokenName: "TARA",
+      word: "testnet",
+    };
+    const rewards = {
+      cap: oneEth,
+      tokenAddress: zeroAddress,
+      network: 843,
+      minReward: ethers.utils.parseEther("0.03"),
+      impressionReward: ethers.utils.parseEther("0.05"),
+      endDate: SAMPLE_DATE,
+    };
+    const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
@@ -536,17 +517,17 @@ describe("DynamicEscrowUpgradeable", function () {
         POOL_THREE,
         depositorOne.address,
         "https://pool.data.json",
-        "title",
-        "project name test",
-        "TARA",
-        "testnet",
         false,
-        oneEth,
-        zeroAddress,
-        843,
-        ethers.utils.parseEther("0.03"),
-        ethers.utils.parseEther("0.05"),
-        SAMPLE_DATE
+        details.title,
+        details.projectName,
+        details.tokenName,
+        details.word,
+        rewards.cap,
+        rewards.tokenAddress,
+        rewards.network,
+        rewards.minReward,
+        rewards.impressionReward,
+        rewards.endDate
       );
   });
 
@@ -576,7 +557,7 @@ describe("DynamicEscrowUpgradeable", function () {
     expect(getPoolOne).not.to.be.undefined;
     expect(getPoolOne.id).to.equal(POOL_ONE);
     expect(getPoolOne.creator).to.equal(depositorOne.address);
-    expect(getPoolOne.tokenAddress).to.equal(zeroAddress);
+    expect(getPoolOne.rewards.tokenAddress).to.equal(zeroAddress);
 
     const getPoolUri = await hypePool.connect(depositorOne).poolURI(POOL_ONE);
     expect(getPoolUri).to.equal("https://pool.data.json");
@@ -586,7 +567,7 @@ describe("DynamicEscrowUpgradeable", function () {
     expect(getPoolOne).not.to.be.undefined;
     expect(getPoolOne.id).to.equal(POOL_ONE);
     expect(getPoolOne.creator).to.equal(depositorOne.address);
-    expect(getPoolOne.tokenAddress).to.equal(zeroAddress);
+    expect(getPoolOne.rewards.tokenAddress).to.equal(zeroAddress);
 
     const getPoolUri = await hypePool.connect(depositorTwo).poolURI(POOL_ONE);
     expect(getPoolUri).to.equal("https://pool.data.json");
@@ -599,21 +580,21 @@ describe("DynamicEscrowUpgradeable", function () {
     it("Pool creation should revert", async () => {
       const currentPoolIndex = await hypePool.getCurrentIndex();
       expect(currentPoolIndex).to.equal(BigNumber.from("4"));
-      const createPool = await hypePool
-        .connect(depositorOne)
-        .createPool(
-          "https://pool.data.json",
-          "project name test",
-          "title",
-          "TARA",
-          "testnet",
-          oneEth,
-          zeroAddress,
-          843,
-          ethers.utils.parseEther("0.03"),
-          ethers.utils.parseEther("0.05"),
-          SAMPLE_DATE
-        );
+      const details = {
+        projectName: "project name test",
+        title: "title",
+        tokenName: "TARA",
+        word: "testnet",
+      };
+      const rewards = {
+        cap: oneEth,
+        tokenAddress: zeroAddress,
+        network: 843,
+        minReward: ethers.utils.parseEther("0.03"),
+        impressionReward: ethers.utils.parseEther("0.05"),
+        endDate: SAMPLE_DATE,
+      };
+      const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
       await expect(createPool).to.be.revertedWith("Pausable: paused");
       const activation = await hypePool.connect(depositorOne).activatePool(BigNumber.from("4"));
       expect(activation).to.be.revertedWith("Pausable: paused");
@@ -634,23 +615,23 @@ describe("DynamicEscrowUpgradeable", function () {
     it("Pool creation should revert", async () => {
       const currentPoolIndex = await hypePool.getCurrentIndex();
       expect(currentPoolIndex).to.equal(BigNumber.from("4"));
-      expect(
-        hypePool
-          .connect(depositorOne)
-          .createPool(
-            "",
-            "project name test",
-            "title",
-            "TARA",
-            "testnet",
-            oneEth,
-            zeroAddress,
-            843,
-            ethers.utils.parseEther("0.03"),
-            ethers.utils.parseEther("0.05"),
-            SAMPLE_DATE
-          )
-      ).to.be.revertedWith("Missing metadata URI");
+      const details = {
+        projectName: "project name test",
+        title: "title",
+        tokenName: "TARA",
+        word: "testnet",
+      };
+      const rewards = {
+        cap: oneEth,
+        tokenAddress: zeroAddress,
+        network: 843,
+        minReward: ethers.utils.parseEther("0.03"),
+        impressionReward: ethers.utils.parseEther("0.05"),
+        endDate: SAMPLE_DATE,
+      };
+      expect(hypePool.connect(depositorOne).createPool("", details, rewards)).to.be.revertedWith(
+        "Missing metadata URI"
+      );
       const activation = await hypePool.connect(depositorOne).activatePool(BigNumber.from("1"));
       expect(activation).to.be.revertedWith("Pool is already active");
     });

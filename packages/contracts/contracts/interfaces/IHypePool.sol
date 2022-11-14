@@ -2,34 +2,34 @@
 pragma solidity 0.8.14;
 
 interface IHypePool {
-    struct HypePool {
-        uint256 id;
-        address creator;
+    struct Details {
         string title;
         string projectName;
         string tokenName;
         string word;
+    }
+
+    struct Rewards {
         uint256 network;
-        bool active;
-        uint256 cap;
         address tokenAddress;
         uint256 minReward;
         uint256 impressionReward;
+        uint256 cap;
         uint256 endDate;
+    }
+
+    struct HypePool {
+        uint256 id;
+        address creator;
+        bool active;
+        Details details;
+        Rewards rewards;
     }
 
     function createPool(
         string memory uri,
-        string memory projectName,
-        string memory title,
-        string memory tokenName,
-        string memory word,
-        uint256 cap,
-        address tokenAddress,
-        uint256 network,
-        uint256 minHypeReward,
-        uint256 impressionReward,
-        uint256 endDate
+        Details memory details,
+        Rewards memory rewards
     ) external returns (HypePool memory);
 
     function activatePool(uint256 id) external;
@@ -42,11 +42,11 @@ interface IHypePool {
         uint256 poolId,
         address creator,
         string uri,
+        bool active,
         string title,
         string projectName,
         string tokenName,
         string word,
-        bool active,
         uint256 cap,
         address tokenAddress,
         uint256 network,
@@ -55,10 +55,7 @@ interface IHypePool {
         uint256 endDate
     );
 
-    event PoolUriSet(
-        uint256 poolId,
-        string uri
-    );
+    event PoolUriSet(uint256 poolId, string uri);
 
     event PoolActivated(uint256 poolId, address activator);
 }
