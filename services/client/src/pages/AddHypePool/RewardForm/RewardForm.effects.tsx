@@ -65,16 +65,19 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     },
     {
       name: 'Other',
-      value: 'other',
+      value: '0x0000000000000000000000000000000000000000',
     },
   ];
 
   useEffect(() => {
     if (ERC0tokenInfo) {
-      setValue('token', ERC0tokenInfo.address, {
+      console.log('Token info: ', ERC0tokenInfo);
+      setValue('tokenAddress', ERC0tokenInfo.address || '', {
         shouldValidate: true,
       });
-      setValue('tokenName', ERC0tokenInfo.name);
+      setValue('tokenName', ERC0tokenInfo.name || '', {
+        shouldValidate: true,
+      });
     }
   }, [ERC0tokenInfo]);
 
@@ -96,7 +99,7 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
         .max(42)
         .notOneOf(['0x0'])
         .label('Custom Token address'),
-      tokenName: yup.string().label('Custom Token name'),
+      tokenName: yup.string().required('Custom token name is required!').label('Custom Token name'),
       cap: yup
         .number()
         .typeError('Pool cap is required')
@@ -166,8 +169,8 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
 
   const handleTokenSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const token = event.target.value;
-    setValue('tokenAddress', null);
-    setValue('tokenName', null);
+    setValue('tokenAddress', '');
+    setValue('tokenName', '');
     if (token === tokensOptions[2].value) {
       setShowToken(true);
     } else {
@@ -180,6 +183,7 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
   };
 
   const handleTokenAddressInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue('tokenName', '');
     const tokenAddress = event.target.value?.trim();
     if (tokenAddress && tokenAddress.length === 42) {
       setTokenAddress(tokenAddress as `0x${string}`);

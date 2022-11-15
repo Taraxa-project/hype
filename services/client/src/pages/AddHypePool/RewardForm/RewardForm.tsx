@@ -38,6 +38,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
     showToken,
     debouncedResults,
     isEthNetwork,
+    getValues,
   } = useRewardFormEffects(defaultValues);
 
   return (
@@ -96,11 +97,18 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
               <option
                 key={`${option.value}-${option.name}`}
                 value={option.value}
-                disabled={option.value === 'other' && !isEthNetwork}
+                disabled={
+                  // if ETH network block only TARA
+                  (option.value === tokensOptions[1].value && isEthNetwork) ||
+                  // if not ETH network block everything else except TARA
+                  (option.value !== tokensOptions[1].value && !isEthNetwork)
+                }
               >
                 {option.name}
               </option>
             ))}
+            {+getValues('network') === networkOptions[0].value}
+            {tokensOptions[1].value}
           </FormSelect>
           {errors.token && (
             <Text color="danger" fontSize="0.8rem">
@@ -140,6 +148,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
               disabled
               placeholder="ERC20 Token name"
               name="tokenName"
+              style={{ color: '#595959' }}
               {...register('tokenName')}
             />
             {errors.tokenName && (

@@ -14,7 +14,6 @@ export const useSwitchNetwork = () => {
     } catch (err: any) {
       // This error code indicates that the chain has not been added to MetaMask
       if (err.code === 4902) {
-        //e.code ===
         await window.ethereum.request({
           method: 'wallet_addEthereumChain',
           params: [

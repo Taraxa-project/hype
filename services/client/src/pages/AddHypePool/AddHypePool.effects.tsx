@@ -44,6 +44,8 @@ export const useAddHypePoolEffects = () => {
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
     network: '',
     token: null,
+    tokenAddress: '',
+    tokenName: '',
     minReward: null,
     impressionReward: null,
     cap: null,
