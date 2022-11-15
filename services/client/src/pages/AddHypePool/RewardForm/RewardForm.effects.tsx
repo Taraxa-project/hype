@@ -37,6 +37,10 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
 
   const networkOptions = [
     {
+      name: 'Ethereum Network',
+      value: 1,
+    },
+    {
       name: 'Taraxa Network',
       value: 841,
     },
@@ -48,20 +52,16 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
       name: 'Taraxa Testnet',
       value: 842,
     },
-    {
-      name: 'Ethereum Network',
-      value: 1,
-    },
   ];
 
   const tokensOptions = [
     {
-      name: 'TARA',
-      value: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
-    },
-    {
       name: 'ETH',
       value: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+    },
+    {
+      name: 'TARA',
+      value: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
     },
     {
       name: 'Other',
@@ -152,7 +152,11 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
       });
       setValue('tokenName', tokensOptions[0].name);
     }
-    if (+network === networkOptions[1].value) {
+    if (
+      +network === networkOptions[1].value ||
+      +network === networkOptions[2].value ||
+      +network === networkOptions[3].value
+    ) {
       setValue('token', tokensOptions[1].value, {
         shouldValidate: true,
       });

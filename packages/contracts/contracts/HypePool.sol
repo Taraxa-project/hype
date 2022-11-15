@@ -42,22 +42,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
         IHypePool.Rewards memory rewards
     ) internal virtual {
         _pools[tokenId] = IHypePool.HypePool(tokenId, msg.sender, false, details, rewards);
-        emit PoolCreated(
-            tokenId,
-            msg.sender,
-            _tokenURI,
-            false,
-            details.title,
-            details.projectName,
-            details.tokenName,
-            details.word,
-            rewards.cap,
-            rewards.tokenAddress,
-            rewards.network,
-            rewards.minReward,
-            rewards.impressionReward,
-            rewards.endDate
-        );
+        emit PoolCreated(tokenId, msg.sender, _tokenURI);
     }
 
     function _setPoolURI(uint256 tokenId, string memory _tokenURI) internal virtual {

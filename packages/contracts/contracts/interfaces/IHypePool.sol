@@ -38,22 +38,7 @@ interface IHypePool {
 
     function getCurrentIndex() external view returns (uint256);
 
-    event PoolCreated(
-        uint256 poolId,
-        address creator,
-        string uri,
-        bool active,
-        string title,
-        string projectName,
-        string tokenName,
-        string word,
-        uint256 cap,
-        address tokenAddress,
-        uint256 network,
-        uint256 minReward,
-        uint256 impressionReward,
-        uint256 endDate
-    );
+    event PoolCreated(uint256 poolId, address creator, string uri);
 
     event PoolUriSet(uint256 poolId, string uri);
 

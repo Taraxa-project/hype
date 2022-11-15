@@ -102,22 +102,7 @@ describe("DynamicEscrow", function () {
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
-      .withArgs(
-        POOL_ZERO,
-        depositorOne.address,
-        "https://pool.data.json",
-        false,
-        details.title,
-        details.projectName,
-        details.tokenName,
-        details.word,
-        rewards.cap,
-        rewards.tokenAddress,
-        rewards.network,
-        rewards.minReward,
-        rewards.impressionReward,
-        rewards.endDate
-      );
+      .withArgs(POOL_ZERO, depositorOne.address, "https://pool.data.json");
     const afterPoolIndex = await hypePool.getCurrentIndex();
     expect(afterPoolIndex).to.equal(POOL_ONE);
   });
@@ -168,22 +153,7 @@ describe("DynamicEscrow", function () {
     expect(secondaryCreation).not.to.be.undefined;
     await expect(secondaryCreation)
       .to.emit(hypePool, "PoolCreated")
-      .withArgs(
-        POOL_ONE,
-        depositorOne.address,
-        "https://pool.data.json",
-        false,
-        details.title,
-        details.projectName,
-        details.tokenName,
-        details.word,
-        rewards.cap,
-        rewards.tokenAddress,
-        rewards.network,
-        rewards.minReward,
-        rewards.impressionReward,
-        rewards.endDate
-      );
+      .withArgs(POOL_ONE, depositorOne.address, "https://pool.data.json");
     const afterPoolIndex = await hypePool.getCurrentIndex();
     expect(afterPoolIndex).to.equal(POOL_TWO);
   });
@@ -393,22 +363,7 @@ describe("DynamicEscrow", function () {
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
-      .withArgs(
-        POOL_TWO,
-        owner.address,
-        "https://pool.data.json",
-        false,
-        details.title,
-        details.projectName,
-        details.tokenName,
-        details.word,
-        rewards.cap,
-        rewards.tokenAddress,
-        rewards.network,
-        rewards.minReward,
-        rewards.impressionReward,
-        rewards.endDate
-      );
+      .withArgs(POOL_TWO, owner.address, "https://pool.data.json");
   });
 
   it("Owner address deposits 13 fake ERC20 into Escrow Pool 2, checks validity", async () => {
@@ -525,22 +480,7 @@ describe("DynamicEscrow", function () {
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
       .to.emit(hypePool, "PoolCreated")
-      .withArgs(
-        POOL_THREE,
-        depositorOne.address,
-        "https://pool.data.json",
-        false,
-        details.title,
-        details.projectName,
-        details.tokenName,
-        details.word,
-        rewards.cap,
-        rewards.tokenAddress,
-        rewards.network,
-        rewards.minReward,
-        rewards.impressionReward,
-        rewards.endDate
-      );
+      .withArgs(POOL_THREE, depositorOne.address, "https://pool.data.json");
   });
 
   it(`Then DepositorOne deposits 1 ETH into escrow for pool 3 and emits Deposited event`, async () => {
