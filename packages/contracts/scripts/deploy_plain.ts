@@ -19,10 +19,7 @@ async function main() {
   //   Get the contract factory connected to signer so it uses hardcoded fee data and
   //   should deploy using the signer and the hardcoded fees.
   const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow");
-  const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address, {
-    gasLimit: 100000000,
-    gasPrice: 0,
-  });
+  const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address);
 
   const dynamicEscrow = await deployFunc;
   console.log(dynamicEscrow);
@@ -30,10 +27,7 @@ async function main() {
   await dynamicEscrow.deployed();
   console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
   const HypePool = await ethers.getContractFactory("HypePool");
-  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address, {
-    gasLimit: 100000000,
-    gasPrice: 0,
-  });
+  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address);
 
   await hypePool.deployed();
 

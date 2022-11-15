@@ -63,8 +63,8 @@ const config: HardhatUserConfig = {
       url: process.env.TARA_DEVNET_URL || "",
       accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
       gas: 2100000,
-      gasPrice: 0,
-      gasMultiplier: 0,
+      gasPrice: 8000000000,
+      gasMultiplier: 20,
       allowUnlimitedContractSize: true,
     },
     rpcprnet: {
