@@ -11,20 +11,74 @@ import {
   BigDecimal,
 } from '@graphprotocol/graph-ts';
 
+export class Details extends Entity {
+  constructor(id: string) {
+    super();
+    this.set('id', Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get('id');
+    assert(id != null, 'Cannot save Details entity without an ID');
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Details must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set('Details', id.toString(), this);
+    }
+  }
+
+  static load(id: string): Details | null {
+    return changetype<Details | null>(store.get('Details', id));
+  }
+
+  get id(): string {
+    let value = this.get('id');
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set('id', Value.fromString(value));
+  }
+}
+
+export class Rewards extends Entity {
+  constructor(id: string) {
+    super();
+    this.set('id', Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get('id');
+    assert(id != null, 'Cannot save Rewards entity without an ID');
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Rewards must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set('Rewards', id.toString(), this);
+    }
+  }
+
+  static load(id: string): Rewards | null {
+    return changetype<Rewards | null>(store.get('Rewards', id));
+  }
+
+  get id(): string {
+    let value = this.get('id');
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set('id', Value.fromString(value));
+  }
+}
+
 export class HypePool extends Entity {
   constructor(id: string) {
     super();
     this.set('id', Value.fromString(id));
-    this.set('creator', Value.fromBytes(Bytes.empty()));
-    this.set('title', Value.fromString(''));
-    this.set('projectName', Value.fromString(''));
-    this.set('description', Value.fromString(''));
-    this.set('uri', Value.fromString(''));
-    this.set('active', Value.fromBoolean(false));
-    this.set('cap', Value.fromBigInt(BigInt.zero()));
-    this.set('token', Value.fromBytes(Bytes.empty()));
-    this.set('minReward', Value.fromBigInt(BigInt.zero()));
-    this.set('endDate', Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -52,89 +106,22 @@ export class HypePool extends Entity {
     this.set('id', Value.fromString(value));
   }
 
-  get creator(): Bytes | null {
+  get creator(): Bytes {
     let value = this.get('creator');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
+    return value!.toBytes();
   }
 
-  set creator(value: Bytes | null) {
-    if (!value) {
-      this.unset('creator');
-    } else {
-      this.set('creator', Value.fromBytes(<Bytes>value));
-    }
+  set creator(value: Bytes) {
+    this.set('creator', Value.fromBytes(value));
   }
 
-  get projectName(): string | null {
-    let value = this.get('projectName');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set projectName(value: string | null) {
-    if (!value) {
-      this.unset('projectName');
-    } else {
-      this.set('projectName', Value.fromString(<string>value));
-    }
-  }
-
-  get description(): string | null {
-    let value = this.get('description');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value!.toString();
-    }
-  }
-
-  set description(value: string | null) {
-    if (!value) {
-      this.unset('description');
-    } else {
-      this.set('description', Value.fromString(<string>value));
-    }
-  }
-
-  get uri(): string | null {
+  get uri(): string {
     let value = this.get('uri');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set uri(value: string | null) {
-    if (!value) {
-      this.unset('uri');
-    } else {
-      this.set('uri', Value.fromString(<string>value));
-    }
-  }
-
-  get title(): string | null {
-    let value = this.get('title');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set title(value: string | null) {
-    if (!value) {
-      this.unset('title');
-    } else {
-      this.set('title', Value.fromString(<string>value));
-    }
+  set uri(value: string) {
+    this.set('uri', Value.fromString(value));
   }
 
   get active(): boolean {
@@ -146,72 +133,112 @@ export class HypePool extends Entity {
     this.set('active', Value.fromBoolean(value));
   }
 
-  get cap(): BigInt | null {
-    let value = this.get('cap');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+  get title(): string {
+    let value = this.get('title');
+    return value!.toString();
   }
 
-  set cap(value: BigInt | null) {
-    if (!value) {
-      this.unset('cap');
-    } else {
-      this.set('cap', Value.fromBigInt(<BigInt>value));
-    }
+  set title(value: string) {
+    this.set('title', Value.fromString(value));
   }
 
-  get token(): Bytes | null {
-    let value = this.get('token');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
+  get projectName(): string {
+    let value = this.get('projectName');
+    return value!.toString();
   }
 
-  set token(value: Bytes | null) {
-    if (!value) {
-      this.unset('token');
-    } else {
-      this.set('token', Value.fromBytes(<Bytes>value));
-    }
+  set projectName(value: string) {
+    this.set('projectName', Value.fromString(value));
   }
 
-  get minReward(): BigInt | null {
+  get tokenName(): string {
+    let value = this.get('tokenName');
+    return value!.toString();
+  }
+
+  set tokenName(value: string) {
+    this.set('tokenName', Value.fromString(value));
+  }
+
+  get word(): string {
+    let value = this.get('word');
+    return value!.toString();
+  }
+
+  set word(value: string) {
+    this.set('word', Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get('description');
+    return value!.toString();
+  }
+
+  set description(value: string) {
+    this.set('description', Value.fromString(value));
+  }
+
+  get projectDescription(): string {
+    let value = this.get('projectDescription');
+    return value!.toString();
+  }
+
+  set projectDescription(value: string) {
+    this.set('projectDescription', Value.fromString(value));
+  }
+
+  get network(): BigInt {
+    let value = this.get('network');
+    return value!.toBigInt();
+  }
+
+  set network(value: BigInt) {
+    this.set('network', Value.fromBigInt(value));
+  }
+
+  get tokenAddress(): Bytes {
+    let value = this.get('tokenAddress');
+    return value!.toBytes();
+  }
+
+  set tokenAddress(value: Bytes) {
+    this.set('tokenAddress', Value.fromBytes(value));
+  }
+
+  get minReward(): BigInt {
     let value = this.get('minReward');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set minReward(value: BigInt | null) {
-    if (!value) {
-      this.unset('minReward');
-    } else {
-      this.set('minReward', Value.fromBigInt(<BigInt>value));
-    }
+  set minReward(value: BigInt) {
+    this.set('minReward', Value.fromBigInt(value));
   }
 
-  get endDate(): BigInt | null {
+  get impressionReward(): BigInt {
+    let value = this.get('impressionReward');
+    return value!.toBigInt();
+  }
+
+  set impressionReward(value: BigInt) {
+    this.set('impressionReward', Value.fromBigInt(value));
+  }
+
+  get cap(): BigInt {
+    let value = this.get('cap');
+    return value!.toBigInt();
+  }
+
+  set cap(value: BigInt) {
+    this.set('cap', Value.fromBigInt(value));
+  }
+
+  get endDate(): BigInt {
     let value = this.get('endDate');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set endDate(value: BigInt | null) {
-    if (!value) {
-      this.unset('endDate');
-    } else {
-      this.set('endDate', Value.fromBigInt(<BigInt>value));
-    }
+  set endDate(value: BigInt) {
+    this.set('endDate', Value.fromBigInt(value));
   }
 }
 
@@ -246,20 +273,12 @@ export class HypeUri extends Entity {
     this.set('id', Value.fromString(value));
   }
 
-  get uri(): string | null {
+  get uri(): string {
     let value = this.get('uri');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set uri(value: string | null) {
-    if (!value) {
-      this.unset('uri');
-    } else {
-      this.set('uri', Value.fromString(<string>value));
-    }
+  set uri(value: string) {
+    this.set('uri', Value.fromString(value));
   }
 }

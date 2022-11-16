@@ -52,6 +52,12 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint256",
+          "name": "poolId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
           "internalType": "string",
           "name": "title",
           "type": "string"
@@ -81,6 +87,12 @@
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolId",
+          "type": "uint256"
+        },
         {
           "indexed": false,
           "internalType": "uint256",

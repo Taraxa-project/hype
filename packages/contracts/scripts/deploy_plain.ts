@@ -22,7 +22,7 @@ async function main() {
   const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address);
 
   const dynamicEscrow = await deployFunc;
-  console.log(dynamicEscrow);
+  // console.log(dynamicEscrow);
 
   await dynamicEscrow.deployed();
   console.log("DynamicEscrow deployed to:", dynamicEscrow.address);

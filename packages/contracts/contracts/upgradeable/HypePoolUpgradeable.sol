@@ -49,16 +49,17 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
     ) internal virtual {
         _pools[tokenId] = IHypePool.HypePool(tokenId, msg.sender, false, details, rewards);
         emit PoolCreated(tokenId, msg.sender, _tokenURI);
-        _emitPoolDetails(details);
-        _emitPoolRewards(rewards);
+        _emitPoolDetails(tokenId, details);
+        _emitPoolRewards(tokenId, rewards);
     }
 
-    function _emitPoolDetails(IHypePool.Details memory details) internal virtual {
-        emit PoolDetailsCreated(details.title, details.projectName, details.tokenName, details.word);
+    function _emitPoolDetails(uint256 tokenId, IHypePool.Details memory details) internal virtual {
+        emit PoolDetailsCreated(tokenId, details.title, details.projectName, details.tokenName, details.word);
     }
 
-    function _emitPoolRewards(IHypePool.Rewards memory rewards) internal virtual {
+    function _emitPoolRewards(uint256 tokenId, IHypePool.Rewards memory rewards) internal virtual {
         emit PoolRewardsCreated(
+            tokenId,
             rewards.network,
             rewards.tokenAddress,
             rewards.minReward,

@@ -7838,9 +7838,10 @@
               name: "PoolCreated",
               type: "event",
             },
-            "PoolDetailsCreated(string,string,string,string)": {
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "string", name: "title", type: "string" },
                 { indexed: !1, internalType: "string", name: "projectName", type: "string" },
                 { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
@@ -7849,9 +7850,10 @@
               name: "PoolDetailsCreated",
               type: "event",
             },
-            "PoolRewardsCreated(uint256,address,uint256,uint256,uint256,uint256)": {
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                 { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
                 { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
@@ -8277,9 +8279,10 @@
               name: "PoolCreated",
               type: "event",
             },
-            "PoolDetailsCreated(string,string,string,string)": {
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "string", name: "title", type: "string" },
                 { indexed: !1, internalType: "string", name: "projectName", type: "string" },
                 { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
@@ -8288,9 +8291,10 @@
               name: "PoolDetailsCreated",
               type: "event",
             },
-            "PoolRewardsCreated(uint256,address,uint256,uint256,uint256,uint256)": {
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                 { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
                 { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
@@ -8810,9 +8814,10 @@
               name: "PoolCreated",
               type: "event",
             },
-            "PoolDetailsCreated(string,string,string,string)": {
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "string", name: "title", type: "string" },
                 { indexed: !1, internalType: "string", name: "projectName", type: "string" },
                 { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
@@ -8821,9 +8826,10 @@
               name: "PoolDetailsCreated",
               type: "event",
             },
-            "PoolRewardsCreated(uint256,address,uint256,uint256,uint256,uint256)": {
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
               anonymous: !1,
               inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
                 { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
                 { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
                 { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },

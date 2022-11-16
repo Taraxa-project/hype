@@ -40,9 +40,10 @@ interface IHypePool {
 
     event PoolCreated(uint256 poolId, address creator, string uri);
 
-    event PoolDetailsCreated(string title, string projectName, string tokenName, string word);
+    event PoolDetailsCreated(uint256 poolId,string title, string projectName, string tokenName, string word);
 
     event PoolRewardsCreated(
+        uint256 poolId,
         uint256 network,
         address tokenAddress,
         uint256 minReward,
