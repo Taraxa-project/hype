@@ -48,7 +48,7 @@ export type TNotification = {
 
 export type TPoolCreated = {
   open: boolean;
-  pool: Pick<HypePool, 'title' | 'projectName' | 'token' | 'description'>;
+  pool: Pick<HypePool, 'title' | 'projectName' | 'token'>;
 };
 
 export interface IModalsStore {

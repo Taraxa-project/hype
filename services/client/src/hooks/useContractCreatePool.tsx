@@ -5,21 +5,28 @@ import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { useEffect } from 'react';
 import useLoadingModals from './useLoadingModals';
 import { NotificationType } from '../utils';
+import { BigNumber } from 'ethers';
+
+export interface WritePoolDetailsArgs {
+  title: string;
+  projectName: string;
+  tokenName?: string;
+  word: string;
+}
+
+export interface WritePoolRewardsArgs {
+  network: number;
+  tokenAddress: string;
+  minReward: number;
+  impressionReward: number;
+  cap: number;
+  endDate: number;
+}
 
 export interface WritePoolArgs {
   uri: string;
-  projectName: string;
-  tokenName?: string;
-  title: string;
-  projectDescription: string;
-  description: string;
-  poolCap: number;
-  word: string;
-  network: string;
-  tokenAddress: string;
-  minHypeReward: number;
-  impressionReward: number;
-  endDate: number;
+  details: WritePoolDetailsArgs;
+  rewards: WritePoolRewardsArgs;
 }
 
 const useContractCreatePool = (
@@ -35,18 +42,10 @@ const useContractCreatePool = (
     address: hypeAddress,
     abi,
     functionName: 'createPool',
-    args: [
-      args.uri,
-      args.projectName,
-      args.title,
-      args.poolCap,
-      args.tokenAddress,
-      args.minHypeReward,
-      args.endDate,
-    ],
-    // overrides: {
-    //   gasLimit: 9999999,
-    // },
+    args: [args.uri, args.details, args.rewards],
+    overrides: {
+      gasLimit: BigNumber.from(9999999),
+    },
     enabled,
   });
 
@@ -100,10 +99,9 @@ const useContractCreatePool = (
       payload: {
         open: true,
         pool: {
-          projectName: args.projectName,
-          title: args.title,
-          token: args.tokenAddress,
-          description: args.description,
+          projectName: args.details.projectName,
+          title: args.details.title,
+          token: args.rewards.tokenAddress,
         },
       },
     });
@@ -114,7 +112,7 @@ const useContractCreatePool = (
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args, write]);
+  }, [enabled, args]);
 
   return {
     isError,

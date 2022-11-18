@@ -5,7 +5,7 @@ export interface AddHypePool {
   projectDescription: string;
   description: string;
   word: string;
-  network: string;
+  network: number;
   token: string;
   minReward: number;
   impressionReward: number;
