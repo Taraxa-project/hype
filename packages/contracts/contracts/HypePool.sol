@@ -93,6 +93,19 @@ contract HypePool is IHypePool, Pausable, Ownable {
         emit PoolActivated(id, msg.sender);
     }
 
+    /**
+     * @dev Pool deactivator method. Must be triggered b when someone withdraws the pool funds from the escrow contract.
+     * @param id The id of the pool to activate.
+     */
+    function deactivatePool(uint256 id) external whenNotPaused onlyOwner {
+        IHypePool.HypePool memory _pool = _pools[id];
+        require(_pool.rewards.minReward != 0, "Pool doesn't exist");
+        require(_pool.active == true, "Pool is already inactive");
+        _pool.active = false;
+        _pools[id] = _pool;
+        emit PoolDeactivated(id, msg.sender);
+    }
+
     function pause() public onlyOwner {
         _pause();
     }

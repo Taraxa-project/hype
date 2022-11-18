@@ -8,10 +8,7 @@ interface IEscrow {
         uint256 poolId;
     }
 
-    function depositsOf(address payee, uint256 poolId)
-        external
-        view
-        returns (DynamicDeposit memory);
+    function depositsOf(address payee, uint256 poolId) external view returns (DynamicDeposit memory);
 
     function deposit(
         address spender,
@@ -23,6 +20,17 @@ interface IEscrow {
     function withdraw(
         address payable receiver,
         uint256 poolId,
-        uint256 amount
+        uint256 amount,
+        uint256 nonce,
+        bytes memory sig
+    ) external;
+
+    function claim(
+        address payable receiver,
+        uint256 poolId,
+        uint256 amount,
+        address tokenAddress,
+        uint256 nonce,
+        bytes memory sig
     ) external;
 }
