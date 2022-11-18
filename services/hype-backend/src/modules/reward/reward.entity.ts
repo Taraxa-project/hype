@@ -5,7 +5,13 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsDate,
+  IsBoolean,
+} from 'class-validator';
 import { IPool, IReward } from '../../models';
 import { HypePool } from '../pool/pool.entity';
 
@@ -35,6 +41,11 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsNotEmpty()
   @IsString()
   tokenAddress: string;
+
+  @Column({ nullable: false, default: false })
+  @IsNotEmpty()
+  @IsBoolean()
+  claimed: boolean;
 
   @ManyToOne(() => HypePool, (pool) => pool.rewards)
   pool: IPool;
