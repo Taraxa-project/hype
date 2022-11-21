@@ -70,6 +70,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(rewards.cap > 0, "Invalid pool cap");
         require(rewards.endDate > block.timestamp, "End date must be after current block time");
         require(rewards.minReward > 0, "Invalid minimal hype reward");
+        require(rewards.impressionReward > 0, "Invalid impression hype reward");
         uint256 _counter = _poolIds.current();
         _setPool(_counter, uri, details, rewards);
         _setPoolURI(_counter, uri);

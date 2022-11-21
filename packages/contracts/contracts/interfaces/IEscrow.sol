@@ -8,6 +8,11 @@ interface IEscrow {
         uint256 poolId;
     }
 
+    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
+    event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
+    event Claimed(address indexed receiver, uint256 weiAmount, uint256 poolId);
+    event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
+
     function depositsOf(address payee, uint256 poolId) external view returns (DynamicDeposit memory);
 
     function deposit(
@@ -20,9 +25,7 @@ interface IEscrow {
     function withdraw(
         address payable receiver,
         uint256 poolId,
-        uint256 amount,
-        uint256 nonce,
-        bytes memory sig
+        uint256 amount
     ) external;
 
     function claim(

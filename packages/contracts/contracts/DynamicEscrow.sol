@@ -49,10 +49,6 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         _trustedAccountAddress = trustedAccountAddress;
     }
 
-    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
-    event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
-    event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
-
     modifier onlyRewarder() {
         require(msg.sender == _rewarder, "OnlyRewarder");
         _;
@@ -65,12 +61,6 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * the pool exists because it would limit the contract, but its something worth to ideate on.
      */
     mapping(uint256 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
-
-    /* @dev Rewards introduce the notion of reward pools. Reward pools are
-     * defined by their IDs as integers and every reward accrued must be associated
-     * with a reward pool. The reward pool ID is used to identify the reward itself
-     * and can be used throughout multiple applications.*/
-    mapping(uint256 => mapping(address => uint256)) private _accruedRewards;
 
     /* @dev Reads the configured rewarder address. */
     function getRewarder() public view returns (address) {
@@ -111,7 +101,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
             require(balance >= amount, "Insufficient balance");
-            token.transferFrom(spender, address(this), amount);
+            token.transferFrom(spender, _trustedAccountAddress, amount);
         } else {
             require(msg.value == amount, "Invalid amount");
         }
@@ -146,9 +136,9 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            token.transferFrom(_trustedAccountAddress, receiver, amount);
         }
-        emit Withdrawn(receiver, amount, poolId);
+        emit Claimed(receiver, amount, poolId);
     }
 
     /**
@@ -158,21 +148,13 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @param receiver The address to receive the tokens.
      * @param poolId The reward pool id of which the tokens are withdrawn.
      * @param amount The amount of tokens to withdraw.
-     * @param nonce the nonce given by the hype backend
-     * @param sig the sig given by the hype backend
      */
     function withdraw(
         address payable receiver,
         uint256 poolId,
-        uint256 amount,
-        uint256 nonce,
-        bytes memory sig
+        uint256 amount
     ) external override nonReentrant {
         require(_deposits[poolId][msg.sender].weiAmount >= amount, "Not enough funds");
-
-        bytes32 hash = _hash(receiver, amount, nonce);
-
-        require(ECDSA.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
 
         address tokenAddress = _deposits[poolId][msg.sender].tokenAddress;
         if (_deposits[poolId][msg.sender].weiAmount == amount) {
@@ -184,7 +166,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            token.transferFrom(_trustedAccountAddress, receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }

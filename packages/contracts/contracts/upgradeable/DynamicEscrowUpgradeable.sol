@@ -54,9 +54,6 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
     }
 
     using AddressUpgradeable for address payable;
-    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
-    event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
-    event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
 
     modifier onlyRewarder() {
         require(msg.sender == _rewarder, "OnlyRewarder");
@@ -153,7 +150,7 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
             ERC20 token = ERC20(tokenAddress);
             token.transferFrom(address(this), receiver, amount);
         }
-        emit Withdrawn(receiver, amount, poolId);
+        emit Claimed(receiver, amount, poolId);
     }
 
     /**
@@ -163,21 +160,13 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
      * @param receiver The address to receive the tokens.
      * @param poolId The reward pool id of which the tokens are withdrawn.
      * @param amount The amount of tokens to withdraw.
-     * @param nonce the nonce given by the hype backend
-     * @param sig the sig given by the hype backend
      */
     function withdraw(
         address payable receiver,
         uint256 poolId,
-        uint256 amount,
-        uint256 nonce,
-        bytes memory sig
+        uint256 amount
     ) external override nonReentrant {
         require(_deposits[poolId][msg.sender].weiAmount >= amount, "Not enough funds");
-
-        bytes32 hash = _hash(receiver, amount, nonce);
-
-        require(ECDSAUpgradeable.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
 
         address tokenAddress = _deposits[poolId][msg.sender].tokenAddress;
         if (_deposits[poolId][msg.sender].weiAmount == amount) {
