@@ -57,7 +57,7 @@ export const PoolCreated = () => {
           </>
         )}
 
-        {pool?.description && (
+        {/* {pool?.description && (
           <>
             <Text pt={3} fontSize="0.875rem" fontWeight="700" color="greys.7">
               What are you hyping:
@@ -66,7 +66,7 @@ export const PoolCreated = () => {
               {pool?.description}
             </Text>
           </>
-        )}
+        )} */}
 
         {pool?.token && (
           <>

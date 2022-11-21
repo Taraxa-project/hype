@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AddHypePool } from '../../models';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
@@ -11,17 +10,8 @@ import { HypePoolRewardForm } from './RewardForm';
 export const useAddHypePoolEffects = () => {
   const defaultContractArgs: WritePoolArgs = {
     uri: null,
-    projectName: null,
-    title: null,
-    description: null,
-    projectDescription: null,
-    word: null,
-    network: null,
-    poolCap: null,
-    tokenAddress: null,
-    impressionReward: null,
-    minHypeReward: null,
-    endDate: null,
+    details: null,
+    rewards: null,
   };
   const { authenticated } = useAuth();
   const resetWriteContract = (): void => {
@@ -33,6 +23,7 @@ export const useAddHypePoolEffects = () => {
   useContractCreatePool(writePoolArgs, contractEnabled, resetWriteContract);
   const dispatchModals = useModalsDispatch();
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [ipfsUrl, setIpfsUrl] = useState<string>('QmQSQNCF2wR9DmEnhELEtu9hoBspYxcvEZN5V9BaCMWRrg');
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
     title: 'Dragon Ball',
     projectName: 'Dragon Ball Super, Dragon Ball, DBS',
@@ -42,24 +33,24 @@ export const useAddHypePoolEffects = () => {
     word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
-    network: '',
-    token: null,
-    tokenAddress: '',
-    tokenName: '',
-    minReward: null,
-    impressionReward: null,
-    cap: null,
-    endDate: null,
+    network: 843,
+    token: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
+    tokenAddress: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
+    tokenName: 'TARA',
+    minReward: 10,
+    impressionReward: 20,
+    cap: 100,
+    endDate: new Date('12-01-2022'),
   });
 
   // const { data, submitHandler } = useAddHypePool();
 
-  const onUploadToIpfs = async (data: AddHypePool) => {
+  const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const url = await uploadToIpfs(data);
     // const url = 'https://hype.infura-ipfs.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
-    createPool(data, url);
+    setIpfsUrl(url);
     // submitHandler(data);
     // reset();
   };
@@ -68,7 +59,7 @@ export const useAddHypePoolEffects = () => {
     console.log('Fund & Activate');
   };
 
-  const uploadToIpfs = async (data: AddHypePool) => {
+  const uploadToIpfs = async (data: HypePoolDetailsForm) => {
     if (!data) {
       return;
     }
@@ -82,7 +73,12 @@ export const useAddHypePoolEffects = () => {
     });
     let url: string;
     try {
-      const uploaded = await ipfsClient.add(JSON.stringify({ description: data?.description }));
+      const uploaded = await ipfsClient.add(
+        JSON.stringify({
+          description: data?.description,
+          projectDescription: data?.projectDescription,
+        }),
+      );
       url = uploaded.path;
       console.log('uploaded: ', uploaded);
       console.log('url: ', url);
@@ -107,50 +103,35 @@ export const useAddHypePoolEffects = () => {
     console.log('Rewards: ', poolReward);
   };
 
-  const createPool = (data: AddHypePool, ipfsFileUrl: string) => {
-    if (!data || !ipfsFileUrl) {
+  const createPool = (details: HypePoolDetailsForm, rewards: HypePoolRewardForm) => {
+    if (!details || !rewards || !ipfsUrl) {
       return;
     }
-    const poolCap = data.cap;
-    const projectName = data.projectName;
-    const description = data.description;
-    const title = data.title;
-    const tokenAddress = data.token;
-    const tokenName = data.tokenName;
-    const projectDescription = data.projectDescription;
-    const word = data.word;
-    const network = data.network;
-    const impressionReward = data.impressionReward;
-    const minHypeReward = data.minReward;
-    const endDate = data.endDate?.getTime();
     setWritePoolArgs({
-      uri: ipfsFileUrl,
-      projectName: projectName,
-      title: title,
-      tokenName: tokenName,
-      projectDescription: projectDescription,
-      description: description,
-      word: word,
-      network: network,
-      impressionReward: impressionReward,
-      poolCap: poolCap,
-      tokenAddress: tokenAddress,
-      minHypeReward: minHypeReward,
-      endDate: endDate,
+      uri: ipfsUrl,
+      details,
+      rewards: {
+        ...rewards,
+        tokenAddress:
+          rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+        endDate: rewards.endDate?.getTime(),
+      },
     });
     setContractEnabled(true);
   };
 
-  const onSubmitDetails = (data: HypePoolDetailsForm) => {
-    setCurrentStep(2);
+  const onSubmitDetails = async (data: HypePoolDetailsForm) => {
     console.log('HypePoolDetailsForm: ', data);
     setPoolDetails(data);
+    // await onUploadToIpfs(data);
+    setCurrentStep(2);
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
     setCurrentStep(3);
     console.log('HypePoolRewardForm: ', data);
     setPoolReward(data);
+    createPool(poolDetails, data);
   };
 
   const onBackFromRewards = () => {
