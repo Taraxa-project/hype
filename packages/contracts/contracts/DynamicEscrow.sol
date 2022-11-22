@@ -101,7 +101,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
             require(balance >= amount, "Insufficient balance");
-            token.transferFrom(spender, _trustedAccountAddress, amount);
+            token.transferFrom(spender, address(this), amount);
         } else {
             require(msg.value == amount, "Invalid amount");
         }
@@ -136,7 +136,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(_trustedAccountAddress, receiver, amount);
+            token.transfer(receiver, amount);
         }
         emit Claimed(receiver, amount, poolId);
     }
@@ -166,7 +166,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(_trustedAccountAddress, receiver, amount);
+            token.transfer(receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }

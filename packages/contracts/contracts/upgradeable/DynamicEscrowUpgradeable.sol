@@ -148,7 +148,7 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            token.transfer(receiver, amount);
         }
         emit Claimed(receiver, amount, poolId);
     }
@@ -178,7 +178,7 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            token.transfer(receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }
