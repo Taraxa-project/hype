@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
-// import { useAddHypePool } from '../../api/pools/useAddHypePools';
+import { BigNumber } from 'ethers';
 
 export const useAddHypePoolEffects = () => {
   const defaultContractArgs: WritePoolArgs = {
@@ -18,13 +18,29 @@ export const useAddHypePoolEffects = () => {
     setWritePoolArgs(defaultContractArgs);
     setContractEnabled(false);
   };
+  const successCallback = (): void => {
+    setCurrentStep(3);
+  };
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  useContractCreatePool(writePoolArgs, contractEnabled, resetWriteContract);
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>();
+  useContractCreatePool(
+    writePoolArgs,
+    contractEnabled,
+    resetWriteContract,
+    successCallback,
+    setCreatedPoolIndex,
+  );
   const dispatchModals = useModalsDispatch();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>('QmQSQNCF2wR9DmEnhELEtu9hoBspYxcvEZN5V9BaCMWRrg');
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
+    // title: '',
+    // projectName: '',
+    // tokenName: '',
+    // description: '',
+    // projectDescription: '',
+    // word: 'testnet',
     title: 'Dragon Ball',
     projectName: 'Dragon Ball Super, Dragon Ball, DBS',
     tokenName: 'DBS',
@@ -33,6 +49,14 @@ export const useAddHypePoolEffects = () => {
     word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
+    // network: '',
+    // token: null,
+    // tokenAddress: '',
+    // tokenName: '',
+    // minReward: null,
+    // impressionReward: null,
+    // cap: null,
+    // endDate: null
     network: 843,
     token: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
     tokenAddress: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
@@ -43,7 +67,12 @@ export const useAddHypePoolEffects = () => {
     endDate: new Date('12-01-2022'),
   });
 
-  // const { data, submitHandler } = useAddHypePool();
+  useEffect(() => {
+    if (createdPoolIndex) {
+      console.log('createdPoolIndex: ', createdPoolIndex);
+      console.log('formmatedPoolIndex: ', createdPoolIndex.toString());
+    }
+  }, [createdPoolIndex]);
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const url = await uploadToIpfs(data);
@@ -51,8 +80,9 @@ export const useAddHypePoolEffects = () => {
     // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
     setIpfsUrl(url);
-    // submitHandler(data);
-    // reset();
+    if (url) {
+      setCurrentStep(2);
+    }
   };
 
   const fundAndActivate = () => {
@@ -128,10 +158,10 @@ export const useAddHypePoolEffects = () => {
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
-    setCurrentStep(3);
     console.log('HypePoolRewardForm: ', data);
     setPoolReward(data);
-    createPool(poolDetails, data);
+    // createPool(poolDetails, data);
+    setCurrentStep(3);
   };
 
   const onBackFromRewards = () => {

@@ -58,7 +58,6 @@ export interface IModalsStore {
   telegramInfo: TTelegramInfo;
   disconnectTelegram: TDisconnectTelegram;
   notification: TNotification;
-  poolCreated: TPoolCreated;
 }
 
 interface ICardDetailsAction {
@@ -91,16 +90,10 @@ interface TNotificationAction {
   payload: TNotification;
 }
 
-interface TPoolCreatedAction {
-  type: ModalsActionsEnum.SHOW_POOL_CREATED;
-  payload: TPoolCreated;
-}
-
 export type TModalsAction =
   | ICardDetailsAction
   | ILoadingAction
   | IMetamaskInfoAction
   | ITelegramInfoAction
   | IDisconnectTelegramAction
-  | TNotificationAction
-  | TPoolCreatedAction;
+  | TNotificationAction;

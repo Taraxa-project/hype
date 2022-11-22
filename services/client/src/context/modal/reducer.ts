@@ -7,7 +7,6 @@ export enum ModalsActionsEnum {
   SHOW_TELEGRAM_INFO = 'SHOW_TELEGRAM_INFO',
   SHOW_DISCONNECT_TELEGRAM = 'SHOW_DISCONNECT_TELEGRAM',
   SHOW_NOTIFICATION = 'SHOW_NOTIFICATION',
-  SHOW_POOL_CREATED = 'SHOW_POOL_CREATED',
 }
 
 export const modalsInitialState: IModalsStore = {
@@ -55,10 +54,6 @@ export const modalsInitialState: IModalsStore = {
     type: null,
     message: null,
   },
-  poolCreated: {
-    open: false,
-    pool: null,
-  },
 };
 
 export const hypeModalsReducer = (
@@ -78,7 +73,5 @@ export const hypeModalsReducer = (
       return { ...state, disconnectTelegram: action.payload };
     case ModalsActionsEnum.SHOW_NOTIFICATION:
       return { ...state, notification: action.payload };
-    case ModalsActionsEnum.SHOW_POOL_CREATED:
-      return { ...state, poolCreated: action.payload };
   }
 };

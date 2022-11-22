@@ -19,6 +19,7 @@ import Box from '../../components/styles/Box';
 import { HowItWorks } from '../../components/how-it-works/HowItWorks';
 import { DetailsForm } from './DetailsForm';
 import { RewardForm } from './RewardForm';
+import { PoolDetailsReview } from './PoolDetailsReview';
 
 export const AddHypePool = () => {
   const {
@@ -72,17 +73,18 @@ export const AddHypePool = () => {
       {currentStep === 3 && (
         <StepContent>
           <FormColumn>
-            <TitleText>Fund and activate the Hype Pool!</TitleText>
-            <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-              <Label>
-                Deposit {poolReward.minReward} {poolReward.tokenName} into the pool.
-              </Label>
-            </Box>
+            <TitleText>You're all set! Check submitted data:</TitleText>
+            <PoolDetailsReview details={poolDetails} rewards={poolReward} />
             <InfoCard>
               Once a pool is created, it is committed on-chain. This means the funds cannot be
               withdrawn, and the parameters of the pool cannot be altered. This is to ensure that
               Hype pools are transparent and fair to your community.
             </InfoCard>
+            <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+              <Label>
+                Deposit {poolReward.minReward} {poolReward.tokenName} into the pool.
+              </Label>
+            </Box>
             <FormAction>
               <Button
                 disabled={!authenticated}
