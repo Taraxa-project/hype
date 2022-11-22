@@ -347,10 +347,10 @@
       var j = function (e, t, n) {
           return !1;
         },
-        E = function (e) {
+        I = function (e) {
           return e;
         };
-      function I(e, t) {
+      function E(e, t) {
         if (e === t) return !0;
         var n = u(e),
           r = u(t);
@@ -362,7 +362,7 @@
             return (
               e.length === t.length &&
               e.every(function (e, n) {
-                return I(e, t[n]);
+                return E(e, t[n]);
               })
             );
           if (e instanceof Date && t instanceof Date) return e.getTime() === t.getTime();
@@ -372,7 +372,7 @@
           return (
             o.length === s.length &&
             o.every(function (n) {
-              return I(e[n], t[n]);
+              return E(e[n], t[n]);
             })
           );
         } catch (e) {
@@ -380,7 +380,7 @@
         }
       }
       function M(e, t) {
-        for (var n = 0; n < e.length; n++) if (I(e[n], t)) return n;
+        for (var n = 0; n < e.length; n++) if (E(e[n], t)) return n;
         return -1;
       }
       function D(e) {
@@ -424,7 +424,7 @@
           isReservedAttr: j,
           isUnknownElement: j,
           getTagNamespace: R,
-          parsePlatformTagName: E,
+          parsePlatformTagName: I,
           mustUseProp: j,
           async: !0,
           _lifecycleHooks: F,
@@ -683,7 +683,7 @@
               configurable: !0,
               get: function () {
                 var n = c ? c.call(e) : r;
-                return ve.target && (s.depend(), l && (l.dep.depend(), t(n) && Ee(n))), De(n) && !i ? n.value : n;
+                return ve.target && (s.depend(), l && (l.dep.depend(), t(n) && Ie(n))), De(n) && !i ? n.value : n;
               },
               set: function (t) {
                 var n = c ? c.call(e) : r;
@@ -723,11 +723,11 @@
           e._isVue || (r && r.vmCount) || Me(e) || (w(e, n) && (delete e[n], r && r.dep.notify()));
         }
       }
-      function Ee(e) {
-        for (var n = void 0, r = 0, a = e.length; r < a; r++)
-          (n = e[r]) && n.__ob__ && n.__ob__.dep.depend(), t(n) && Ee(n);
-      }
       function Ie(e) {
+        for (var n = void 0, r = 0, a = e.length; r < a; r++)
+          (n = e[r]) && n.__ob__ && n.__ob__.dep.depend(), t(n) && Ie(n);
+      }
+      function Ee(e) {
         return (
           (function (e, t) {
             Me(e) || Ae(e, t, ae());
@@ -911,7 +911,7 @@
         return o ? this.$createElement("template", { slot: o }, a) : a;
       }
       function Ze(e) {
-        return Fn(this.$options, "filters", e) || E;
+        return Fn(this.$options, "filters", e) || I;
       }
       function Xe(e, n) {
         return t(e) ? -1 === e.indexOf(n) : e !== n;
@@ -1004,7 +1004,7 @@
           (e._s = f),
           (e._l = We),
           (e._t = Ge),
-          (e._q = I),
+          (e._q = E),
           (e._i = M),
           (e._m = et),
           (e._f = Ze),
@@ -1164,8 +1164,8 @@
         e._hasHookEvent && e.$emit("hook:" + t), r && pe(a), we();
       }
       var jt = [],
-        Et = [],
-        It = {},
+        It = [],
+        Et = {},
         Mt = !1,
         Dt = !1,
         Nt = 0,
@@ -1189,11 +1189,11 @@
       function Bt() {
         var e, t;
         for (Lt = Ht(), Dt = !0, jt.sort(Ut), Nt = 0; Nt < jt.length; Nt++)
-          (e = jt[Nt]).before && e.before(), (t = e.id), (It[t] = null), e.run();
-        var n = Et.slice(),
+          (e = jt[Nt]).before && e.before(), (t = e.id), (Et[t] = null), e.run();
+        var n = It.slice(),
           r = jt.slice();
-        (Nt = jt.length = Et.length = 0),
-          (It = {}),
+        (Nt = jt.length = It.length = 0),
+          (Et = {}),
           (Mt = Dt = !1),
           (function (e) {
             for (var t = 0; t < e.length; t++) (e[t]._inactive = !0), At(e[t], !0);
@@ -1492,8 +1492,8 @@
                 ? this.run()
                 : (function (e) {
                     var t = e.id;
-                    if (null == It[t] && (e !== ve.target || !e.noRecurse)) {
-                      if (((It[t] = !0), Dt)) {
+                    if (null == Et[t] && (e !== ve.target || !e.noRecurse)) {
+                      if (((Et[t] = !0), Dt)) {
                         for (var n = jt.length - 1; n > Nt && jt[n].id > e.id; ) n--;
                         jt.splice(n + 1, 0, e);
                       } else jt.push(e);
@@ -1544,7 +1544,7 @@
           (r.props &&
             (function (e, t) {
               var n = e.$options.propsData || {},
-                r = (e._props = Ie({})),
+                r = (e._props = Ee({})),
                 a = (e.$options._propKeys = []);
               e.$parent && $e(!1);
               var i = function (i) {
@@ -1589,7 +1589,7 @@
                 };
               })(t));
               pe(t), be();
-              var i = Jt(r, null, [t._props || Ie({}), a], t, "setup");
+              var i = Jt(r, null, [t._props || Ee({}), a], t, "setup");
               if ((we(), pe(), s(i))) n.render = i;
               else if (u(i))
                 if (((t._setupState = i), i.__sfc)) {
@@ -1814,7 +1814,7 @@
               n = e.context,
               r = e.componentInstance;
             r._isMounted || ((r._isMounted = !0), Rt(r, "mounted")),
-              e.data.keepAlive && (n._isMounted ? (((t = r)._inactive = !1), Et.push(t)) : At(r, !0));
+              e.data.keepAlive && (n._isMounted ? (((t = r)._inactive = !1), It.push(t)) : At(r, !0));
           },
           destroy: function (e) {
             var t = e.componentInstance;
@@ -1964,12 +1964,12 @@
         return (n._merged = !0), n;
       }
       var jn = R,
-        En = U.optionMergeStrategies;
-      function In(e, t, n) {
+        In = U.optionMergeStrategies;
+      function En(e, t, n) {
         if ((void 0 === n && (n = !0), !t)) return e;
         for (var r, a, i, o = ue ? Reflect.ownKeys(t) : Object.keys(t), s = 0; s < o.length; s++)
           "__ob__" !== (r = o[s]) &&
-            ((a = e[r]), (i = t[r]), n && w(e, r) ? a !== i && p(a) && p(i) && In(a, i) : Re(e, r, i));
+            ((a = e[r]), (i = t[r]), n && w(e, r) ? a !== i && p(a) && p(i) && En(a, i) : Re(e, r, i));
         return e;
       }
       function Mn(e, t, n) {
@@ -1977,12 +1977,12 @@
           ? function () {
               var r = s(t) ? t.call(n, n) : t,
                 a = s(e) ? e.call(n, n) : e;
-              return r ? In(r, a) : a;
+              return r ? En(r, a) : a;
             }
           : t
           ? e
             ? function () {
-                return In(s(t) ? t.call(this, this) : t, s(e) ? e.call(this, this) : e);
+                return En(s(t) ? t.call(this, this) : t, s(e) ? e.call(this, this) : e);
               }
             : t
           : e;
@@ -2000,16 +2000,16 @@
         var a = Object.create(e || null);
         return t ? A(a, t) : a;
       }
-      (En.data = function (e, t, n) {
+      (In.data = function (e, t, n) {
         return n ? Mn(e, t, n) : t && "function" != typeof t ? e : Mn(e, t);
       }),
         F.forEach(function (e) {
-          En[e] = Dn;
+          In[e] = Dn;
         }),
         H.forEach(function (e) {
-          En[e + "s"] = Nn;
+          In[e + "s"] = Nn;
         }),
-        (En.watch = function (e, n, r, a) {
+        (In.watch = function (e, n, r, a) {
           if ((e === te && (e = void 0), n === te && (n = void 0), !n)) return Object.create(e || null);
           if (!e) return n;
           var i = {};
@@ -2020,20 +2020,20 @@
           }
           return i;
         }),
-        (En.props =
-          En.methods =
-          En.inject =
-          En.computed =
+        (In.props =
+          In.methods =
+          In.inject =
+          In.computed =
             function (e, t, n, r) {
               if (!e) return t;
               var a = Object.create(null);
               return A(a, e), t && A(a, t), a;
             }),
-        (En.provide = function (e, t) {
+        (In.provide = function (e, t) {
           return e
             ? function () {
                 var n = Object.create(null);
-                return In(n, s(e) ? e.call(this) : e), t && In(n, s(t) ? t.call(this) : t, !1), n;
+                return En(n, s(e) ? e.call(this) : e), t && En(n, s(t) ? t.call(this) : t, !1), n;
               }
             : t;
         });
@@ -2082,7 +2082,7 @@
         for (o in e) c(o);
         for (o in n) w(e, o) || c(o);
         function c(t) {
-          var a = En[t] || Ln;
+          var a = In[t] || Ln;
           u[t] = a(e[t], n[t], r, t);
         }
         return u;
@@ -2772,23 +2772,23 @@
                 r
                   ? ((a.oldValue = r.value),
                     (a.oldArg = r.arg),
-                    Er(a, "update", t, e),
+                    Ir(a, "update", t, e),
                     a.def && a.def.componentUpdated && p.push(a))
-                  : (Er(a, "bind", t, e), a.def && a.def.inserted && c.push(a));
+                  : (Ir(a, "bind", t, e), a.def && a.def.inserted && c.push(a));
             if (c.length) {
               var l = function () {
-                for (var n = 0; n < c.length; n++) Er(c[n], "inserted", t, e);
+                for (var n = 0; n < c.length; n++) Ir(c[n], "inserted", t, e);
               };
               i ? Ue(t, "insert", l) : l();
             }
             if (
               (p.length &&
                 Ue(t, "postpatch", function () {
-                  for (var n = 0; n < p.length; n++) Er(p[n], "componentUpdated", t, e);
+                  for (var n = 0; n < p.length; n++) Ir(p[n], "componentUpdated", t, e);
                 }),
               !i)
             )
-              for (n in s) u[n] || Er(s[n], "unbind", e, e, o);
+              for (n in s) u[n] || Ir(s[n], "unbind", e, e, o);
           })(e, t);
       }
       var Pr = Object.create(null);
@@ -2809,7 +2809,7 @@
       function jr(e) {
         return e.rawName || "".concat(e.name, ".").concat(Object.keys(e.modifiers || {}).join("."));
       }
-      function Er(e, t, n, r, a) {
+      function Ir(e, t, n, r, a) {
         var i = e.def && e.def[t];
         if (i)
           try {
@@ -2818,7 +2818,7 @@
             Kt(r, n.context, "directive ".concat(e.name, " ").concat(t, " hook"));
           }
       }
-      var Ir = [_r, Sr];
+      var Er = [_r, Sr];
       function Mr(e, t) {
         var n = t.componentOptions;
         if (!((a(n) && !1 === n.Ctor.options.inheritAttrs) || (r(e.data.attrs) && r(t.data.attrs)))) {
@@ -3219,16 +3219,16 @@
           if (Pa.test(t)) e.style.setProperty(t, n);
           else if (Ra.test(n)) e.style.setProperty($(t), n.replace(Ra, ""), "important");
           else {
-            var r = Ia(t);
+            var r = Ea(t);
             if (Array.isArray(n)) for (var a = 0, i = n.length; a < i; a++) e.style[r] = n[a];
             else e.style[r] = n;
           }
         },
-        Ea = ["Webkit", "Moz", "ms"],
-        Ia = _(function (e) {
+        Ia = ["Webkit", "Moz", "ms"],
+        Ea = _(function (e) {
           if (((Aa = Aa || document.createElement("div").style), "filter" !== (e = x(e)) && e in Aa)) return e;
-          for (var t = e.charAt(0).toUpperCase() + e.slice(1), n = 0; n < Ea.length; n++) {
-            var r = Ea[n] + t;
+          for (var t = e.charAt(0).toUpperCase() + e.slice(1), n = 0; n < Ia.length; n++) {
+            var r = Ia[n] + t;
             if (r in Aa) return r;
           }
         });
@@ -3424,20 +3424,20 @@
               P = S && h ? h : d,
               R = S && m ? m : l,
               j = (S && _) || v,
-              E = S && s(T) ? T : g,
-              I = (S && x) || b,
+              I = S && s(T) ? T : g,
+              E = (S && x) || b,
               M = (S && C) || w,
               N = y(u(k) ? k.enter : k),
               L = !1 !== o && !Z,
-              H = si(E),
+              H = si(I),
               F = (n._enterCb = D(function () {
-                L && (Ya(n, R), Ya(n, P)), F.cancelled ? (L && Ya(n, A), M && M(n)) : I && I(n), (n._enterCb = null);
+                L && (Ya(n, R), Ya(n, P)), F.cancelled ? (L && Ya(n, A), M && M(n)) : E && E(n), (n._enterCb = null);
               }));
             e.data.show ||
               Ue(e, "insert", function () {
                 var t = n.parentNode,
                   r = t && t._pending && t._pending[e.key];
-                r && r.tag === e.tag && r.elm._leaveCb && r.elm._leaveCb(), E && E(n, F);
+                r && r.tag === e.tag && r.elm._leaveCb && r.elm._leaveCb(), I && I(n, F);
               }),
               j && j(n),
               L &&
@@ -3446,7 +3446,7 @@
                 Za(function () {
                   Ya(n, A), F.cancelled || (Xa(n, R), H || (oi(N) ? setTimeout(F, N) : Qa(n, c, F)));
                 })),
-              e.data.show && (t && t(), E && E(n, F)),
+              e.data.show && (t && t(), I && I(n, F)),
               L || H || F();
           }
         }
@@ -3798,7 +3798,7 @@
                 },
               }
             : {},
-        ].concat(Ir),
+        ].concat(Er),
       });
       Z &&
         document.addEventListener("selectionchange", function () {
@@ -3828,7 +3828,7 @@
             var r = e._vOptions,
               a = (e._vOptions = [].map.call(e.options, yi));
             a.some(function (e, t) {
-              return !I(e, r[t]);
+              return !E(e, r[t]);
             }) &&
               (e.multiple
                 ? t.value.some(function (e) {
@@ -3852,13 +3852,13 @@
         if (!a || Array.isArray(r)) {
           for (var i, o, s = 0, u = e.options.length; s < u; s++)
             if (((o = e.options[s]), a)) (i = M(r, yi(o)) > -1), o.selected !== i && (o.selected = i);
-            else if (I(yi(o), r)) return void (e.selectedIndex !== s && (e.selectedIndex = s));
+            else if (E(yi(o), r)) return void (e.selectedIndex !== s && (e.selectedIndex = s));
           a || (e.selectedIndex = -1);
         }
       }
       function fi(e, t) {
         return t.every(function (t) {
-          return !I(t, e);
+          return !E(t, e);
         });
       }
       function yi(e) {
@@ -4166,8 +4166,8 @@
           setTimeout(function () {
             U.devtools && ie && ie.emit("init", Kn);
           }, 0);
-      var Ei,
-        Ii = /\{\{((?:.|\r?\n)+?)\}\}/g,
+      var Ii,
+        Ei = /\{\{((?:.|\r?\n)+?)\}\}/g,
         Mi = /[-.*+?^${}()|[\]\/\\]/g,
         Di = _(function (e) {
           var t = e[0].replace(Mi, "\\$&"),
@@ -4261,7 +4261,7 @@
         ko = /[\r\n]/,
         $o = /[ \f\t\r\n]+/g,
         Oo = _(function (e) {
-          return ((Ei = Ei || document.createElement("div")).innerHTML = e), Ei.textContent;
+          return ((Ii = Ii || document.createElement("div")).innerHTML = e), Ii.textContent;
         }),
         So = "_empty_";
       function Ao(e, t, n) {
@@ -4285,7 +4285,7 @@
           if (
             (p(e),
             s || e.processed || (e = Ro(e, t)),
-            a.length || e === n || (n.if && (e.elseif || e.else) && Eo(n, { exp: e.elseif, block: e })),
+            a.length || e === n || (n.if && (e.elseif || e.else) && Io(n, { exp: e.elseif, block: e })),
             r && !e.forbidden)
           )
             if (e.elseif || e.else)
@@ -4296,7 +4296,7 @@
                     e.pop();
                   }
                 })(r.children)),
-                c && c.if && Eo(c, { exp: o.elseif, block: o });
+                c && c.if && Io(c, { exp: o.elseif, block: o });
             else {
               if (e.slotScope) {
                 var i = e.slotTarget || '"default"';
@@ -4486,7 +4486,7 @@
                     (jo(y),
                     (function (e) {
                       var t = ia(e, "v-if");
-                      if (t) (e.if = t), Eo(e, { exp: t, block: e });
+                      if (t) (e.if = t), Io(e, { exp: t, block: e });
                       else {
                         null != ia(e, "v-else") && (e.else = !0);
                         var n = ia(e, "v-else-if");
@@ -4529,7 +4529,7 @@
                   !s &&
                   " " !== e &&
                   (p = (function (e, t) {
-                    var n = t ? Di(t) : Ii;
+                    var n = t ? Di(t) : Ei;
                     if (n.test(e)) {
                       for (var r, a, i, o = [], s = [], u = (n.lastIndex = 0); (r = n.exec(e)); ) {
                         (a = r.index) > u && (s.push((i = e.slice(u, a))), o.push(JSON.stringify(i)));
@@ -4601,14 +4601,14 @@
               "template" === e.tag)
             ) {
               if ((n = oa(e, Co))) {
-                var a = Io(n),
+                var a = Eo(n),
                   i = a.name,
                   o = a.dynamic;
                 (e.slotTarget = i), (e.slotTargetDynamic = o), (e.slotScope = n.value || So);
               }
             } else if ((n = oa(e, Co))) {
               var s = e.scopedSlots || (e.scopedSlots = {}),
-                u = Io(n),
+                u = Eo(n),
                 c = u.name,
                 p = ((o = u.dynamic), (s[c] = Ao("template", [], e)));
               (p.slotTarget = c),
@@ -4695,10 +4695,10 @@
           n && A(e, n);
         }
       }
-      function Eo(e, t) {
+      function Io(e, t) {
         e.ifConditions || (e.ifConditions = []), e.ifConditions.push(t);
       }
-      function Io(e) {
+      function Eo(e) {
         var t = e.name.replace(Co, "");
         return (
           t || ("#" !== e.name[0] && (t = "default")),
@@ -4752,18 +4752,18 @@
                     Ro(u, t),
                     (u.processed = !0),
                     (u.if = "(".concat(r, ")==='checkbox'") + i),
-                    Eo(u, { exp: u.if, block: u });
+                    Io(u, { exp: u.if, block: u });
                   var c = Ho(e);
                   ia(c, "v-for", !0),
                     ea(c, "type", "radio"),
                     Ro(c, t),
-                    Eo(u, { exp: "(".concat(r, ")==='radio'") + i, block: c });
+                    Io(u, { exp: "(".concat(r, ")==='radio'") + i, block: c });
                   var p = Ho(e);
                   return (
                     ia(p, "v-for", !0),
                     ea(p, ":type", r),
                     Ro(p, t),
-                    Eo(u, { exp: a, block: p }),
+                    Io(u, { exp: a, block: p }),
                     o ? (u.else = !0) : s && (u.elseif = s),
                     u
                   );
@@ -5524,13 +5524,13 @@
         return Rs.call(this, e, t);
       }),
         (Kn.compile = $s);
-      var Es = /[!'()*]/g,
-        Is = function (e) {
+      var Is = /[!'()*]/g,
+        Es = function (e) {
           return "%" + e.charCodeAt(0).toString(16);
         },
         Ms = /%2C/g,
         Ds = function (e) {
-          return encodeURIComponent(e).replace(Es, Is).replace(Ms, ",");
+          return encodeURIComponent(e).replace(Is, Es).replace(Ms, ",");
         };
       function Ns(e) {
         try {
@@ -6258,10 +6258,10 @@
       function ju() {
         return Ru;
       }
-      function Eu(e) {
+      function Iu(e) {
         return (Ru = e);
       }
-      var Iu = Object.create(null);
+      var Eu = Object.create(null);
       function Mu() {
         "scrollRestoration" in window.history && (window.history.scrollRestoration = "manual");
         var e = window.location.protocol + "//" + window.location.host,
@@ -6283,7 +6283,7 @@
             e.app.$nextTick(function () {
               var i = (function () {
                   var e = ju();
-                  if (e) return Iu[e];
+                  if (e) return Eu[e];
                 })(),
                 o = a.call(e, t, n, r ? i : null);
               o &&
@@ -6299,10 +6299,10 @@
       }
       function Nu() {
         var e = ju();
-        e && (Iu[e] = { x: window.pageXOffset, y: window.pageYOffset });
+        e && (Eu[e] = { x: window.pageXOffset, y: window.pageYOffset });
       }
       function Lu(e) {
-        Nu(), e.state && e.state.key && Eu(e.state.key);
+        Nu(), e.state && e.state.key && Iu(e.state.key);
       }
       function Hu(e) {
         return Uu(e.x) || Uu(e.y);
@@ -6351,7 +6351,7 @@
           if (t) {
             var r = js({}, n.state);
             (r.key = ju()), n.replaceState(r, "", e);
-          } else n.pushState({ key: Eu(Pu()) }, "", e);
+          } else n.pushState({ key: Iu(Pu()) }, "", e);
         } catch (n) {
           window.location[t ? "replace" : "assign"](e);
         }
@@ -7360,8 +7360,8 @@
             },
           },
         },
-        Ec = Tc(jc, Pc, [], !1, null, null, null).exports;
-      var Ic = function () {
+        Ic = Tc(jc, Pc, [], !1, null, null, null).exports;
+      var Ec = function () {
         var e = this,
           t = e._self._c;
         return t(
@@ -7377,13 +7377,13 @@
           2
         );
       };
-      Ic._withStripped = !0;
+      Ec._withStripped = !0;
       var Mc = Tc(
         {
-          components: { Member: Ec },
+          components: { Member: Ic },
           props: { title: { type: String, default: "" }, json: { type: Object, default: () => new Object() } },
         },
-        Ic,
+        Ec,
         [],
         !1,
         null,
@@ -7392,7 +7392,7 @@
       );
       const Dc = Tc(
         {
-          components: { Member: Ec, MemberSet: Mc.exports, HeaderBar: Ac, FooterBar: Oc },
+          components: { Member: Ic, MemberSet: Mc.exports, HeaderBar: Ac, FooterBar: Oc },
           props: { json: { type: Object, default: () => new Object() } },
         },
         Cc,
@@ -7867,6 +7867,32 @@
                 { indexed: !1, internalType: "address", name: "deactivator", type: "address" },
               ],
               name: "PoolDeactivated",
+              type: "event",
+            },
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "string", name: "title", type: "string" },
+                { indexed: !1, internalType: "string", name: "projectName", type: "string" },
+                { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
+                { indexed: !1, internalType: "string", name: "word", type: "string" },
+              ],
+              name: "PoolDetailsCreated",
+              type: "event",
+            },
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
+                { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
+                { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
+              ],
+              name: "PoolRewardsCreated",
               type: "event",
             },
             "PoolUriSet(uint256,string)": {
@@ -8357,6 +8383,32 @@
                 { indexed: !1, internalType: "address", name: "deactivator", type: "address" },
               ],
               name: "PoolDeactivated",
+              type: "event",
+            },
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "string", name: "title", type: "string" },
+                { indexed: !1, internalType: "string", name: "projectName", type: "string" },
+                { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
+                { indexed: !1, internalType: "string", name: "word", type: "string" },
+              ],
+              name: "PoolDetailsCreated",
+              type: "event",
+            },
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
+                { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
+                { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
+              ],
+              name: "PoolRewardsCreated",
               type: "event",
             },
             "PoolUriSet(uint256,string)": {
@@ -8894,6 +8946,32 @@
                 { indexed: !1, internalType: "address", name: "deactivator", type: "address" },
               ],
               name: "PoolDeactivated",
+              type: "event",
+            },
+            "PoolDetailsCreated(uint256,string,string,string,string)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "string", name: "title", type: "string" },
+                { indexed: !1, internalType: "string", name: "projectName", type: "string" },
+                { indexed: !1, internalType: "string", name: "tokenName", type: "string" },
+                { indexed: !1, internalType: "string", name: "word", type: "string" },
+              ],
+              name: "PoolDetailsCreated",
+              type: "event",
+            },
+            "PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)": {
+              anonymous: !1,
+              inputs: [
+                { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "network", type: "uint256" },
+                { indexed: !1, internalType: "address", name: "tokenAddress", type: "address" },
+                { indexed: !1, internalType: "uint256", name: "minReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "impressionReward", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "cap", type: "uint256" },
+                { indexed: !1, internalType: "uint256", name: "endDate", type: "uint256" },
+              ],
+              name: "PoolRewardsCreated",
               type: "event",
             },
             "PoolUriSet(uint256,string)": {
