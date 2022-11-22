@@ -25,25 +25,25 @@ import { RewardService } from './reward.service';
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
 
-  @Post()
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: RewardDto,
-    description: 'Returns a newly inserted pool reward',
-  })
-  @ApiUnauthorizedResponse({ description: 'You need a valid token' })
-  @ApiNotFoundResponse({ description: 'Claim not found' })
-  public async accrueReward(
-    @Body() rewardToAccrue: RewardDto,
-  ): Promise<HypeReward> {
-    try {
-      return await this.rewardService.accrueRewards(rewardToAccrue);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Something went wrong. Please try again!',
-      );
-    }
-  }
+  // @Post()
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  //   type: RewardDto,
+  //   description: 'Returns a newly inserted pool reward',
+  // })
+  // @ApiUnauthorizedResponse({ description: 'You need a valid token' })
+  // @ApiNotFoundResponse({ description: 'Claim not found' })
+  // public async accrueReward(
+  //   @Body() rewardToAccrue: RewardDto,
+  // ): Promise<HypeReward> {
+  //   try {
+  //     return await this.rewardService.accrueRewards(rewardToAccrue);
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(
+  //       'Something went wrong. Please try again!',
+  //     );
+  //   }
+  // }
 
   @Patch(':address')
   @ApiCreatedResponse({ description: 'Claim details' })

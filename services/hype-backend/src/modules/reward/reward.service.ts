@@ -37,6 +37,7 @@ export class RewardService {
       rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
         address,
       }),
+      claimed: false,
     });
     if (rewardsOfAddress.length < 1)
       throw new NotFoundException(
