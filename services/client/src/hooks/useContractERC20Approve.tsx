@@ -3,29 +3,46 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import useLoadingModals from './useLoadingModals';
 import useContractEscrowDeposit from './useContractEscrowDeposit';
 import { NotificationType } from '../utils';
+import { useEffect, useState } from 'react';
+import { BigNumber } from 'ethers';
 
 const useContractERC20Approve = (
   spender: string,
   poolId: number,
   amount: number,
   tokenAddress: string,
+  enabled: boolean,
+  successCallbackDeposit: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
+  const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
-  const { write: deposit } = useContractEscrowDeposit(spender, poolId, amount, tokenAddress);
+  useContractEscrowDeposit(
+    spender,
+    poolId,
+    amount,
+    tokenAddress,
+    enableDeposit,
+    successCallbackDeposit,
+  );
 
   const { config } = usePrepareContractWrite({
     address: tokenAddress,
     abi,
     functionName: 'approve',
     args: [spender, amount],
-    // overrides: {
-    //   gasLimit: 9999999,
-    // },
-    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
+    overrides: {
+      gasLimit: BigNumber.from(9999999),
+    },
+    enabled: (!!spender || !!poolId || !!amount || !!tokenAddress) && enabled,
   });
 
-  const { data, isError, isLoading, write } = useContractWrite({
+  const {
+    data,
+    isError,
+    isLoading,
+    write: approve,
+  } = useContractWrite({
     ...config,
     onMutate() {
       showLoading([
@@ -34,41 +51,43 @@ const useContractERC20Approve = (
       ]);
     },
     onSuccess(data: any) {
-      console.log('Successfully called', data);
+      console.log('onSuccess', data);
     },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: data?.hash,
-    wait: data?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
-      deposit();
-      console.log('Success', transactionData);
+      console.log('onSuccess', transactionData);
     },
     onError(error: any) {
-      console.log('Error', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
-      console.log('Settled', { data, error });
+      console.log('onSettled', { data, error });
       hideLoadingModal();
+      setEnableDeposit(true);
     },
   });
 
-  console.log('waitForTransaction: ', waitForTransaction);
+  useEffect(() => {
+    if (enabled && spender && poolId && amount && tokenAddress && typeof approve === 'function') {
+      approve();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, spender, poolId, amount, tokenAddress]);
 
   return {
-    data,
     isError,
     isLoading,
-    write,
   };
 };
 

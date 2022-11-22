@@ -121,7 +121,7 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
           <TitleText>What are you hyping?</TitleText>
           <InfoCard>
             Enter messages, keywords, links, whatever you want hyped up in social. Currently we only
-            support Telegram. Need some ideas? Check out some other
+            support Telegram. Need some ideas? Check out some other{' '}
             <Link text="hype pools" href={'/'} />.
           </InfoCard>
           <Example>
