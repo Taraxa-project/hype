@@ -15,6 +15,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { BigNumber } from 'ethers';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from './reward.entity';
 import { RewardService } from './reward.service';
@@ -48,7 +49,9 @@ export class RewardController {
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Address not found' })
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
-  public async claimRewards(@Param('address') address: string) {
-    this.rewardService.releaseRewardHash(address);
+  public async claimRewards(
+    @Param('address') address: string,
+  ): Promise<{ nonce: number; hash: string; claimedAmount: BigNumber }> {
+    return await this.rewardService.releaseRewardHash(address);
   }
 }
