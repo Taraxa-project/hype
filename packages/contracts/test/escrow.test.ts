@@ -37,6 +37,7 @@ describe("DynamicEscrow", function () {
   const halfEth = ethers.utils.parseEther("0.5");
   const oneEth = ethers.utils.parseEther("1");
   const twoEth = ethers.utils.parseEther("2");
+  const onePointEightEth = twoEth.sub(ethers.utils.parseEther("0.2"));
   const initBalance = ethers.utils.parseEther("10000");
 
   this.beforeAll(
@@ -336,6 +337,72 @@ describe("DynamicEscrow", function () {
     expect(currentPoolIndex).to.equal(POOL_TWO);
   });
 
+  it("DepositorTwo deposits 1 ETH again into escrow for pool 1 and emits Deposited event", async () => {
+    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(oneEth);
+
+    const deposit = await dynamicEscrow
+      .connect(depositorTwo)
+      .deposit(depositorTwo.address, POOL_ONE, oneEth, zeroAddress, {
+        value: oneEth,
+      });
+    expect(deposit).not.to.be.undefined;
+    await expect(deposit).to.emit(dynamicEscrow, "Deposited").withArgs(depositorTwo.address, oneEth, POOL_ONE);
+
+    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(twoEth);
+  });
+
+  it("DepositorTwo acitvates the pool", async () => {
+    const activation = hypePool.connect(depositorTwo).activatePool(POOL_ONE);
+    expect(activation).not.to.be.undefined;
+    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(POOL_ONE, depositorTwo.address);
+  });
+
+  it("DepositorTwo generates a signature for a claim of 0.1 ETH for an address, depositor one claims, emits Claimed event", async () => {
+    const value = BigNumber.from("100000000000000000");
+    const nonce = (await ethers.provider.getTransactionCount(depositorTwo.address)) + 1;
+    const addr = depositorTwo.address;
+
+    const encodedPayload = abi.soliditySHA3(["address", "uint", "uint"], [addr, value.toString(), nonce]);
+
+    const { v, r, s } = ethUtil.ecsign(encodedPayload, Buffer.from(`${process.env.TEST_KEY_5}`, "hex"));
+    const hash = ethUtil.toRpcSig(v, r, s);
+
+    const claiming = await dynamicEscrow
+      .connect(depositorTwo)
+      .claim(depositorTwo.address, POOL_ONE, value, zeroAddress, nonce, hash);
+    await expect(claiming).to.emit(dynamicEscrow, "Claimed").withArgs(depositorTwo.address, value, POOL_ONE);
+  });
+
+  it("DepositorTwo generates a signature for a claim of 0.1 ETH for an address different than his, depositor one claims, emits Claimed event", async () => {
+    const value = BigNumber.from("100000000000000000");
+    const nonce = (await ethers.provider.getTransactionCount(depositorTwo.address)) + 1;
+    const addr = rewarder.address;
+
+    const encodedPayload = abi.soliditySHA3(["address", "uint", "uint"], [addr, value.toString(), nonce]);
+
+    const { v, r, s } = ethUtil.ecsign(encodedPayload, Buffer.from(`${process.env.TEST_KEY_5}`, "hex"));
+    const hash = ethUtil.toRpcSig(v, r, s);
+
+    const claiming = await dynamicEscrow.connect(depositorOne).claim(addr, POOL_ONE, value, zeroAddress, nonce, hash);
+    await expect(claiming).to.emit(dynamicEscrow, "Claimed").withArgs(addr, value, POOL_ONE);
+  });
+
+  it("DepositorTwo generates an invalid signature for a claim of 1 ERC20 for an address, despitor one claim fails", async () => {
+    const value = ethers.utils.parseEther("1");
+    const nonce = (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
+    const addr = depositorOne.address;
+
+    const encodedPayload = abi.soliditySHA3(["address", "uint", "uint"], [addr, value.toString(), nonce]);
+
+    const { v, r, s } = ethUtil.ecsign(encodedPayload, Buffer.from(`${process.env.TEST_KEY_1}`, "hex"));
+    const hash = ethUtil.toRpcSig(v, r, s);
+
+    const claiming = dynamicEscrow
+      .connect(depositorOne)
+      .claim(depositorOne.address, POOL_ONE, value, zeroAddress, nonce, hash);
+    await expect(claiming).to.be.revertedWith("Claim: Invalid signature");
+  });
+
   it(`=========================================================
   SCENARIO: ERC20
   ===========================================================
@@ -403,14 +470,6 @@ describe("DynamicEscrow", function () {
     expect(tokenAddress).to.be.equal(erc20.address);
   });
 
-  it("Trusted wallet address approves owner for the withdrawal of funds", async () => {
-    const allowanceBefore = await erc20.allowance(trustedWallet.address, dynamicEscrow.address);
-    await erc20.connect(trustedWallet).approve(dynamicEscrow.address, ethers.utils.parseEther("13"));
-    const allowanceAfter = await erc20.allowance(trustedWallet.address, dynamicEscrow.address);
-    console.log(allowanceBefore, " <- was the allowance before");
-    console.log(allowanceAfter, " <- is the allowance now");
-  });
-
   it("Owner tries to activate pool 2 with the right ERC20 payment, succeeds", async () => {
     const activation = await hypePool.connect(owner).activatePool(POOL_TWO);
     expect(activation).not.to.be.undefined;
@@ -465,7 +524,7 @@ describe("DynamicEscrow", function () {
   });
 
   it(`Then DepositorOne deposits 1 ETH into escrow for pool 3 and emits Deposited event`, async () => {
-    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(oneEth);
+    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(onePointEightEth);
 
     const deposit = await dynamicEscrow
       .connect(depositorOne)
@@ -474,7 +533,7 @@ describe("DynamicEscrow", function () {
       });
     expect(deposit).not.to.be.undefined;
     await expect(deposit).to.emit(dynamicEscrow, "Deposited").withArgs(depositorOne.address, oneEth, POOL_THREE);
-    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(twoEth);
+    expect(await dynamicEscrow.provider.getBalance(dynamicEscrow.address)).to.equal(onePointEightEth.add(oneEth));
   });
 
   it("Finally, depositor one activates pool 3", async () => {
@@ -622,13 +681,6 @@ describe("DynamicEscrow", function () {
     await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(POOL_FOUR, owner.address);
   });
 
-  it("Trusted address gives infinite claim allowance to the escrow", async () => {
-    const allowance = ethers.constants.MaxUint256;
-    await erc20.connect(trustedWallet).approve(dynamicEscrow.address, allowance);
-    const allowanceAfter = await erc20.allowance(trustedWallet.address, dynamicEscrow.address);
-    expect(allowanceAfter).to.be.eq(allowance);
-  });
-
   it("Owner generates a signature for a claim of 1 ERC20 for an address, depositor one claims, emits Claimed event", async () => {
     const value = ethers.utils.parseEther("1");
     const nonce = (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
@@ -643,6 +695,22 @@ describe("DynamicEscrow", function () {
       .connect(depositorOne)
       .claim(depositorOne.address, POOL_FOUR, value, erc20.address, nonce, hash);
     await expect(claiming).to.emit(dynamicEscrow, "Claimed").withArgs(depositorOne.address, value, POOL_FOUR);
+  });
+
+  it("Owner generates a signature for a claim of 1 ERC20 for an address different than his, depositor one claims, emits Claimed event", async () => {
+    const value = ethers.utils.parseEther("1");
+    const nonce = (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
+    const addr = depositorTwo.address;
+
+    const encodedPayload = abi.soliditySHA3(["address", "uint", "uint"], [addr, value.toString(), nonce]);
+
+    const { v, r, s } = ethUtil.ecsign(encodedPayload, Buffer.from(`${process.env.TEST_KEY_5}`, "hex"));
+    const hash = ethUtil.toRpcSig(v, r, s);
+
+    const claiming = await dynamicEscrow
+      .connect(depositorOne)
+      .claim(depositorTwo.address, POOL_FOUR, value, erc20.address, nonce, hash);
+    await expect(claiming).to.emit(dynamicEscrow, "Claimed").withArgs(depositorTwo.address, value, POOL_FOUR);
   });
 
   it("Owner generates an invalid signature for a claim of 1 ERC20 for an address, despitor one claim fails", async () => {

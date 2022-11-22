@@ -8,7 +8,7 @@ import * as dotenv from "dotenv";
 import { HypeToken } from "../typechain/HypeToken";
 
 dotenv.config();
-describe.skip("DynamicEscrowUpgradeable", function () {
+describe("DynamicEscrowUpgradeable", function () {
   let dynamicEscrow: Contract;
   let hypePool: Contract;
   let initialAddress: string;
