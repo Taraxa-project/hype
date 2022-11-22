@@ -96,7 +96,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         uint256 poolId,
         uint256 amount,
         address tokenAddress
-    ) public payable override nonReentrant {
+    ) public payable override nonReentrant whenNotPaused {
         if (tokenAddress != address(0)) {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
@@ -127,7 +127,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         address tokenAddress,
         uint256 nonce,
         bytes memory sig
-    ) external override nonReentrant {
+    ) external override nonReentrant whenNotPaused {
         bytes32 hash = _hash(receiver, amount, nonce);
 
         require(ECDSA.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
@@ -153,7 +153,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         address payable receiver,
         uint256 poolId,
         uint256 amount
-    ) external override nonReentrant {
+    ) external override nonReentrant whenNotPaused {
         require(_deposits[poolId][msg.sender].weiAmount >= amount, "Not enough funds");
 
         address tokenAddress = _deposits[poolId][msg.sender].tokenAddress;
