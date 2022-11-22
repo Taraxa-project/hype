@@ -133,112 +133,208 @@ export class HypePool extends Entity {
     this.set('active', Value.fromBoolean(value));
   }
 
-  get title(): string {
+  get title(): string | null {
     let value = this.get('title');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set title(value: string) {
-    this.set('title', Value.fromString(value));
+  set title(value: string | null) {
+    if (!value) {
+      this.unset('title');
+    } else {
+      this.set('title', Value.fromString(<string>value));
+    }
   }
 
-  get projectName(): string {
+  get projectName(): string | null {
     let value = this.get('projectName');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set projectName(value: string) {
-    this.set('projectName', Value.fromString(value));
+  set projectName(value: string | null) {
+    if (!value) {
+      this.unset('projectName');
+    } else {
+      this.set('projectName', Value.fromString(<string>value));
+    }
   }
 
-  get tokenName(): string {
+  get tokenName(): string | null {
     let value = this.get('tokenName');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set tokenName(value: string) {
-    this.set('tokenName', Value.fromString(value));
+  set tokenName(value: string | null) {
+    if (!value) {
+      this.unset('tokenName');
+    } else {
+      this.set('tokenName', Value.fromString(<string>value));
+    }
   }
 
-  get word(): string {
+  get word(): string | null {
     let value = this.get('word');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set word(value: string) {
-    this.set('word', Value.fromString(value));
+  set word(value: string | null) {
+    if (!value) {
+      this.unset('word');
+    } else {
+      this.set('word', Value.fromString(<string>value));
+    }
   }
 
-  get description(): string {
+  get description(): string | null {
     let value = this.get('description');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set description(value: string) {
-    this.set('description', Value.fromString(value));
+  set description(value: string | null) {
+    if (!value) {
+      this.unset('description');
+    } else {
+      this.set('description', Value.fromString(<string>value));
+    }
   }
 
-  get projectDescription(): string {
+  get projectDescription(): string | null {
     let value = this.get('projectDescription');
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set projectDescription(value: string) {
-    this.set('projectDescription', Value.fromString(value));
+  set projectDescription(value: string | null) {
+    if (!value) {
+      this.unset('projectDescription');
+    } else {
+      this.set('projectDescription', Value.fromString(<string>value));
+    }
   }
 
-  get network(): BigInt {
+  get network(): BigInt | null {
     let value = this.get('network');
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set network(value: BigInt) {
-    this.set('network', Value.fromBigInt(value));
+  set network(value: BigInt | null) {
+    if (!value) {
+      this.unset('network');
+    } else {
+      this.set('network', Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get tokenAddress(): Bytes {
+  get tokenAddress(): Bytes | null {
     let value = this.get('tokenAddress');
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set tokenAddress(value: Bytes) {
-    this.set('tokenAddress', Value.fromBytes(value));
+  set tokenAddress(value: Bytes | null) {
+    if (!value) {
+      this.unset('tokenAddress');
+    } else {
+      this.set('tokenAddress', Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get minReward(): BigInt {
+  get minReward(): BigInt | null {
     let value = this.get('minReward');
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set minReward(value: BigInt) {
-    this.set('minReward', Value.fromBigInt(value));
+  set minReward(value: BigInt | null) {
+    if (!value) {
+      this.unset('minReward');
+    } else {
+      this.set('minReward', Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get impressionReward(): BigInt {
+  get impressionReward(): BigInt | null {
     let value = this.get('impressionReward');
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set impressionReward(value: BigInt) {
-    this.set('impressionReward', Value.fromBigInt(value));
+  set impressionReward(value: BigInt | null) {
+    if (!value) {
+      this.unset('impressionReward');
+    } else {
+      this.set('impressionReward', Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get cap(): BigInt {
+  get cap(): BigInt | null {
     let value = this.get('cap');
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set cap(value: BigInt) {
-    this.set('cap', Value.fromBigInt(value));
+  set cap(value: BigInt | null) {
+    if (!value) {
+      this.unset('cap');
+    } else {
+      this.set('cap', Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get endDate(): BigInt {
+  get endDate(): BigInt | null {
     let value = this.get('endDate');
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set endDate(value: BigInt) {
-    this.set('endDate', Value.fromBigInt(value));
+  set endDate(value: BigInt | null) {
+    if (!value) {
+      this.unset('endDate');
+    } else {
+      this.set('endDate', Value.fromBigInt(<BigInt>value));
+    }
   }
 }
 

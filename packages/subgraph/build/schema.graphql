@@ -29,18 +29,18 @@ type HypePool @entity(immutable: true) {
   creator: Bytes!
   uri: String!
   active: Boolean!
-  title: String!
-  projectName: String!
-  tokenName: String!
-  word: String!
-  description: String!
-  projectDescription: String!
-  network: BigInt!
-  tokenAddress: Bytes!
-  minReward: BigInt!
-  impressionReward: BigInt!
-  cap: BigInt!
-  endDate: BigInt!
+  title: String
+  projectName: String
+  tokenName: String
+  word: String
+  description: String
+  projectDescription: String
+  network: BigInt
+  tokenAddress: Bytes
+  minReward: BigInt
+  impressionReward: BigInt
+  cap: BigInt
+  endDate: BigInt
 }
 
 type HypeUri @entity(immutable: true) {
