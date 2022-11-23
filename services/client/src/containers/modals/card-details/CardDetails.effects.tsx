@@ -10,8 +10,23 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
-  const { id, projectName, title, description, token, creator, cap, minReward, active, endDate } =
-    cardData;
+  const {
+    id,
+    projectName,
+    title,
+    description,
+    projectDescription,
+    token,
+    word,
+    network,
+    tokenAddress,
+    creator,
+    cap,
+    minReward,
+    impressionReward,
+    active,
+    endDate,
+  } = cardData;
   // const { data, isError, isLoading, write } = useContractERC20Approve(creator, id, cap, token);
   // const { data, isError, isLoading, write } = useContractEscrowDeposit(creator, id, cap, token);
   // const { data, isError, isLoading, write } = useContractActivatePool(id);
@@ -26,10 +41,15 @@ export const useCardDetailsEffects = () => {
           projectName: null,
           title: null,
           description: null,
+          projectDescription: null,
+          word: null,
+          network: null,
           creator: null,
           token: null,
+          tokenAddress: null,
           cap: 0,
           minReward: 0,
+          impressionReward: 0,
           active: null,
           endDate: null,
         },
@@ -54,10 +74,15 @@ export const useCardDetailsEffects = () => {
     projectName,
     title,
     description,
+    projectDescription,
+    tokenAddress,
     token,
+    word,
+    network,
     creator,
     cap,
     minReward,
+    impressionReward,
     active,
     endDate,
     cardModalAction,

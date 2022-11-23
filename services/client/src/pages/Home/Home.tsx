@@ -1,4 +1,3 @@
-import { HypeIconBig } from '../../assets/icons/HypeIcon';
 import SearchIcon from '../../assets/icons/Search';
 import Input from '../../components/input/Input';
 import LoadingSpinner from '../../assets/icons/Spinner';
