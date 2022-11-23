@@ -27,9 +27,10 @@ export const useAddHypePoolEffects = () => {
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(9));
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(12)); //BigNumber.from(9)
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
+  const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
     // title: '',
     // projectName: '',
@@ -54,12 +55,13 @@ export const useAddHypePoolEffects = () => {
     // cap: null,
     // endDate: null
     network: 843,
-    token: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
-    tokenAddress: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
+    token: 'TARA',
+    tokenAddress: '0x0000000000000000000000000000000000000000',
     tokenName: 'TARA',
-    minReward: 10,
-    impressionReward: 20,
-    cap: 100,
+    tokenDecimals: 18,
+    minReward: 1,
+    impressionReward: 2,
+    cap: 10,
     endDate: new Date('12-01-2022'),
   });
 
@@ -171,5 +173,7 @@ export const useAddHypePoolEffects = () => {
     poolReward,
     successCallbackActivatePool,
     createdPoolIndex,
+    isCustomToken,
+    setIsCustomToken,
   };
 };

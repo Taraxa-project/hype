@@ -19,6 +19,8 @@ export const AddHypePool = () => {
     poolReward,
     successCallbackActivatePool,
     createdPoolIndex,
+    isCustomToken,
+    setIsCustomToken,
   } = useAddHypePoolEffects();
 
   return (
@@ -52,6 +54,7 @@ export const AddHypePool = () => {
               defaultValues={poolReward}
               onSubmit={onSubmitRewards}
               onBack={onBackFromRewards}
+              setIsCustomToken={setIsCustomToken}
             />
             <HowItWorks step={currentStep} />
           </StepContent>
@@ -64,6 +67,7 @@ export const AddHypePool = () => {
             details={poolDetails}
             rewards={poolReward}
             successCallbackActivatePool={successCallbackActivatePool}
+            isCustomToken={isCustomToken}
           />
           <HowItWorks step={currentStep} />
         </StepContent>

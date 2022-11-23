@@ -16,6 +16,7 @@ export interface SummaryProps {
   details: HypePoolDetailsForm;
   rewards: HypePoolRewardForm;
   successCallbackActivatePool: () => void;
+  isCustomToken: boolean;
 }
 
 export const Summary: FC<SummaryProps> = ({
@@ -23,11 +24,13 @@ export const Summary: FC<SummaryProps> = ({
   rewards,
   createdPoolIndex,
   successCallbackActivatePool,
+  isCustomToken,
 }) => {
   const { fundAndActivate, account, authenticated } = useSummaryEffects(
     createdPoolIndex,
     successCallbackActivatePool,
     rewards,
+    isCustomToken,
   );
   const ageString = Math.round(
     (new Date(rewards.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
@@ -131,6 +134,16 @@ export const Summary: FC<SummaryProps> = ({
             </Text>
           </RewardContent>
         )}
+        {rewards?.tokenDecimals && (
+          <RewardContent>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Token decimals:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {rewards?.tokenDecimals}
+            </Text>
+          </RewardContent>
+        )}
         {rewards?.tokenAddress && (
           <>
             <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
@@ -191,7 +204,7 @@ export const Summary: FC<SummaryProps> = ({
       </InfoCard>
       <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
         <Label>
-          Deposit {rewards.minReward} {rewards.tokenName} into the pool.
+          Deposit {rewards.cap} {rewards.tokenName} into the pool.
         </Label>
       </Box>
       <FormAction>

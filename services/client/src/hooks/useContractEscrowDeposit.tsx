@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 
 const useContractEscrowDeposit = (
   spender: string,
-  poolId: number,
-  amount: number,
+  poolId: BigNumber,
+  amount: BigNumber,
   tokenAddress: string,
   enabled: boolean,
   successCallbackDeposit: () => void,
@@ -26,7 +26,7 @@ const useContractEscrowDeposit = (
     overrides: {
       from: spender as `0x${string}`,
       gasLimit: BigNumber.from(9999999),
-      value: ethers.utils.parseEther(amount?.toString()), // Not sure if this is needed
+      value: amount, // Not sure if this is needed
     },
   });
 

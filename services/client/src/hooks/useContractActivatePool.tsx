@@ -3,7 +3,7 @@ import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import useLoadingModals from './useLoadingModals';
 import { NotificationType } from '../utils';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useEffect } from 'react';
 
 const useContractActivatePool = (
@@ -18,7 +18,7 @@ const useContractActivatePool = (
     address: hypeAddress,
     abi,
     functionName: 'activatePool',
-    args: [+id.toString()], // Not sure if this should be number or BigNumber
+    args: [id],
     overrides: {
       gasLimit: BigNumber.from(9999999),
     },
@@ -45,7 +45,6 @@ const useContractActivatePool = (
     onSuccess(transactionData) {
       console.log('Successfully called activate pool', transactionData);
       hideLoadingModal();
-      successCallbackActivatePool();
     },
     onError(error: any) {
       console.log('Error', error);
@@ -55,11 +54,22 @@ const useContractActivatePool = (
     onSettled(data, error) {
       console.log('Settled', { data, error });
       hideLoadingModal();
+      // const hypeI = new ethers.utils.Interface(abi);
+      // console.log('DATA: ', data);
+      // data.logs.forEach((log) => {
+      //   console.log('Log: ', hypeI.parseLog(log));
+      // });
+      // const poolCreatedEvent = hypeI.parseLog(
+      //   data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolActivated')[0],
+      // );
+      // console.log('poolCreatedEvent:', poolCreatedEvent);
+      successCallbackActivatePool();
     },
   });
 
   useEffect(() => {
     if (enabled && id && typeof write === 'function') {
+      console.log('ID: ', id);
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
