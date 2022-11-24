@@ -29,17 +29,14 @@ abstract contract ERC20Basic {
 abstract contract ERC20 is ERC20Basic {
     function allowance(address owner, address spender) public virtual returns (uint256);
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) public virtual;
+    function transferFrom(address from, address to, uint256 value) public virtual;
 
     function approve(address spender, uint256 value) public virtual;
 }
 
 contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
     using Address for address payable;
+
     constructor(address rewarder) {
         _rewarder = rewarder;
     }
@@ -96,11 +93,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @param weiAmount The amount of wei to deposit.
      * modifier onlyRewarder Only the rewarder can call this function.
      */
-    function accrueRewardFor(
-        address payee,
-        uint256 poolId,
-        uint256 amount
-    ) public onlyRewarder nonReentrant {
+    function accrueRewardFor(address payee, uint256 poolId, uint256 amount) public onlyRewarder nonReentrant {
         _accruedRewards[poolId][payee] += amount;
         require(_accruedRewards[poolId][payee] >= amount, "AccruedRewardOverflow");
         emit RewardCredited(payee, amount, poolId);
@@ -112,11 +105,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @param tokenAddress The address of the token to be redeemed.
      * @param poolId The reward pool id to serach after.
      */
-    function redeemRewards(
-        address receiver,
-        address tokenAddress,
-        uint256 poolId
-    ) public nonReentrant {
+    function redeemRewards(address receiver, address tokenAddress, uint256 poolId) public nonReentrant {
         require(_accruedRewards[poolId][msg.sender] > 0, "Not enough accrued rewards");
         uint256 _amount = _accruedRewards[poolId][msg.sender];
         _accruedRewards[poolId][msg.sender] = 0;
@@ -144,6 +133,8 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         uint256 amount,
         address tokenAddress
     ) public payable override nonReentrant {
+        IEscrow.DynamicDeposit memory depoBefore = _deposits[poolId][spender];
+        require(depoBefore.weiAmount == 0, "A deposit was already made for this pool");
         if (tokenAddress != address(0)) {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
@@ -152,6 +143,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         } else {
             require(msg.value == amount, "Invalid amount");
         }
+
         IEscrow.DynamicDeposit memory depo = IEscrow.DynamicDeposit(amount, tokenAddress, poolId);
         _deposits[poolId][spender] = depo;
         emit Deposited(spender, amount, poolId);
@@ -165,22 +157,20 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @param poolId The reward pool id of which the tokens are withdrawn.
      * @param amount The amount of tokens to withdraw.
      */
-    function withdraw(
-        address payable receiver,
-        uint256 poolId,
-        uint256 amount
-    ) external override nonReentrant {
-        require(_deposits[poolId][msg.sender].weiAmount >= amount, "Not enough funds");
-        if (_deposits[poolId][msg.sender].weiAmount == amount) {
+    function withdraw(address payable receiver, uint256 poolId, uint256 amount) external override nonReentrant {
+        IEscrow.DynamicDeposit memory depo = _deposits[poolId][msg.sender];
+        require(depo.weiAmount >= amount, "Not enough funds");
+
+        if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];
         } else {
-            _deposits[poolId][msg.sender].weiAmount -= amount;
+            depo.weiAmount -= amount;
         }
-        if (_deposits[poolId][msg.sender].tokenAddress == address(0)) {
+        if (depo.tokenAddress == address(0)) {
             receiver.transfer(amount);
         } else {
-            ERC20 token = ERC20(_deposits[poolId][msg.sender].tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            ERC20 token = ERC20(depo.tokenAddress);
+            token.transfer(receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }
