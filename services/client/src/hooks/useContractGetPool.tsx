@@ -1,8 +1,9 @@
 import ABIs from '../abi';
 import { hypeAddress } from '../constants';
 import { useContractRead } from 'wagmi';
+import { BigNumber } from 'ethers';
 
-const useContractGetPool = (tokenId: number) => {
+const useContractGetPool = (tokenId: BigNumber) => {
   const { abi } = ABIs.contracts.HypePool;
 
   const { data, isError, isLoading } = useContractRead({

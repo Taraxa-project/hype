@@ -6,24 +6,6 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
-  const {
-    id,
-    projectName,
-    title,
-    description,
-    projectDescription,
-    tokenName,
-    word,
-    network,
-    tokenAddress,
-    creator,
-    cap,
-    minReward,
-    impressionReward,
-    active,
-    endDate,
-  } = cardData;
-
   const closeModal = () => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_CARD_DETAILS,
@@ -56,21 +38,7 @@ export const useCardDetailsEffects = () => {
 
   return {
     open,
-    id,
-    projectName,
-    title,
-    description,
-    projectDescription,
-    tokenAddress,
-    tokenName,
-    word,
-    network,
-    creator,
-    cap,
-    minReward,
-    impressionReward,
-    active,
-    endDate,
+    ...cardData,
     closeModal,
     onActivatePool,
     isPrivate,

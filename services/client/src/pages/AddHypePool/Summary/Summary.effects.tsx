@@ -22,7 +22,6 @@ export const useSummaryEffects = (
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
 
   const successCallbackDeposit = (): void => {
-    console.log('THIS IS CALLED!');
     setEnableActivate(true);
   };
   useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool);
@@ -52,7 +51,6 @@ export const useSummaryEffects = (
 
   const fundAndActivate = () => {
     console.log('Fund & Activate');
-    console.log('Is custom token: ', isCustomToken);
     if (isCustomToken) {
       setEnableApprove(true);
     } else {

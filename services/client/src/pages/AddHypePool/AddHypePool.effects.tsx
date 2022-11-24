@@ -27,7 +27,7 @@ export const useAddHypePoolEffects = () => {
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(12)); //BigNumber.from(9)
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(16)); //BigNumber.from(16)
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
@@ -126,11 +126,21 @@ export const useAddHypePoolEffects = () => {
     if (!details || !rewards || !ipfsUrl) {
       return;
     }
+    const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
+    const minReward = BigNumber.from(rewards.minReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
+    const impressionReward = BigNumber.from(rewards.impressionReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
     setWritePoolArgs({
       uri: ipfsUrl,
       details,
       rewards: {
         ...rewards,
+        cap,
+        minReward,
+        impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
         endDate: rewards.endDate?.getTime(),

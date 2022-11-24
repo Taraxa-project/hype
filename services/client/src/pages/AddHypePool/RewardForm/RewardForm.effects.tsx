@@ -7,6 +7,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useSwitchNetwork } from '../../../hooks/useSwitchNetwork';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
+import { ethToken, taraToken, zeroAddress } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<
@@ -33,7 +34,7 @@ export const useRewardFormEffects = (
   const [tokenAddress, setTokenAddress] = useState<`0x${string}`>(null);
   const { chain } = useNetwork();
   const isEthNetwork = chain?.name === 'Ethereum';
-  const { data: ERC0tokenInfo } = useToken({
+  const { data: ERC20tokenInfo } = useToken({
     address: tokenAddress,
     enabled: !!tokenAddress && isEthNetwork,
   });
@@ -60,13 +61,13 @@ export const useRewardFormEffects = (
 
   const tokensOptions = [
     {
-      name: 'ETH',
-      value: '0x0000000000000000000000000000000000000000',
+      name: ethToken,
+      value: zeroAddress,
       decimals: 18,
     },
     {
-      name: 'TARA',
-      value: '0x0000000000000000000000000000000000000000',
+      name: taraToken,
+      value: zeroAddress,
       decimals: 18,
     },
     {
@@ -77,20 +78,20 @@ export const useRewardFormEffects = (
   ];
 
   useEffect(() => {
-    if (ERC0tokenInfo) {
-      console.log('Token info: ', ERC0tokenInfo);
-      setValue('tokenAddress', ERC0tokenInfo.address || '', {
+    if (ERC20tokenInfo) {
+      console.log('Token info: ', ERC20tokenInfo);
+      setValue('tokenAddress', ERC20tokenInfo.address || '', {
         shouldValidate: true,
       });
-      setValue('tokenName', ERC0tokenInfo.name || '', {
+      setValue('tokenName', ERC20tokenInfo.name || '', {
         shouldValidate: true,
       });
-      setValue('tokenDecimals', ERC0tokenInfo.decimals || 18, {
+      setValue('tokenDecimals', ERC20tokenInfo.decimals || 18, {
         shouldValidate: true,
       });
       setIsCustomToken(true);
     }
-  }, [ERC0tokenInfo]);
+  }, [ERC20tokenInfo]);
 
   const validationSchema = yup
     .object({
