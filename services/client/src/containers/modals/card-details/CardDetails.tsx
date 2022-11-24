@@ -14,7 +14,6 @@ import {
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
 import { monthDiff } from '../../../utils';
-import { useNetwork, useToken } from 'wagmi';
 import useWallet from '../../../hooks/useWallet';
 import DotIcon from '../../../assets/icons/Dot';
 
@@ -24,7 +23,7 @@ export const CardDetails = () => {
     title,
     description,
     projectDescription,
-    token,
+    tokenName,
     word,
     network,
     tokenAddress,
@@ -35,8 +34,9 @@ export const CardDetails = () => {
     impressionReward,
     active,
     endDate,
-    cardModalAction,
     closeModal,
+    onActivatePool,
+    isPrivate,
   } = useCardDetailsEffects();
 
   const titleProps: ModalTitleProps = {
@@ -44,12 +44,6 @@ export const CardDetails = () => {
     close: closeModal,
   };
   const { isConnected, connect } = useWallet();
-  const { chain } = useNetwork();
-  const { data: poolTokenInfo } = useToken({
-    address: token as `0x${string}`,
-    enabled: chain?.name === 'Ethereum',
-  });
-  const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   const modalAction: ModalAction = {
@@ -59,12 +53,18 @@ export const CardDetails = () => {
     closeButtonVariant: 'primary',
   };
 
+  const poolModalAction: ModalAction = {
+    name: 'Fund & Activate the Pool',
+    onAction: onActivatePool,
+    closeButtonVariant: 'primary',
+  };
+
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={cardModalAction || modalAction}
+      modalAction={active === false && isPrivate ? poolModalAction : modalAction}
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -96,10 +96,10 @@ export const CardDetails = () => {
             <DataValue>{network}</DataValue>
           </DataContainer>
         )}
-        {token && (
+        {tokenName && (
           <DataContainer>
             <DataHeader>Token name:</DataHeader>
-            <DataValue>{token}</DataValue>
+            <DataValue>{tokenName}</DataValue>
           </DataContainer>
         )}
         {tokenAddress && (
@@ -113,9 +113,9 @@ export const CardDetails = () => {
         )}
         {cap && (
           <DataContainer>
-            <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
+            <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
             <DataValue key={`${cap}-${Date.now()}`}>
-              {cap} {poolToken}
+              {cap} {tokenName}
             </DataValue>
           </DataContainer>
         )}
@@ -123,7 +123,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Min reward per winner:</DataHeader>
             <DataValue key={`${minReward}-${Date.now()}`}>
-              {minReward} {poolToken}
+              {minReward} {tokenName}
             </DataValue>
           </DataContainer>
         )}
@@ -131,7 +131,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Reward per 1,000 impressions:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
-              {impressionReward} {poolToken}
+              {impressionReward} {tokenName}
             </DataValue>
           </DataContainer>
         )}

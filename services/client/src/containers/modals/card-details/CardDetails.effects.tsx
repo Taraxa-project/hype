@@ -1,12 +1,8 @@
-import { ModalAction } from '../../../components/modals/modal-container/ModalContainer';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
-import useContractActivatePool from '../../../hooks/useContractActivatePool';
-import useContractERC20Approve from '../../../hooks/useContractERC20Approve';
-import useContractEscrowDeposit from '../../../hooks/useContractEscrowDeposit';
 
 export const useCardDetailsEffects = () => {
   const {
-    hypeDetails: { open, cardData, cardModalAction },
+    hypeDetails: { open, cardData, isPrivate },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
 
@@ -16,7 +12,7 @@ export const useCardDetailsEffects = () => {
     title,
     description,
     projectDescription,
-    token,
+    tokenName,
     word,
     network,
     tokenAddress,
@@ -27,9 +23,6 @@ export const useCardDetailsEffects = () => {
     active,
     endDate,
   } = cardData;
-  // const { data, isError, isLoading, write } = useContractERC20Approve(creator, id, cap, token);
-  // const { data, isError, isLoading, write } = useContractEscrowDeposit(creator, id, cap, token);
-  // const { data, isError, isLoading, write } = useContractActivatePool(id);
 
   const closeModal = () => {
     dispatchModals({
@@ -45,7 +38,7 @@ export const useCardDetailsEffects = () => {
           word: null,
           network: null,
           creator: null,
-          token: null,
+          tokenName: null,
           tokenAddress: null,
           cap: 0,
           minReward: 0,
@@ -57,16 +50,9 @@ export const useCardDetailsEffects = () => {
     });
   };
 
-  // const onModalAction = () => {
-  //   // closeModal();
-  //   write();
-  // }
-
-  // const modalAction: ModalAction = {
-  //   name: 'Deposit rewards',
-  //   onAction: onModalAction,
-  //   closeButtonVariant: 'primary',
-  // }
+  const onActivatePool = () => {
+    console.log('On activate pool');
+  };
 
   return {
     open,
@@ -76,7 +62,7 @@ export const useCardDetailsEffects = () => {
     description,
     projectDescription,
     tokenAddress,
-    token,
+    tokenName,
     word,
     network,
     creator,
@@ -85,7 +71,8 @@ export const useCardDetailsEffects = () => {
     impressionReward,
     active,
     endDate,
-    cardModalAction,
     closeModal,
+    onActivatePool,
+    isPrivate,
   };
 };
