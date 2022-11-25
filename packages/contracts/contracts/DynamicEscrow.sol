@@ -106,6 +106,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
 
         IEscrow.DynamicDeposit memory depo = IEscrow.DynamicDeposit(amount, tokenAddress, poolId);
         _deposits[poolId][spender] = depo;
+        require(_deposits[poolId][spender].weiAmount != 0, "Failed to save deposit on chain!");
         emit Deposited(spender, amount, poolId);
     }
 
@@ -153,18 +154,19 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         uint256 poolId,
         uint256 amount
     ) external override nonReentrant whenNotPaused {
-        IEscrow.DynamicDeposit memory depo = _deposits[poolId][msg.sender];
+        IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];
+        address contractAddress = depo.tokenAddress;
         require(depo.weiAmount >= amount, "Not enough funds");
-
+        console.log("token address is", depo.tokenAddress);
         if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];
         } else {
             depo.weiAmount -= amount;
         }
-        if (depo.tokenAddress == address(0)) {
+        if (contractAddress == address(0)) {
             receiver.transfer(amount);
         } else {
-            ERC20 token = ERC20(depo.tokenAddress);
+            ERC20 token = ERC20(contractAddress);
             token.transfer(receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
