@@ -59,24 +59,18 @@ export const useContractCreatePool = (
     onMutate() {
       showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
     },
-    onSuccess(data: any) {
-      console.log('onSuccess', data);
-    },
     onError(error: any) {
       console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
-    onSettled(data, error) {
-      console.log('onSettled', { data, error });
-    },
   });
 
   useWaitForTransaction({
     hash: poolData?.hash,
     onSuccess(transactionData) {
-      console.log('onSuccess', transactionData);
+      // console.log('onSuccess', transactionData);
       hideLoadingModal();
       successCallback();
       resetWriteContract();
@@ -88,13 +82,11 @@ export const useContractCreatePool = (
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('onSettled', { data, error });
       const hypeI = new ethers.utils.Interface(abi);
       const poolCreatedEvent = hypeI.parseLog(
         data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
       );
       if (poolCreatedEvent && poolCreatedEvent.args[0]) {
-        // const poolIndex = BigNumber.from(poolCreatedEvent.args[0]);
         setCreatedPoolIndex(poolCreatedEvent.args[0]);
       }
       hideLoadingModal();

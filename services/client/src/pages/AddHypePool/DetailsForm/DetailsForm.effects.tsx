@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect } from 'react';
 import { AddHypePool } from '../../../models';
 import { useAuth } from '../../../hooks/useAuth';
 

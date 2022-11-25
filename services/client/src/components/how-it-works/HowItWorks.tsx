@@ -42,7 +42,7 @@ export const HowItWorks = ({ step }: HowItWorksProps) => {
                 Hype Pool.
               </p>
               <p>
-                You'll need to define the reward token, which blockchain network it's one, how much
+                You'll need to define the reward token, which blockchain network it's on, how much
                 you're rewarding them, maximum size of the pool, and how long the pool lasts.
               </p>
             </HowItWorksDescription>

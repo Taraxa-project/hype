@@ -6,7 +6,7 @@ import { AddHypePool } from '../../../models';
 import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
-import { ethToken, taraToken, zeroAddress } from '../../../utils';
+import { ethToken, networkOptions, taraToken, tokensOptions, zeroAddress } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<
@@ -39,46 +39,8 @@ export const useRewardFormEffects = (
   });
   const { changeNetwork } = useSwitchNetwork();
 
-  const networkOptions = [
-    {
-      name: 'Ethereum Network',
-      value: 1,
-    },
-    {
-      name: 'Taraxa Network',
-      value: 841,
-    },
-    {
-      name: 'Taraxa Devnet',
-      value: 843,
-    },
-    {
-      name: 'Taraxa Testnet',
-      value: 842,
-    },
-  ];
-
-  const tokensOptions = [
-    {
-      name: ethToken,
-      value: zeroAddress,
-      decimals: 18,
-    },
-    {
-      name: taraToken,
-      value: zeroAddress,
-      decimals: 18,
-    },
-    {
-      name: 'Other',
-      value: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-      decimals: 18,
-    },
-  ];
-
   useEffect(() => {
     if (ERC20tokenInfo) {
-      console.log('Token info: ', ERC20tokenInfo);
       setValue('tokenAddress', ERC20tokenInfo.address || '', {
         shouldValidate: true,
       });
@@ -186,7 +148,6 @@ export const useRewardFormEffects = (
       setValue('tokenAddress', currentTokenInfo?.value);
       setValue('tokenName', currentTokenInfo?.name);
       setValue('tokenDecimals', currentTokenInfo?.decimals);
-      // Should add the values back to tokenAddress and tokenName?
       setShowToken(false);
       setIsCustomToken(false);
     }

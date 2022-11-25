@@ -152,14 +152,12 @@ export const useAddHypePoolEffects = () => {
   };
 
   const onSubmitDetails = async (data: HypePoolDetailsForm) => {
-    console.log('HypePoolDetailsForm: ', data);
     setPoolDetails(data);
     await onUploadToIpfs(data);
     // setCurrentStep(2);
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
-    console.log('HypePoolRewardForm: ', data);
     createPool(poolDetails, data);
     // setCurrentStep(3);
     // setPoolReward(data);

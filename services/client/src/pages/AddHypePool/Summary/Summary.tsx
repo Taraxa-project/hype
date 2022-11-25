@@ -9,7 +9,7 @@ import { BigNumber } from 'ethers';
 import Button from '../../../components/button/Button';
 import Box from '../../../components/styles/Box';
 import { TitleText } from '../../Home/Home.styled';
-import { FormColumn, InfoCard, Label, FormAction } from '../AddHypePool.styled';
+import { FormColumn, Label, FormAction } from '../AddHypePool.styled';
 
 export interface SummaryProps {
   createdPoolIndex: BigNumber;
@@ -197,11 +197,7 @@ export const Summary: FC<SummaryProps> = ({
           </RewardContent>
         )}
       </PoolContent>
-      <InfoCard>
-        Once a pool is created, it is committed on-chain. This means the funds cannot be withdrawn,
-        and the parameters of the pool cannot be altered. This is to ensure that Hype pools are
-        transparent and fair to your community.
-      </InfoCard>
+
       <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
         <Label>
           Deposit {rewards.cap} {rewards.tokenName} into the pool.

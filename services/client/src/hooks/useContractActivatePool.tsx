@@ -42,7 +42,6 @@ export const useContractActivatePool = (
   useWaitForTransaction({
     hash: data?.hash,
     onSuccess(transactionData) {
-      console.log('Successfully called activate pool', transactionData);
       hideLoadingModal();
     },
     onError(error: any) {
@@ -51,7 +50,6 @@ export const useContractActivatePool = (
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
-      console.log('Settled', { data, error });
       hideLoadingModal();
       successCallbackActivatePool();
     },

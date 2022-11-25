@@ -26,7 +26,7 @@ export const FormColumn = styled.div`
 export const FormElement = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const FormInput = styled(Input)`
@@ -157,5 +157,6 @@ export const InfoCard = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 `;

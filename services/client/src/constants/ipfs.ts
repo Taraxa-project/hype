@@ -12,15 +12,6 @@ const ipfsPort = +process.env.REACT_APP_IPFS_PORT;
 const ipfsProtocol = `${process.env.REACT_APP_IPFS_PROTOCOL}`;
 const ipfsUseAuth = `${process.env.REACT_APP_IPFS_USE_AUTH}`;
 
-// export const ipfsClient = create({
-//   host: `ipfs.infura.io`,
-//   port: 5001,
-//   protocol: `https`,
-//   headers: {
-//     authorization,
-//   },
-// });
-
 const ipfsOptions: Options = {
   host: ipfsHost,
   port: ipfsPort,

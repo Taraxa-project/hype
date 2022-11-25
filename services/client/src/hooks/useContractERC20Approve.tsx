@@ -50,9 +50,6 @@ export const useContractERC20Approve = (
         'You need to approve in order to deposit your funds',
       ]);
     },
-    onSuccess(data: any) {
-      console.log('onSuccess', data);
-    },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
@@ -64,15 +61,13 @@ export const useContractERC20Approve = (
     hash: data?.hash,
     onSuccess(transactionData) {
       hideLoadingModal();
-      console.log('onSuccess', transactionData);
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
-    onSettled(data, error) {
-      console.log('onSettled', { data, error });
+    onSettled() {
       hideLoadingModal();
       setEnableDeposit(true);
     },

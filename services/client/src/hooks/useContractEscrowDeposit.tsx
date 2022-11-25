@@ -3,7 +3,7 @@ import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber } from 'ethers';
 import { useEffect } from 'react';
 
 export const useContractEscrowDeposit = (
@@ -35,9 +35,6 @@ export const useContractEscrowDeposit = (
     onMutate() {
       showLoading(['Please, sign the message...', 'Depositing rewards...']);
     },
-    onSuccess(data: any) {
-      console.log('onSuccess', data);
-    },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
@@ -49,17 +46,14 @@ export const useContractEscrowDeposit = (
     hash: data?.hash,
     // wait: data?.wait,
     onSuccess(transactionData) {
-      console.log('onSuccess', transactionData);
       hideLoadingModal();
-      // showNotificationModal(NotificationType.SUCCESS, 'Funds successfully deposited');
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
-    onSettled(data, error) {
-      console.log('onSettled', { data, error });
+    onSettled() {
       hideLoadingModal();
       successCallbackDeposit();
     },
