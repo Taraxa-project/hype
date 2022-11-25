@@ -8639,6 +8639,12 @@
               name: "OwnershipTransferred",
               type: "event",
             },
+            "Paused(address)": {
+              anonymous: !1,
+              inputs: [{ indexed: !1, internalType: "address", name: "account", type: "address" }],
+              name: "Paused",
+              type: "event",
+            },
             "RewardCredited(address,uint256,uint256)": {
               anonymous: !1,
               inputs: [
@@ -8647,6 +8653,12 @@
                 { indexed: !1, internalType: "uint256", name: "poolId", type: "uint256" },
               ],
               name: "RewardCredited",
+              type: "event",
+            },
+            "Unpaused(address)": {
+              anonymous: !1,
+              inputs: [{ indexed: !1, internalType: "address", name: "account", type: "address" }],
+              name: "Unpaused",
               type: "event",
             },
             "Withdrawn(address,uint256,uint256)": {
@@ -8681,7 +8693,7 @@
                 poolId: "The reward pool id of which the tokens are withdrawn.",
                 receiver: "The address to receive the tokens.",
                 sig: "the sig given by the hype backend",
-                tokenAddress: "of the pool",
+                tokenAddress: "the reward token address of the pool",
               },
               notice: "The caller of this method can be anyone who wants to redeem tokens.",
             },
@@ -8759,6 +8771,14 @@
               stateMutability: "view",
               type: "function",
               details: "Returns the address of the current owner.",
+            },
+            "paused()": {
+              inputs: [],
+              name: "paused",
+              outputs: [{ internalType: "bool", name: "", type: "bool" }],
+              stateMutability: "view",
+              type: "function",
+              details: "Returns true if the contract is paused, and false otherwise.",
             },
             "renounceOwnership()": {
               inputs: [],
