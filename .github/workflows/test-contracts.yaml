@@ -32,6 +32,7 @@ jobs:
           echo TEST_KEY_5=4d7fe1f8f08d13e748bc967bc919bb8181cf90be6734e1bc4750ca690641a23f >> .env
           echo TARA_MAINNET_URL=https://rpc.mainnet.taraxa.io/ >> .env
           echo TARA_TESTNET_URL=https://rpc.testnet.taraxa.io/ >> .env
+          echo TARA_DEVNET_URL=https://rpc.devnet.taraxa.io/ >> .env
           cat .env
       - name: Compile contracts
         run: yarn compile-contracts
