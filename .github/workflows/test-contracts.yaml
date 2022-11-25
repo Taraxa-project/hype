@@ -33,6 +33,8 @@ jobs:
           echo TARA_MAINNET_URL=https://rpc.mainnet.taraxa.io/ >> .env
           echo TARA_TESTNET_URL=https://rpc.testnet.taraxa.io/ >> .env
           echo TARA_DEVNET_URL=https://rpc.devnet.taraxa.io/ >> .env
+          echo "SETUP ENV CONTENT:"
+          echo "============================="
           cat .env
       - name: Compile contracts
         run: yarn compile-contracts
