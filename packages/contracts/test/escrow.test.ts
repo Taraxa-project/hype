@@ -53,6 +53,11 @@ describe("DynamicEscrow", function () {
       rewarder = dep3;
       owner = signer;
 
+      console.log(`Owner address is : ${signer.address}`);
+      console.log(`Depositor one address is : ${depositor1.address}`);
+      console.log(`Depositor two address is : ${depositor2.address}`);
+      console.log(`Rewarder address is : ${rewarder.address}`);
+
       const BaseERC20 = await ethers.getContractFactory("HypeToken", {
         signer: owner,
       });
@@ -60,10 +65,8 @@ describe("DynamicEscrow", function () {
       erc20 = await BaseERC20.deploy(initBalance);
       const result = await erc20.deployed();
       expect(result).not.to.be.undefined;
-      console.log("base1");
       expect(result.address).not.to.be.undefined;
       const balanceOfOwner = await erc20.balanceOf(owner.address);
-      console.log("base2");
       expect(balanceOfOwner.toString()).to.equal(initBalance.toString());
 
       console.log("Owner address deploys a second sample ERC20");

@@ -5167,12 +5167,7 @@
             }
             r = r.parent;
           }
-          return n
-            ? "_o("
-                .concat(ss(e, t), ",")
-                .concat(t.onceId++, ",")
-                .concat(n, ")")
-            : ss(e, t);
+          return n ? "_o(".concat(ss(e, t), ",").concat(t.onceId++, ",").concat(n, ")") : ss(e, t);
         }
         return us(e, t);
       }

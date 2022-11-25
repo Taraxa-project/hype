@@ -51,6 +51,7 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^5.14.0",
     "concurrently": "^7.0.0",
+    "dotenv": "^16.0.3",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-typescript-prettier": "^5.0.0",
     "eslint-import-resolver-typescript": "^2.5.0",
