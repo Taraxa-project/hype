@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useEffect } from 'react';
 import { AddHypePool } from '../../../models';
-import useAuth from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 
 export interface HypePoolDetailsForm
   extends Pick<
@@ -36,18 +36,11 @@ export const useDetailsFormEffects = (defaultValues: HypePoolDetailsForm) => {
   const {
     handleSubmit,
     register,
-    reset,
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
   } = useForm({
     defaultValues,
     resolver: yupResolver(validationSchema),
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   return {
     register,

@@ -32,15 +32,15 @@ export const useCardDetailsEffects = () => {
     });
   };
 
-  const onActivatePool = () => {
-    console.log('On activate pool');
+  const onRedirect = () => {
+    console.log('Redirect to pool page');
   };
 
   return {
     open,
     ...cardData,
     closeModal,
-    onActivatePool,
+    onRedirect,
     isPrivate,
   };
 };

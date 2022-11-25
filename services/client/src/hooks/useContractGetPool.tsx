@@ -3,7 +3,7 @@ import { hypeAddress } from '../constants';
 import { useContractRead } from 'wagmi';
 import { BigNumber } from 'ethers';
 
-const useContractGetPool = (tokenId: BigNumber) => {
+export const useContractGetPool = (tokenId: BigNumber) => {
   const { abi } = ABIs.contracts.HypePool;
 
   const { data, isError, isLoading } = useContractRead({
@@ -19,5 +19,3 @@ const useContractGetPool = (tokenId: BigNumber) => {
     isLoading,
   };
 };
-
-export default useContractGetPool;

@@ -1,12 +1,12 @@
 import ABIs from '../abi';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import useLoadingModals from './useLoadingModals';
+import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
 import { BigNumber, ethers } from 'ethers';
 import { useEffect } from 'react';
 
-const useContractEscrowDeposit = (
+export const useContractEscrowDeposit = (
   spender: string,
   poolId: BigNumber,
   amount: BigNumber,
@@ -77,5 +77,3 @@ const useContractEscrowDeposit = (
     isLoading,
   };
 };
-
-export default useContractEscrowDeposit;

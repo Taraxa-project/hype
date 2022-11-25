@@ -1,12 +1,12 @@
 import ABIs from '../abi';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import useLoadingModals from './useLoadingModals';
-import useContractEscrowDeposit from './useContractEscrowDeposit';
+import { useLoadingModals } from './useLoadingModals';
+import { useContractEscrowDeposit } from './useContractEscrowDeposit';
 import { NotificationType } from '../utils';
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
-const useContractERC20Approve = (
+export const useContractERC20Approve = (
   spender: string,
   poolId: BigNumber,
   amount: BigNumber,
@@ -34,7 +34,7 @@ const useContractERC20Approve = (
     overrides: {
       gasLimit: BigNumber.from(9999999),
     },
-    enabled: (!!spender || !!poolId || !!amount || !!tokenAddress) && enabled,
+    enabled: !!spender && !!poolId && !!amount && !!tokenAddress && enabled,
   });
 
   const {
@@ -90,5 +90,3 @@ const useContractERC20Approve = (
     isLoading,
   };
 };
-
-export default useContractERC20Approve;

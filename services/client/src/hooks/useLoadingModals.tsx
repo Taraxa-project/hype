@@ -1,7 +1,7 @@
 import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { NotificationType } from '../utils';
 
-const useLoadingModals = () => {
+export const useLoadingModals = () => {
   const dispatchModals = useModalsDispatch();
 
   const showLoading = (text?: string[]) => {
@@ -55,5 +55,3 @@ const useLoadingModals = () => {
     hideNotificationModal,
   };
 };
-
-export default useLoadingModals;

@@ -26,7 +26,7 @@ export const Summary: FC<SummaryProps> = ({
   successCallbackActivatePool,
   isCustomToken,
 }) => {
-  const { fundAndActivate, account, authenticated } = useSummaryEffects(
+  const { fund, activate, isDeposited, account, authenticated } = useSummaryEffects(
     createdPoolIndex,
     successCallbackActivatePool,
     rewards,
@@ -208,14 +208,15 @@ export const Summary: FC<SummaryProps> = ({
         </Label>
       </Box>
       <FormAction>
-        <Button
-          disabled={!authenticated}
-          size="full-width"
-          type="submit"
-          onClick={() => fundAndActivate()}
-        >
-          Fund & Activate the Pool
-        </Button>
+        {!isDeposited ? (
+          <Button disabled={!authenticated} size="full-width" type="submit" onClick={fund}>
+            Fund the Pool
+          </Button>
+        ) : (
+          <Button disabled={!authenticated} size="full-width" type="submit" onClick={activate}>
+            Activate the Pool
+          </Button>
+        )}
       </FormAction>
     </FormColumn>
   );

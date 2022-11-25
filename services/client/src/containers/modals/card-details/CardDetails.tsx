@@ -35,8 +35,7 @@ export const CardDetails = () => {
     active,
     endDate,
     closeModal,
-    onActivatePool,
-    isPrivate,
+    onRedirect,
   } = useCardDetailsEffects();
 
   const titleProps: ModalTitleProps = {
@@ -54,8 +53,8 @@ export const CardDetails = () => {
   };
 
   const poolModalAction: ModalAction = {
-    name: 'Fund & Activate the Pool',
-    onAction: onActivatePool,
+    name: 'Go to Pool page',
+    onAction: onRedirect,
     closeButtonVariant: 'primary',
   };
 
@@ -64,7 +63,7 @@ export const CardDetails = () => {
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={active === false && isPrivate ? poolModalAction : modalAction}
+      modalAction={isConnected === true ? poolModalAction : modalAction}
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
