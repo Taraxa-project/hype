@@ -39,4 +39,4 @@ jobs:
       - name: Compile contracts
         run: yarn compile-contracts
       - name: Run Hardhat tests with coverage
-        run: yarn test-contracts
+        run: yarn test-contracts:coverage
