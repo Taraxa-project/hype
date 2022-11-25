@@ -20,11 +20,20 @@ export interface CardProps extends Partial<HypePool> {
 }
 
 const Card = ({ children, ...props }: CardProps) => {
-  const { title, description, token, cap, active, minReward, endDate, projectName, onClick } =
-    props;
+  const {
+    title,
+    projectName,
+    description,
+    tokenAddress,
+    cap,
+    active,
+    minReward,
+    endDate,
+    onClick,
+  } = props;
   const { chain } = useNetwork();
   const { data: poolTokenInfo } = useToken({
-    address: token as `0x${string}`,
+    address: tokenAddress as `0x${string}`,
     enabled: chain?.name === 'Ethereum',
   });
   const poolToken = poolTokenInfo?.symbol;

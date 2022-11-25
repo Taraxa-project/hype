@@ -1,20 +1,10 @@
-import { ModalAction } from '../../../components/modals/modal-container/ModalContainer';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
-import useContractActivatePool from '../../../hooks/useContractActivatePool';
-import useContractERC20Approve from '../../../hooks/useContractERC20Approve';
-import useContractEscrowDeposit from '../../../hooks/useContractEscrowDeposit';
 
 export const useCardDetailsEffects = () => {
   const {
-    hypeDetails: { open, cardData, cardModalAction },
+    hypeDetails: { open, cardData, isPrivate },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
-
-  const { id, projectName, title, description, token, creator, cap, minReward, active, endDate } =
-    cardData;
-  // const { data, isError, isLoading, write } = useContractERC20Approve(creator, id, cap, token);
-  // const { data, isError, isLoading, write } = useContractEscrowDeposit(creator, id, cap, token);
-  // const { data, isError, isLoading, write } = useContractActivatePool(id);
 
   const closeModal = () => {
     dispatchModals({
@@ -26,10 +16,15 @@ export const useCardDetailsEffects = () => {
           projectName: null,
           title: null,
           description: null,
+          projectDescription: null,
+          word: null,
+          network: null,
           creator: null,
-          token: null,
+          tokenName: null,
+          tokenAddress: null,
           cap: 0,
           minReward: 0,
+          impressionReward: 0,
           active: null,
           endDate: null,
         },
@@ -37,30 +32,15 @@ export const useCardDetailsEffects = () => {
     });
   };
 
-  // const onModalAction = () => {
-  //   // closeModal();
-  //   write();
-  // }
-
-  // const modalAction: ModalAction = {
-  //   name: 'Deposit rewards',
-  //   onAction: onModalAction,
-  //   closeButtonVariant: 'primary',
-  // }
+  const onActivatePool = () => {
+    console.log('On activate pool');
+  };
 
   return {
     open,
-    id,
-    projectName,
-    title,
-    description,
-    token,
-    creator,
-    cap,
-    minReward,
-    active,
-    endDate,
-    cardModalAction,
+    ...cardData,
     closeModal,
+    onActivatePool,
+    isPrivate,
   };
 };

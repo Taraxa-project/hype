@@ -10,7 +10,7 @@ export const ipfsBaseUrl = `${process.env.REACT_APP_IPFS_BASE_URL}`;
 const ipfsHost = `${process.env.REACT_APP_IPFS_HOST}`;
 const ipfsPort = +process.env.REACT_APP_IPFS_PORT;
 const ipfsProtocol = `${process.env.REACT_APP_IPFS_PROTOCOL}`;
-const ipfsUseAuth = !!process.env.REACT_APP_IPFS_USE_AUTH;
+const ipfsUseAuth = `${process.env.REACT_APP_IPFS_USE_AUTH}`;
 
 // export const ipfsClient = create({
 //   host: `ipfs.infura.io`,
@@ -27,7 +27,7 @@ const ipfsOptions: Options = {
   protocol: ipfsProtocol,
 };
 
-if (ipfsSecret && ipfsProject && ipfsUseAuth) {
+if (ipfsSecret && ipfsProject && ipfsUseAuth === 'true') {
   ipfsOptions.headers = {
     authorization,
   };

@@ -16,8 +16,7 @@ export const BlockiesContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 1rem;
-  padding-right: 3rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   padding-left: 0.5rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
@@ -43,7 +42,15 @@ export const CardDescription = styled.div`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.greys[7]};
   width: 100%;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   display: block;
   overflow: hidden;
+`;
+
+export const CardInnerContainer = styled.div`
+  max-height: 445px;
+  overflow: auto;
+  height: 100%;
+  padding-right: 5px;
+  padding-bottom: 20px;
 `;

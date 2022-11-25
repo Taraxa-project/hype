@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import useAuth from '../../hooks/useAuth';
+import { useState } from 'react';
 import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
@@ -8,12 +7,13 @@ import { HypePoolRewardForm } from './RewardForm';
 import { BigNumber } from 'ethers';
 
 export const useAddHypePoolEffects = () => {
+  const dispatchModals = useModalsDispatch();
+
   const defaultContractArgs: WritePoolArgs = {
     uri: null,
     details: null,
     rewards: null,
   };
-  const { authenticated } = useAuth();
   const resetWriteContract = (): void => {
     setWritePoolArgs(defaultContractArgs);
     setContractEnabled(false);
@@ -21,19 +21,16 @@ export const useAddHypePoolEffects = () => {
   const successCallback = (): void => {
     setCurrentStep(3);
   };
+  const successCallbackActivatePool = (): void => {
+    setCurrentStep(4);
+  };
+
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>();
-  useContractCreatePool(
-    writePoolArgs,
-    contractEnabled,
-    resetWriteContract,
-    successCallback,
-    setCreatedPoolIndex,
-  );
-  const dispatchModals = useModalsDispatch();
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(16)); //BigNumber.from(16)
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [ipfsUrl, setIpfsUrl] = useState<string>('QmQSQNCF2wR9DmEnhELEtu9hoBspYxcvEZN5V9BaCMWRrg');
+  const [ipfsUrl, setIpfsUrl] = useState<string>();
+  const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
     // title: '',
     // projectName: '',
@@ -58,21 +55,23 @@ export const useAddHypePoolEffects = () => {
     // cap: null,
     // endDate: null
     network: 843,
-    token: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
-    tokenAddress: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
+    token: 'TARA',
+    tokenAddress: '0x0000000000000000000000000000000000000000',
     tokenName: 'TARA',
-    minReward: 10,
-    impressionReward: 20,
-    cap: 100,
+    tokenDecimals: 18,
+    minReward: 1,
+    impressionReward: 2,
+    cap: 10,
     endDate: new Date('12-01-2022'),
   });
 
-  useEffect(() => {
-    if (createdPoolIndex) {
-      console.log('createdPoolIndex: ', createdPoolIndex);
-      console.log('formmatedPoolIndex: ', createdPoolIndex.toString());
-    }
-  }, [createdPoolIndex]);
+  useContractCreatePool(
+    writePoolArgs,
+    contractEnabled,
+    resetWriteContract,
+    successCallback,
+    setCreatedPoolIndex,
+  );
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const url = await uploadToIpfs(data);
@@ -83,10 +82,6 @@ export const useAddHypePoolEffects = () => {
     if (url) {
       setCurrentStep(2);
     }
-  };
-
-  const fundAndActivate = () => {
-    console.log('Fund & Activate');
   };
 
   const uploadToIpfs = async (data: HypePoolDetailsForm) => {
@@ -127,21 +122,25 @@ export const useAddHypePoolEffects = () => {
     }
   };
 
-  const onFinalize = () => {
-    console.log('Finalize');
-    console.log('Details: ', poolDetails);
-    console.log('Rewards: ', poolReward);
-  };
-
   const createPool = (details: HypePoolDetailsForm, rewards: HypePoolRewardForm) => {
     if (!details || !rewards || !ipfsUrl) {
       return;
     }
+    const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
+    const minReward = BigNumber.from(rewards.minReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
+    const impressionReward = BigNumber.from(rewards.impressionReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
     setWritePoolArgs({
       uri: ipfsUrl,
       details,
       rewards: {
         ...rewards,
+        cap,
+        minReward,
+        impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
         endDate: rewards.endDate?.getTime(),
@@ -168,16 +167,23 @@ export const useAddHypePoolEffects = () => {
     setCurrentStep(1);
   };
 
+  const onFinalize = () => {
+    console.log('Finalize');
+    console.log('Details: ', poolDetails);
+    console.log('Rewards: ', poolReward);
+  };
+
   return {
-    authenticated,
     onFinalize,
     currentStep,
-    setCurrentStep,
     onSubmitDetails,
     onSubmitRewards,
     onBackFromRewards,
     poolDetails,
     poolReward,
-    fundAndActivate,
+    successCallbackActivatePool,
+    createdPoolIndex,
+    isCustomToken,
+    setIsCustomToken,
   };
 };

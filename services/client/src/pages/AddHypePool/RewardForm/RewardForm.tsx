@@ -22,9 +22,15 @@ export interface RewardFormProps {
   defaultValues: HypePoolRewardForm;
   onSubmit: (data: HypePoolRewardForm) => void;
   onBack: () => void;
+  setIsCustomToken: (val: boolean) => void;
 }
 
-export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps) => {
+export const RewardForm = ({
+  defaultValues,
+  onSubmit,
+  onBack,
+  setIsCustomToken,
+}: RewardFormProps) => {
   const {
     register,
     handleSubmit,
@@ -39,7 +45,7 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
     debouncedResults,
     isEthNetwork,
     getValues,
-  } = useRewardFormEffects(defaultValues);
+  } = useRewardFormEffects(defaultValues, setIsCustomToken);
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -96,12 +102,12 @@ export const RewardForm = ({ defaultValues, onSubmit, onBack }: RewardFormProps)
             {tokensOptions.map((option) => (
               <option
                 key={`${option.value}-${option.name}`}
-                value={option.value}
+                value={option.name}
                 disabled={
                   // if ETH network block only TARA
-                  (option.value === tokensOptions[1].value && isEthNetwork) ||
+                  (option.name === tokensOptions[1].name && isEthNetwork) ||
                   // if not ETH network block everything else except TARA
-                  (option.value !== tokensOptions[1].value && !isEthNetwork)
+                  (option.name !== tokensOptions[1].name && !isEthNetwork)
                 }
               >
                 {option.name}

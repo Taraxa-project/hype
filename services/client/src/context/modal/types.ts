@@ -7,6 +7,7 @@ export type TCardDetails = {
   open: boolean;
   cardData: Partial<HypePool>;
   cardModalAction?: ModalAction;
+  isPrivate?: boolean;
 };
 
 export type TLoading = {

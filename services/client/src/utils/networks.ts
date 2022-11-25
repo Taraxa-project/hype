@@ -58,3 +58,12 @@ export const networks: Networks = {
     },
   },
 };
+
+export const findInNetwork = (networkId: number): boolean => {
+  for (const [key] of Object.entries(networks)) {
+    if (Number(networkId) === Number(key)) {
+      return true;
+    }
+  }
+  return false;
+};

@@ -16,9 +16,9 @@ export interface WritePoolDetailsArgs {
 export interface WritePoolRewardsArgs {
   network: number;
   tokenAddress: string;
-  minReward: number;
-  impressionReward: number;
-  cap: number;
+  minReward: BigNumber;
+  impressionReward: BigNumber;
+  cap: BigNumber;
   endDate: number;
 }
 
@@ -57,42 +57,38 @@ const useContractCreatePool = (
   } = useContractWrite({
     ...config,
     onMutate() {
-      console.log('On mutate');
       showLoading();
     },
     onSuccess(data: any) {
-      console.log('Successfully called', data);
+      console.log('onSuccess', data);
     },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('useContractWrite Settled', { data, error });
+      console.log('onSettled', { data, error });
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: poolData?.hash,
-    // wait: poolData?.wait,
     onSuccess(transactionData) {
-      console.log('Successfully minted Hype Pool mintedPool', poolData);
-      console.log('Successfully minted Hype Pool transactionData', transactionData);
+      console.log('onSuccess', transactionData);
       hideLoadingModal();
-      // showSuccessModal();
       successCallback();
       resetWriteContract();
     },
     onError(error: any) {
-      console.log('Error', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('useWaitForTransaction Settled', { data, error });
+      console.log('onSettled', { data, error });
       const hypeI = new ethers.utils.Interface(abi);
       const poolCreatedEvent = hypeI.parseLog(
         data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
@@ -115,8 +111,6 @@ const useContractCreatePool = (
   return {
     isError,
     isLoading,
-    write,
-    waitForTransaction,
   };
 };
 
