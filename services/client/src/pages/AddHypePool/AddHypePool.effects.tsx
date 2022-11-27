@@ -31,6 +31,7 @@ export const useAddHypePoolEffects = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
+  const [poolTransaction, setPoolTransaction] = useState<string>();
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
     title: '',
     projectName: '',
@@ -72,6 +73,7 @@ export const useAddHypePoolEffects = () => {
     resetWriteContract,
     successCallback,
     setCreatedPoolIndex,
+    setPoolTransaction,
   );
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
@@ -167,14 +169,7 @@ export const useAddHypePoolEffects = () => {
     setCurrentStep(1);
   };
 
-  const onFinalize = () => {
-    console.log('Finalize');
-    console.log('Details: ', poolDetails);
-    console.log('Rewards: ', poolReward);
-  };
-
   return {
-    onFinalize,
     currentStep,
     onSubmitDetails,
     onSubmitRewards,
@@ -185,5 +180,6 @@ export const useAddHypePoolEffects = () => {
     createdPoolIndex,
     isCustomToken,
     setIsCustomToken,
+    poolTransaction,
   };
 };

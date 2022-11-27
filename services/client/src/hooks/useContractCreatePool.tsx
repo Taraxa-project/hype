@@ -34,6 +34,7 @@ export const useContractCreatePool = (
   resetWriteContract: () => void,
   successCallback: () => void,
   setCreatedPoolIndex: (index: BigNumber) => void,
+  setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
@@ -49,12 +50,7 @@ export const useContractCreatePool = (
     enabled,
   });
 
-  const {
-    data: poolData,
-    isError,
-    isLoading,
-    write,
-  } = useContractWrite({
+  const { data: poolData, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
       showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
@@ -82,9 +78,12 @@ export const useContractCreatePool = (
       resetWriteContract();
     },
     onSettled(data, error) {
+      if (data.transactionHash) {
+        setPoolTransaction(data.transactionHash);
+      }
       const hypeI = new ethers.utils.Interface(abi);
       const poolCreatedEvent = hypeI.parseLog(
-        data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
+        data.logs.filter(event => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
       );
       if (poolCreatedEvent && poolCreatedEvent.args[0]) {
         setCreatedPoolIndex(poolCreatedEvent.args[0]);

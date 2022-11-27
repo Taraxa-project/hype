@@ -1,4 +1,3 @@
-import Button from '../../components/button/Button';
 import { useAddHypePoolEffects } from './AddHypePool.effects';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -7,10 +6,11 @@ import { HowItWorks } from '../../components/how-it-works/HowItWorks';
 import { DetailsForm } from './DetailsForm';
 import { RewardForm } from './RewardForm';
 import { Summary } from './Summary';
+import { Completed } from './Completed';
+import { BigNumber } from 'ethers';
 
 export const AddHypePool = () => {
   const {
-    onFinalize,
     currentStep,
     onSubmitDetails,
     onSubmitRewards,
@@ -21,6 +21,7 @@ export const AddHypePool = () => {
     createdPoolIndex,
     isCustomToken,
     setIsCustomToken,
+    poolTransaction,
   } = useAddHypePoolEffects();
 
   return (
@@ -72,13 +73,20 @@ export const AddHypePool = () => {
           <HowItWorks step={currentStep} />
         </StepContent>
       )}
-      {currentStep === 4 && (
-        <>
-          <Button size="regular" onClick={() => onFinalize()}>
-            Finalize
-          </Button>
-        </>
-      )}
+      {currentStep === 4 &&
+        createdPoolIndex &&
+        poolTransaction &&
+        poolDetails?.title &&
+        poolReward?.network && (
+          <StepContent>
+            <Completed
+              createdPoolIndex={createdPoolIndex}
+              transaction={poolTransaction}
+              poolName={poolDetails?.title}
+              network={poolReward?.network}
+            />
+          </StepContent>
+        )}
     </Wrapper>
   );
 };

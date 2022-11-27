@@ -8,8 +8,8 @@ import { useSummaryEffects } from './Summary.effects';
 import { BigNumber } from 'ethers';
 import Button from '../../../components/button/Button';
 import Box from '../../../components/styles/Box';
-import { TitleText } from '../../Home/Home.styled';
 import { FormColumn, Label, FormAction } from '../AddHypePool.styled';
+import TitleText from '../../../components/titletext/TitleText';
 
 export interface SummaryProps {
   createdPoolIndex: BigNumber;
