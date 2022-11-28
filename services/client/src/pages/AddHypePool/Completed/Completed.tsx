@@ -40,20 +40,24 @@ export const Completed: FC<CompletedProps> = ({
         {network === networkOptions[0].value ? (
           <Box display="flex">
             <Text fontSize="1rem" fontWeight="500" color="greys.7" pr={2}>
-              View your transaction on Etherscan.
+              View your transaction on
+              <Link
+                target="_blank"
+                text={` Etherscan🌐.`}
+                href={`https://etherscan.io/tx/${transaction}`}
+              />
             </Text>
-            <Link target={'_blank'} text="🌐" href={`https://etherscan.io/tx/${transaction}`} />
           </Box>
         ) : (
           <Box display="flex">
             <Text fontSize="1rem" fontWeight="500" color="greys.7" pr={2}>
-              View your transaction on the Taraxa Network Explorer.
+              View your transaction on the
+              <Link
+                target="_blank"
+                text={` Taraxa Network Explorer🌐.`}
+                href={`https://explorer.devnet.taraxa.io/tx/${transaction}`}
+              />
             </Text>
-            <Link
-              target={'_blank'}
-              text="🌐"
-              href={`https://explorer.devnet.taraxa.io/tx/${transaction}`}
-            />
           </Box>
         )}
       </Box>
@@ -81,7 +85,7 @@ export const Completed: FC<CompletedProps> = ({
           hashtags={['Hype App', `${poolName}`]}
         >
           <Button size="regular" type="button" variant="primary">
-            Telegram
+            Twitter
           </Button>
         </TwitterShareButton>
         <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
