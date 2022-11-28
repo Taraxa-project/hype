@@ -1,11 +1,14 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import useContractActivatePool from '../../../hooks/useContractActivatePool';
-import useAuth from '../../../hooks/useAuth';
 import { useAccount } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
-import useContractERC20Approve from '../../../hooks/useContractERC20Approve';
-import useContractEscrowDeposit from '../../../hooks/useContractEscrowDeposit';
+import {
+  useAuth,
+  useContractERC20Approve,
+  useContractActivatePool,
+  useContractEscrowDeposit,
+  useContractEscrowGetDepositsOf,
+} from '../../../hooks';
 
 export const useSummaryEffects = (
   createdPoolIndex: BigNumber,
@@ -18,11 +21,14 @@ export const useSummaryEffects = (
   const [enableActivate, setEnableActivate] = useState<boolean>(false);
   const [enableApprove, setEnableApprove] = useState<boolean>(false);
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
+  const [isDeposited, setIsDeposited] = useState<boolean>(false);
+  const [hasDeposited, setHasDeposited] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
+  const { data: depositsOf } = useContractEscrowGetDepositsOf(createdPoolIndex, hasDeposited);
 
   const successCallbackDeposit = (): void => {
-    setEnableActivate(true);
+    setHasDeposited(true);
   };
   useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool);
   useContractERC20Approve(
@@ -43,14 +49,24 @@ export const useSummaryEffects = (
   );
 
   useEffect(() => {
+    if (depositsOf && amount) {
+      if (
+        depositsOf?.weiAmount?.toString() === amount.toString() &&
+        depositsOf?.poolId?.toString() === createdPoolIndex.toString()
+      ) {
+        setIsDeposited(true);
+      }
+    }
+  }, [depositsOf, amount, createdPoolIndex]);
+
+  useEffect(() => {
     if (rewards.tokenDecimals) {
       const amount = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
       setAmount(amount);
     }
   }, [rewards]);
 
-  const fundAndActivate = () => {
-    console.log('Fund & Activate');
+  const fund = () => {
     if (isCustomToken) {
       setEnableApprove(true);
     } else {
@@ -58,9 +74,17 @@ export const useSummaryEffects = (
     }
   };
 
+  const activate = () => {
+    if (isDeposited) {
+      setEnableActivate(true);
+    }
+  };
+
   return {
-    fundAndActivate,
+    fund,
+    activate,
     account,
     authenticated,
+    isDeposited,
   };
 };

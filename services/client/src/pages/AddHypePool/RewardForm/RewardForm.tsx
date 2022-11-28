@@ -13,6 +13,7 @@ import {
   FormAction,
   FormElement,
   FormSelect,
+  InfoCard,
 } from '../AddHypePool.styled';
 import { Controller } from 'react-hook-form';
 import Box from '../../../components/styles/Box';
@@ -263,6 +264,12 @@ export const RewardForm = ({
             </Text>
           )}
         </FormElement>
+
+        <InfoCard>
+          Once a pool is created, it is committed on-chain. This means the funds cannot be
+          withdrawn, and the parameters of the pool cannot be altered. This is to ensure that Hype
+          pools are transparent and fair to your community.
+        </InfoCard>
 
         {authenticated ? (
           <div>

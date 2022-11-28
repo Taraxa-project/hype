@@ -4,7 +4,7 @@ import { getAuthenticationToken, NotificationType } from '../utils';
 
 const isUnauthorized = (response: AxiosResponse) => response?.status === 401;
 
-const useAxiosInterceptors = (logout: () => void) => {
+export const useAxiosInterceptors = (logout: () => void) => {
   const dispatchModals = useModalsDispatch();
   axios.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
     config.headers.authorization = `Bearer ${getAuthenticationToken()}`;
@@ -33,5 +33,3 @@ const useAxiosInterceptors = (logout: () => void) => {
     },
   );
 };
-
-export default useAxiosInterceptors;

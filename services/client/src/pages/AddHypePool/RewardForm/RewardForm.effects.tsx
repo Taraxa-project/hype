@@ -3,11 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { AddHypePool } from '../../../models';
-import useAuth from '../../../hooks/useAuth';
-import { useSwitchNetwork } from '../../../hooks/useSwitchNetwork';
+import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
-import { ethToken, taraToken, zeroAddress } from '../../../utils';
+import { ethToken, networkOptions, taraToken, tokensOptions, zeroAddress } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<
@@ -18,7 +17,7 @@ export interface HypePoolRewardForm
   tokenName: string;
   tokenDecimals: number;
 
-  // Some examples:
+  // Some examples of custom ERC20 Tokens:
   // SHIBA INU: 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE
   // FoxCoin: 0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d
   // ApeCoin: 0x4d224452801ACEd8B2F0aebE155379bb5D594381
@@ -40,46 +39,8 @@ export const useRewardFormEffects = (
   });
   const { changeNetwork } = useSwitchNetwork();
 
-  const networkOptions = [
-    {
-      name: 'Ethereum Network',
-      value: 1,
-    },
-    {
-      name: 'Taraxa Network',
-      value: 841,
-    },
-    {
-      name: 'Taraxa Devnet',
-      value: 843,
-    },
-    {
-      name: 'Taraxa Testnet',
-      value: 842,
-    },
-  ];
-
-  const tokensOptions = [
-    {
-      name: ethToken,
-      value: zeroAddress,
-      decimals: 18,
-    },
-    {
-      name: taraToken,
-      value: zeroAddress,
-      decimals: 18,
-    },
-    {
-      name: 'Other',
-      value: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-      decimals: 18,
-    },
-  ];
-
   useEffect(() => {
     if (ERC20tokenInfo) {
-      console.log('Token info: ', ERC20tokenInfo);
       setValue('tokenAddress', ERC20tokenInfo.address || '', {
         shouldValidate: true,
       });
@@ -91,6 +52,7 @@ export const useRewardFormEffects = (
       });
       setIsCustomToken(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ERC20tokenInfo]);
 
   const validationSchema = yup
@@ -140,17 +102,11 @@ export const useRewardFormEffects = (
     getValues,
     reset,
     control,
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
   } = useForm({
     defaultValues,
     resolver: yupResolver(validationSchema),
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   const onCancel = () => {
     reset();
@@ -192,7 +148,6 @@ export const useRewardFormEffects = (
       setValue('tokenAddress', currentTokenInfo?.value);
       setValue('tokenName', currentTokenInfo?.name);
       setValue('tokenDecimals', currentTokenInfo?.decimals);
-      // Should add the values back to tokenAddress and tokenName?
       setShowToken(false);
       setIsCustomToken(false);
     }

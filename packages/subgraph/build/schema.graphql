@@ -24,11 +24,11 @@ type Rewards @entity(immutable: true) {
   id: String!
 }
 
-type HypePool @entity(immutable: true) {
+type HypePool @entity(immutable: false) {
   id: String!
   creator: Bytes!
   uri: String!
-  active: Boolean!
+  active: Boolean
   title: String
   projectName: String
   tokenName: String

@@ -1,12 +1,12 @@
 import ABIs from '../abi';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import useLoadingModals from './useLoadingModals';
-import useContractEscrowDeposit from './useContractEscrowDeposit';
+import { useLoadingModals } from './useLoadingModals';
+import { useContractEscrowDeposit } from './useContractEscrowDeposit';
 import { NotificationType } from '../utils';
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
-const useContractERC20Approve = (
+export const useContractERC20Approve = (
   spender: string,
   poolId: BigNumber,
   amount: BigNumber,
@@ -34,7 +34,7 @@ const useContractERC20Approve = (
     overrides: {
       gasLimit: BigNumber.from(9999999),
     },
-    enabled: (!!spender || !!poolId || !!amount || !!tokenAddress) && enabled,
+    enabled: !!spender && !!poolId && !!amount && !!tokenAddress && enabled,
   });
 
   const {
@@ -50,9 +50,6 @@ const useContractERC20Approve = (
         'You need to approve in order to deposit your funds',
       ]);
     },
-    onSuccess(data: any) {
-      console.log('onSuccess', data);
-    },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
@@ -64,15 +61,13 @@ const useContractERC20Approve = (
     hash: data?.hash,
     onSuccess(transactionData) {
       hideLoadingModal();
-      console.log('onSuccess', transactionData);
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
-    onSettled(data, error) {
-      console.log('onSettled', { data, error });
+    onSettled() {
       hideLoadingModal();
       setEnableDeposit(true);
     },
@@ -90,5 +85,3 @@ const useContractERC20Approve = (
     isLoading,
   };
 };
-
-export default useContractERC20Approve;

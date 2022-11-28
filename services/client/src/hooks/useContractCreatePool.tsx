@@ -2,7 +2,7 @@ import ABIs from '../abi';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { useEffect } from 'react';
-import useLoadingModals from './useLoadingModals';
+import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
 import { BigNumber, ethers } from 'ethers';
 
@@ -28,12 +28,13 @@ export interface WritePoolArgs {
   rewards: WritePoolRewardsArgs;
 }
 
-const useContractCreatePool = (
+export const useContractCreatePool = (
   args: WritePoolArgs,
   enabled: boolean,
   resetWriteContract: () => void,
   successCallback: () => void,
   setCreatedPoolIndex: (index: BigNumber) => void,
+  setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
@@ -49,18 +50,10 @@ const useContractCreatePool = (
     enabled,
   });
 
-  const {
-    data: poolData,
-    isError,
-    isLoading,
-    write,
-  } = useContractWrite({
+  const { data: poolData, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading();
-    },
-    onSuccess(data: any) {
-      console.log('onSuccess', data);
+      showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
     },
     onError(error: any) {
       console.log('onError: ', error);
@@ -68,15 +61,12 @@ const useContractCreatePool = (
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
-    onSettled(data, error) {
-      console.log('onSettled', { data, error });
-    },
   });
 
   useWaitForTransaction({
     hash: poolData?.hash,
     onSuccess(transactionData) {
-      console.log('onSuccess', transactionData);
+      // console.log('onSuccess', transactionData);
       hideLoadingModal();
       successCallback();
       resetWriteContract();
@@ -88,13 +78,14 @@ const useContractCreatePool = (
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('onSettled', { data, error });
+      if (data.transactionHash) {
+        setPoolTransaction(data.transactionHash);
+      }
       const hypeI = new ethers.utils.Interface(abi);
       const poolCreatedEvent = hypeI.parseLog(
-        data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
+        data.logs.filter(event => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
       );
       if (poolCreatedEvent && poolCreatedEvent.args[0]) {
-        // const poolIndex = BigNumber.from(poolCreatedEvent.args[0]);
         setCreatedPoolIndex(poolCreatedEvent.args[0]);
       }
       hideLoadingModal();
@@ -113,5 +104,3 @@ const useContractCreatePool = (
     isLoading,
   };
 };
-
-export default useContractCreatePool;

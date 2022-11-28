@@ -3,17 +3,32 @@ import { escrowAddress } from '../constants';
 import { useAccount, useContractRead } from 'wagmi';
 import { BigNumber } from 'ethers';
 
-const useContractEscrowGetDepositsOff = (poolId: BigNumber) => {
+export const useContractEscrowGetDepositsOf = (poolId: BigNumber, enabled: boolean) => {
   const { address: payee } = useAccount();
   const { abi } = ABIs.contracts.DynamicEscrow;
-
   const { data, isError, isLoading } = useContractRead({
     address: escrowAddress,
     abi,
     functionName: 'depositsOf',
     args: [payee, poolId],
-    enabled: !payee || !!poolId,
-  });
+    enabled: (!payee || !!poolId) && enabled,
+  }) as {
+    data?: {
+      poolId: BigNumber;
+      weiAmount: BigNumber;
+      tokenAddress: string;
+    };
+    error?: Error;
+    isIdle: boolean;
+    isLoading: boolean;
+    isFetching: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    isFetched: boolean;
+    isFetchedAfterMount: boolean;
+    isRefetching: boolean;
+    status: 'idle' | 'error' | 'loading' | 'success';
+  };
 
   return {
     data,
@@ -21,5 +36,3 @@ const useContractEscrowGetDepositsOff = (poolId: BigNumber) => {
     isLoading,
   };
 };
-
-export default useContractEscrowGetDepositsOff;
