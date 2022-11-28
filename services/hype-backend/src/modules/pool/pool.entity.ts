@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  Column,
+  OneToMany,
+} from 'typeorm';
 import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
 import { IPool } from '../../models';
+import { HypeReward } from '../reward/reward.entity';
 
 export const tableName = 'hype_pool';
 
@@ -75,4 +82,9 @@ export class HypePool extends BaseEntity implements IPool {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: string;
+
+  @OneToMany(() => HypeReward, (reward) => reward.pool, {
+    cascade: true,
+  })
+  rewards: HypeReward[];
 }

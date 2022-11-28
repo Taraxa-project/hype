@@ -88,6 +88,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(rewards.cap > 0, "Invalid pool cap");
         require(rewards.endDate > block.timestamp, "End date must be after current block time");
         require(rewards.minReward > 0, "Invalid minimal hype reward");
+        require(rewards.impressionReward > 0, "Invalid impression hype reward");
         uint256 _counter = _poolIds.current();
         _setPool(_counter, uri, details, rewards);
         _setPoolURI(_counter, uri);
@@ -114,6 +115,19 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         _pool.active = true;
         _pools[id] = _pool;
         emit PoolActivated(id, msg.sender);
+    }
+
+    /**
+     * @dev Pool deactivator method. Must be triggered b when someone withdraws the pool funds from the escrow contract.
+     * @param id The id of the pool to activate.
+     */
+    function deactivatePool(uint256 id) external whenNotPaused onlyOwner {
+        IHypePool.HypePool memory _pool = _pools[id];
+        require(_pool.rewards.minReward != 0, "Pool doesn't exist");
+        require(_pool.active == true, "Pool is already inactive");
+        _pool.active = false;
+        _pools[id] = _pool;
+        emit PoolDeactivated(id, msg.sender);
     }
 
     function pause() public onlyOwner {
