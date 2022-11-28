@@ -5,13 +5,7 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
-import {
-  IsString,
-  IsNotEmpty,
-  IsNumber,
-  IsDate,
-  IsBoolean,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 import { IPool, IReward } from '../../models';
 import { HypePool } from '../pool/pool.entity';
 

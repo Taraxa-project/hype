@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   InternalServerErrorException,
   Param,
@@ -19,31 +20,52 @@ import { BigNumber } from 'ethers';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from './reward.entity';
 import { RewardService } from './reward.service';
+import { RewardStateDto } from './rewardState.dto';
 
 @ApiTags('rewards')
 @Controller('rewards')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
 
-  // @Post()
-  // @ApiResponse({
-  //   status: HttpStatus.OK,
-  //   type: RewardDto,
-  //   description: 'Returns a newly inserted pool reward',
-  // })
-  // @ApiUnauthorizedResponse({ description: 'You need a valid token' })
-  // @ApiNotFoundResponse({ description: 'Claim not found' })
-  // public async accrueReward(
-  //   @Body() rewardToAccrue: RewardDto,
-  // ): Promise<HypeReward> {
-  //   try {
-  //     return await this.rewardService.accrueRewards(rewardToAccrue);
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(
-  //       'Something went wrong. Please try again!',
-  //     );
-  //   }
-  // }
+  @Get()
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [RewardDto],
+    description: 'Returns a newly inserted pool reward',
+  })
+  async getAllRewards() {
+    return await this.rewardService.getAllRewards();
+  }
+
+  @Get(':address')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [RewardDto],
+    description: 'Returns a newly inserted pool reward',
+  })
+  async getAllRewardsForAddress(address: string): Promise<RewardStateDto> {
+    return await this.rewardService.getRewardSummaryForAddress(address);
+  }
+
+  @Post()
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: RewardDto,
+    description: 'Returns a newly inserted pool reward',
+  })
+  @ApiUnauthorizedResponse({ description: 'You need a valid token' })
+  @ApiNotFoundResponse({ description: 'Claim not found' })
+  public async accrueReward(
+    @Body() rewardToAccrue: RewardDto,
+  ): Promise<HypeReward> {
+    try {
+      return await this.rewardService.accrueRewards(rewardToAccrue);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Something went wrong. Please try again!',
+      );
+    }
+  }
 
   @Patch(':address')
   @ApiCreatedResponse({ description: 'Claim details' })

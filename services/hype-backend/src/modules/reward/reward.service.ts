@@ -8,6 +8,7 @@ import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from './reward.entity';
+import { RewardStateDto } from './rewardState.dto';
 
 @Injectable()
 export class RewardService {
@@ -20,6 +21,29 @@ export class RewardService {
     private readonly rewardRepository: Repository<HypeReward>,
   ) {
     this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
+  }
+
+  async getAllRewards() {
+    return await this.rewardRepository.find();
+  }
+
+  async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
+    const rewardsOfAddress = await this.rewardRepository.findBy({
+      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+        address,
+      }),
+    });
+    const unclaimed = rewardsOfAddress.filter((r) => !r.claimed);
+    const claimed = rewardsOfAddress.filter((r) => r.claimed);
+    const totalUnclaimed = unclaimed.reduce(
+      (total, unc) => BigNumber.from(total).add(BigNumber.from(unc)),
+      BigNumber.from('0'),
+    );
+    return {
+      totalUnclaimed,
+      claimed,
+      unclaimed,
+    };
   }
 
   async accrueRewards(rewardDto: RewardDto): Promise<HypeReward> {
@@ -42,7 +66,7 @@ export class RewardService {
     if (rewardsOfAddress.length < 1)
       throw new NotFoundException(
         HypeReward,
-        `There are no rewards for the address ${address}`,
+        `There are no unclaimed rewards for the address ${address}`,
       );
     const biggestId = rewardsOfAddress
       .map((r) => r.id)
