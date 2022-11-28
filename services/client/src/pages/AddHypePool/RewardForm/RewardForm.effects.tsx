@@ -3,83 +3,57 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { AddHypePool } from '../../../models';
-import useAuth from '../../../hooks/useAuth';
-import { useSwitchNetwork } from '../../../hooks/useSwitchNetwork';
+import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
+import { ethToken, networkOptions, taraToken, tokensOptions, zeroAddress } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<
     AddHypePool,
     'network' | 'token' | 'minReward' | 'impressionReward' | 'cap' | 'endDate'
   > {
-  tokenAddress?: string;
-  tokenName?: string;
+  tokenAddress: string;
+  tokenName: string;
+  tokenDecimals: number;
 
-  // Some examples:
+  // Some examples of custom ERC20 Tokens:
   // SHIBA INU: 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE
   // FoxCoin: 0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d
   // ApeCoin: 0x4d224452801ACEd8B2F0aebE155379bb5D594381
   // ENS: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72
 }
 
-export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
+export const useRewardFormEffects = (
+  defaultValues: HypePoolRewardForm,
+  setIsCustomToken: (val: boolean) => void,
+) => {
   const { authenticated } = useAuth();
   const [showToken, setShowToken] = useState<boolean>(false);
   const [tokenAddress, setTokenAddress] = useState<`0x${string}`>(null);
   const { chain } = useNetwork();
   const isEthNetwork = chain?.name === 'Ethereum';
-  const { data: ERC0tokenInfo } = useToken({
+  const { data: ERC20tokenInfo } = useToken({
     address: tokenAddress,
     enabled: !!tokenAddress && isEthNetwork,
   });
   const { changeNetwork } = useSwitchNetwork();
 
-  const networkOptions = [
-    {
-      name: 'Ethereum Network',
-      value: 1,
-    },
-    {
-      name: 'Taraxa Network',
-      value: 841,
-    },
-    {
-      name: 'Taraxa Devnet',
-      value: 843,
-    },
-    {
-      name: 'Taraxa Testnet',
-      value: 842,
-    },
-  ];
-
-  const tokensOptions = [
-    {
-      name: 'ETH',
-      value: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-    },
-    {
-      name: 'TARA',
-      value: '0xF001937650bb4f62b57521824B2c20f5b91bEa05',
-    },
-    {
-      name: 'Other',
-      value: '0x0000000000000000000000000000000000000000',
-    },
-  ];
-
   useEffect(() => {
-    if (ERC0tokenInfo) {
-      console.log('Token info: ', ERC0tokenInfo);
-      setValue('tokenAddress', ERC0tokenInfo.address || '', {
+    if (ERC20tokenInfo) {
+      setValue('tokenAddress', ERC20tokenInfo.address || '', {
         shouldValidate: true,
       });
-      setValue('tokenName', ERC0tokenInfo.name || '', {
+      setValue('tokenName', ERC20tokenInfo.name || '', {
         shouldValidate: true,
       });
+      setValue('tokenDecimals', ERC20tokenInfo.decimals || 18, {
+        shouldValidate: true,
+      });
+      setIsCustomToken(true);
     }
-  }, [ERC0tokenInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ERC20tokenInfo]);
 
   const validationSchema = yup
     .object({
@@ -87,9 +61,6 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
       token: yup
         .string()
         .typeError('Address is required and must be a wallet address!')
-        .min(42)
-        .max(42)
-        .notOneOf(['0x0'])
         .required('Address is required')
         .label('Rewards are in this token'),
       tokenAddress: yup
@@ -100,6 +71,7 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
         .notOneOf(['0x0'])
         .label('Custom Token address'),
       tokenName: yup.string().required('Custom token name is required!').label('Custom Token name'),
+      tokenDecimals: yup.number().required(),
       cap: yup
         .number()
         .typeError('Pool cap is required')
@@ -130,17 +102,11 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     getValues,
     reset,
     control,
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
   } = useForm({
     defaultValues,
     resolver: yupResolver(validationSchema),
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   const onCancel = () => {
     reset();
@@ -150,20 +116,24 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     const network = event.target.value;
     changeNetwork(+network);
     if (+network === networkOptions[0].value) {
-      setValue('token', tokensOptions[0].value, {
+      setValue('token', tokensOptions[0].name, {
         shouldValidate: true,
       });
+      setValue('tokenAddress', tokensOptions[0].value);
       setValue('tokenName', tokensOptions[0].name);
+      setValue('tokenDecimals', tokensOptions[0].decimals);
     }
     if (
       +network === networkOptions[1].value ||
       +network === networkOptions[2].value ||
       +network === networkOptions[3].value
     ) {
-      setValue('token', tokensOptions[1].value, {
+      setValue('token', tokensOptions[1].name, {
         shouldValidate: true,
       });
+      setValue('tokenAddress', tokensOptions[1].value);
       setValue('tokenName', tokensOptions[1].name);
+      setValue('tokenDecimals', tokensOptions[1].decimals);
     }
   };
 
@@ -171,14 +141,15 @@ export const useRewardFormEffects = (defaultValues: HypePoolRewardForm) => {
     const token = event.target.value;
     setValue('tokenAddress', '');
     setValue('tokenName', '');
-    if (token === tokensOptions[2].value) {
+    if (token === tokensOptions[2].name) {
       setShowToken(true);
     } else {
-      const currentTokenInfo = tokensOptions.find((option) => option.value === token);
+      const currentTokenInfo = tokensOptions.find((option) => option.name === token);
       setValue('tokenAddress', currentTokenInfo?.value);
       setValue('tokenName', currentTokenInfo?.name);
-      // Should add the values back to tokenAddress and tokenName?
+      setValue('tokenDecimals', currentTokenInfo?.decimals);
       setShowToken(false);
+      setIsCustomToken(false);
     }
   };
 

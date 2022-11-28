@@ -7,7 +7,8 @@ typechain
 
 #Hardhat files
 cache
-*.dbg.json
+artifacts/**/*.dbg.json
 artifacts/@openzeppelin/
 artifacts/build-info/
 artifacts/hardhat/
+

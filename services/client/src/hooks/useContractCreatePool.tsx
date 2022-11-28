@@ -1,52 +1,52 @@
 import ABIs from '../abi';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
-import { ModalsActionsEnum, useModalsDispatch } from '../context';
 import { useEffect } from 'react';
-import useLoadingModals from './useLoadingModals';
+import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
+import { BigNumber, ethers } from 'ethers';
 
-export interface WritePoolArgs {
-  uri: string;
+export interface WritePoolDetailsArgs {
+  title: string;
   projectName: string;
   tokenName?: string;
-  title: string;
-  projectDescription: string;
-  description: string;
-  poolCap: number;
   word: string;
-  network: string;
+}
+
+export interface WritePoolRewardsArgs {
+  network: number;
   tokenAddress: string;
-  minHypeReward: number;
-  impressionReward: number;
+  minReward: BigNumber;
+  impressionReward: BigNumber;
+  cap: BigNumber;
   endDate: number;
 }
 
-const useContractCreatePool = (
+export interface WritePoolArgs {
+  uri: string;
+  details: WritePoolDetailsArgs;
+  rewards: WritePoolRewardsArgs;
+}
+
+export const useContractCreatePool = (
   args: WritePoolArgs,
   enabled: boolean,
   resetWriteContract: () => void,
+  successCallback: () => void,
+  setCreatedPoolIndex: (index: BigNumber) => void,
+  setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
-  const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
     address: hypeAddress,
     abi,
     functionName: 'createPool',
-    args: [
-      args.uri,
-      args.projectName,
-      args.title,
-      args.poolCap,
-      args.tokenAddress,
-      args.minHypeReward,
-      args.endDate,
-    ],
-    // overrides: {
-    //   gasLimit: 9999999,
-    // },
+    args: [args.uri, args.details, args.rewards],
+    overrides: {
+      gasLimit: BigNumber.from(9999999),
+    },
     enabled,
   });
 
@@ -58,70 +58,54 @@ const useContractCreatePool = (
   } = useContractWrite({
     ...config,
     onMutate() {
-      console.log('On mutate');
-      showLoading();
-    },
-    onSuccess(data: any) {
-      console.log('Successfully called', data);
+      showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
     },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: poolData?.hash,
-    // wait: poolData?.wait,
     onSuccess(transactionData) {
-      console.log('Successfully minted Hype Pool mintedPool', poolData);
-      console.log('Successfully minted Hype Pool transactionData', transactionData);
+      // console.log('onSuccess', transactionData);
       hideLoadingModal();
-      showSuccessModal();
+      successCallback();
       resetWriteContract();
     },
     onError(error: any) {
-      console.log('Error', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('Settled', { data, error });
+      if (data.transactionHash) {
+        setPoolTransaction(data.transactionHash);
+      }
+      const hypeI = new ethers.utils.Interface(abi);
+      const poolCreatedEvent = hypeI.parseLog(
+        data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
+      );
+      if (poolCreatedEvent && poolCreatedEvent.args[0]) {
+        setCreatedPoolIndex(poolCreatedEvent.args[0]);
+      }
       hideLoadingModal();
     },
   });
-
-  const showSuccessModal = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_POOL_CREATED,
-      payload: {
-        open: true,
-        pool: {
-          projectName: args.projectName,
-          title: args.title,
-          token: args.tokenAddress,
-          description: args.description,
-        },
-      },
-    });
-  };
 
   useEffect(() => {
     if (enabled && args && typeof write === 'function') {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args, write]);
+  }, [enabled, args]);
 
   return {
     isError,
     isLoading,
-    write,
-    waitForTransaction,
   };
 };
-
-export default useContractCreatePool;

@@ -49,6 +49,24 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
     ) internal virtual {
         _pools[tokenId] = IHypePool.HypePool(tokenId, msg.sender, false, details, rewards);
         emit PoolCreated(tokenId, msg.sender, _tokenURI);
+        _emitPoolDetails(tokenId, details);
+        _emitPoolRewards(tokenId, rewards);
+    }
+
+    function _emitPoolDetails(uint256 tokenId, IHypePool.Details memory details) internal virtual {
+        emit PoolDetailsCreated(tokenId, details.title, details.projectName, details.tokenName, details.word);
+    }
+
+    function _emitPoolRewards(uint256 tokenId, IHypePool.Rewards memory rewards) internal virtual {
+        emit PoolRewardsCreated(
+            tokenId,
+            rewards.network,
+            rewards.tokenAddress,
+            rewards.minReward,
+            rewards.impressionReward,
+            rewards.cap,
+            rewards.endDate
+        );
     }
 
     function _setPoolURI(uint256 tokenId, string memory _tokenURI) internal virtual {
@@ -70,6 +88,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(rewards.cap > 0, "Invalid pool cap");
         require(rewards.endDate > block.timestamp, "End date must be after current block time");
         require(rewards.minReward > 0, "Invalid minimal hype reward");
+        require(rewards.impressionReward > 0, "Invalid impression hype reward");
         uint256 _counter = _poolIds.current();
         _setPool(_counter, uri, details, rewards);
         _setPoolURI(_counter, uri);

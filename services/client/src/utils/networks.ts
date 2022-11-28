@@ -1,3 +1,5 @@
+import { ethToken, taraToken, zeroAddress } from './enums';
+
 interface Network {
   chainName: string;
   rpcUrl: string;
@@ -58,3 +60,49 @@ export const networks: Networks = {
     },
   },
 };
+
+export const findInNetwork = (networkId: number): boolean => {
+  for (const [key] of Object.entries(networks)) {
+    if (Number(networkId) === Number(key)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const networkOptions = [
+  {
+    name: 'Ethereum Network',
+    value: 1,
+  },
+  {
+    name: 'Taraxa Network',
+    value: 841,
+  },
+  {
+    name: 'Taraxa Devnet',
+    value: 843,
+  },
+  {
+    name: 'Taraxa Testnet',
+    value: 842,
+  },
+];
+
+export const tokensOptions = [
+  {
+    name: ethToken,
+    value: zeroAddress,
+    decimals: 18,
+  },
+  {
+    name: taraToken,
+    value: zeroAddress,
+    decimals: 18,
+  },
+  {
+    name: 'Other',
+    value: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    decimals: 18,
+  },
+];

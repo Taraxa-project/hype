@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks';
 import { User } from '../../models';
 import { AUTH_API } from '../types';
 

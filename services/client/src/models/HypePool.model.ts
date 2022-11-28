@@ -5,7 +5,7 @@ export interface AddHypePool {
   projectDescription: string;
   description: string;
   word: string;
-  network: string;
+  network: number;
   token: string;
   minReward: number;
   impressionReward: number;
@@ -17,4 +17,5 @@ export interface HypePool extends AddHypePool {
   id?: number;
   creator: string;
   active: boolean;
+  tokenAddress?: string;
 }

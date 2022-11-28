@@ -7,7 +7,7 @@ interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export const Link = (props: LinkProps) => (
-  <StyledLink className={props.className} href={props.href}>
+  <StyledLink className={props.className} href={props.href} target={props.target}>
     {props.text}
   </StyledLink>
 );

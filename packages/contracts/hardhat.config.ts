@@ -7,6 +7,7 @@ import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "hardhat-docgen";
 import "@openzeppelin/hardhat-upgrades";
+import { ethers } from "ethers";
 
 dotenv.config();
 
@@ -34,8 +35,21 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    hardhat: {
+      accounts:
+        process.env.TEST_KEY_1 !== undefined
+          ? [
+              { privateKey: process.env.TEST_KEY_1!, balance: ethers.utils.parseEther("10").toString() },
+              { privateKey: process.env.TEST_KEY_2!, balance: ethers.utils.parseEther("10").toString() },
+              { privateKey: process.env.TEST_KEY_3!, balance: ethers.utils.parseEther("10").toString() },
+              { privateKey: process.env.TEST_KEY_4!, balance: ethers.utils.parseEther("10").toString() },
+              { privateKey: process.env.TEST_KEY_5!, balance: ethers.utils.parseEther("10").toString() },
+            ]
+          : [],
+    },
     local: {
       url: "http://127.0.0.1:8545/",
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",

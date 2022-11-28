@@ -4,6 +4,7 @@ pragma solidity 0.8.14;
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "hardhat/console.sol";
@@ -30,16 +31,18 @@ abstract contract ERC20Basic {
 abstract contract ERC20 is ERC20Basic {
     function allowance(address owner, address spender) public virtual returns (uint256);
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) public virtual;
+    function transferFrom(address from, address to, uint256 value) public virtual;
 
     function approve(address spender, uint256 value) public virtual;
 }
 
-contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract DynamicEscrowUpgradeable is
+    IEscrow,
+    Initializable,
+    OwnableUpgradeable,
+    PausableUpgradeable,
+    ReentrancyGuardUpgradeable
+{
     function __DynamicEscrow_init() internal onlyInitializing {
         __Ownable_init_unchained();
     }
@@ -54,9 +57,6 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
     }
 
     using AddressUpgradeable for address payable;
-    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
-    event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
-    event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
 
     modifier onlyRewarder() {
         require(msg.sender == _rewarder, "OnlyRewarder");
@@ -111,7 +111,9 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
         uint256 poolId,
         uint256 amount,
         address tokenAddress
-    ) public payable override nonReentrant {
+    ) public payable override nonReentrant whenNotPaused {
+        IEscrow.DynamicDeposit memory depoBefore = _deposits[poolId][spender];
+        require(depoBefore.weiAmount == 0, "A deposit was already made for this pool");
         if (tokenAddress != address(0)) {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
@@ -120,8 +122,10 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
         } else {
             require(msg.value == amount, "Invalid amount");
         }
+
         IEscrow.DynamicDeposit memory depo = IEscrow.DynamicDeposit(amount, tokenAddress, poolId);
         _deposits[poolId][spender] = depo;
+        require(_deposits[poolId][spender].weiAmount != 0, "Failed to save deposit on chain!");
         emit Deposited(spender, amount, poolId);
     }
 
@@ -131,7 +135,7 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
      * @param receiver The address to receive the tokens.
      * @param poolId The reward pool id of which the tokens are withdrawn.
      * @param amount The amount of tokens to withdraw.
-     * @param tokenAddress of the pool
+     * @param tokenAddress the reward token address of the pool
      * @param nonce the nonce given by the hype backend
      * @param sig the sig given by the hype backend
      */
@@ -142,7 +146,7 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
         address tokenAddress,
         uint256 nonce,
         bytes memory sig
-    ) external override nonReentrant {
+    ) external override nonReentrant whenNotPaused {
         bytes32 hash = _hash(receiver, amount, nonce);
 
         require(ECDSAUpgradeable.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
@@ -151,9 +155,9 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
             receiver.transfer(amount);
         } else {
             ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            token.transfer(receiver, amount);
         }
-        emit Withdrawn(receiver, amount, poolId);
+        emit Claimed(receiver, amount, poolId);
     }
 
     /**
@@ -163,42 +167,31 @@ contract DynamicEscrowUpgradeable is IEscrow, Initializable, OwnableUpgradeable,
      * @param receiver The address to receive the tokens.
      * @param poolId The reward pool id of which the tokens are withdrawn.
      * @param amount The amount of tokens to withdraw.
-     * @param nonce the nonce given by the hype backend
-     * @param sig the sig given by the hype backend
      */
     function withdraw(
         address payable receiver,
         uint256 poolId,
-        uint256 amount,
-        uint256 nonce,
-        bytes memory sig
-    ) external override nonReentrant {
-        require(_deposits[poolId][msg.sender].weiAmount >= amount, "Not enough funds");
-
-        bytes32 hash = _hash(receiver, amount, nonce);
-
-        require(ECDSAUpgradeable.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
-
-        address tokenAddress = _deposits[poolId][msg.sender].tokenAddress;
-        if (_deposits[poolId][msg.sender].weiAmount == amount) {
+        uint256 amount
+    ) external override nonReentrant whenNotPaused {
+        IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];
+        address contractAddress = depo.tokenAddress;
+        require(depo.weiAmount >= amount, "Not enough funds");
+        console.log("token address is", depo.tokenAddress);
+        if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];
         } else {
-            _deposits[poolId][msg.sender].weiAmount -= amount;
+            depo.weiAmount -= amount;
         }
-        if (tokenAddress == address(0)) {
+        if (contractAddress == address(0)) {
             receiver.transfer(amount);
         } else {
-            ERC20 token = ERC20(tokenAddress);
-            token.transferFrom(address(this), receiver, amount);
+            ERC20 token = ERC20(contractAddress);
+            token.transfer(receiver, amount);
         }
         emit Withdrawn(receiver, amount, poolId);
     }
 
-    function _hash(
-        address _address,
-        uint256 _value,
-        uint256 _nonce
-    ) internal pure returns (bytes32) {
+    function _hash(address _address, uint256 _value, uint256 _nonce) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
     }
 

@@ -26,7 +26,7 @@ export const FormColumn = styled.div`
 export const FormElement = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const FormInput = styled(Input)`
@@ -57,16 +57,6 @@ export const Label = styled.div`
   margin-top: 1rem;
   margin-bottom: 0.75rem;
   font-weight: 600;
-`;
-
-export const InfoCard = styled.div`
-  background-color: #f1f1f1;
-  border-radius: 1rem;
-  padding: 0.875rem 1rem;
-  color: ${({ theme }) => theme.colors.greys[11]};
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  margin-bottom: 1rem;
 `;
 
 export const Steps = styled.div`
@@ -156,4 +146,17 @@ export const FormAction = styled.div`
 
 export const SpacedStyledTooltip = styled(Tooltip)`
   margin-left: 0.625rem;
+`;
+
+export const InfoCard = styled.div`
+  background: ${({ theme }) => theme.colors.greys[15]};
+  border-radius: 1rem;
+  padding: 0.875rem 1rem;
+  color: ${({ theme }) => theme.colors.primary};
+  border: ${({ theme }) => `1px solid ${theme.colors.primary}`};
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 `;
