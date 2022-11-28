@@ -22,7 +22,7 @@ dataSources:
         - HypePool
       abis:
         - name: HypePool
-          file: HypePool\abis\HypePool.json
+          file: HypePool/abis/HypePool.json
       eventHandlers:
         - event: PoolActivated(uint256,address)
           handler: handlePoolActivated
@@ -34,4 +34,4 @@ dataSources:
           handler: handlePoolRewards
         - event: PoolUriSet(uint256,string)
           handler: handlePoolUriSet
-      file: HypePool\HypePool.wasm
+      file: HypePool/HypePool.wasm
