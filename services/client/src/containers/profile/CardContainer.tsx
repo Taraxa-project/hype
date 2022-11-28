@@ -35,12 +35,14 @@ export const CardContainer = ({
   emptyMessage,
   target,
   poolModalAction,
+  isPrivate,
 }: {
   title: string;
   cards: HypePool[];
   emptyMessage: string;
   target: string;
   poolModalAction: ModalAction;
+  isPrivate?: boolean;
 }) => {
   const dispatchModals = useModalsDispatch();
 
@@ -84,6 +86,7 @@ export const CardContainer = ({
                     open: true,
                     cardData: cards[i],
                     cardModalAction: poolModalAction,
+                    isPrivate,
                   },
                 });
               }}

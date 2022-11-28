@@ -7,9 +7,13 @@ import useWallet from '../hooks/useWallet';
 import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
 import { useSignMessage } from 'wagmi';
 import { LoginSignature, User } from '../models';
-import { SignMessageArgs } from '@wagmi/core';
 import { RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from './modal';
+
+type SignMessageArgs = {
+  /** Message to sign with wallet */
+  message: string | Uint8Array;
+};
 
 export interface IAuthContext {
   account: string;
@@ -47,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatchModals = useModalsDispatch();
 
   const { signMessage, error: signMessageError } = useSignMessage({
-    onSuccess(data) {
+    onSuccess(data: any) {
       // Verify signature when sign message succeeds
       const loginPayload: LoginSignature = {
         publicAddress: account,

@@ -7,3 +7,4 @@ export * from './shortenText';
 export * from './localStorage';
 export * from './fullIpfsUrl';
 export * from './chainIDs';
+export * from './networks';

@@ -14,16 +14,28 @@ import {
 import { useNetwork, useToken } from 'wagmi';
 import DotIcon from '../../assets/icons/Dot';
 
-export interface CardProps extends HypePool {
+export interface CardProps extends Partial<HypePool> {
   children?: JSX.Element | string;
   onClick?: () => void;
 }
 
 const Card = ({ children, ...props }: CardProps) => {
-  const { title, description, token, cap, active, minReward, endDate, projectName, onClick } =
-    props;
+  const {
+    title,
+    projectName,
+    description,
+    tokenAddress,
+    cap,
+    active,
+    minReward,
+    endDate,
+    onClick,
+  } = props;
   const { chain } = useNetwork();
-  const { data: poolTokenInfo } = useToken({ address: token, enabled: chain?.name === 'Ethereum' });
+  const { data: poolTokenInfo } = useToken({
+    address: tokenAddress as `0x${string}`,
+    enabled: chain?.name === 'Ethereum',
+  });
   const poolToken = poolTokenInfo?.symbol;
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 

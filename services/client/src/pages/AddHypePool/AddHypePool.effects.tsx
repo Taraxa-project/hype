@@ -1,100 +1,93 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useEffect, useState } from 'react';
-import { AddHypePool } from '../../models';
-import useAuth from '../../hooks/useAuth';
-import useContractCreatePool, { WritePoolArgs } from '../../hooks/useContractCreatePool';
+import { useState } from 'react';
+import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ipfsClient } from '../../constants';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
-import { useAddHypePool } from '../../api/pools/useAddHypePools';
+import { HypePoolDetailsForm } from './DetailsForm';
+import { HypePoolRewardForm } from './RewardForm';
+import { BigNumber } from 'ethers';
 
 export const useAddHypePoolEffects = () => {
+  const dispatchModals = useModalsDispatch();
+
   const defaultContractArgs: WritePoolArgs = {
     uri: null,
-    projectName: null,
-    title: null,
-    description: null,
-    poolCap: null,
-    tokenAddress: null,
-    minHypeReward: null,
-    endDate: null,
+    details: null,
+    rewards: null,
   };
-  const { authenticated } = useAuth();
   const resetWriteContract = (): void => {
     setWritePoolArgs(defaultContractArgs);
     setContractEnabled(false);
   };
-  const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
-  const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  useContractCreatePool(writePoolArgs, contractEnabled, resetWriteContract);
-  const dispatchModals = useModalsDispatch();
-  // const { data, submitHandler } = useAddHypePool();
-  // console.log('DATA FROM API: ', data);
-
-  const defaultValues: AddHypePool = {
-    projectName: '',
-    title: '',
-    description: '',
-    token: null,
-    cap: null,
-    minReward: null,
-    endDate: null,
+  const successCallback = (): void => {
+    setCurrentStep(3);
+  };
+  const successCallbackActivatePool = (): void => {
+    setCurrentStep(4);
   };
 
-  const validationSchema = yup
-    .object({
-      projectName: yup.string().required('Project Name is required').label('Project Name'),
-      title: yup.string().required('Title is required').label('Title'),
-      description: yup.string().required('Message is required').label('Your message'),
-      token: yup
-        .string()
-        .typeError('Address is required and must be a wallet address!')
-        .min(42)
-        .max(42)
-        .notOneOf(['0x0'])
-        .required('Address is required')
-        .label('Address'),
-      cap: yup
-        .number()
-        .typeError('Pool cap is required')
-        .required('Pool cap is required')
-        .label('Pool cap per hype'),
-      minReward: yup
-        .number()
-        .typeError('Min reward is required')
-        .required('Min reward is required')
-        .label('Min reward per hype'),
-      endDate: yup
-        .date()
-        .typeError('Pool ends is required')
-        .required('Pool ends is required')
-        .label('Pool ends'),
-    })
-    .required();
-
-  const {
-    handleSubmit,
-    register,
-    reset,
-    control,
-    formState: { isSubmitSuccessful, errors },
-  } = useForm({
-    defaultValues,
-    resolver: yupResolver(validationSchema),
+  const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
+  const [contractEnabled, setContractEnabled] = useState<boolean>(false);
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(3)); //BigNumber.from(16)
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [ipfsUrl, setIpfsUrl] = useState<string>();
+  const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
+  const [poolTransaction, setPoolTransaction] = useState<string>();
+  const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
+    title: '',
+    projectName: '',
+    tokenName: '',
+    description: '',
+    projectDescription: '',
+    word: 'testnet',
+    // title: 'Dragon Ball',
+    // projectName: 'Dragon Ball Super, Dragon Ball, DBS',
+    // tokenName: 'DBS',
+    // description: 'Dragon Ball super NFT marketplace',
+    // projectDescription: 'Something nice about DBS',
+    // word: 'testnet',
+  });
+  const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
+    network: 843,
+    token: null,
+    tokenAddress: '',
+    tokenName: '',
+    tokenDecimals: 18,
+    minReward: null,
+    impressionReward: null,
+    cap: null,
+    endDate: null,
+    // network: 843,
+    // token: 'TARA',
+    // tokenAddress: '0x0000000000000000000000000000000000000000',
+    // tokenName: 'TARA',
+    // tokenDecimals: 18,
+    // minReward: 1,
+    // impressionReward: 2,
+    // cap: 10,
+    // endDate: new Date('12-01-2022'),
   });
 
-  const onSubmit = async (data: AddHypePool) => {
+  useContractCreatePool(
+    writePoolArgs,
+    contractEnabled,
+    resetWriteContract,
+    successCallback,
+    setCreatedPoolIndex,
+    setPoolTransaction,
+  );
+
+  const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const url = await uploadToIpfs(data);
     // const url = 'https://hype.infura-ipfs.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
     console.log('URL after upload: ', url);
-    createPool(data, url);
-    // submitHandler(data);
-    reset();
+    setIpfsUrl(url);
+    if (url) {
+      setCurrentStep(2);
+    }
   };
 
-  const uploadToIpfs = async (data: AddHypePool) => {
+  const uploadToIpfs = async (data: HypePoolDetailsForm) => {
     if (!data) {
       return;
     }
@@ -108,7 +101,12 @@ export const useAddHypePoolEffects = () => {
     });
     let url: string;
     try {
-      const uploaded = await ipfsClient.add(JSON.stringify({ description: data?.description }));
+      const uploaded = await ipfsClient.add(
+        JSON.stringify({
+          description: data?.description,
+          projectDescription: data?.projectDescription,
+        }),
+      );
       url = uploaded.path;
       console.log('uploaded: ', uploaded);
       console.log('url: ', url);
@@ -127,47 +125,61 @@ export const useAddHypePoolEffects = () => {
     }
   };
 
-  const createPool = (data: AddHypePool, ipfsFileUrl: string) => {
-    if (!data || !ipfsFileUrl) {
+  const createPool = (details: HypePoolDetailsForm, rewards: HypePoolRewardForm) => {
+    if (!details || !rewards || !ipfsUrl) {
       return;
     }
-    const poolCap = data.cap;
-    const projectName = data.projectName;
-    const description = data.description;
-    const title = data.title;
-    const tokenAddress = data.token;
-    const minHypeReward = data.minReward;
-    const endDate = data.endDate?.getTime();
+    const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
+    const minReward = BigNumber.from(rewards.minReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
+    const impressionReward = BigNumber.from(rewards.impressionReward).mul(
+      BigNumber.from(10).pow(rewards.tokenDecimals),
+    );
     setWritePoolArgs({
-      uri: ipfsFileUrl,
-      projectName: projectName,
-      title: title,
-      description: description,
-      poolCap: poolCap,
-      tokenAddress: tokenAddress,
-      minHypeReward: minHypeReward,
-      endDate: endDate,
+      uri: ipfsUrl,
+      details,
+      rewards: {
+        ...rewards,
+        cap,
+        minReward,
+        impressionReward,
+        tokenAddress:
+          rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+        endDate: rewards.endDate?.getTime(),
+      },
     });
     setContractEnabled(true);
+    setPoolReward(rewards);
   };
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
+  const onSubmitDetails = async (data: HypePoolDetailsForm) => {
+    setPoolDetails(data);
+    await onUploadToIpfs(data);
+    // setCurrentStep(2);
+  };
 
-  const onCancel = () => {
-    reset();
+  const onSubmitRewards = (data: HypePoolRewardForm) => {
+    createPool(poolDetails, data);
+    // setCurrentStep(3);
+    // setPoolReward(data);
+  };
+
+  const onBackFromRewards = () => {
+    setCurrentStep(1);
   };
 
   return {
-    register,
-    handleSubmit,
-    onCancel,
-    errors,
-    control,
-    authenticated,
-    onSubmit,
+    currentStep,
+    onSubmitDetails,
+    onSubmitRewards,
+    onBackFromRewards,
+    poolDetails,
+    poolReward,
+    successCallbackActivatePool,
+    createdPoolIndex,
+    isCustomToken,
+    setIsCustomToken,
+    poolTransaction,
   };
 };

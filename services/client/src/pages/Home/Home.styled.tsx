@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 
+export const Logo = styled.div`
+  font-size: 5rem;
+  display: flex;
+`;
+
 export const CardContainer = styled.div`
   position: relative;
   margin-top: 2rem;
@@ -124,6 +129,17 @@ export const DescriptionContainer = styled.span`
     max-width: unset;
     margin-bottom: 2.625rem;
   }
+`;
+
+export const LogoText = styled.h1`
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.625rem;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+  color: #000000;
+  margin-left: 0.5rem;
 `;
 
 export const TitleText = styled.h3`

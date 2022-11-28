@@ -6,9 +6,8 @@ import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
 import useWallet from './hooks/useWallet';
-import useAxiosInterceptors from './hooks/useAxiosInterceptors';
+import { useAuth, useAxiosInterceptors } from './hooks';
 import { useGetMe } from './api/auth/useGetMe';
-import useAuth from './hooks/useAuth';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;

@@ -1,32 +1,33 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { useModalsDispatch } from '../context';
-import useLoadingModals from './useLoadingModals';
 import { NotificationType } from '../utils';
+import { BigNumber } from 'ethers';
+import { useEffect } from 'react';
+import { useLoadingModals } from './useLoadingModals';
 
-const useContractActivatePool = (id: number) => {
+export const useContractActivatePool = (
+  id: BigNumber,
+  enabled: boolean,
+  successCallbackActivatePool: () => void,
+) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
-  const dispatchModals = useModalsDispatch();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'activatePool',
     args: [id],
     overrides: {
-      gasLimit: 9999999,
+      gasLimit: BigNumber.from(9999999),
     },
-    enabled: !!id,
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading();
+      showLoading(['Please, sign the message...', 'Activating pool...']);
     },
     onSuccess(data: any) {
       console.log('Successfully called', data);
@@ -38,12 +39,10 @@ const useContractActivatePool = (id: number) => {
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: data?.hash,
-    // wait: poolData?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
-      // showSuccessModal();
     },
     onError(error: any) {
       console.log('Error', error);
@@ -51,17 +50,20 @@ const useContractActivatePool = (id: number) => {
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
     onSettled(data, error) {
-      console.log('Settled', { data, error });
       hideLoadingModal();
+      successCallbackActivatePool();
     },
   });
 
+  useEffect(() => {
+    if (enabled && id && typeof write === 'function') {
+      write();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, id]);
+
   return {
-    data,
     isError,
     isLoading,
-    write,
   };
 };
-
-export default useContractActivatePool;

@@ -1,34 +1,32 @@
 import ABIs from '../abi';
-import { ethers, utils } from 'ethers';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import useLoadingModals from './useLoadingModals';
+import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
+import { BigNumber } from 'ethers';
+import { useEffect } from 'react';
 
-const useContractEscrowDeposit = (
+export const useContractEscrowDeposit = (
   spender: string,
-  poolId: number,
-  amount: number,
+  poolId: BigNumber,
+  amount: BigNumber,
   tokenAddress: string,
+  enabled: boolean,
+  successCallbackDeposit: () => void,
 ) => {
-  console.log('spender: ', spender);
-  console.log('poolId: ', poolId);
-  console.log('amount: ', amount);
-  console.log('tokenAddress: ', tokenAddress);
   const { abi } = ABIs.contracts.DynamicEscrow;
-  const contractInterface = new utils.Interface(abi);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: escrowAddress,
-    contractInterface: contractInterface,
+    address: escrowAddress,
+    abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
     overrides: {
-      from: spender,
-      gasLimit: 9999999,
-      // value: ethers.utils.parseEther(amount?.toString()),
+      from: spender as `0x${string}`,
+      gasLimit: BigNumber.from(9999999),
+      value: amount, // Not sure if this is needed
     },
   });
 
@@ -37,41 +35,39 @@ const useContractEscrowDeposit = (
     onMutate() {
       showLoading(['Please, sign the message...', 'Depositing rewards...']);
     },
-    onSuccess(data: any) {
-      console.log('Successfully called', data);
-    },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: data?.hash,
-    wait: data?.wait,
+    // wait: data?.wait,
     onSuccess(transactionData) {
-      console.log('Success', transactionData);
       hideLoadingModal();
-      showNotificationModal(NotificationType.SUCCESS, 'Funds successfully deposited');
     },
     onError(error: any) {
-      console.log('Error', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
     },
-    onSettled(data, error) {
-      console.log('Settled', { data, error });
+    onSettled() {
       hideLoadingModal();
+      successCallbackDeposit();
     },
   });
+
+  useEffect(() => {
+    if (enabled && spender && poolId && amount && tokenAddress && typeof write === 'function') {
+      write();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, spender, poolId, amount, tokenAddress]);
 
   return {
-    data,
     isError,
     isLoading,
-    write,
   };
 };
-
-export default useContractEscrowDeposit;

@@ -7,7 +7,7 @@ import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WagmiConfig, createClient, configureChains, chain, defaultChains } from 'wagmi';
+import { WagmiConfig, createClient, configureChains, defaultChains } from 'wagmi';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthProvider } from './context/auth-context';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -31,6 +31,7 @@ const metamaskConnector = new MetaMaskConnector({
   chains: [...defaultChains, ...taraxaChains],
   options: {
     shimDisconnect: true,
+    shimChainChangedDisconnect: true,
   },
 });
 
