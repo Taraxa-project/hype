@@ -10,3 +10,4 @@ export * from './useContractPoolURI';
 export * from './useLoadingModals';
 export * from './useSwitchNetwork';
 export * from './useWallet';
+export * from './useTokenDecimals';

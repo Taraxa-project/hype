@@ -70,4 +70,30 @@ export const HYPEPOOL_QUERIES = {
       }
     }
   `,
+
+  poolQuery: `
+    query HypePoolById($id: Int) {
+      hypePool(
+        id: $id
+      ) {
+        id
+        title
+        uri
+        tokenName
+        network
+        tokenAddress
+        creator
+        active
+        projectName
+        description
+        projectDescription
+        uri
+        cap
+        creator
+        endDate
+        minReward
+        impressionReward
+      }
+    }
+  `,
 };
