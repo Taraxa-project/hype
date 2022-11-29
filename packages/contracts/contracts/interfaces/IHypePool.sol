@@ -34,6 +34,8 @@ interface IHypePool {
 
     function activatePool(uint256 id) external;
 
+    function deactivatePool(uint256 id) external;
+
     function getPool(uint256 poolId) external view returns (HypePool memory);
 
     function getCurrentIndex() external view returns (uint256);
@@ -55,4 +57,6 @@ interface IHypePool {
     event PoolUriSet(uint256 poolId, string uri);
 
     event PoolActivated(uint256 poolId, address activator);
+
+    event PoolDeactivated(uint256 poolId, address deactivator);
 }

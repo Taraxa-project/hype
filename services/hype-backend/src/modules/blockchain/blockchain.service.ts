@@ -8,6 +8,7 @@ import ABIs from '../../abi';
 export enum ContractTypes {
   ESCROW,
   HYPE_POOL,
+  CLAIM,
 }
 
 export enum ProviderType {
