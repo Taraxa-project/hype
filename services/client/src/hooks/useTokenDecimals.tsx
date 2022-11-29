@@ -23,5 +23,5 @@ export const useTokenDecimals = (pool: HypePool) => {
     }
   }, [ERC20tokenInfo]);
 
-  return { tokenDecimals };
+  return { isCustomToken, tokenDecimals };
 };

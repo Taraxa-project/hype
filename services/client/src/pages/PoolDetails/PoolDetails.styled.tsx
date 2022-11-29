@@ -1,13 +1,22 @@
 import styled from 'styled-components';
+import { HypeThemeType } from '../../theme';
+
+export const PoolTitle = styled.h3`
+  font-weight: 700;
+  font-size: 2rem;
+  color: #292929;
+  margin-bottom: 1.25rem;
+  width: 100%;
+`;
 
 export const Account = styled.div`
   background: #ececec;
   border-radius: 1.625rem;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.greys[11]};
-  padding: 0.375rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   margin-left: 2rem;
   word-break: break-word;
 `;
@@ -29,17 +38,17 @@ export const BlockiesContainer = styled.div`
   }
 `;
 
-export const CardSubheader = styled.div`
+export const Subheader = styled.div`
   display: flex;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: ${({ theme }) => theme.colors.greys[7]};
-  font-size: 0.875rem;
+  font-size: 1rem;
 `;
 
-export const CardDescription = styled.div`
+export const Description = styled.div`
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.colors.greys[7]};
   width: 100%;
   margin-bottom: 1rem;
@@ -52,4 +61,31 @@ export const PoolContainer = styled.div`
   margin-top: 3rem;
   padding-left: 3rem;
   padding-right: 3rem;
+`;
+
+export const InfoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
+
+export const InfoHeader = styled.span`
+  flex: 1 0 50%;
+  display: flex;
+  text-align: right;
+  font-weight: 700;
+  line-height: 1.25rem;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.greys[7]};
+`;
+
+export const InfoValue = styled.span<{ theme: HypeThemeType }>`
+  flex: 1 0 50%;
+  display: flex;
+  font-weight: 400;
+  font-size: 1rem;
+  justify-content: end;
+  color: ${({ theme }) => theme.colors.greys[7]};
 `;
