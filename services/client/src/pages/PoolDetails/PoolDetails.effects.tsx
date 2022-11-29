@@ -25,11 +25,14 @@ export const usePoolDetailsEffects = (poolId: number) => {
   const { data: depositsOf } = useContractEscrowGetDepositsOf(BigNumber.from(poolId), true);
 
   const successCallbackDeposit = (): void => {
-    //
+    setIsDeposited(true);
   };
 
   const successCallbackActivatePool = (): void => {
-    // Set active to true or refetch from graphql
+    setPool({
+      ...pool,
+      active: true,
+    });
   };
 
   useContractActivatePool(BigNumber.from(poolId), enableActivate, successCallbackActivatePool);

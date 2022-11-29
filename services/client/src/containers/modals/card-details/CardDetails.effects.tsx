@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
 
 export const useCardDetailsEffects = () => {
@@ -5,6 +6,7 @@ export const useCardDetailsEffects = () => {
     hypeDetails: { open, cardData, isPrivate },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
+  let navigate = useNavigate();
 
   const closeModal = () => {
     dispatchModals({
@@ -33,7 +35,8 @@ export const useCardDetailsEffects = () => {
   };
 
   const onRedirect = () => {
-    console.log('Redirect to pool page');
+    navigate(`/pool/${cardData.id}`);
+    closeModal();
   };
 
   return {

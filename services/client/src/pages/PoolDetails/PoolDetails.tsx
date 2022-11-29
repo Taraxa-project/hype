@@ -16,6 +16,7 @@ import {
 } from './PoolDetails.styled';
 import TitleText from '../../components/titletext/TitleText';
 import Button from '../../components/button/Button';
+import Box from '../../components/styles/Box';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -131,14 +132,18 @@ export const PoolDetails = () => {
           </InfoValue>
         )}
       </InfoContainer>
-      {!isDeposited ? (
-        <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
-          Fund the Pool
-        </Button>
-      ) : (
-        <Button disabled={!authenticated} size="full-width" type="button" onClick={activate}>
-          Activate the Pool
-        </Button>
+      {!active && (
+        <Box my={3}>
+          {!isDeposited ? (
+            <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
+              Fund the Pool
+            </Button>
+          ) : (
+            <Button disabled={!authenticated} size="full-width" type="button" onClick={activate}>
+              Activate the Pool
+            </Button>
+          )}
+        </Box>
       )}
     </PoolContainer>
   );
