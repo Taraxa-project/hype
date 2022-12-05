@@ -78,9 +78,6 @@ export const useAddHypePoolEffects = () => {
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const url = await uploadToIpfs(data);
-    // const url = 'https://hype.infura-ipfs.io/ipfs/QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
-    // const url = 'QmTuh1p9a9qGRWZ1QgzSrHfQ84HLEQ7n41VgM2Rd3yusfm';
-    console.log('URL after upload: ', url);
     setIpfsUrl(url);
     if (url) {
       setCurrentStep(2);
@@ -108,8 +105,8 @@ export const useAddHypePoolEffects = () => {
         }),
       );
       url = uploaded.path;
-      console.log('uploaded: ', uploaded);
-      console.log('url: ', url);
+      // console.log('url: ', url);
+      // console.log('uploaded: ', uploaded);
     } catch (error) {
       console.log('Error uploading to IPFS: ', error);
     } finally {

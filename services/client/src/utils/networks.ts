@@ -18,7 +18,7 @@ export const networks: Networks = {
   1: {
     chainName: 'Ethereum Mainnet',
     rpcUrl: 'https://mainnet.infura.io/v3/',
-    iconUrl: 'https://community.taraxa.io/logo192.png',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Ethereum_logo_2014.svg',
     blockExplorerUrl: 'https://etherscan.io',
     nativeCurrency: {
       name: 'ETH',
@@ -102,7 +102,7 @@ export const tokensOptions = [
   },
   {
     name: 'Other',
-    value: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    value: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // Not really that relevant but it needs to
     decimals: 18,
   },
 ];

@@ -32,11 +32,10 @@ export const useProfileEffects = () => {
   }, [resultHypePools]);
 
   const onRedeem = () => {
-    console.log('Bazinga! You clicked the button!');
+    // console.log('Bazinga! You clicked the button!');
   };
 
   const connect = async (user: TelegramUser) => {
-    console.log('new T user is', user);
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
       address: account,
@@ -75,7 +74,7 @@ export const useProfileEffects = () => {
         onDisconnect,
       },
     });
-    console.log('disconnected T user is', user);
+    // console.log('disconnected T user is', user);
   };
 
   const onDisconnect = () => {

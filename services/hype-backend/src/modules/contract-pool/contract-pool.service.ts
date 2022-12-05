@@ -46,13 +46,6 @@ export class ContractPoolsService {
     );
     const ipfsUri = await this.uploadToIpfs(pool.description);
     const formatedEndDate = new Date(pool.endDate).getTime();
-    console.log('uri: ', ipfsUri);
-    console.log('projectName: ', pool.projectName);
-    console.log('title: ', pool.title);
-    console.log('cap: ', pool.cap);
-    console.log('token: ', pool.token);
-    console.log('minReward: ', pool.minReward);
-    console.log('endDate: ', pool.endDate);
     const overrideOptions = {
       gasLimit: 9999999,
     };
@@ -67,12 +60,10 @@ export class ContractPoolsService {
         formatedEndDate,
         overrideOptions,
       );
-      console.log('createPoolTx: ', tx);
       const rc = await tx.wait();
       const event = rc.events.find(
         (event: any) => event.event === 'PoolCreated',
       );
-      console.log('EVENT ARGS: ', event.args);
       const [
         poolId,
         creator,

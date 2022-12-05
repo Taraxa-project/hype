@@ -59,7 +59,6 @@ export const usePoolDetailsEffects = (poolId: number) => {
         depositsOf?.weiAmount?.toString() === pool.cap.toString() &&
         depositsOf?.poolId?.toString() === poolId.toString()
       ) {
-        console.log('Has deposited');
         setIsDeposited(true);
       }
     }
