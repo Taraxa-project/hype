@@ -24,7 +24,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@taraxa-hype/pool": ["src/modules/pool"],
+      "@taraxa-hype/reward": ["src/modules/reward"],
       "@taraxa-hype/auth": ["src/modules/auth"],
       "@taraxa-hype/config": ["config"],
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
