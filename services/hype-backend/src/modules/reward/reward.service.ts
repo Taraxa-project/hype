@@ -17,15 +17,6 @@ export class RewardService {
     private readonly rewardRepository: Repository<HypeReward>,
   ) {}
 
-  private getClaimContractInstance() {
-    const escrowContractInstance = this.blockchainService.getContractInstance(
-      ContractTypes.CLAIM,
-      this.ethereumConfig.claimContractAddress,
-      ProviderType.WALLET,
-    );
-    return escrowContractInstance;
-  }
-
   async accrueRewards(rewardDto: RewardDto): Promise<HypeReward> {
     const newReward = this.rewardRepository.create({
       amount: rewardDto.value,
