@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -17,6 +18,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { BigNumber } from 'ethers';
+import { WalletGuard } from '../auth/wallet.guard';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from './reward.entity';
 import { RewardService } from './reward.service';
@@ -28,16 +30,18 @@ export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
 
   @Get()
+  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
-    description: 'Returns a newly inserted pool reward',
+    description: 'Returns all rewards',
   })
   async getAllRewards() {
     return await this.rewardService.getAllRewards();
   }
 
   @Get(':address')
+  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
@@ -50,6 +54,7 @@ export class RewardController {
   }
 
   @Post()
+  @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     type: RewardDto,
@@ -70,6 +75,7 @@ export class RewardController {
   }
 
   @Patch(':address')
+  @UseGuards(WalletGuard)
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Address not found' })
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
