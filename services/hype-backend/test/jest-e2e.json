@@ -1,9 +1,5 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
@@ -11,7 +7,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@taraxa-hype/pool": "<rootDir>/../src/modules/pool",
+    "@taraxa-hype/reward": "<rootDir>/../src/modules/reward",
     "@taraxa-hype/auth": "<rootDir>/../src/modules/auth",
     "@taraxa-hype/blockchain": "<rootDir>/../src/modules/blockchain",
     "@taraxa-hype/user": "<rootDir>/../src/modules/user",

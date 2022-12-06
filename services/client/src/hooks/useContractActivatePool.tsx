@@ -30,7 +30,7 @@ export const useContractActivatePool = (
       showLoading(['Please, sign the message...', 'Activating pool...']);
     },
     onSuccess(data: any) {
-      console.log('Successfully called', data);
+      // console.log('Successfully called', data);
     },
     onError(error: any) {
       console.log('On error: ', error);
@@ -41,7 +41,7 @@ export const useContractActivatePool = (
 
   useWaitForTransaction({
     hash: data?.hash,
-    onSuccess(transactionData) {
+    onSuccess() {
       hideLoadingModal();
     },
     onError(error: any) {

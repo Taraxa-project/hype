@@ -102,7 +102,9 @@
     "testEnvironment": "node"
   },
   "moduleNameMapper": {
-    "@taraxa-hype/auth": "<rootDir>/src/modules/auth",
+    "@taraxa-hype/reward": [
+      "src/modules/reward"
+    ],
     "@taraxa-hype/pool": "<rootDir>/src/modules/pool",
     "@taraxa-hype/blockchain": "<rootDir>/src/modules/blockchain",
     "@taraxa-hype/config": "<rootDir>/config",
