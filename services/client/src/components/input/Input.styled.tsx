@@ -37,4 +37,12 @@ export const StyledInput = styled.input<StyledInputProps>`
     border: ${({ theme }) => `0.063rem solid ${theme.input.disabled.border}`};
     color: ${({ theme }) => theme.input.disabled.color};
   }
+
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: ${({ theme }) => theme.colors.greys[16]};
+  }
+  :-ms-input-placeholder {
+    color: ${({ theme }) => theme.colors.greys[16]};
+  }
 `;

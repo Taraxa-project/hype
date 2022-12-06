@@ -139,7 +139,7 @@ export const TransactionsContainer = ({
           gridGap="1rem"
           mt={{ xs: '2.4rem', sm: '2.4rem' }}
         >
-          <Text color="greys.2" fontSize="1rem" fontWeight="700">
+          <Text color="greys.3" fontSize="1rem" fontWeight="400">
             {showHistory ? 'Hide' : 'Show'} redemption history
           </Text>
           {showHistory ? <UpIcon click={toggleHistory} /> : <DownIcon click={toggleHistory} />}

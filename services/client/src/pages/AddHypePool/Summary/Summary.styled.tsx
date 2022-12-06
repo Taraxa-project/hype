@@ -34,6 +34,10 @@ export const PoolContent = styled.div`
   flex-direction: column;
   padding-left: 2rem;
   padding-bottom: 2rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0.5rem;
+  }
 `;
 
 export const RewardContent = styled.div`
