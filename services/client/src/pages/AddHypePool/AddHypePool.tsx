@@ -87,6 +87,17 @@ export const AddHypePool = () => {
             />
           </StepContent>
         )}
+      {/* {currentStep === 4 &&
+        (
+          <StepContent>
+            <Completed
+              createdPoolIndex={BigNumber.from(11)}
+              transaction={"0xf3e0a4b752a3eaf912f5641ff6e4732f1223cd4f96e79d4afeb8e1c2f77a7fa6"}
+              poolName={"SHIB sadasdsada"}
+              network={843}
+            />
+          </StepContent>
+        )} */}
     </Wrapper>
   );
 };

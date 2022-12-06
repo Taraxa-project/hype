@@ -5,9 +5,11 @@ import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
 import Heading from '../styles/Heading';
+import { BigNumber, utils } from 'ethers';
 
 export interface TransactionProps {
-  value: number;
+  value: BigNumber;
+  symbol: string;
   pool?: string;
   status?: TransactionStatus;
   date: Date;
@@ -16,6 +18,7 @@ export interface TransactionProps {
 }
 
 const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
+  console.log(value.toString());
   return (
     <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
       <Box
@@ -25,8 +28,12 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
         alignItems="center"
         mb="1.5rem"
       >
-        <Heading fontSize="1.25rem" fontWeight="700" color={value > 0 ? 'success' : 'primary'}>
-          {value}
+        <Heading
+          fontSize="1.25rem"
+          fontWeight="700"
+          color={value && value.toString() !== '0' ? 'success' : 'primary'}
+        >
+          {utils.formatEther(value)}
         </Heading>
         <Text fontSize="0.875rem" color="greys.4">
           {formatDate(date)}

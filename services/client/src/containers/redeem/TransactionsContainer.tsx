@@ -5,23 +5,26 @@ import useWallet from 'src/hooks/useWallet';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
 import Text from '../../components/styles/Text';
-import { formatNumber } from '../../utils';
 import DownIcon from '../../assets/icons/Down';
 import UpIcon from '../../assets/icons/Up';
 import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
 import { TransactionItem } from '../../models/Reward.model';
+import { utils } from 'ethers';
+import { HypeReward, TokenSummary } from 'src/models/Redeem.model';
+import { TransactionStatus } from 'src/utils';
+import Button from 'src/components/button/Button';
 
 interface TransactionsProps {
   pendingTransactions: TransactionItem[];
-  redeemHistory: TransactionItem[];
-  totalUnredeemed: number;
+  redeemHistory: HypeReward[];
+  totalUnredeemeds: TokenSummary[];
   onRedeem: (transaction: TransactionItem) => void;
 }
 
 export const TransactionsContainer = ({
   pendingTransactions,
   redeemHistory,
-  totalUnredeemed,
+  totalUnredeemeds,
   onRedeem,
 }: TransactionsProps) => {
   const { isConnected } = useWallet();
@@ -66,7 +69,13 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            {isConnected ? `${formatNumber(totalUnredeemed)} TARA` : `N/A`}
+            {isConnected
+              ? totalUnredeemeds.map((totalUnredeemed) => (
+                  <div>
+                    {utils.formatEther(totalUnredeemed.unclaimed)} {totalUnredeemed.symbol}
+                  </div>
+                ))
+              : `N/A`}
           </Heading>
         </Box>
         {isConnected && !!pendingTransactions?.length && (
@@ -80,6 +89,27 @@ export const TransactionsContainer = ({
             >
               Pending transactions ({pendingTransactions?.length})
             </Heading>
+            <Box display="flex" flexDirection="row" width="100%" mt={{ _: '3.5rem', lg: '0' }}>
+              <Button
+                style={{ marginRight: '3%' }}
+                size="regular"
+                variant="primary"
+                onClick={() => console.log('button')}
+              >
+                TARA
+              </Button>
+              <Button
+                style={{ marginRight: '3%' }}
+                size="regular"
+                variant="secondary"
+                onClick={() => console.log('button')}
+              >
+                USDC
+              </Button>
+              <Button size="regular" variant="secondary" onClick={() => console.log('button')}>
+                USDT
+              </Button>
+            </Box>
             <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
               {pendingTransactions?.map((transaction: TransactionItem) => (
                 <Transaction
@@ -87,6 +117,7 @@ export const TransactionsContainer = ({
                     transaction.startDate
                   }-${Date.now()}`}
                   value={transaction.value}
+                  symbol={transaction.symbol}
                   pool={transaction.pool}
                   date={transaction.startDate}
                   status={transaction.status}
@@ -122,15 +153,16 @@ export const TransactionsContainer = ({
         <Box>
           {!!redeemHistory?.length ? (
             <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
-              {redeemHistory.map((transactionItem: TransactionItem) => (
+              {redeemHistory.map((transactionItem: HypeReward) => (
                 <Transaction
-                  key={`history-${transactionItem.value}-${transactionItem.pool}-${
-                    transactionItem.startDate
+                  key={`history-${transactionItem.amount.toString()}-${
+                    transactionItem.id
                   }-${Date.now()}`}
-                  value={transactionItem.value}
-                  pool={transactionItem.pool}
-                  date={transactionItem.startDate}
-                  status={transactionItem.status}
+                  value={transactionItem.amount}
+                  symbol={transactionItem.symbol}
+                  pool={'hype Pool12'}
+                  date={new Date()}
+                  status={TransactionStatus.REDEEMED}
                 />
               ))}
             </Box>

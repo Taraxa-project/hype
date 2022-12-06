@@ -4,14 +4,14 @@ import Heading from '../../components/styles/Heading';
 import useWallet from 'src/hooks/useWallet';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
-import { Reward } from '../../models/Reward.model';
+import { HypeReward } from 'src/models/Redeem.model';
 
 interface RewardProps {
-  rewards: Reward[];
+  rewards: HypeReward[];
 }
 
 export const RewardsListContainer = ({ rewards }: RewardProps) => {
-  const { isConnected } = useWallet();
+  const { isConnected, account } = useWallet();
 
   return (
     <Box
@@ -31,15 +31,16 @@ export const RewardsListContainer = ({ rewards }: RewardProps) => {
       >
         Rewards received {rewards?.length ? `(${rewards?.length})` : ''}
       </Heading>
-      {isConnected ? (
+      {isConnected && account ? (
         rewards?.length > 0 ? (
           <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
-            {rewards.map((reward: Reward) => (
+            {rewards.map((reward) => (
               <Transaction
-                key={`reward-${reward.value}-${reward.pool}-${reward.startDate}-${Date.now()}`}
-                value={reward.value}
-                pool={reward.pool}
-                date={reward.startDate}
+                key={`reward-${reward.amount.toString()}-${reward.id}-${Date.now()}`}
+                value={reward.amount}
+                symbol={reward.symbol}
+                pool={'Hype Pool 1'}
+                date={new Date()}
               />
             ))}
           </Box>
