@@ -6,7 +6,7 @@ import { AddHypePool } from '../../../models';
 import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
-import { ethToken, networkOptions, taraToken, tokensOptions, zeroAddress } from '../../../utils';
+import { networkOptions, tokensOptions } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<

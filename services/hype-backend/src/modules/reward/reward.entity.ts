@@ -1,13 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  Column,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
 import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
-import { IPool, IReward } from '../../models';
-import { HypePool } from '../pool/pool.entity';
+import { IReward } from '../../models';
 
 export const tableName = 'hype_reward';
 
@@ -40,7 +33,4 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsNotEmpty()
   @IsBoolean()
   claimed: boolean;
-
-  @ManyToOne(() => HypePool, (pool) => pool.rewards)
-  pool: IPool;
 }

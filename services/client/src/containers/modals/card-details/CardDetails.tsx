@@ -53,7 +53,7 @@ export const CardDetails = () => {
   };
 
   const poolModalAction: ModalAction = {
-    name: 'Go to Pool page',
+    name: 'Go to Pool details page',
     onAction: onRedirect,
     closeButtonVariant: 'primary',
   };
