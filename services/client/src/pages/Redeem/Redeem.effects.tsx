@@ -1,31 +1,46 @@
+import { BigNumber } from 'ethers';
+import { useEffect, useState } from 'react';
+import { useGetMyRewards } from 'src/api/rewards/useGetUserRewards';
+import { HypeReward, TokenSummary } from 'src/models/Redeem.model';
+import { getERC20TokenName } from 'src/utils/tokens';
 import useWallet from '../../hooks/useWallet';
-import { Reward, TransactionItem } from '../../models/Reward.model';
-import { TransactionStatus } from '../../utils';
-
+import { TransactionItem } from '../../models/Reward.model';
+import { TransactionStatus, zeroAddress } from '../../utils';
 
 export const useRedeemEffects = () => {
-  const { isConnected } = useWallet();
-  const totalUnredeemed = 52000;
+  const { isConnected, account } = useWallet();
+  const [totalUnredeemeds, setTotalUnredeemeds] = useState<TokenSummary[]>([
+    { unclaimed: BigNumber.from('0'), token: zeroAddress },
+  ]);
+  const { data, refetch: isFetchingRedeemData } = useGetMyRewards(account);
+  const [claimedRewards, setClaimedRewards] = useState<HypeReward[]>([]);
+  const [unclaimedRewards, setUnclaimedRewards] = useState<HypeReward[]>([]);
+
+  useEffect(() => {
+    const setData = async () => {
+      if (account && data) {
+        console.log(data);
+        const unclaimedsWithSymbol: TokenSummary[] = [];
+        await getSummarySymbols(unclaimedsWithSymbol, data.totalUnclaimeds);
+        setTotalUnredeemeds(unclaimedsWithSymbol);
+        const unclaimeds: HypeReward[] = [];
+        await getRewardSymbols(unclaimeds, data.unclaimed);
+        setUnclaimedRewards(unclaimeds);
+        const claimeds: HypeReward[] = [];
+        await getRewardSymbols(claimeds, data.claimed);
+        setClaimedRewards(claimeds);
+      }
+    };
+    setData();
+  }, [account, data]);
 
   const pendingTransactions: TransactionItem[] = [
     {
-      value: -52300,
-      pool: 'NFT type',
+      value: totalUnredeemeds[0]?.unclaimed,
+      symbol: totalUnredeemeds[0]?.symbol,
+      pool: 'Overall Rewards',
       status: TransactionStatus.PENDING,
-      startDate: new Date('02-12-2022'),
-    },
-  ];
-
-  const redeemHistory: TransactionItem[] = [
-    {
-      value: -52001,
-      status: TransactionStatus.REDEEMED,
-      startDate: new Date('02-11-2022'),
-    },
-    {
-      value: -52002,
-      status: TransactionStatus.REDEEMED,
-      startDate: new Date('02-10-2022'),
+      startDate: new Date(),
     },
   ];
 
@@ -33,29 +48,44 @@ export const useRedeemEffects = () => {
     console.log('Redeeming: ', transaction);
   };
 
-  const rewards: Reward[] = [
-    {
-      value: 53000,
-      pool: 'NFT Hype Pool',
-      startDate: new Date('02-12-2022'),
-    },
-    {
-      value: 54000,
-      pool: 'NFT Hype Pool',
-      startDate: new Date('03-12-2022'),
-    },
-    {
-      value: 52000,
-      pool: 'NFT Hype Pool',
-      startDate: new Date('04-12-2022'),
-    },
-  ];
+  const getSummarySymbols = async (
+    targetArray: TokenSummary[],
+    totalUnclaimeds: TokenSummary[],
+  ) => {
+    for (const rewardSummary of totalUnclaimeds) {
+      let symbol;
+      try {
+        symbol = await getERC20TokenName(rewardSummary.token);
+      } catch (error) {
+        console.error(error);
+      }
+      targetArray.push({
+        ...rewardSummary,
+        symbol: symbol || 'TARA',
+      });
+    }
+  };
+
+  const getRewardSymbols = async (targetArray: HypeReward[], rewards: HypeReward[]) => {
+    for (const reward of rewards) {
+      let symbol;
+      try {
+        symbol = await getERC20TokenName(reward.tokenAddress);
+      } catch (error) {
+        console.error(error);
+      }
+      targetArray.push({
+        ...reward,
+        symbol: symbol || 'TARA',
+      });
+    }
+  };
 
   return {
-    totalUnredeemed,
+    totalUnredeemeds,
     pendingTransactions,
-    redeemHistory,
-    rewards,
+    claimedRewards,
+    unclaimedRewards,
     onRedeem,
     isConnected,
   };

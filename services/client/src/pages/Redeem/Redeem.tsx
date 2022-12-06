@@ -4,8 +4,14 @@ import Box from '../../components/styles/Box';
 import { RewardsListContainer, TransactionsContainer } from '../../containers/redeem';
 
 export const Redeem = () => {
-  const { totalUnredeemed, pendingTransactions, redeemHistory, rewards, onRedeem, isConnected } =
-    useRedeemEffects();
+  const {
+    totalUnredeemeds,
+    pendingTransactions,
+    claimedRewards,
+    unclaimedRewards,
+    onRedeem,
+    isConnected,
+  } = useRedeemEffects();
 
   return (
     <Box backgroundColor="background" minHeight="100vh" height="100%">
@@ -23,11 +29,11 @@ export const Redeem = () => {
       >
         <TransactionsContainer
           pendingTransactions={pendingTransactions}
-          redeemHistory={redeemHistory}
-          totalUnredeemed={totalUnredeemed}
+          redeemHistory={claimedRewards}
+          totalUnredeemeds={totalUnredeemeds}
           onRedeem={onRedeem}
         />
-        <RewardsListContainer rewards={rewards} />
+        <RewardsListContainer rewards={unclaimedRewards} />
       </Box>
     </Box>
   );
