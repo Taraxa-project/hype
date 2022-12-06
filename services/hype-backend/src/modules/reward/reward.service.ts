@@ -33,14 +33,29 @@ export class RewardService {
         address,
       }),
     });
+    if (rewardsOfAddress?.length === 0) {
+      throw new NotFoundException('No rewards found for given address.');
+    }
+    const tokenAddresses = Array.from(
+      new Set(rewardsOfAddress.map((r) => r.tokenAddress)),
+    );
+    const unclaimeds: { unclaimed: BigNumber; token: string }[] = [];
+    tokenAddresses.forEach((token) => {
+      const unclaimed = rewardsOfAddress
+        .filter((r) => r.tokenAddress === token)
+        .reduce(
+          (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
+          BigNumber.from('0'),
+        );
+      unclaimeds.push({
+        unclaimed,
+        token,
+      });
+    });
     const unclaimed = rewardsOfAddress.filter((r) => !r.claimed);
     const claimed = rewardsOfAddress.filter((r) => r.claimed);
-    const totalUnclaimed = unclaimed.reduce(
-      (total, unc) => BigNumber.from(total).add(BigNumber.from(unc)),
-      BigNumber.from('0'),
-    );
     return {
-      totalUnclaimed,
+      totalUnclaimeds: unclaimeds,
       claimed,
       unclaimed,
     };

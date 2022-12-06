@@ -43,7 +43,9 @@ export class RewardController {
     type: [RewardDto],
     description: 'Returns a newly inserted pool reward',
   })
-  async getAllRewardsForAddress(address: string): Promise<RewardStateDto> {
+  async getAllRewardsForAddress(
+    @Param('address') address: string,
+  ): Promise<RewardStateDto> {
     return await this.rewardService.getRewardSummaryForAddress(address);
   }
 
