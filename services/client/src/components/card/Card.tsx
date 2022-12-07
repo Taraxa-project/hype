@@ -66,7 +66,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataHeader>Status:</DataHeader>
             {active ? (
               <DataValue key={`active-${Date.now()}`}>
-                <DotIcon color="#DDA25D" /> Active
+                <DotIcon color="#15AC5B" /> Active
               </DataValue>
             ) : (
               <DataValue key={`active-${Date.now()}`}>
