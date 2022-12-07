@@ -5,7 +5,7 @@ import { ModalsActionsEnum } from './reducer';
 
 export type TCardDetails = {
   open: boolean;
-  cardData: Partial<HypePool>;
+  cardData: HypePool;
   cardModalAction?: ModalAction;
   isPrivate?: boolean;
 };

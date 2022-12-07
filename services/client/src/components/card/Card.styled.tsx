@@ -49,6 +49,7 @@ export const DataValue = styled.span<{ theme: HypeThemeType }>`
   font-weight: 400;
   font-size: 0.875rem;
   justify-content: end;
+  text-align: end;
   color: ${({ theme }) => theme.colors.greys[7]};
 `;
 

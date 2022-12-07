@@ -100,11 +100,11 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
             disabled={!authenticated}
             rows={12}
             maxLength={1000}
-            placeholder="ex:  Taraxa is a purpose-built, fast, scalable, and device-friendly Layer-1 public ledger designed to help democratize reputation by making informal data trustworthy. 
+            placeholder="ex:  Taraxa is a purpose-built, fast, scalable, and device-friendly Layer-1 public ledger designed to help democratize reputation by making informal data trustworthy.&#13;&#10; 
                   &#13;&#10;
-                  People and devices generate data constantly, but more than 80% of it is informal and cannot be tracked. Examples range from informal verbal agreements, IoT status signals, or casual online discussions. As a result, informal transactional and interactional data remains unstructured, unverifiable, and impossible to trust.
+                  People and devices generate data constantly, but more than 80% of it is informal and cannot be tracked. Examples range from informal verbal agreements, IoT status signals, or casual online discussions. As a result, informal transactional and interactional data remains unstructured, unverifiable, and impossible to trust.&#13;&#10;
                   &#13;&#10;
-                  Taraxa tracks informal data and makes it trustworthy with its purpose-built technologies, by decentralizing informal data gathering & analytics and enforcing accountability through signed commitments. With enough informal data, we can build localized reputation networks rooted in communities, enabling even most minor participants to acquire a reputation, becoming more trusted and efficiently rewarded.
+                  Taraxa tracks informal data and makes it trustworthy with its purpose-built technologies, by decentralizing informal data gathering & analytics and enforcing accountability through signed commitments. With enough informal data, we can build localized reputation networks rooted in communities, enabling even most minor participants to acquire a reputation, becoming more trusted and efficiently rewarded.&#13;&#10; 
                   "
             name="projectDescription"
             {...register('projectDescription')}

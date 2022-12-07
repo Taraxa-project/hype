@@ -1,6 +1,6 @@
 import React from 'react';
 import { HypePool } from '../../models';
-import { monthDiff, shortenText } from '../../utils';
+import { monthDiff, shortenText, transformFromWei } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -11,32 +11,19 @@ import {
   DataContainer,
   Container,
 } from './Card.styled';
-import { useNetwork, useToken } from 'wagmi';
 import DotIcon from '../../assets/icons/Dot';
+import { useTokenDecimals } from '../../hooks';
 
-export interface CardProps extends Partial<HypePool> {
+export interface CardProps {
+  pool: HypePool;
   children?: JSX.Element | string;
   onClick?: () => void;
 }
 
 const Card = ({ children, ...props }: CardProps) => {
-  const {
-    title,
-    projectName,
-    description,
-    tokenAddress,
-    cap,
-    active,
-    minReward,
-    endDate,
-    onClick,
-  } = props;
-  const { chain } = useNetwork();
-  const { data: poolTokenInfo } = useToken({
-    address: tokenAddress as `0x${string}`,
-    enabled: chain?.name === 'Ethereum',
-  });
-  const poolToken = poolTokenInfo?.symbol;
+  const { pool, onClick } = props;
+  const { title, projectName, description, tokenName, cap, active, minReward, endDate } = pool;
+  const { tokenDecimals } = useTokenDecimals(pool);
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   return (
@@ -57,7 +44,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
               <DataValue key={`${cap}-${Date.now()}`}>
-                {cap} {poolToken}
+                {transformFromWei(cap, tokenDecimals)} {tokenName}
               </DataValue>
             </DataContainer>
           )}
@@ -65,7 +52,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
               <DataValue key={`${minReward}-${Date.now()}`}>
-                {minReward} {poolToken}
+                {transformFromWei(minReward, tokenDecimals)} {tokenName}
               </DataValue>
             </DataContainer>
           )}

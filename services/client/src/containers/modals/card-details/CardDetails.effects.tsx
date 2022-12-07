@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
+import { useTokenDecimals } from '../../../hooks';
 
 export const useCardDetailsEffects = () => {
   const {
@@ -7,6 +8,7 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
   let navigate = useNavigate();
+  const { tokenDecimals } = useTokenDecimals(cardData);
 
   const closeModal = () => {
     dispatchModals({
@@ -22,6 +24,7 @@ export const useCardDetailsEffects = () => {
           word: null,
           network: null,
           creator: null,
+          token: null,
           tokenName: null,
           tokenAddress: null,
           cap: 0,
@@ -45,5 +48,6 @@ export const useCardDetailsEffects = () => {
     closeModal,
     onRedirect,
     isPrivate,
+    tokenDecimals,
   };
 };

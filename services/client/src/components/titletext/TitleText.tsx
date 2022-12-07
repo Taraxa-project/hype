@@ -7,4 +7,6 @@ export default styled.h3`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.black};
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
 `;

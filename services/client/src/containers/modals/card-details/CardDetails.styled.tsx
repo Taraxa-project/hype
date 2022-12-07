@@ -48,9 +48,8 @@ export const CardDescription = styled.div`
 `;
 
 export const CardInnerContainer = styled.div`
-  max-height: 445px;
+  max-height: 425px;
   overflow: auto;
-  height: 100%;
   padding-right: 5px;
   padding-bottom: 20px;
 `;

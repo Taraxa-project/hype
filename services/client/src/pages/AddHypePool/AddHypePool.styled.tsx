@@ -141,7 +141,7 @@ export const FormAction = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 export const SpacedStyledTooltip = styled(Tooltip)`
@@ -157,6 +157,6 @@ export const InfoCard = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 `;

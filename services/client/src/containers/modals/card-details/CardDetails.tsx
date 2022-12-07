@@ -13,7 +13,7 @@ import {
   CardInnerContainer,
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { monthDiff } from '../../../utils';
+import { monthDiff, transformFromWei } from '../../../utils';
 import useWallet from '../../../hooks/useWallet';
 import DotIcon from '../../../assets/icons/Dot';
 
@@ -36,6 +36,7 @@ export const CardDetails = () => {
     endDate,
     closeModal,
     onRedirect,
+    tokenDecimals,
   } = useCardDetailsEffects();
 
   const titleProps: ModalTitleProps = {
@@ -114,7 +115,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
             <DataValue key={`${cap}-${Date.now()}`}>
-              {cap} {tokenName}
+              {transformFromWei(cap, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}
@@ -122,7 +123,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Min reward per winner:</DataHeader>
             <DataValue key={`${minReward}-${Date.now()}`}>
-              {minReward} {tokenName}
+              {transformFromWei(minReward, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}
@@ -130,7 +131,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Reward per 1,000 impressions:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
-              {impressionReward} {tokenName}
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}
