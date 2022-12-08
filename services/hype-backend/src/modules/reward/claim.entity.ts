@@ -1,14 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
 import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
-import { IReward } from '../../models';
+import { IClaim } from 'src/models/IClaim';
 
-export const tableName = 'hype_reward';
+export const tableName = 'hype_claim';
 
 @Entity(tableName)
-export class HypeReward extends BaseEntity implements IReward {
-  constructor(reward?: Partial<HypeReward>) {
+export class HypeClaim extends BaseEntity implements IClaim {
+  constructor(claim?: Partial<HypeClaim>) {
     super();
-    Object.assign(this, reward);
+    Object.assign(this, claim);
   }
 
   @PrimaryGeneratedColumn()
@@ -38,4 +38,9 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsNotEmpty()
   @IsBoolean()
   claimed: boolean;
+
+  @Column({ nullable: false })
+  @IsNotEmpty()
+  @IsString()
+  hash: string;
 }

@@ -1,21 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsObject } from 'class-validator';
 import { BigNumber } from 'ethers';
-import { HypeReward } from './reward.entity';
+import { HypeClaim } from './claim.entity';
 
 export class RewardStateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsObject()
-  totalUnclaimeds: { unclaimed: BigNumber; token: string }[];
+  totalUnclaimeds: {
+    unclaimed: BigNumber;
+    poolId: number;
+    tokenAddress: string;
+  }[];
 
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
-  claimed: HypeReward[];
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsArray()
-  unclaimed: HypeReward[];
+  claims: HypeClaim[];
 }
