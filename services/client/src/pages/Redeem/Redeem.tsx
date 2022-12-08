@@ -1,17 +1,10 @@
 import React from 'react';
 import { useRedeemEffects } from './Redeem.effects';
 import Box from '../../components/styles/Box';
-import { RewardsListContainer, TransactionsContainer } from '../../containers/redeem';
+import { ClaimHistoryContainer, TransactionsContainer } from '../../containers/redeem';
 
 export const Redeem = () => {
-  const {
-    totalUnredeemeds,
-    pendingTransactions,
-    claimedRewards,
-    unclaimedRewards,
-    onRedeem,
-    isConnected,
-  } = useRedeemEffects();
+  const { claims, claimHistory, poolRewards, onRedeem, onClaim, isConnected } = useRedeemEffects();
 
   return (
     <Box backgroundColor="background" minHeight="100vh" height="100%">
@@ -28,12 +21,12 @@ export const Redeem = () => {
         justifyContent="center"
       >
         <TransactionsContainer
-          pendingTransactions={pendingTransactions}
-          redeemHistory={claimedRewards}
-          totalUnredeemeds={totalUnredeemeds}
+          totalPoolRewards={poolRewards}
+          claims={claims}
           onRedeem={onRedeem}
+          onClaim={onClaim}
         />
-        <RewardsListContainer rewards={unclaimedRewards} />
+        <ClaimHistoryContainer claims={claimHistory} />
       </Box>
     </Box>
   );

@@ -17,10 +17,22 @@ export interface TransactionProps {
   buttonAction?: (transaction: any) => void;
 }
 
-const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
-  console.log(value.toString());
+const Transaction = ({
+  value,
+  pool,
+  status,
+  date,
+  buttonName,
+  buttonAction,
+  symbol,
+}: TransactionProps) => {
   return (
-    <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
+    <Box
+      backgroundColor="greys.0"
+      p="1.313rem"
+      borderRadius="16px"
+      maxWidth={{ _: 'none', lg: '28.99%', xl: '28.99%' }}
+    >
       <Box
         display="flex"
         flexDirection="row"
@@ -31,9 +43,15 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
         <Heading
           fontSize="1.25rem"
           fontWeight="700"
-          color={value && value.toString() !== '0' ? 'success' : 'primary'}
+          color={
+            status === TransactionStatus.PENDING
+              ? '#DDA25D'
+              : value && value.toString() !== '0'
+              ? 'success'
+              : 'primary'
+          }
         >
-          {utils.formatEther(value)}
+          {utils.formatEther(value || BigNumber.from('0'))} {symbol}
         </Heading>
         <Text fontSize="0.875rem" color="greys.4">
           {formatDate(date)}
@@ -63,14 +81,22 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
                 Status:
               </Text>
               <Box display="flex" flexDirection="row" gridGap="1rem" alignItems="center">
-                {status === TransactionStatus.PENDING ? <PendingIcon /> : <CheckMarkIcon />}
+                {status === TransactionStatus.PENDING ? (
+                  <PendingIcon />
+                ) : (
+                  <CheckMarkIcon color="#3E7E5C" />
+                )}
                 <Text fontSize="0.875rem" color="greys.7" m={0.5}>
                   {status}
                 </Text>
               </Box>
             </Box>
             {buttonName && buttonAction && (
-              <Button size="regular" onClick={buttonAction}>
+              <Button
+                size="regular"
+                onClick={buttonAction}
+                variant={buttonName === 'Claim' ? 'success' : 'primary'}
+              >
                 {buttonName}
               </Button>
             )}

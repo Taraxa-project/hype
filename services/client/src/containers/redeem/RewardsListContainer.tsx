@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
 import useWallet from 'src/hooks/useWallet';
+import Text from '../../components/styles/Text';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
-import { HypeReward } from 'src/models/Redeem.model';
+import { HypeClaim, HypeReward } from 'src/models/Redeem.model';
+import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
+import UpIcon from 'src/assets/icons/Up';
+import DownIcon from 'src/assets/icons/Down';
+import { TransactionStatus } from 'src/utils';
 
 interface RewardProps {
-  rewards: HypeReward[];
+  claims: HypeClaim[];
 }
 
-export const RewardsListContainer = ({ rewards }: RewardProps) => {
+export const ClaimHistoryContainer = (props: RewardProps) => {
   const { isConnected, account } = useWallet();
+  const [showHistory, setShowHistory] = useState<boolean>(true);
 
+  const toggleHistory = () => {
+    setShowHistory(!showHistory);
+  };
+  const { claims } = props;
   return (
     <Box
       display="flex"
@@ -29,23 +39,51 @@ export const RewardsListContainer = ({ rewards }: RewardProps) => {
         color="black"
         letterSpacing="-0.02em"
       >
-        Rewards received {rewards?.length ? `(${rewards?.length})` : ''}
+        Rewards received {claims?.length ? `(${claims?.length})` : ''}
       </Heading>
-      {isConnected && account ? (
-        rewards?.length > 0 ? (
-          <Box display="flex" flexDirection="column" pt="2.8rem" gridGap="1rem">
-            {rewards.map((reward) => (
-              <Transaction
-                key={`reward-${reward.amount.toString()}-${reward.id}-${Date.now()}`}
-                value={reward.amount}
-                symbol={reward.symbol}
-                pool={'Hype Pool 1'}
-                date={new Date()}
-              />
-            ))}
+      {isConnected ? (
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
+          gridGap="1rem"
+          mt={{ xs: '2.4rem', sm: '2.4rem' }}
+        >
+          <Text color="greys.3" fontSize="1rem" fontWeight="400">
+            {showHistory ? 'Hide' : 'Show'} redemption history
+          </Text>
+          {showHistory ? <UpIcon click={toggleHistory} /> : <DownIcon click={toggleHistory} />}
+        </Box>
+      ) : (
+        <Box mt="2.4rem">
+          <ConnectWalletBtn />
+        </Box>
+      )}
+      {isConnected ? (
+        showHistory ? (
+          <Box>
+            {!!claims?.length ? (
+              <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
+                {claims.map((transactionItem: HypeReward) => (
+                  <Transaction
+                    key={`history-${transactionItem.amount.toString()}-${
+                      transactionItem.id
+                    }-${Date.now()}`}
+                    value={transactionItem.amount}
+                    symbol={transactionItem.symbol}
+                    pool={'hype Pool12'}
+                    date={new Date()}
+                    status={TransactionStatus.REDEEMED}
+                  />
+                ))}
+              </Box>
+            ) : (
+              <NotAvailable message="Looks like you haven`t received any rewards yet..." mt={3} />
+            )}
           </Box>
         ) : (
-          <NotAvailable message="Looks like you haven`t received any rewards yet..." mt={3} />
+          <></>
         )
       ) : (
         <Box>
