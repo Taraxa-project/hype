@@ -135,7 +135,6 @@ describe("DynamicEscrow", function () {
       cap: oneEth,
       tokenAddress: zeroAddress,
       network: 843,
-      minReward: ethers.utils.parseEther("0.03"),
       impressionReward: ethers.utils.parseEther("0.05"),
       endDate: SAMPLE_DATE,
     };
@@ -199,7 +198,6 @@ describe("DynamicEscrow", function () {
       cap: oneEth,
       tokenAddress: zeroAddress,
       network: 843,
-      minReward: ethers.utils.parseEther("0.03"),
       impressionReward: ethers.utils.parseEther("0.05"),
       endDate: SAMPLE_DATE,
     };
@@ -227,7 +225,6 @@ describe("DynamicEscrow", function () {
       cap: oneEth,
       tokenAddress: zeroAddress,
       network: 843,
-      minReward: ethers.utils.parseEther("0.03"),
       impressionReward: ethers.utils.parseEther("0.03"),
       endDate: SAMPLE_DATE,
     };
@@ -240,29 +237,17 @@ describe("DynamicEscrow", function () {
         tokenAddress: zeroAddress,
         network: 843,
         cap: ethers.utils.parseEther("0.0"),
-        minReward: ethers.utils.parseEther("0.0"),
         impressionReward: ethers.utils.parseEther("0.0"),
         endDate: SAMPLE_DATE,
       })
     ).to.be.revertedWith("Invalid pool cap");
     expect(currentPoolIndex).to.equal(POOL_TWO);
-    await expect(
-      hypePool.connect(depositorOne).createPool("as", details, {
-        tokenAddress: zeroAddress,
-        network: 843,
-        cap: oneEth,
-        minReward: ethers.utils.parseEther("0.0"),
-        impressionReward: ethers.utils.parseEther("0.1"),
-        endDate: SAMPLE_DATE,
-      })
-    ).to.be.revertedWith("Invalid minimal hype reward");
     expect(currentPoolIndex).to.equal(POOL_TWO);
     await expect(
       hypePool.connect(depositorOne).createPool("as", details, {
         tokenAddress: zeroAddress,
         network: 843,
         cap: oneEth,
-        minReward: ethers.utils.parseEther("0.1"),
         impressionReward: ethers.utils.parseEther("0.0"),
         endDate: SAMPLE_DATE,
       })
@@ -274,7 +259,6 @@ describe("DynamicEscrow", function () {
         cap: oneEth,
         tokenAddress: zeroAddress,
         network: 843,
-        minReward: ethers.utils.parseEther("0.03"),
         impressionReward: ethers.utils.parseEther("0.03"),
         endDate: PAST_DATE,
       })
@@ -436,7 +420,6 @@ describe("DynamicEscrow", function () {
       cap: ethers.utils.parseEther("13"),
       tokenAddress: erc20.address,
       network: 843,
-      minReward: ethers.utils.parseEther("1"),
       impressionReward: ethers.utils.parseEther("1"),
       endDate: SAMPLE_DATE,
     };
@@ -543,7 +526,6 @@ describe("DynamicEscrow", function () {
       cap: oneEth,
       tokenAddress: zeroAddress,
       network: 843,
-      minReward: ethers.utils.parseEther("0.03"),
       impressionReward: ethers.utils.parseEther("0.05"),
       endDate: SAMPLE_DATE,
     };
@@ -613,7 +595,6 @@ describe("DynamicEscrow", function () {
         cap: oneEth,
         tokenAddress: zeroAddress,
         network: 843,
-        minReward: ethers.utils.parseEther("0.03"),
         impressionReward: ethers.utils.parseEther("0.05"),
         endDate: SAMPLE_DATE,
       };
@@ -648,7 +629,6 @@ describe("DynamicEscrow", function () {
         cap: oneEth,
         tokenAddress: zeroAddress,
         network: 843,
-        minReward: ethers.utils.parseEther("0.03"),
         impressionReward: ethers.utils.parseEther("0.05"),
         endDate: SAMPLE_DATE,
       };
@@ -676,7 +656,6 @@ describe("DynamicEscrow", function () {
       cap: ethers.utils.parseEther("13"),
       tokenAddress: erc20.address,
       network: 843,
-      minReward: ethers.utils.parseEther("1"),
       impressionReward: ethers.utils.parseEther("1"),
       endDate: SAMPLE_DATE,
     };

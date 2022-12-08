@@ -52,7 +52,6 @@ export const useAddHypePoolEffects = () => {
     tokenAddress: '',
     tokenName: '',
     tokenDecimals: 18,
-    minReward: null,
     impressionReward: null,
     cap: null,
     endDate: null,
@@ -61,7 +60,6 @@ export const useAddHypePoolEffects = () => {
     // tokenAddress: '0x0000000000000000000000000000000000000000',
     // tokenName: 'TARA',
     // tokenDecimals: 18,
-    // minReward: 1,
     // impressionReward: 2,
     // cap: 10,
     // endDate: new Date('12-01-2022'),
@@ -127,9 +125,6 @@ export const useAddHypePoolEffects = () => {
       return;
     }
     const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
-    const minReward = BigNumber.from(rewards.minReward).mul(
-      BigNumber.from(10).pow(rewards.tokenDecimals),
-    );
     const impressionReward = BigNumber.from(rewards.impressionReward).mul(
       BigNumber.from(10).pow(rewards.tokenDecimals),
     );
@@ -139,7 +134,6 @@ export const useAddHypePoolEffects = () => {
       rewards: {
         ...rewards,
         cap,
-        minReward,
         impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,

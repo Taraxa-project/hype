@@ -11,7 +11,7 @@ dataSources:
     name: HypePool
     network: taraxa
     source:
-      address: "0x4d0Ea2a9f42032efF9B4dED72036eFe38bb840E1"
+      address: "0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E"
       abi: HypePool
       startBlock: 184438
     mapping:
@@ -30,7 +30,7 @@ dataSources:
           handler: handlePoolCreated
         - event: PoolDetailsCreated(uint256,string,string,string,string)
           handler: handlePoolDetails
-        - event: PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256,uint256)
+        - event: PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256)
           handler: handlePoolRewards
         - event: PoolUriSet(uint256,string)
           handler: handlePoolUriSet

@@ -22,7 +22,8 @@ export interface CardProps {
 
 const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
-  const { title, projectName, description, tokenName, cap, active, minReward, endDate } = pool;
+  const { title, projectName, description, tokenName, cap, active, impressionReward, endDate } =
+    pool;
   const { tokenDecimals } = useTokenDecimals(pool);
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
@@ -48,11 +49,11 @@ const Card = ({ children, ...props }: CardProps) => {
               </DataValue>
             </DataContainer>
           )}
-          {minReward && (
+          {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Min reward:</DataHeader>
-              <DataValue key={`${minReward}-${Date.now()}`}>
-                {transformFromWei(minReward, tokenDecimals)} {tokenName}
+              <DataHeader key={`min-${Date.now()}`}>Impressions reward:</DataHeader>
+              <DataValue key={`${impressionReward}-${Date.now()}`}>
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
               </DataValue>
             </DataContainer>
           )}

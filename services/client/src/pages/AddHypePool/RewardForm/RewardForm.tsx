@@ -166,29 +166,6 @@ export const RewardForm = ({
           </FormElement>
         )}
 
-        {/* Min reward */}
-        <FormElement>
-          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-            <Label>Minimum rewards per winner:</Label>
-          </Box>
-          <Example>
-            Given the gas fees on your chosen network and your token's market value, define the
-            minimum number of tokens to reward a single user. Example: currently a single redemption
-            transaction on ETH costs $2-3, so the min token rewards should be worth more than that.
-          </Example>
-          <FormInput
-            disabled={!authenticated}
-            placeholder="ex: 100,000"
-            name="minReward"
-            {...register('minReward')}
-          />
-          {errors.minReward && (
-            <Text color="danger" fontSize="0.8rem">
-              {errors.minReward.message}
-            </Text>
-          )}
-        </FormElement>
-
         {/* Impression Reward */}
         <FormElement>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">

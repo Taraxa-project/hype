@@ -12,7 +12,6 @@ interface IHypePool {
     struct Rewards {
         uint256 network;
         address tokenAddress;
-        uint256 minReward;
         uint256 impressionReward;
         uint256 cap;
         uint256 endDate;
@@ -48,7 +47,6 @@ interface IHypePool {
         uint256 poolId,
         uint256 network,
         address tokenAddress,
-        uint256 minReward,
         uint256 impressionReward,
         uint256 cap,
         uint256 endDate

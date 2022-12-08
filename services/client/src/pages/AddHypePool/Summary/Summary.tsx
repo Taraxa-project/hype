@@ -156,16 +156,6 @@ export const Summary: FC<SummaryProps> = ({
             </BlockiesContainer>
           </>
         )}
-        {rewards?.minReward && (
-          <RewardContent>
-            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-              Min reward per winner:
-            </Text>
-            <Text fontSize="0.875rem" color="greys.7">
-              {rewards?.tokenName}
-            </Text>
-          </RewardContent>
-        )}
         {rewards?.impressionReward && (
           <RewardContent>
             <Text fontSize="0.875rem" fontWeight="700" color="greys.7">

@@ -98,6 +98,28 @@ export class PoolCreated__Params {
   }
 }
 
+export class PoolDeactivated extends ethereum.Event {
+  get params(): PoolDeactivated__Params {
+    return new PoolDeactivated__Params(this);
+  }
+}
+
+export class PoolDeactivated__Params {
+  _event: PoolDeactivated;
+
+  constructor(event: PoolDeactivated) {
+    this._event = event;
+  }
+
+  get poolId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get deactivator(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class PoolDetailsCreated extends ethereum.Event {
   get params(): PoolDetailsCreated__Params {
     return new PoolDetailsCreated__Params(this);
@@ -157,20 +179,16 @@ export class PoolRewardsCreated__Params {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get cap(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
-  }
-
   get endDate(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -263,20 +281,16 @@ export class HypePool__createPoolResultValue0RewardsStruct extends ethereum.Tupl
     return this[1].toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this[2].toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this[3].toBigInt();
   }
 
-  get cap(): BigInt {
-    return this[4].toBigInt();
-  }
-
   get endDate(): BigInt {
-    return this[5].toBigInt();
+    return this[4].toBigInt();
   }
 }
 
@@ -307,20 +321,16 @@ export class HypePool__createPoolInputRewardsStruct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this[2].toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this[3].toBigInt();
   }
 
-  get cap(): BigInt {
-    return this[4].toBigInt();
-  }
-
   get endDate(): BigInt {
-    return this[5].toBigInt();
+    return this[4].toBigInt();
   }
 }
 
@@ -373,20 +383,16 @@ export class HypePool__getPoolResultValue0RewardsStruct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this[2].toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this[3].toBigInt();
   }
 
-  get cap(): BigInt {
-    return this[4].toBigInt();
-  }
-
   get endDate(): BigInt {
-    return this[5].toBigInt();
+    return this[4].toBigInt();
   }
 }
 
@@ -402,7 +408,7 @@ export class HypePool extends ethereum.SmartContract {
   ): HypePool__createPoolResultValue0Struct {
     let result = super.call(
       'createPool',
-      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)))',
+      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [
         ethereum.Value.fromString(uri),
         ethereum.Value.fromTuple(details),
@@ -420,7 +426,7 @@ export class HypePool extends ethereum.SmartContract {
   ): ethereum.CallResult<HypePool__createPoolResultValue0Struct> {
     let result = super.tryCall(
       'createPool',
-      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)))',
+      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [
         ethereum.Value.fromString(uri),
         ethereum.Value.fromTuple(details),
@@ -454,7 +460,7 @@ export class HypePool extends ethereum.SmartContract {
   getPool(tokenId: BigInt): HypePool__getPoolResultValue0Struct {
     let result = super.call(
       'getPool',
-      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)))',
+      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [ethereum.Value.fromUnsignedBigInt(tokenId)],
     );
 
@@ -464,7 +470,7 @@ export class HypePool extends ethereum.SmartContract {
   try_getPool(tokenId: BigInt): ethereum.CallResult<HypePool__getPoolResultValue0Struct> {
     let result = super.tryCall(
       'getPool',
-      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256,uint256)))',
+      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [ethereum.Value.fromUnsignedBigInt(tokenId)],
     );
     if (result.reverted) {
@@ -655,20 +661,16 @@ export class CreatePoolCallRewardsStruct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this[2].toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this[3].toBigInt();
   }
 
-  get cap(): BigInt {
-    return this[4].toBigInt();
-  }
-
   get endDate(): BigInt {
-    return this[5].toBigInt();
+    return this[4].toBigInt();
   }
 }
 
@@ -721,20 +723,46 @@ export class CreatePoolCallValue0RewardsStruct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
-  get minReward(): BigInt {
+  get impressionReward(): BigInt {
     return this[2].toBigInt();
   }
 
-  get impressionReward(): BigInt {
+  get cap(): BigInt {
     return this[3].toBigInt();
   }
 
-  get cap(): BigInt {
+  get endDate(): BigInt {
     return this[4].toBigInt();
   }
+}
 
-  get endDate(): BigInt {
-    return this[5].toBigInt();
+export class DeactivatePoolCall extends ethereum.Call {
+  get inputs(): DeactivatePoolCall__Inputs {
+    return new DeactivatePoolCall__Inputs(this);
+  }
+
+  get outputs(): DeactivatePoolCall__Outputs {
+    return new DeactivatePoolCall__Outputs(this);
+  }
+}
+
+export class DeactivatePoolCall__Inputs {
+  _call: DeactivatePoolCall;
+
+  constructor(call: DeactivatePoolCall) {
+    this._call = call;
+  }
+
+  get id(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class DeactivatePoolCall__Outputs {
+  _call: DeactivatePoolCall;
+
+  constructor(call: DeactivatePoolCall) {
+    this._call = call;
   }
 }
 
