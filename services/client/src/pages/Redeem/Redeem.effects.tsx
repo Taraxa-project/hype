@@ -1,92 +1,90 @@
-import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useGetMyRewards } from 'src/api/rewards/useGetUserRewards';
-import { HypeReward, TokenSummary } from 'src/models/Redeem.model';
+import { HypeClaim, PoolRewards } from 'src/models/Redeem.model';
+import { getPoolDetailsById } from 'src/utils/pools';
 import { getERC20TokenName } from 'src/utils/tokens';
+import { useProvider } from 'wagmi';
 import useWallet from '../../hooks/useWallet';
-import { TransactionItem } from '../../models/Reward.model';
-import { TransactionStatus, zeroAddress } from '../../utils';
 
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
-  const [totalUnredeemeds, setTotalUnredeemeds] = useState<TokenSummary[]>([
-    { unclaimed: BigNumber.from('0'), token: zeroAddress },
-  ]);
+  const provider = useProvider();
   const { data, refetch: isFetchingRedeemData } = useGetMyRewards(account);
-  const [claimedRewards, setClaimedRewards] = useState<HypeReward[]>([]);
-  const [unclaimedRewards, setUnclaimedRewards] = useState<HypeReward[]>([]);
+  const [claims, setClaims] = useState<HypeClaim[]>([]);
+  const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
+  const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
 
   useEffect(() => {
     const setData = async () => {
       if (account && data) {
         console.log(data);
-        const unclaimedsWithSymbol: TokenSummary[] = [];
-        await getSummarySymbols(unclaimedsWithSymbol, data.totalUnclaimeds);
-        setTotalUnredeemeds(unclaimedsWithSymbol);
-        const unclaimeds: HypeReward[] = [];
-        await getRewardSymbols(unclaimeds, data.unclaimed);
-        setUnclaimedRewards(unclaimeds);
-        const claimeds: HypeReward[] = [];
-        await getRewardSymbols(claimeds, data.claimed);
-        setClaimedRewards(claimeds);
+        const claims: HypeClaim[] = [];
+        await getClaimSymbols(claims, data.claims);
+        setClaims(claims);
+        const rewards: PoolRewards[] = [];
+        await getRewardSymbols(rewards, data.totalUnclaimeds);
+        setPoolRewards(rewards);
+
+        // remove this after TheGraph is connected
+        const claimHistory = [...claims];
+        for (const claim of claimHistory) {
+          claim.claimed = true;
+        }
+        setClaimHistory(claimHistory);
       }
     };
     setData();
   }, [account, data]);
 
-  const pendingTransactions: TransactionItem[] = [
-    {
-      value: totalUnredeemeds[0]?.unclaimed,
-      symbol: totalUnredeemeds[0]?.symbol,
-      pool: 'Overall Rewards',
-      status: TransactionStatus.PENDING,
-      startDate: new Date(),
-    },
-  ];
-
-  const onRedeem = (transaction: TransactionItem) => {
-    console.log('Redeeming: ', transaction);
+  const onRedeem = (poolReward: PoolRewards) => {
+    console.log('Redeeming: ', poolReward);
+  };
+  const onClaim = (poolClaim: HypeClaim) => {
+    console.log('Redeeming: ', poolClaim);
   };
 
-  const getSummarySymbols = async (
-    targetArray: TokenSummary[],
-    totalUnclaimeds: TokenSummary[],
-  ) => {
-    for (const rewardSummary of totalUnclaimeds) {
-      let symbol;
-      try {
-        symbol = await getERC20TokenName(rewardSummary.token);
-      } catch (error) {
-        console.error(error);
-      }
-      targetArray.push({
-        ...rewardSummary,
-        symbol: symbol || 'TARA',
-      });
-    }
-  };
-
-  const getRewardSymbols = async (targetArray: HypeReward[], rewards: HypeReward[]) => {
+  const getClaimSymbols = async (targetArray: HypeClaim[], rewards: HypeClaim[]) => {
     for (const reward of rewards) {
       let symbol;
+      let name;
       try {
         symbol = await getERC20TokenName(reward.tokenAddress);
+        name = (await getPoolDetailsById(reward.poolId, provider))[3].title;
       } catch (error) {
         console.error(error);
       }
       targetArray.push({
         ...reward,
-        symbol: symbol || 'TARA',
+        symbol: symbol,
+        poolName: name,
+      });
+    }
+  };
+
+  const getRewardSymbols = async (targetArray: PoolRewards[], rewards: PoolRewards[]) => {
+    for (const reward of rewards) {
+      let symbol;
+      let name;
+      try {
+        symbol = await getERC20TokenName(reward.tokenAddress);
+        name = (await getPoolDetailsById(reward.poolId, provider))[3].title;
+      } catch (error) {
+        console.error(error);
+      }
+      targetArray.push({
+        ...reward,
+        symbol: symbol,
+        poolName: name,
       });
     }
   };
 
   return {
-    totalUnredeemeds,
-    pendingTransactions,
-    claimedRewards,
-    unclaimedRewards,
+    claims,
+    poolRewards,
+    claimHistory,
     onRedeem,
+    onClaim,
     isConnected,
   };
 };

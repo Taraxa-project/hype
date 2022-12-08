@@ -1,22 +1,28 @@
 import { BigNumber } from 'ethers';
 
 export interface HypeRewardSummary {
-  totalUnclaimeds: TokenSummary[];
-  claimed: HypeReward[];
-  unclaimed: HypeReward[];
+  totalUnclaimeds: PoolRewards[];
+  claims: HypeClaim[];
 }
 
-export interface TokenSummary {
+export interface PoolRewards {
   unclaimed: BigNumber;
-  token: string;
+  poolId: number;
+  tokenAddress: string;
   symbol?: string;
+  poolName?: string;
 }
-
 export interface HypeReward {
   id: number;
+  poolId: number;
   amount: BigNumber;
   symbol?: string;
   rewardee: string;
   tokenAddress: string;
   claimed: boolean;
+  poolName?: string;
+}
+
+export interface HypeClaim extends HypeReward {
+  hash: string;
 }
