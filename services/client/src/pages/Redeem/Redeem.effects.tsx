@@ -17,7 +17,6 @@ export const useRedeemEffects = () => {
   useEffect(() => {
     const setData = async () => {
       if (account && data) {
-        console.log(data);
         const claims: HypeClaim[] = [];
         await getClaimSymbols(claims, data.claims);
         setClaims(claims);
