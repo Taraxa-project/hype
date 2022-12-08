@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import {} from '../../components/card/Card.styled';
 import { transformFromWei, monthDiff } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
@@ -124,7 +123,7 @@ export const PoolDetails = () => {
         <InfoHeader>Status:</InfoHeader>
         {active ? (
           <InfoValue key={`active-${Date.now()}`}>
-            <DotIcon color="#DDA25D" /> Active
+            <DotIcon color="#15AC5B" /> Active
           </InfoValue>
         ) : (
           <InfoValue key={`active-${Date.now()}`}>

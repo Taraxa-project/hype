@@ -69,16 +69,7 @@ export const CardContainer = ({
           {cards.map((data, i) => (
             <Card
               key={`${data.title}-${i}`}
-              id={data.id}
-              projectName={data.projectName}
-              title={data.title}
-              cap={data.cap}
-              description={data.description}
-              token={data.token}
-              creator={data.creator}
-              minReward={data.minReward}
-              active={data.active}
-              endDate={data.endDate}
+              pool={data}
               onClick={() => {
                 dispatchModals({
                   type: ModalsActionsEnum.SHOW_CARD_DETAILS,

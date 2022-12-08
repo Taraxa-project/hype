@@ -59,22 +59,7 @@ export const Home = () => {
         <CardContainer>
           {hypePools?.map(
             (data: HypePool, i: number) =>
-              data && (
-                <Card
-                  key={`${data.title}-${i}`}
-                  id={data.id}
-                  projectName={data.projectName}
-                  title={data.title}
-                  cap={data.cap}
-                  description={data.description}
-                  token={data.token}
-                  creator={data.creator}
-                  minReward={data.minReward}
-                  active={data.active}
-                  endDate={data.endDate}
-                  onClick={() => onClick(data)}
-                />
-              ),
+              data && <Card key={`${data.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
           )}
         </CardContainer>
       )}
