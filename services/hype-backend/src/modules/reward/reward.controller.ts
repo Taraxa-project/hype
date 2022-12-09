@@ -7,23 +7,23 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { BigNumber } from 'ethers';
 import { WalletGuard } from '../auth/wallet.guard';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from './reward.entity';
-import { RewardService } from './reward.service';
+import { ClaimResult, RewardService } from './reward.service';
 import { RewardStateDto } from './rewardState.dto';
-
 @ApiTags('rewards')
 @Controller('rewards')
 export class RewardController {
@@ -31,6 +31,7 @@ export class RewardController {
 
   @Get()
   @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
@@ -42,6 +43,7 @@ export class RewardController {
 
   @Get(':address')
   @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
@@ -55,6 +57,7 @@ export class RewardController {
 
   @Post()
   @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: RewardDto,
@@ -76,12 +79,14 @@ export class RewardController {
 
   @Patch(':address')
   @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Address not found' })
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
   public async claimRewards(
     @Param('address') address: string,
-  ): Promise<{ nonce: number; hash: string; claimedAmount: BigNumber }> {
-    return await this.rewardService.releaseRewardHash(address);
+    @Query('poolId') poolId: number,
+  ): Promise<ClaimResult> {
+    return await this.rewardService.releaseRewardHash(address, poolId);
   }
 }
