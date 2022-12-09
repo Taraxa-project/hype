@@ -26,7 +26,7 @@ export const useRedeemEffects = () => {
         await getClaimSymbols(claims, data.claims);
         setClaims(claims);
         const rewards: PoolRewards[] = [];
-        await getRewardSymbols(rewards, data.totalUnclaimeds);
+        await getRewardSymbols(rewards, data.totalUnclaimed);
         setPoolRewards(rewards);
 
         // remove this after TheGraph is connected

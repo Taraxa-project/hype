@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
 export interface HypeRewardSummary {
-  totalUnclaimeds: PoolRewards[];
+  totalUnclaimed: PoolRewards[];
   claims: HypeClaim[];
 }
 

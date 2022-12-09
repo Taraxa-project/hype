@@ -7,7 +7,7 @@ export class RewardStateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsObject()
-  totalUnclaimeds: {
+  totalUnclaimed: {
     unclaimed: BigNumber;
     poolId: number;
     tokenAddress: string;

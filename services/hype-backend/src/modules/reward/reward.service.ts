@@ -62,7 +62,7 @@ export class RewardService {
       );
     }
     const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
-    const unclaimeds: {
+    const totalUnclaimed: {
       unclaimed: BigNumber;
       poolId: number;
       tokenAddress: string;
@@ -75,14 +75,14 @@ export class RewardService {
         (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
         BigNumber.from('0'),
       );
-      unclaimeds.push({
+      totalUnclaimed.push({
         unclaimed,
         poolId,
         tokenAddress: token,
       });
     });
     return {
-      totalUnclaimeds: unclaimeds,
+      totalUnclaimed,
       claims,
     };
   }
