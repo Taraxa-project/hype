@@ -13,7 +13,7 @@ dataSources:
     source:
       address: "0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E"
       abi: HypePool
-      startBlock: 184438
+      startBlock: 155827
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
