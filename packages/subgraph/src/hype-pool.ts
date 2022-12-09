@@ -52,7 +52,6 @@ export function handlePoolRewards(event: PoolRewardsCreated): void {
   hypepool.network = event.params.network;
   hypepool.cap = event.params.cap;
   hypepool.tokenAddress = event.params.tokenAddress;
-  hypepool.minReward = event.params.minReward;
   hypepool.impressionReward = event.params.impressionReward;
   hypepool.endDate = event.params.endDate;
   hypepool.save();

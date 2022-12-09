@@ -30,7 +30,6 @@ export const PoolDetails = () => {
     creator,
     projectName,
     cap,
-    minReward,
     impressionReward,
     active,
     endDate,
@@ -94,14 +93,6 @@ export const PoolDetails = () => {
           <InfoHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</InfoHeader>
           <InfoValue key={`${cap}-${Date.now()}`}>
             {transformFromWei(cap, tokenDecimals)} {tokenName}
-          </InfoValue>
-        </InfoContainer>
-      )}
-      {minReward && (
-        <InfoContainer>
-          <InfoHeader key={`min-${Date.now()}`}>Min reward per winner:</InfoHeader>
-          <InfoValue key={`${minReward}-${Date.now()}`}>
-            {transformFromWei(minReward, tokenDecimals)} {tokenName}
           </InfoValue>
         </InfoContainer>
       )}

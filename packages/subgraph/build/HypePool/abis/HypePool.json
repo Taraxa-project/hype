@@ -97,6 +97,25 @@
       },
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "deactivator",
+        "type": "address"
+      }
+    ],
+    "name": "PoolDeactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "poolId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "title",
         "type": "string"
@@ -143,12 +162,6 @@
         "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "minReward",
-        "type": "uint256"
       },
       {
         "indexed": false,
@@ -265,11 +278,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "minReward",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "impressionReward",
             "type": "uint256"
           },
@@ -349,11 +357,6 @@
               },
               {
                 "internalType": "uint256",
-                "name": "minReward",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
                 "name": "impressionReward",
                 "type": "uint256"
               },
@@ -378,6 +381,19 @@
         "type": "tuple"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "deactivatePool",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -459,11 +475,6 @@
                 "internalType": "address",
                 "name": "tokenAddress",
                 "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "minReward",
-                "type": "uint256"
               },
               {
                 "internalType": "uint256",

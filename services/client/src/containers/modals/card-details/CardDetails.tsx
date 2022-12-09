@@ -30,7 +30,6 @@ export const CardDetails = () => {
     creator,
     projectName,
     cap,
-    minReward,
     impressionReward,
     active,
     endDate,
@@ -116,14 +115,6 @@ export const CardDetails = () => {
             <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
             <DataValue key={`${cap}-${Date.now()}`}>
               {transformFromWei(cap, tokenDecimals)} {tokenName}
-            </DataValue>
-          </DataContainer>
-        )}
-        {minReward && (
-          <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Min reward per winner:</DataHeader>
-            <DataValue key={`${minReward}-${Date.now()}`}>
-              {transformFromWei(minReward, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}

@@ -7,7 +7,6 @@ export interface AddHypePool {
   word: string;
   network: number;
   token: string;
-  minReward: number;
   impressionReward: number;
   cap: number;
   endDate: Date;

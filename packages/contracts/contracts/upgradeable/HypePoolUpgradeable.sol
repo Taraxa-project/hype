@@ -62,7 +62,6 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
             tokenId,
             rewards.network,
             rewards.tokenAddress,
-            rewards.minReward,
             rewards.impressionReward,
             rewards.cap,
             rewards.endDate
@@ -87,7 +86,6 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(bytes(uri).length > 0, "Missing metadata URI");
         require(rewards.cap > 0, "Invalid pool cap");
         require(rewards.endDate > block.timestamp, "End date must be after current block time");
-        require(rewards.minReward > 0, "Invalid minimal hype reward");
         require(rewards.impressionReward > 0, "Invalid impression hype reward");
         uint256 _counter = _poolIds.current();
         _setPool(_counter, uri, details, rewards);
@@ -103,7 +101,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
      */
     function activatePool(uint256 id) external whenNotPaused {
         IHypePool.HypePool memory _pool = _pools[id];
-        require(_pool.rewards.minReward != 0, "Pool doesn't exist");
+        require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_pool.active == false, "Pool is already active");
         IEscrow escrowContract = IEscrow(_escrowContractAddress);
         IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, id);
@@ -123,7 +121,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
      */
     function deactivatePool(uint256 id) external whenNotPaused onlyOwner {
         IHypePool.HypePool memory _pool = _pools[id];
-        require(_pool.rewards.minReward != 0, "Pool doesn't exist");
+        require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_pool.active == true, "Pool is already inactive");
         _pool.active = false;
         _pools[id] = _pool;

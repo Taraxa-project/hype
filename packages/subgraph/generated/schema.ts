@@ -269,23 +269,6 @@ export class HypePool extends Entity {
     }
   }
 
-  get minReward(): BigInt | null {
-    let value = this.get('minReward');
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set minReward(value: BigInt | null) {
-    if (!value) {
-      this.unset('minReward');
-    } else {
-      this.set('minReward', Value.fromBigInt(<BigInt>value));
-    }
-  }
-
   get impressionReward(): BigInt | null {
     let value = this.get('impressionReward');
     if (!value || value.kind == ValueKind.NULL) {
