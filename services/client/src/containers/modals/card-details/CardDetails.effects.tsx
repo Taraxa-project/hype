@@ -28,7 +28,6 @@ export const useCardDetailsEffects = () => {
           tokenName: null,
           tokenAddress: null,
           cap: 0,
-          minReward: 0,
           impressionReward: 0,
           active: null,
           endDate: null,

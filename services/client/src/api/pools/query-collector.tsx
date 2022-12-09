@@ -17,7 +17,6 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
-        minReward
         impressionReward
       }
     }
@@ -40,7 +39,6 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
-        minReward
         impressionReward
       }
     }
@@ -65,7 +63,6 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
-        minReward
         impressionReward
       }
     }
@@ -91,7 +88,6 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
-        minReward
         impressionReward
       }
     }

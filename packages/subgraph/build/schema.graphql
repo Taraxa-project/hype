@@ -37,7 +37,6 @@ type HypePool @entity(immutable: false) {
   projectDescription: String
   network: BigInt
   tokenAddress: Bytes
-  minReward: BigInt
   impressionReward: BigInt
   cap: BigInt
   endDate: BigInt

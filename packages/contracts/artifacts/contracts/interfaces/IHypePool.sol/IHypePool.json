@@ -127,12 +127,6 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "minReward",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
           "name": "impressionReward",
           "type": "uint256"
         },
@@ -232,11 +226,6 @@
             },
             {
               "internalType": "uint256",
-              "name": "minReward",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
               "name": "impressionReward",
               "type": "uint256"
             },
@@ -313,11 +302,6 @@
                   "internalType": "address",
                   "name": "tokenAddress",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "minReward",
-                  "type": "uint256"
                 },
                 {
                   "internalType": "uint256",
@@ -439,11 +423,6 @@
                   "internalType": "address",
                   "name": "tokenAddress",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "minReward",
-                  "type": "uint256"
                 },
                 {
                   "internalType": "uint256",

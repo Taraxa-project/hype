@@ -23,7 +23,6 @@ const pool = {
   token: 'APE',
   tokenName: 'APE',
   impressionReward: 2,
-  minReward: 1,
   active: true,
   endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
 };

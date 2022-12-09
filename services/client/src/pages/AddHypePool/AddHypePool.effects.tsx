@@ -33,38 +33,36 @@ export const useAddHypePoolEffects = () => {
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
-    title: '',
-    projectName: '',
-    tokenName: '',
-    description: '',
-    projectDescription: '',
-    word: 'testnet',
-    // title: 'Dragon Ball',
-    // projectName: 'Dragon Ball Super, Dragon Ball, DBS',
-    // tokenName: 'DBS',
-    // description: 'Dragon Ball super NFT marketplace',
-    // projectDescription: 'Something nice about DBS',
+    // title: '',
+    // projectName: '',
+    // tokenName: '',
+    // description: '',
+    // projectDescription: '',
     // word: 'testnet',
+    title: 'Dragon Ball',
+    projectName: 'Dragon Ball Super, Dragon Ball, DBS',
+    tokenName: 'DBS',
+    description: 'Dragon Ball super NFT marketplace',
+    projectDescription: 'Something nice about DBS',
+    word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
-    network: 843,
-    token: null,
-    tokenAddress: '',
-    tokenName: '',
-    tokenDecimals: 18,
-    minReward: null,
-    impressionReward: null,
-    cap: null,
-    endDate: null,
     // network: 843,
-    // token: 'TARA',
-    // tokenAddress: '0x0000000000000000000000000000000000000000',
-    // tokenName: 'TARA',
+    // token: null,
+    // tokenAddress: '',
+    // tokenName: '',
     // tokenDecimals: 18,
-    // minReward: 1,
-    // impressionReward: 2,
-    // cap: 10,
-    // endDate: new Date('12-01-2022'),
+    // impressionReward: null,
+    // cap: null,
+    // endDate: null,
+    network: 843,
+    token: 'TARA',
+    tokenAddress: '0x0000000000000000000000000000000000000000',
+    tokenName: 'TARA',
+    tokenDecimals: 18,
+    impressionReward: 2,
+    cap: 10,
+    endDate: new Date('12-02-2023'),
   });
 
   useContractCreatePool(
@@ -127,9 +125,6 @@ export const useAddHypePoolEffects = () => {
       return;
     }
     const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
-    const minReward = BigNumber.from(rewards.minReward).mul(
-      BigNumber.from(10).pow(rewards.tokenDecimals),
-    );
     const impressionReward = BigNumber.from(rewards.impressionReward).mul(
       BigNumber.from(10).pow(rewards.tokenDecimals),
     );
@@ -139,7 +134,6 @@ export const useAddHypePoolEffects = () => {
       rewards: {
         ...rewards,
         cap,
-        minReward,
         impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,

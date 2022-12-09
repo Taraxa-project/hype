@@ -16,7 +16,6 @@ export interface WritePoolDetailsArgs {
 export interface WritePoolRewardsArgs {
   network: number;
   tokenAddress: string;
-  minReward: BigNumber;
   impressionReward: BigNumber;
   cap: BigNumber;
   endDate: number;
