@@ -4,19 +4,15 @@ import Box from '../../components/styles/Box';
 import { ClaimHistoryContainer, TransactionsContainer } from '../../containers/redeem';
 
 export const Redeem = () => {
-  const { claims, claimHistory, poolRewards, onRedeem, onClaim, isConnected } = useRedeemEffects();
+  const { claims, claimHistory, poolRewards, onRedeem, onClaim, isLoadingRewards } =
+    useRedeemEffects();
 
   return (
     <Box backgroundColor="background" minHeight="100vh" height="100%">
       <Box
         backgroundColor="background"
         display="flex"
-        flexDirection={{
-          _: 'column',
-          md: isConnected ? 'column' : 'row',
-          lg: isConnected ? 'column' : 'row',
-          xl: isConnected ? 'column' : 'row',
-        }}
+        flexDirection="column"
         gridGap="1rem"
         justifyContent="center"
       >
@@ -25,6 +21,7 @@ export const Redeem = () => {
           claims={claims}
           onRedeem={onRedeem}
           onClaim={onClaim}
+          isLoadingRewards={isLoadingRewards}
         />
         <ClaimHistoryContainer claims={claimHistory} />
       </Box>

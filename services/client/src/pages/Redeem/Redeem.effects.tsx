@@ -9,7 +9,12 @@ import useWallet from '../../hooks/useWallet';
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
   const provider = useProvider();
-  const { data, refetch: isFetchingRedeemData } = useGetMyRewards(account);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {
+    data,
+    isLoading: isLoadingRewards,
+    refetch: isFetchingRedeemData,
+  } = useGetMyRewards(account);
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
@@ -33,6 +38,7 @@ export const useRedeemEffects = () => {
       }
     };
     setData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, data]);
 
   const onRedeem = (poolReward: PoolRewards) => {
@@ -85,5 +91,6 @@ export const useRedeemEffects = () => {
     onRedeem,
     onClaim,
     isConnected,
+    isLoadingRewards,
   };
 };

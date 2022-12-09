@@ -6,7 +6,6 @@ import Text from '../../components/styles/Text';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
 import { HypeClaim, HypeReward } from 'src/models/Redeem.model';
-import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
 import UpIcon from 'src/assets/icons/Up';
 import DownIcon from 'src/assets/icons/Down';
 import { TransactionStatus } from 'src/utils';
@@ -16,7 +15,7 @@ interface RewardProps {
 }
 
 export const ClaimHistoryContainer = (props: RewardProps) => {
-  const { isConnected, account } = useWallet();
+  const { isConnected } = useWallet();
   const [showHistory, setShowHistory] = useState<boolean>(true);
 
   const toggleHistory = () => {
@@ -30,7 +29,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
       backgroundColor="greys.1"
       p="2rem"
       borderRadius="2rem"
-      width={{ _: 'unset', sm: 'unset', md: isConnected ? 'unset' : '100%' }}
+      width="unset"
     >
       <Heading
         fontSize="1.25rem"
@@ -41,7 +40,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
       >
         Rewards received {claims?.length ? `(${claims?.length})` : ''}
       </Heading>
-      {isConnected ? (
+      {isConnected && (
         <Box
           display="flex"
           flexDirection="row"
@@ -54,10 +53,6 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
             {showHistory ? 'Hide' : 'Show'} redemption history
           </Text>
           {showHistory ? <UpIcon click={toggleHistory} /> : <DownIcon click={toggleHistory} />}
-        </Box>
-      ) : (
-        <Box mt="2.4rem">
-          <ConnectWalletBtn />
         </Box>
       )}
       {isConnected ? (

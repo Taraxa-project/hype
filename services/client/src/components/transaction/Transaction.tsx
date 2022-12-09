@@ -27,12 +27,7 @@ const Transaction = ({
   symbol,
 }: TransactionProps) => {
   return (
-    <Box
-      backgroundColor="greys.0"
-      p="1.313rem"
-      borderRadius="16px"
-      maxWidth={{ _: 'none', lg: '28.99%', xl: '28.99%' }}
-    >
+    <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
       <Box
         display="flex"
         flexDirection="row"

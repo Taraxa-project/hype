@@ -11,7 +11,7 @@ const getMyRewards = (address: string) => {
 
 export const useGetMyRewards = (address: string) => {
   const { authenticated } = useAuth();
-  const { data, refetch, isError, error } = useQuery(
+  const { data, refetch, isError, error, isLoading } = useQuery(
     ['rewards', address],
     () => getMyRewards(address),
     {
@@ -26,6 +26,7 @@ export const useGetMyRewards = (address: string) => {
     data: data?.data as HypeRewardSummary,
     refetch,
     isError,
+    isLoading,
     error,
   };
 };
