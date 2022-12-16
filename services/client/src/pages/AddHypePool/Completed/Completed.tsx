@@ -9,6 +9,7 @@ import { networkOptions } from '../../../utils';
 import Button from '../../../components/button/Button';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { TelegramShareButton, TwitterShareButton } from 'react-share';
+import { SocialButton } from './Completed.styled';
 
 export interface CompletedProps {
   createdPoolIndex: BigNumber;
@@ -39,11 +40,11 @@ export const Completed: FC<CompletedProps> = ({
       <Box pb={4}>
         {network === networkOptions[0].value ? (
           <Box display="flex">
-            <Text fontSize="1rem" fontWeight="500" color="greys.7" pr={2}>
+            <Text fontSize="1rem" fontWeight="500" color="greys.7">
               View your transaction on
               <Link
                 target="_blank"
-                text={` Etherscan🌐.`}
+                text={` Etherscan 🌐.`}
                 href={`https://etherscan.io/tx/${transaction}`}
               />
             </Text>
@@ -54,7 +55,7 @@ export const Completed: FC<CompletedProps> = ({
               View your transaction on the
               <Link
                 target="_blank"
-                text={` Taraxa Network Explorer🌐.`}
+                text={` Taraxa Network Explorer 🌐.`}
                 href={`https://explorer.devnet.taraxa.io/tx/${transaction}`}
               />
             </Text>
@@ -84,14 +85,10 @@ export const Completed: FC<CompletedProps> = ({
           url={poolUrl}
           hashtags={['Hype App', `${poolName}`]}
         >
-          <Button size="regular" type="button" variant="primary">
-            Twitter
-          </Button>
+          <SocialButton>Twitter</SocialButton>
         </TwitterShareButton>
         <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
-          <Button size="regular" type="button" variant="primary">
-            Telegram
-          </Button>
+          <SocialButton>Telegram</SocialButton>
         </TelegramShareButton>
       </Box>
     </FormColumn>

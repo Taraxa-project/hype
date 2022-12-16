@@ -1,7 +1,7 @@
 import ABIs from '../abi';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
 import { BigNumber, ethers } from 'ethers';
@@ -36,8 +36,8 @@ export const useContractCreatePool = (
   setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
+  const [isWrite, setIsWrite] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
-
   const { config } = usePrepareContractWrite({
     address: hypeAddress,
     abi,
@@ -69,14 +69,13 @@ export const useContractCreatePool = (
 
   useWaitForTransaction({
     hash: poolData?.hash,
-    onSuccess(transactionData) {
-      // console.log('onSuccess', transactionData);
+    onSuccess() {
       hideLoadingModal();
       successCallback();
       resetWriteContract();
     },
     onError(error: any) {
-      console.log('onError', error);
+      console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
@@ -97,11 +96,17 @@ export const useContractCreatePool = (
   });
 
   useEffect(() => {
-    if (enabled && args && typeof write === 'function') {
+    if (typeof write === 'function') {
+      setIsWrite(true);
+    }
+  }, [write]);
+
+  useEffect(() => {
+    if (enabled && args && isWrite === true) {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args]);
+  }, [enabled, args, isWrite]);
 
   return {
     isError,
