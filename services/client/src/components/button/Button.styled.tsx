@@ -12,7 +12,7 @@ export const StyledButton = styled.button<{
   justify-content: center;
   align-items: center;
   border-radius: 0.75rem;
-  border: ${({ variant }) => (variant === 'primary' ? 'none' : '0.063rem solid #C2C2C2')};
+  border: ${({ variant }) => (variant === 'secondary' ? '0.063rem solid #C2C2C2' : 'none')};
   background: ${({ variant, theme }) => theme.buttons[variant].background};
   color: ${({ variant, theme }) => theme.buttons[variant].color};
   font-size: 1rem;

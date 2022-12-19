@@ -199,7 +199,13 @@ export const Summary: FC<SummaryProps> = ({
             Fund the Pool
           </Button>
         ) : (
-          <Button disabled={!authenticated} size="full-width" type="submit" onClick={activate}>
+          <Button
+            disabled={!authenticated}
+            size="full-width"
+            type="submit"
+            variant="success"
+            onClick={activate}
+          >
             Activate the Pool
           </Button>
         )}
