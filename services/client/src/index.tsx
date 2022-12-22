@@ -7,7 +7,7 @@ import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WagmiConfig, createClient, configureChains, chain } from 'wagmi';
+import { WagmiConfig, createClient, configureChains, defaultChains } from 'wagmi';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthProvider } from './context/auth-context';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -16,7 +16,7 @@ import { createClient as urqlCreatClient, Provider as UrqlProvider } from 'urql'
 import { GRAPHQL_API } from './api/types';
 
 const { provider, webSocketProvider } = configureChains(
-  [chain.mainnet, ...taraxaChains],
+  [...defaultChains, ...taraxaChains],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
@@ -28,9 +28,10 @@ const { provider, webSocketProvider } = configureChains(
 );
 
 const metamaskConnector = new MetaMaskConnector({
-  chains: [chain.mainnet, ...taraxaChains],
+  chains: [...defaultChains, ...taraxaChains],
   options: {
     shimDisconnect: true,
+    shimChainChangedDisconnect: true,
   },
 });
 

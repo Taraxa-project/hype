@@ -1,10 +1,10 @@
 import React from 'react';
 import { useRedeemEffects } from './Redeem.effects';
 import Box from '../../components/styles/Box';
-import { RewardsListContainer, TransactionsContainer } from '../../containers/redeem';
+import { ClaimHistoryContainer, TransactionsContainer } from '../../containers/redeem';
 
 export const Redeem = () => {
-  const { totalUnredeemed, pendingTransactions, redeemHistory, rewards, onRedeem, isConnected } =
+  const { claims, claimHistory, poolRewards, onRedeem, onClaim, isLoadingRewards } =
     useRedeemEffects();
 
   return (
@@ -12,22 +12,18 @@ export const Redeem = () => {
       <Box
         backgroundColor="background"
         display="flex"
-        flexDirection={{
-          _: 'column',
-          md: isConnected ? 'column' : 'row',
-          lg: isConnected ? 'column' : 'row',
-          xl: isConnected ? 'column' : 'row',
-        }}
+        flexDirection="column"
         gridGap="1rem"
         justifyContent="center"
       >
         <TransactionsContainer
-          pendingTransactions={pendingTransactions}
-          redeemHistory={redeemHistory}
-          totalUnredeemed={totalUnredeemed}
+          totalPoolRewards={poolRewards}
+          claims={claims}
           onRedeem={onRedeem}
+          onClaim={onClaim}
+          isLoadingRewards={isLoadingRewards}
         />
-        <RewardsListContainer rewards={rewards} />
+        <ClaimHistoryContainer claims={claimHistory} />
       </Box>
     </Box>
   );

@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { PoolModule, HypePool } from '@taraxa-hype/pool';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
-import { general, auth, ethereum } from '@taraxa-hype/config';
+import { general, auth, ethereum, ipfs } from '@taraxa-hype/config';
 import { BlockchainModule } from '@taraxa-hype/blockchain';
-import { RewardModule } from './modules/reward/reward.module';
+import { RewardModule, HypeReward } from '@taraxa-hype/reward';
 import { HypeUser, UserModule } from '@taraxa-hype/user';
 
 const getEnvFilePath = () => {
@@ -22,7 +21,7 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities: Function[] = [HypePool, HypeUser];
+export const entities = [HypeUser, HypeReward];
 
 const HypeAppTypeOrmModule = () => {
   let typeOrmOptions: TypeOrmModuleOptions;
@@ -67,11 +66,10 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
-      load: [general, auth, ethereum],
+      load: [general, auth, ethereum, ipfs],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,
-    PoolModule,
     BlockchainModule,
     RewardModule,
     UserModule,

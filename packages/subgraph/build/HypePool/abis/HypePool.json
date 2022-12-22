@@ -81,6 +81,44 @@
         "internalType": "string",
         "name": "uri",
         "type": "string"
+      }
+    ],
+    "name": "PoolCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "poolId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "deactivator",
+        "type": "address"
+      }
+    ],
+    "name": "PoolDeactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "poolId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -91,31 +129,50 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "title",
+        "name": "tokenName",
         "type": "string"
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "active",
-        "type": "bool"
+        "internalType": "string",
+        "name": "word",
+        "type": "string"
+      }
+    ],
+    "name": "PoolDetailsCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "poolId",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "poolCap",
+        "name": "network",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "poolToken",
+        "name": "tokenAddress",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "minHypeReward",
+        "name": "impressionReward",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cap",
         "type": "uint256"
       },
       {
@@ -125,7 +182,7 @@
         "type": "uint256"
       }
     ],
-    "name": "PoolCreated",
+    "name": "PoolRewardsCreated",
     "type": "event"
   },
   {
@@ -181,34 +238,63 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "projectName",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tokenName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "word",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct IHypePool.Details",
+        "name": "details",
+        "type": "tuple"
       },
       {
-        "internalType": "string",
-        "name": "title",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "poolCap",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "minHypeReward",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endDate",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "network",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "impressionReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cap",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IHypePool.Rewards",
+        "name": "rewards",
+        "type": "tuple"
       }
     ],
     "name": "createPool",
@@ -226,39 +312,68 @@
             "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "projectName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "title",
-            "type": "string"
-          },
-          {
             "internalType": "bool",
             "name": "active",
             "type": "bool"
           },
           {
-            "internalType": "uint256",
-            "name": "cap",
-            "type": "uint256"
+            "components": [
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "projectName",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "tokenName",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "word",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct IHypePool.Details",
+            "name": "details",
+            "type": "tuple"
           },
           {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minReward",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endDate",
-            "type": "uint256"
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "network",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "impressionReward",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "cap",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "endDate",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IHypePool.Rewards",
+            "name": "rewards",
+            "type": "tuple"
           }
         ],
         "internalType": "struct IHypePool.HypePool",
@@ -266,6 +381,19 @@
         "type": "tuple"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "deactivatePool",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -305,39 +433,68 @@
             "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "projectName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "title",
-            "type": "string"
-          },
-          {
             "internalType": "bool",
             "name": "active",
             "type": "bool"
           },
           {
-            "internalType": "uint256",
-            "name": "cap",
-            "type": "uint256"
+            "components": [
+              {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "projectName",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "tokenName",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "word",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct IHypePool.Details",
+            "name": "details",
+            "type": "tuple"
           },
           {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minReward",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endDate",
-            "type": "uint256"
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "network",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "impressionReward",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "cap",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "endDate",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IHypePool.Rewards",
+            "name": "rewards",
+            "type": "tuple"
           }
         ],
         "internalType": "struct IHypePool.HypePool",

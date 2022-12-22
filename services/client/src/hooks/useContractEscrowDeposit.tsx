@@ -1,26 +1,73 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
-import { hypeAddress } from '../constants';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { escrowAddress } from '../constants';
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import { useLoadingModals } from './useLoadingModals';
+import { NotificationType } from '../utils';
+import { BigNumber } from 'ethers';
+import { useEffect } from 'react';
 
-const useContractEscrowDeposit = () => {
+export const useContractEscrowDeposit = (
+  spender: string,
+  poolId: BigNumber,
+  amount: BigNumber,
+  tokenAddress: string,
+  enabled: boolean,
+  successCallbackDeposit: () => void,
+) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
-  const hypeInterface = new utils.Interface(abi);
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: escrowAddress,
+    abi,
     functionName: 'deposit',
+    args: [spender, poolId, amount, tokenAddress],
+    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
+    overrides: {
+      from: spender as `0x${string}`,
+      gasLimit: BigNumber.from(9999999),
+      value: amount, // Not sure if this is needed
+    },
   });
 
-  const { data, isError, isLoading, write } = useContractWrite(config);
+  const { data, isError, isLoading, write } = useContractWrite({
+    ...config,
+    onMutate() {
+      showLoading(['Please, sign the message...', 'Depositing rewards...']);
+    },
+    onError(error: any) {
+      console.log('onError', error);
+      hideLoadingModal();
+      showNotificationModal(NotificationType.ERROR, error?.message);
+    },
+  });
+
+  useWaitForTransaction({
+    hash: data?.hash,
+    // wait: data?.wait,
+    onSuccess(transactionData) {
+      hideLoadingModal();
+    },
+    onError(error: any) {
+      console.log('onError', error);
+      hideLoadingModal();
+      showNotificationModal(NotificationType.ERROR, error?.message);
+    },
+    onSettled() {
+      hideLoadingModal();
+      successCallbackDeposit();
+    },
+  });
+
+  useEffect(() => {
+    if (enabled && spender && poolId && amount && tokenAddress && typeof write === 'function') {
+      write();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, spender, poolId, amount, tokenAddress]);
 
   return {
-    data,
     isError,
     isLoading,
-    write,
   };
 };
-
-export default useContractEscrowDeposit;

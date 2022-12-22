@@ -1,2 +1,2 @@
 Deploying subgraph with Infura IPFS works only from the CLI using this command:
-./node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs https://ipfs.infura.io:5001/ --hdr '{"authorization": "Basic <Base64 has from projectId:projectSecret>"}' Taraxa/HypePool         
+./node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs https://ipfs.infura.io:5001/ --hdr '{"authorization": "Basic <Base64 has from projectId:projectSecret>"}' taraxa/hypePool       

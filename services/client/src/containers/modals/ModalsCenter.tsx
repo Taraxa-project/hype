@@ -4,7 +4,6 @@ import { LoadingModal } from './loading';
 import { MetamaskInfo } from './metamask-info';
 import { TelegramInfo } from './telegram-info';
 import { Notification } from './notification';
-import { PoolCreated } from './pool-created';
 
 export const ModalsCenter = () => {
   return (
@@ -15,7 +14,6 @@ export const ModalsCenter = () => {
       <TelegramInfo />
       <DisconnectTelegram />
       <Notification />
-      <PoolCreated />
     </>
   );
 };

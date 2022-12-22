@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Test
 on:
   push:
     paths:
@@ -10,6 +10,16 @@ on:
 jobs:
   test-contracts:
     runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: 472a3f59fe3d81cda76dbb2a64825e46c4b067ae559cd4dfc784869da80bd05e
+      TEST_KEY_1: 0f5fc5b4cdeefc64f867fd69eed697f70f146367eeee78d073b19b24c5039aee
+      TEST_KEY_2: 9f29fceec65f699209d187478c4d7e293e32bd8a6bfb7e467063973524888167
+      TEST_KEY_3: ee9cec01ff03c0adea731d7c5a84f7b412bfd062b9ff35126520b3eb3d5ff258
+      TEST_KEY_4: 472a3f59fe3d81cda76dbb2a64825e46c4b067ae559cd4dfc784869da80bd05e
+      TEST_KEY_5: 4d7fe1f8f08d13e748bc967bc919bb8181cf90be6734e1bc4750ca690641a23f 
+      TARA_MAINNET_URL: https://rpc.mainnet.taraxa.io/
+      TARA_TESTNET_URL: https://rpc.testnet.taraxa.io/
+      TARA_DEVNET_URL: https://rpc.devnet.taraxa.io/
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -19,17 +29,9 @@ jobs:
           node-version: 16.x
       - name: Show NodeJS version    
         run: node -v
+      - name: Install yarn
+        run: npm i -g yarn
       - name: Install and Build 🔧 🚚
         run: yarn
-      - name: Set up environment variables
-        run: |
-          touch .env
-          echo PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
-          echo MAINNET_PRIV_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abca >> .env
-          echo TARA_MAINNET_URL=https://rpc.mainnet.taraxa.io/ >> .env
-          echo TARA_TESTNET_URL=https://rpc.testnet.taraxa.io/ >> .env
-          cat .env
-      - name: Compile contracts
-        run: yarn compile-contracts
       - name: Run Hardhat tests with coverage
         run: yarn test-contracts:coverage

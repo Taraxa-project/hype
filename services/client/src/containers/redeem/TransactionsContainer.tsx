@@ -1,35 +1,28 @@
-import React, { useState } from 'react';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
 import useWallet from 'src/hooks/useWallet';
-import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
-import Text from '../../components/styles/Text';
-import { formatNumber } from '../../utils';
-import DownIcon from '../../assets/icons/Down';
-import UpIcon from '../../assets/icons/Up';
-import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
-import { TransactionItem } from '../../models/Reward.model';
+import { HypeClaim, PoolRewards } from 'src/models/Redeem.model';
+import { TransactionStatus } from 'src/utils';
+import { NotAvailable } from '../../components/not-available/NotAvailable';
+import LoadingSpinner from '../../assets/icons/Spinner';
 
 interface TransactionsProps {
-  pendingTransactions: TransactionItem[];
-  redeemHistory: TransactionItem[];
-  totalUnredeemed: number;
-  onRedeem: (transaction: TransactionItem) => void;
+  totalPoolRewards: PoolRewards[];
+  claims: HypeClaim[];
+  onRedeem: (transaction: PoolRewards) => void;
+  onClaim: (transaction: HypeClaim) => void;
+  isLoadingRewards: boolean;
 }
 
 export const TransactionsContainer = ({
-  pendingTransactions,
-  redeemHistory,
-  totalUnredeemed,
+  totalPoolRewards,
+  claims,
   onRedeem,
+  onClaim,
+  isLoadingRewards,
 }: TransactionsProps) => {
   const { isConnected } = useWallet();
-  const [showHistory, setShowHistory] = useState<boolean>(false);
-
-  const toggleHistory = () => {
-    setShowHistory(!showHistory);
-  };
 
   return (
     <Box
@@ -42,11 +35,18 @@ export const TransactionsContainer = ({
     >
       <Box
         display="flex"
-        flexDirection={{ _: 'column', lg: 'row', xl: 'row' }}
+        flexDirection={{ _: 'column', lg: 'column', xl: 'column' }}
         justifyContent="space-between"
         alignItems="start"
+        gridGap="1rem"
       >
-        <Box display="flex" flexDirection="column" width="100%">
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          mt={{ _: '3.5rem', lg: '0' }}
+          justifyContent="center"
+        >
           <Heading
             fontSize="1.25rem"
             fontWeight="700"
@@ -54,91 +54,75 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Redeem rewards
+            Rewards by pool ({totalPoolRewards?.length})
           </Heading>
-          <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
-            Total unredeemed
-          </Text>
+          {isConnected ? (
+            <>
+              {isLoadingRewards && (
+                <Box display="flex" justifyContent="center" alignItems="center" my={3}>
+                  <LoadingSpinner />
+                </Box>
+              )}
+              <Box display="flex" flexDirection="column" py="2rem" gridGap="1rem">
+                {totalPoolRewards?.map((pool) => (
+                  <Transaction
+                    key={`redeem-${pool.unclaimed?.toString()}-${pool.poolId}-${pool.poolName}`}
+                    value={pool.unclaimed}
+                    symbol={pool.symbol}
+                    pool={pool.poolName}
+                    date={new Date()}
+                    status={TransactionStatus.PENDING}
+                    buttonAction={() => onRedeem(pool)}
+                    buttonName="Redeem"
+                  />
+                ))}
+              </Box>
+            </>
+          ) : (
+            <Box>
+              <NotAvailable message="Connect wallet to see the rewards available..." mt={3} />
+            </Box>
+          )}
+        </Box>
+        <Box display="flex" flexDirection="column" width="100%" mt={{ _: '3.5rem', lg: '0' }}>
           <Heading
-            fontSize="2.25rem"
+            fontSize="1.25rem"
             fontWeight="700"
-            lineHeight="2.75rem"
+            lineHeight="1.625rem"
             color="black"
             letterSpacing="-0.02em"
           >
-            {isConnected ? `${formatNumber(totalUnredeemed)} TARA` : `N/A`}
+            Claims by pool ({claims?.length})
           </Heading>
-        </Box>
-        {isConnected && !!pendingTransactions?.length && (
-          <Box display="flex" flexDirection="column" width="100%" mt={{ _: '3.5rem', lg: '0' }}>
-            <Heading
-              fontSize="1.25rem"
-              fontWeight="700"
-              lineHeight="1.625rem"
-              color="black"
-              letterSpacing="-0.02em"
-            >
-              Pending transactions ({pendingTransactions?.length})
-            </Heading>
-            <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
-              {pendingTransactions?.map((transaction: TransactionItem) => (
-                <Transaction
-                  key={`pending-${transaction.value}-${transaction.pool}-${
-                    transaction.startDate
-                  }-${Date.now()}`}
-                  value={transaction.value}
-                  pool={transaction.pool}
-                  date={transaction.startDate}
-                  status={transaction.status}
-                  buttonAction={() => onRedeem(transaction)}
-                  buttonName="Redeem"
-                />
-              ))}
-            </Box>
-          </Box>
-        )}
-      </Box>
-
-      {isConnected ? (
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
-          gridGap="1rem"
-          mt={{ xs: '2.4rem', sm: '2.4rem' }}
-        >
-          <Text color="greys.2" fontSize="1rem" fontWeight="700">
-            {showHistory ? 'Hide' : 'Show'} redemption history
-          </Text>
-          {showHistory ? <UpIcon click={toggleHistory} /> : <DownIcon click={toggleHistory} />}
-        </Box>
-      ) : (
-        <Box mt="2.4rem">
-          <ConnectWalletBtn />
-        </Box>
-      )}
-      {isConnected && showHistory && (
-        <Box>
-          {!!redeemHistory?.length ? (
-            <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
-              {redeemHistory.map((transactionItem: TransactionItem) => (
-                <Transaction
-                  key={`history-${transactionItem.value}-${transactionItem.pool}-${
-                    transactionItem.startDate
-                  }-${Date.now()}`}
-                  value={transactionItem.value}
-                  pool={transactionItem.pool}
-                  date={transactionItem.startDate}
-                  status={transactionItem.status}
-                />
-              ))}
-            </Box>
+          {isConnected ? (
+            <>
+              {isLoadingRewards && (
+                <Box display="flex" justifyContent="center" alignItems="center" my={3}>
+                  <LoadingSpinner />
+                </Box>
+              )}
+              <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
+                {claims?.map((claim) => (
+                  <Transaction
+                    key={`claim-${claim.id}-${claim.poolId}`}
+                    value={claim.amount}
+                    symbol={claim.symbol || 'TARA'}
+                    pool={claim.poolName || 'APE Hype 12'}
+                    date={new Date()}
+                    status={TransactionStatus.REDEEMED}
+                    buttonAction={() => onClaim(claim)}
+                    buttonName="Claim"
+                  />
+                ))}
+              </Box>
+            </>
           ) : (
-            <NotAvailable message="Looks like you haven`t received any rewards yet..." mt={3} />
+            <Box>
+              <NotAvailable message="Connect wallet to see the claims available..." mt={3} />
+            </Box>
           )}
         </Box>
-      )}
+      </Box>
     </Box>
   );
 };

@@ -25,7 +25,7 @@ export class UsersService {
     const publicAddress = userDTO.address;
     const user = await this.getUserBy({ publicAddress });
     if (!user) {
-      let newUser = new HypeUser();
+      const newUser = new HypeUser();
       newUser.address = userDTO.address;
       newUser.username = userDTO.username;
       newUser.auth_date = userDTO.auth_date;

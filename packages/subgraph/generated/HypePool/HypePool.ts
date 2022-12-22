@@ -96,33 +96,99 @@ export class PoolCreated__Params {
   get uri(): string {
     return this._event.parameters[2].value.toString();
   }
+}
 
-  get projectName(): string {
-    return this._event.parameters[3].value.toString();
+export class PoolDeactivated extends ethereum.Event {
+  get params(): PoolDeactivated__Params {
+    return new PoolDeactivated__Params(this);
+  }
+}
+
+export class PoolDeactivated__Params {
+  _event: PoolDeactivated;
+
+  constructor(event: PoolDeactivated) {
+    this._event = event;
+  }
+
+  get poolId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get deactivator(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class PoolDetailsCreated extends ethereum.Event {
+  get params(): PoolDetailsCreated__Params {
+    return new PoolDetailsCreated__Params(this);
+  }
+}
+
+export class PoolDetailsCreated__Params {
+  _event: PoolDetailsCreated;
+
+  constructor(event: PoolDetailsCreated) {
+    this._event = event;
+  }
+
+  get poolId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
   get title(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get projectName(): string {
+    return this._event.parameters[2].value.toString();
+  }
+
+  get tokenName(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
+  get word(): string {
     return this._event.parameters[4].value.toString();
   }
+}
 
-  get active(): boolean {
-    return this._event.parameters[5].value.toBoolean();
+export class PoolRewardsCreated extends ethereum.Event {
+  get params(): PoolRewardsCreated__Params {
+    return new PoolRewardsCreated__Params(this);
+  }
+}
+
+export class PoolRewardsCreated__Params {
+  _event: PoolRewardsCreated;
+
+  constructor(event: PoolRewardsCreated) {
+    this._event = event;
   }
 
-  get poolCap(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
+  get poolId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get poolToken(): Address {
-    return this._event.parameters[7].value.toAddress();
+  get network(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
   }
 
-  get minHypeReward(): BigInt {
-    return this._event.parameters[8].value.toBigInt();
+  get tokenAddress(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get cap(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
   }
 
   get endDate(): BigInt {
-    return this._event.parameters[9].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -175,32 +241,96 @@ export class HypePool__createPoolResultValue0Struct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
+  get active(): boolean {
+    return this[2].toBoolean();
+  }
+
+  get details(): HypePool__createPoolResultValue0DetailsStruct {
+    return changetype<HypePool__createPoolResultValue0DetailsStruct>(this[3].toTuple());
+  }
+
+  get rewards(): HypePool__createPoolResultValue0RewardsStruct {
+    return changetype<HypePool__createPoolResultValue0RewardsStruct>(this[4].toTuple());
+  }
+}
+
+export class HypePool__createPoolResultValue0DetailsStruct extends ethereum.Tuple {
+  get title(): string {
+    return this[0].toString();
+  }
+
   get projectName(): string {
+    return this[1].toString();
+  }
+
+  get tokenName(): string {
     return this[2].toString();
   }
 
-  get title(): string {
+  get word(): string {
     return this[3].toString();
   }
+}
 
-  get active(): boolean {
-    return this[4].toBoolean();
+export class HypePool__createPoolResultValue0RewardsStruct extends ethereum.Tuple {
+  get network(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get tokenAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this[2].toBigInt();
   }
 
   get cap(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get token(): Address {
-    return this[6].toAddress();
-  }
-
-  get minReward(): BigInt {
-    return this[7].toBigInt();
+    return this[3].toBigInt();
   }
 
   get endDate(): BigInt {
-    return this[8].toBigInt();
+    return this[4].toBigInt();
+  }
+}
+
+export class HypePool__createPoolInputDetailsStruct extends ethereum.Tuple {
+  get title(): string {
+    return this[0].toString();
+  }
+
+  get projectName(): string {
+    return this[1].toString();
+  }
+
+  get tokenName(): string {
+    return this[2].toString();
+  }
+
+  get word(): string {
+    return this[3].toString();
+  }
+}
+
+export class HypePool__createPoolInputRewardsStruct extends ethereum.Tuple {
+  get network(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get tokenAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get cap(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get endDate(): BigInt {
+    return this[4].toBigInt();
   }
 }
 
@@ -213,32 +343,56 @@ export class HypePool__getPoolResultValue0Struct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
+  get active(): boolean {
+    return this[2].toBoolean();
+  }
+
+  get details(): HypePool__getPoolResultValue0DetailsStruct {
+    return changetype<HypePool__getPoolResultValue0DetailsStruct>(this[3].toTuple());
+  }
+
+  get rewards(): HypePool__getPoolResultValue0RewardsStruct {
+    return changetype<HypePool__getPoolResultValue0RewardsStruct>(this[4].toTuple());
+  }
+}
+
+export class HypePool__getPoolResultValue0DetailsStruct extends ethereum.Tuple {
+  get title(): string {
+    return this[0].toString();
+  }
+
   get projectName(): string {
+    return this[1].toString();
+  }
+
+  get tokenName(): string {
     return this[2].toString();
   }
 
-  get title(): string {
+  get word(): string {
     return this[3].toString();
   }
+}
 
-  get active(): boolean {
-    return this[4].toBoolean();
+export class HypePool__getPoolResultValue0RewardsStruct extends ethereum.Tuple {
+  get network(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get tokenAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this[2].toBigInt();
   }
 
   get cap(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get token(): Address {
-    return this[6].toAddress();
-  }
-
-  get minReward(): BigInt {
-    return this[7].toBigInt();
+    return this[3].toBigInt();
   }
 
   get endDate(): BigInt {
-    return this[8].toBigInt();
+    return this[4].toBigInt();
   }
 }
 
@@ -249,24 +403,16 @@ export class HypePool extends ethereum.SmartContract {
 
   createPool(
     uri: string,
-    projectName: string,
-    title: string,
-    poolCap: BigInt,
-    tokenAddress: Address,
-    minHypeReward: BigInt,
-    endDate: BigInt,
+    details: HypePool__createPoolInputDetailsStruct,
+    rewards: HypePool__createPoolInputRewardsStruct,
   ): HypePool__createPoolResultValue0Struct {
     let result = super.call(
       'createPool',
-      'createPool(string,string,string,uint256,address,uint256,uint256):((uint256,address,string,string,bool,uint256,address,uint256,uint256))',
+      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [
         ethereum.Value.fromString(uri),
-        ethereum.Value.fromString(projectName),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromUnsignedBigInt(poolCap),
-        ethereum.Value.fromAddress(tokenAddress),
-        ethereum.Value.fromUnsignedBigInt(minHypeReward),
-        ethereum.Value.fromUnsignedBigInt(endDate),
+        ethereum.Value.fromTuple(details),
+        ethereum.Value.fromTuple(rewards),
       ],
     );
 
@@ -275,24 +421,16 @@ export class HypePool extends ethereum.SmartContract {
 
   try_createPool(
     uri: string,
-    projectName: string,
-    title: string,
-    poolCap: BigInt,
-    tokenAddress: Address,
-    minHypeReward: BigInt,
-    endDate: BigInt,
+    details: HypePool__createPoolInputDetailsStruct,
+    rewards: HypePool__createPoolInputRewardsStruct,
   ): ethereum.CallResult<HypePool__createPoolResultValue0Struct> {
     let result = super.tryCall(
       'createPool',
-      'createPool(string,string,string,uint256,address,uint256,uint256):((uint256,address,string,string,bool,uint256,address,uint256,uint256))',
+      'createPool(string,(string,string,string,string),(uint256,address,uint256,uint256,uint256)):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [
         ethereum.Value.fromString(uri),
-        ethereum.Value.fromString(projectName),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromUnsignedBigInt(poolCap),
-        ethereum.Value.fromAddress(tokenAddress),
-        ethereum.Value.fromUnsignedBigInt(minHypeReward),
-        ethereum.Value.fromUnsignedBigInt(endDate),
+        ethereum.Value.fromTuple(details),
+        ethereum.Value.fromTuple(rewards),
       ],
     );
     if (result.reverted) {
@@ -322,7 +460,7 @@ export class HypePool extends ethereum.SmartContract {
   getPool(tokenId: BigInt): HypePool__getPoolResultValue0Struct {
     let result = super.call(
       'getPool',
-      'getPool(uint256):((uint256,address,string,string,bool,uint256,address,uint256,uint256))',
+      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [ethereum.Value.fromUnsignedBigInt(tokenId)],
     );
 
@@ -332,7 +470,7 @@ export class HypePool extends ethereum.SmartContract {
   try_getPool(tokenId: BigInt): ethereum.CallResult<HypePool__getPoolResultValue0Struct> {
     let result = super.tryCall(
       'getPool',
-      'getPool(uint256):((uint256,address,string,string,bool,uint256,address,uint256,uint256))',
+      'getPool(uint256):((uint256,address,bool,(string,string,string,string),(uint256,address,uint256,uint256,uint256)))',
       [ethereum.Value.fromUnsignedBigInt(tokenId)],
     );
     if (result.reverted) {
@@ -475,28 +613,12 @@ export class CreatePoolCall__Inputs {
     return this._call.inputValues[0].value.toString();
   }
 
-  get projectName(): string {
-    return this._call.inputValues[1].value.toString();
+  get details(): CreatePoolCallDetailsStruct {
+    return changetype<CreatePoolCallDetailsStruct>(this._call.inputValues[1].value.toTuple());
   }
 
-  get title(): string {
-    return this._call.inputValues[2].value.toString();
-  }
-
-  get poolCap(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get tokenAddress(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get minHypeReward(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-
-  get endDate(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+  get rewards(): CreatePoolCallRewardsStruct {
+    return changetype<CreatePoolCallRewardsStruct>(this._call.inputValues[2].value.toTuple());
   }
 }
 
@@ -512,6 +634,46 @@ export class CreatePoolCall__Outputs {
   }
 }
 
+export class CreatePoolCallDetailsStruct extends ethereum.Tuple {
+  get title(): string {
+    return this[0].toString();
+  }
+
+  get projectName(): string {
+    return this[1].toString();
+  }
+
+  get tokenName(): string {
+    return this[2].toString();
+  }
+
+  get word(): string {
+    return this[3].toString();
+  }
+}
+
+export class CreatePoolCallRewardsStruct extends ethereum.Tuple {
+  get network(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get tokenAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get cap(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get endDate(): BigInt {
+    return this[4].toBigInt();
+  }
+}
+
 export class CreatePoolCallValue0Struct extends ethereum.Tuple {
   get id(): BigInt {
     return this[0].toBigInt();
@@ -521,32 +683,86 @@ export class CreatePoolCallValue0Struct extends ethereum.Tuple {
     return this[1].toAddress();
   }
 
+  get active(): boolean {
+    return this[2].toBoolean();
+  }
+
+  get details(): CreatePoolCallValue0DetailsStruct {
+    return changetype<CreatePoolCallValue0DetailsStruct>(this[3].toTuple());
+  }
+
+  get rewards(): CreatePoolCallValue0RewardsStruct {
+    return changetype<CreatePoolCallValue0RewardsStruct>(this[4].toTuple());
+  }
+}
+
+export class CreatePoolCallValue0DetailsStruct extends ethereum.Tuple {
+  get title(): string {
+    return this[0].toString();
+  }
+
   get projectName(): string {
+    return this[1].toString();
+  }
+
+  get tokenName(): string {
     return this[2].toString();
   }
 
-  get title(): string {
+  get word(): string {
     return this[3].toString();
   }
+}
 
-  get active(): boolean {
-    return this[4].toBoolean();
+export class CreatePoolCallValue0RewardsStruct extends ethereum.Tuple {
+  get network(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get tokenAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get impressionReward(): BigInt {
+    return this[2].toBigInt();
   }
 
   get cap(): BigInt {
-    return this[5].toBigInt();
-  }
-
-  get token(): Address {
-    return this[6].toAddress();
-  }
-
-  get minReward(): BigInt {
-    return this[7].toBigInt();
+    return this[3].toBigInt();
   }
 
   get endDate(): BigInt {
-    return this[8].toBigInt();
+    return this[4].toBigInt();
+  }
+}
+
+export class DeactivatePoolCall extends ethereum.Call {
+  get inputs(): DeactivatePoolCall__Inputs {
+    return new DeactivatePoolCall__Inputs(this);
+  }
+
+  get outputs(): DeactivatePoolCall__Outputs {
+    return new DeactivatePoolCall__Outputs(this);
+  }
+}
+
+export class DeactivatePoolCall__Inputs {
+  _call: DeactivatePoolCall;
+
+  constructor(call: DeactivatePoolCall) {
+    this._call = call;
+  }
+
+  get id(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class DeactivatePoolCall__Outputs {
+  _call: DeactivatePoolCall;
+
+  constructor(call: DeactivatePoolCall) {
+    this._call = call;
   }
 }
 

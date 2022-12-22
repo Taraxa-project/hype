@@ -1,46 +1,50 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
-import { ModalsActionsEnum, useModalsDispatch } from '../context';
+import { useEffect, useState } from 'react';
+import { useLoadingModals } from './useLoadingModals';
 import { NotificationType } from '../utils';
-import { useEffect } from 'react';
+import { BigNumber, ethers } from 'ethers';
 
-export interface WritePoolArgs {
-  uri: string;
-  projectName: string;
+export interface WritePoolDetailsArgs {
   title: string;
-  description: string;
-  poolCap: number;
+  projectName: string;
+  tokenName?: string;
+  word: string;
+}
+
+export interface WritePoolRewardsArgs {
+  network: number;
   tokenAddress: string;
-  minHypeReward: number;
+  impressionReward: BigNumber;
+  cap: BigNumber;
   endDate: number;
 }
 
-const useContractCreatePool = (
+export interface WritePoolArgs {
+  uri: string;
+  details: WritePoolDetailsArgs;
+  rewards: WritePoolRewardsArgs;
+}
+
+export const useContractCreatePool = (
   args: WritePoolArgs,
   enabled: boolean,
   resetWriteContract: () => void,
+  successCallback: () => void,
+  setCreatedPoolIndex: (index: BigNumber) => void,
+  setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
-  const dispatchModals = useModalsDispatch();
-
+  const [isWrite, setIsWrite] = useState<boolean>(false);
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'createPool',
-    args: [
-      args.uri,
-      args.projectName,
-      args.title,
-      args.poolCap,
-      args.tokenAddress,
-      args.minHypeReward,
-      args.endDate,
-    ],
+    args: [args.uri, args.details, args.rewards],
     overrides: {
-      gasLimit: 9999999,
+      gasLimit: BigNumber.from(9999999),
     },
     enabled,
   });
@@ -53,99 +57,59 @@ const useContractCreatePool = (
   } = useContractWrite({
     ...config,
     onMutate() {
-      console.log('On mutate');
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: true,
-          title: 'Action required',
-          text: 'Please, sign the message...',
-        },
-      });
-    },
-    onSuccess(data: any) {
-      console.log('Successfully called', data);
+      showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
     },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     hash: poolData?.hash,
-    // wait: poolData?.wait,
-    onSuccess(transactionData) {
-      console.log('Successfully minted Hype Pool mintedPool', poolData);
-      console.log('Successfully minted Hype Pool transactionData', transactionData);
+    onSuccess() {
       hideLoadingModal();
-      showSuccessModal();
+      successCallback();
       resetWriteContract();
     },
-    onError(error) {
-      console.log('Error', error);
+    onError(error: any) {
+      console.log('onError: ', error);
       hideLoadingModal();
-      showErrorModal(error?.message);
+      showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
     onSettled(data, error) {
-      console.log('Settled', { data, error });
+      if (data.transactionHash) {
+        setPoolTransaction(data.transactionHash);
+      }
+      const hypeI = new ethers.utils.Interface(abi);
+      const poolCreatedEvent = hypeI.parseLog(
+        data.logs.filter((event) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
+      );
+      if (poolCreatedEvent && poolCreatedEvent.args[0]) {
+        setCreatedPoolIndex(poolCreatedEvent.args[0]);
+      }
       hideLoadingModal();
     },
   });
 
-  const hideLoadingModal = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_LOADING,
-      payload: {
-        open: false,
-        title: null,
-        text: null,
-      },
-    });
-  };
-
-  const showSuccessModal = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_POOL_CREATED,
-      payload: {
-        open: true,
-        pool: {
-          projectName: args.projectName,
-          title: args.title,
-          token: args.tokenAddress,
-          description: args.description,
-        },
-      },
-    });
-  };
-
-  const showErrorModal = (err: string) => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_NOTIFICATION,
-      payload: {
-        open: true,
-        type: NotificationType.ERROR,
-        message: [err],
-      },
-    });
-  };
+  useEffect(() => {
+    if (typeof write === 'function') {
+      setIsWrite(true);
+    }
+  }, [write]);
 
   useEffect(() => {
-    if (enabled && args && typeof write === 'function') {
+    if (enabled && args && isWrite === true) {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args, write]);
+  }, [enabled, args, isWrite]);
 
   return {
     isError,
     isLoading,
-    write,
-    waitForTransaction,
   };
 };
-
-export default useContractCreatePool;

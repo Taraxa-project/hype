@@ -9,7 +9,7 @@ const useWallet = () => {
 
   const metamaskConnector = new MetaMaskConnector({
     options: {
-      shimChainChangedDisconnect: false,
+      shimChainChangedDisconnect: true,
     },
   });
   const {

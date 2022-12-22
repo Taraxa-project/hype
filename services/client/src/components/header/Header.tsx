@@ -19,6 +19,7 @@ import {
   SidebarFooter,
   StyledHeader,
   AddressContainer,
+  Logo,
 } from './Header.styled';
 import LoadingSpinner from '../../assets/icons/Spinner';
 
@@ -80,8 +81,8 @@ const Header = React.memo(
         <StyledHeader>
           <div>
             <div className="header-left">
-              <Link to="/">
-                <HypeIconSmall />
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <Logo>📣</Logo>
               </Link>
             </div>
 

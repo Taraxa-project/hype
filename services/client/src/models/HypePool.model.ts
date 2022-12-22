@@ -1,15 +1,20 @@
 export interface AddHypePool {
-  projectName: string;
   title: string;
+  projectName: string;
+  tokenName?: string;
+  projectDescription: string;
   description: string;
+  word: string;
+  network: number;
   token: string;
+  impressionReward: number;
   cap: number;
-  minReward: number;
   endDate: Date;
 }
 
 export interface HypePool extends AddHypePool {
-  id: number;
+  id?: number;
   creator: string;
   active: boolean;
+  tokenAddress?: string;
 }

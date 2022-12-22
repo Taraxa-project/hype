@@ -1,5 +1,6 @@
 import DynamicEscrow from 'hype-contracts/artifacts/contracts/DynamicEscrow.sol/DynamicEscrow.json';
 import HypePool from 'hype-contracts/artifacts/contracts/HypePool.sol/HypePool.json';
+import HypeToken from 'hype-contracts/artifacts/contracts/HypeToken.sol/HypeToken.json';
 import DynamicEscrowUpgradeable from 'hype-contracts/artifacts/contracts/upgradeable/DynamicEscrowUpgradeable.sol/DynamicEscrowUpgradeable.json';
 import HypePoolUpgradeable from 'hype-contracts/artifacts/contracts/upgradeable/HypePoolUpgradeable.sol/HypePoolUpgradeable.json';
 import IEscrow from 'hype-contracts/artifacts/contracts/interfaces/IEscrow.sol/IEscrow.json';
@@ -11,6 +12,7 @@ const contracts = {
   DynamicEscrowUpgradeable,
   HypePool,
   HypePoolUpgradeable,
+  HypeToken,
 };
 
 const interfaces = {

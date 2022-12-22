@@ -4,15 +4,20 @@ export const HYPEPOOL_QUERIES = {
       poolSearch(first: $first, skip: $skip, text: $text) {
         id
         title
+        uri
+        tokenName
+        network
+        tokenAddress
+        creator
+        active
         projectName
         description
-        active
+        projectDescription
         uri
-        token
         cap
         creator
         endDate
-        minReward
+        impressionReward
       }
     }
   `,
@@ -21,15 +26,20 @@ export const HYPEPOOL_QUERIES = {
       hypePools(first: $first, skip: $skip, text: $text) {
         id
         title
+        uri
+        tokenName
+        network
+        tokenAddress
+        creator
+        active
         projectName
         description
-        active
+        projectDescription
         uri
-        token
         cap
         creator
         endDate
-        minReward
+        impressionReward
       }
     }
   `,
@@ -40,15 +50,45 @@ export const HYPEPOOL_QUERIES = {
       ) {
         id
         title
+        uri
+        tokenName
+        network
+        tokenAddress
+        creator
+        active
         projectName
         description
-        active
+        projectDescription
         uri
-        token
         cap
         creator
         endDate
-        minReward
+        impressionReward
+      }
+    }
+  `,
+
+  poolQuery: `
+    query HypePoolById($id: Int) {
+      hypePool(
+        id: $id
+      ) {
+        id
+        title
+        uri
+        tokenName
+        network
+        tokenAddress
+        creator
+        active
+        projectName
+        description
+        projectDescription
+        uri
+        cap
+        creator
+        endDate
+        impressionReward
       }
     }
   `,

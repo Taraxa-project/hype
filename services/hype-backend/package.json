@@ -39,10 +39,14 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.1",
     "@nestjs/typeorm": "^8.1.0",
+    "buffer": "^6.0.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
-    "ethers": "^5.6.9",
+    "ethers": "^5.7.2",
+    "ethereumjs-abi": "^0.6.8",
+    "ethereumjs-util": "^7.1.4",
+    "ipfs-http-client": "56.0.3",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -54,9 +58,11 @@
     "typeorm": "^0.3.6"
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.18.9",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/ethereumjs-abi": "^0.6.3",
     "@types/express": "^4.17.13",
     "@types/jest": "27.5.0",
     "@types/node": "^16.0.0",
@@ -96,7 +102,9 @@
     "testEnvironment": "node"
   },
   "moduleNameMapper": {
-    "@taraxa-hype/auth": "<rootDir>/src/modules/auth",
+    "@taraxa-hype/reward": [
+      "src/modules/reward"
+    ],
     "@taraxa-hype/pool": "<rootDir>/src/modules/pool",
     "@taraxa-hype/blockchain": "<rootDir>/src/modules/blockchain",
     "@taraxa-hype/config": "<rootDir>/config",

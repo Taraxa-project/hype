@@ -3,21 +3,43 @@ type _Schema_
     name: "poolSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "HypePool", fields: [{ name: "projectName" }, { name: "title" }, { name: "description"}] }]
+    include: [
+      {
+        entity: "HypePool"
+        fields: [
+          { name: "projectName" }
+          { name: "title" }
+          { name: "description" }
+          { name: "projectDescription" }
+        ]
+      }
+    ]
   )
 
-type HypePool @entity(immutable: true) {
+type Details @entity(immutable: true) {
+  id: String!
+}
+
+type Rewards @entity(immutable: true) {
+  id: String!
+}
+
+type HypePool @entity(immutable: false) {
   id: String!
   creator: Bytes!
-  projectName: String!
-  description: String!
   uri: String!
-  title: String!
-  active: Boolean!
-  cap: BigInt!
-  token: Bytes!
-  minReward: BigInt!
-  endDate: BigInt!
+  active: Boolean
+  title: String
+  projectName: String
+  tokenName: String
+  word: String
+  description: String
+  projectDescription: String
+  network: BigInt
+  tokenAddress: Bytes
+  impressionReward: BigInt
+  cap: BigInt
+  endDate: BigInt
 }
 
 type HypeUri @entity(immutable: true) {

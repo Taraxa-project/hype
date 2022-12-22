@@ -1,13 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { ModalsActionsEnum, useModalsDispatch, useModalsStore } from '../../../context';
+import { useTokenDecimals } from '../../../hooks';
 
 export const useCardDetailsEffects = () => {
   const {
-    hypeDetails: { open, cardData, cardModalAction },
+    hypeDetails: { open, cardData, isPrivate },
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
-
-  const { projectName, title, description, token, creator, cap, minReward, active, endDate } =
-    cardData;
+  let navigate = useNavigate();
+  const { tokenDecimals } = useTokenDecimals(cardData);
 
   const closeModal = () => {
     dispatchModals({
@@ -19,10 +20,15 @@ export const useCardDetailsEffects = () => {
           projectName: null,
           title: null,
           description: null,
+          projectDescription: null,
+          word: null,
+          network: null,
           creator: null,
           token: null,
+          tokenName: null,
+          tokenAddress: null,
           cap: 0,
-          minReward: 0,
+          impressionReward: 0,
           active: null,
           endDate: null,
         },
@@ -30,18 +36,17 @@ export const useCardDetailsEffects = () => {
     });
   };
 
+  const onRedirect = () => {
+    navigate(`/pool/${cardData.id}`);
+    closeModal();
+  };
+
   return {
     open,
-    projectName,
-    title,
-    description,
-    token,
-    creator,
-    cap,
-    minReward,
-    active,
-    endDate,
-    cardModalAction,
+    ...cardData,
     closeModal,
+    onRedirect,
+    isPrivate,
+    tokenDecimals,
   };
 };

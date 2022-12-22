@@ -1,26 +1,69 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import { NotificationType } from '../utils';
+import { BigNumber } from 'ethers';
+import { useEffect } from 'react';
+import { useLoadingModals } from './useLoadingModals';
 
-const useContractActivatePool = () => {
+export const useContractActivatePool = (
+  id: BigNumber,
+  enabled: boolean,
+  successCallbackActivatePool: () => void,
+) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
+  const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'activatePool',
+    args: [id],
+    overrides: {
+      gasLimit: BigNumber.from(9999999),
+    },
   });
 
-  const { data, isError, isLoading, write } = useContractWrite(config);
+  const { data, isError, isLoading, write } = useContractWrite({
+    ...config,
+    onMutate() {
+      showLoading(['Please, sign the message...', 'Activating pool...']);
+    },
+    onSuccess(data: any) {
+      // console.log('Successfully called', data);
+    },
+    onError(error: any) {
+      console.log('On error: ', error);
+      hideLoadingModal();
+      showNotificationModal(NotificationType.ERROR, error?.message);
+    },
+  });
+
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      hideLoadingModal();
+    },
+    onError(error: any) {
+      console.log('Error', error);
+      hideLoadingModal();
+      showNotificationModal(NotificationType.ERROR, error?.message);
+    },
+    onSettled(data, error) {
+      hideLoadingModal();
+      successCallbackActivatePool();
+    },
+  });
+
+  useEffect(() => {
+    if (enabled && id && typeof write === 'function') {
+      write();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, id]);
 
   return {
-    data,
     isError,
     isLoading,
-    write,
   };
 };
-
-export default useContractActivatePool;

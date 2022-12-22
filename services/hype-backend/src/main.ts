@@ -30,12 +30,12 @@ async function bootstrap() {
     .setVersion('0.1')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-      'access-token',
+      'authorization',
     )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('apidocs', app, document);
 
   await app.listen(PORT);
   logger.log(`Application listening on port ${PORT}`);

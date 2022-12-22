@@ -2,51 +2,59 @@
 pragma solidity 0.8.14;
 
 interface IHypePool {
+    struct Details {
+        string title;
+        string projectName;
+        string tokenName;
+        string word;
+    }
+
+    struct Rewards {
+        uint256 network;
+        address tokenAddress;
+        uint256 impressionReward;
+        uint256 cap;
+        uint256 endDate;
+    }
+
     struct HypePool {
         uint256 id;
         address creator;
-        string projectName;
-        string title;
         bool active;
-        uint256 cap;
-        address token;
-        uint256 minReward;
-        uint256 endDate;
+        Details details;
+        Rewards rewards;
     }
 
     function createPool(
         string memory uri,
-        string memory projectName,
-        string memory title,
-        uint256 poolCap,
-        address tokenAddress,
-        uint256 minHypeReward,
-        uint256 endDate
+        Details memory details,
+        Rewards memory rewards
     ) external returns (HypePool memory);
 
     function activatePool(uint256 id) external;
+
+    function deactivatePool(uint256 id) external;
 
     function getPool(uint256 poolId) external view returns (HypePool memory);
 
     function getCurrentIndex() external view returns (uint256);
 
-    event PoolCreated(
+    event PoolCreated(uint256 poolId, address creator, string uri);
+
+    event PoolDetailsCreated(uint256 poolId,string title, string projectName, string tokenName, string word);
+
+    event PoolRewardsCreated(
         uint256 poolId,
-        address creator,
-        string uri,
-        string projectName,
-        string title,
-        bool active,
-        uint256 poolCap,
-        address poolToken,
-        uint256 minHypeReward,
+        uint256 network,
+        address tokenAddress,
+        uint256 impressionReward,
+        uint256 cap,
         uint256 endDate
     );
 
-    event PoolUriSet(
-        uint256 poolId,
-        string uri
-    );
+    event PoolUriSet(uint256 poolId, string uri);
 
     event PoolActivated(uint256 poolId, address activator);
+
+    event PoolDeactivated(uint256 poolId, address deactivator);
 }

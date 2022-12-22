@@ -5,9 +5,11 @@ import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
 import Heading from '../styles/Heading';
+import { BigNumber, utils } from 'ethers';
 
 export interface TransactionProps {
-  value: number;
+  value: BigNumber;
+  symbol: string;
   pool?: string;
   status?: TransactionStatus;
   date: Date;
@@ -15,7 +17,15 @@ export interface TransactionProps {
   buttonAction?: (transaction: any) => void;
 }
 
-const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: TransactionProps) => {
+const Transaction = ({
+  value,
+  pool,
+  status,
+  date,
+  buttonName,
+  buttonAction,
+  symbol,
+}: TransactionProps) => {
   return (
     <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
       <Box
@@ -25,8 +35,18 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
         alignItems="center"
         mb="1.5rem"
       >
-        <Heading fontSize="1.25rem" fontWeight="700" color={value > 0 ? 'success' : 'primary'}>
-          {value}
+        <Heading
+          fontSize="1.25rem"
+          fontWeight="700"
+          color={
+            status === TransactionStatus.PENDING
+              ? '#DDA25D'
+              : value && value.toString() !== '0'
+              ? 'success'
+              : 'primary'
+          }
+        >
+          {utils.formatEther(value || BigNumber.from('0'))} {symbol}
         </Heading>
         <Text fontSize="0.875rem" color="greys.4">
           {formatDate(date)}
@@ -56,14 +76,22 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction }: Tr
                 Status:
               </Text>
               <Box display="flex" flexDirection="row" gridGap="1rem" alignItems="center">
-                {status === TransactionStatus.PENDING ? <PendingIcon /> : <CheckMarkIcon />}
+                {status === TransactionStatus.PENDING ? (
+                  <PendingIcon />
+                ) : (
+                  <CheckMarkIcon color="#3E7E5C" />
+                )}
                 <Text fontSize="0.875rem" color="greys.7" m={0.5}>
                   {status}
                 </Text>
               </Box>
             </Box>
             {buttonName && buttonAction && (
-              <Button size="regular" onClick={buttonAction}>
+              <Button
+                size="regular"
+                onClick={buttonAction}
+                variant={buttonName === 'Claim' ? 'success' : 'primary'}
+              >
                 {buttonName}
               </Button>
             )}

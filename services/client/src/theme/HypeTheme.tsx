@@ -46,6 +46,7 @@ const colors: HypeColors = {
     '#fafafa',
     '#797979', // 14
     '#EEEEEE',
+    '#CFCFCF',
   ],
 };
 

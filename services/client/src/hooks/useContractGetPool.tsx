@@ -1,15 +1,14 @@
 import ABIs from '../abi';
-import { utils } from 'ethers';
 import { hypeAddress } from '../constants';
 import { useContractRead } from 'wagmi';
+import { BigNumber } from 'ethers';
 
-const useContractGetPool = (tokenId: number) => {
+export const useContractGetPool = (tokenId: BigNumber) => {
   const { abi } = ABIs.contracts.HypePool;
-  const hypeInterface = new utils.Interface(abi);
 
   const { data, isError, isLoading } = useContractRead({
-    addressOrName: hypeAddress,
-    contractInterface: hypeInterface,
+    address: hypeAddress,
+    abi,
     functionName: 'getPool',
     args: [tokenId],
   });
@@ -20,5 +19,3 @@ const useContractGetPool = (tokenId: number) => {
     isLoading,
   };
 };
-
-export default useContractGetPool;

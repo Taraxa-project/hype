@@ -60,12 +60,12 @@ export const useHeaderEffects = (authenticated: boolean, headerElements?: Header
   ];
 
   const [selected, setSelected] = useState<HeaderValues>(
-    headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
+    headerValues.find((value) => value.route === location.pathname)?.name as HeaderValues,
   );
 
   useEffect(() => {
     setSelected(
-      headerValues.find((value) => value.route === location.pathname).name as HeaderValues,
+      headerValues.find((value) => value.route === location.pathname)?.name as HeaderValues,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);

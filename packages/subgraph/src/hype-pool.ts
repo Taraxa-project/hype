@@ -1,4 +1,10 @@
-import { PoolActivated, PoolCreated, PoolUriSet } from '../generated/HypePool/HypePool';
+import {
+  PoolActivated,
+  PoolCreated,
+  PoolDetailsCreated,
+  PoolRewardsCreated,
+  PoolUriSet,
+} from '../generated/HypePool/HypePool';
 import { HypePool, HypeUri } from '../generated/schema';
 import { ByteArray, ipfs, json } from '@graphprotocol/graph-ts';
 
@@ -19,12 +25,34 @@ export function handlePoolCreated(event: PoolCreated): void {
   const id = event.params.poolId.toString();
   const hypepool = new HypePool(id);
   hypepool.creator = event.params.creator;
+  hypepool.uri = event.params.uri;
+  hypepool.active = false;
+  hypepool.save();
+}
+
+export function handlePoolDetails(event: PoolDetailsCreated): void {
+  const id = event.params.poolId.toString();
+  let hypepool = HypePool.load(id);
+  if (!hypepool) {
+    hypepool = new HypePool(id);
+  }
   hypepool.projectName = event.params.projectName;
   hypepool.title = event.params.title;
-  hypepool.active = event.params.active;
-  hypepool.cap = event.params.poolCap;
-  hypepool.token = event.params.poolToken;
-  hypepool.minReward = event.params.minHypeReward;
+  hypepool.tokenName = event.params.tokenName;
+  hypepool.word = event.params.word;
+  hypepool.save();
+}
+
+export function handlePoolRewards(event: PoolRewardsCreated): void {
+  const id = event.params.poolId.toString();
+  let hypepool = HypePool.load(id);
+  if (!hypepool) {
+    hypepool = new HypePool(id);
+  }
+  hypepool.network = event.params.network;
+  hypepool.cap = event.params.cap;
+  hypepool.tokenAddress = event.params.tokenAddress;
+  hypepool.impressionReward = event.params.impressionReward;
   hypepool.endDate = event.params.endDate;
   hypepool.save();
 }
@@ -42,6 +70,7 @@ export function handlePoolUriSet(event: PoolUriSet): void {
   if (!hypeUri) {
     hypeUri = new HypeUri(id);
   }
+
   if (uri) {
     hypepool.uri = uri;
     hypeUri.uri = uri;
@@ -54,6 +83,10 @@ export function handlePoolUriSet(event: PoolUriSet): void {
       const description = value.get('description');
       if (description) {
         hypepool.description = description.toString();
+      }
+      const projectDescription = value.get('projectDescription');
+      if (projectDescription) {
+        hypepool.projectDescription = projectDescription.toString();
       }
     }
   }

@@ -4,7 +4,6 @@ import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import useWallet from 'src/hooks/useWallet';
 import { TelegramUser } from 'src/models/HypeUser.model';
 import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
-import { ModalAction } from '../../components/modals/modal-container/ModalContainer';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 
@@ -33,11 +32,10 @@ export const useProfileEffects = () => {
   }, [resultHypePools]);
 
   const onRedeem = () => {
-    console.log('Bazinga! You clicked the button!');
+    // console.log('Bazinga! You clicked the button!');
   };
 
   const connect = async (user: TelegramUser) => {
-    console.log('new T user is', user);
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
       address: account,
@@ -76,7 +74,7 @@ export const useProfileEffects = () => {
         onDisconnect,
       },
     });
-    console.log('disconnected T user is', user);
+    // console.log('disconnected T user is', user);
   };
 
   const onDisconnect = () => {
@@ -85,16 +83,6 @@ export const useProfileEffects = () => {
       username: undefined,
     });
     submitHandler({ address: account, username: null, auth_date: null });
-  };
-
-  const onActivatePool = () => {
-    console.log('ACTIVATE POOL!');
-  };
-
-  const poolModalAction: ModalAction = {
-    name: 'Activate hype pool',
-    onAction: onActivatePool,
-    closeButtonVariant: 'primary',
   };
 
   useEffect(() => {
@@ -112,6 +100,5 @@ export const useProfileEffects = () => {
     telegramProfile,
     connect,
     disconnect,
-    poolModalAction,
   };
 };
