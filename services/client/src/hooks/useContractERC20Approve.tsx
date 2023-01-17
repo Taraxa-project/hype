@@ -2,7 +2,7 @@ import ABIs from '../abi';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useLoadingModals } from './useLoadingModals';
 import { useContractEscrowDeposit } from './useContractEscrowDeposit';
-import { NotificationType } from '../utils';
+import { AddressType, NotificationType } from '../utils';
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
@@ -10,7 +10,7 @@ export const useContractERC20Approve = (
   spender: string,
   poolId: BigNumber,
   amount: BigNumber,
-  tokenAddress: string,
+  tokenAddress: AddressType,
   enabled: boolean,
   successCallbackDeposit: () => void,
 ) => {
@@ -18,7 +18,7 @@ export const useContractERC20Approve = (
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   useContractEscrowDeposit(
-    spender,
+    spender as AddressType,
     poolId,
     amount,
     tokenAddress,

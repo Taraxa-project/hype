@@ -1,2 +1,6 @@
-export const hypeAddress: string = `${process.env.REACT_APP_HYPE_ADDRESS}` || null;
-export const escrowAddress: string = `${process.env.REACT_APP_ESCROW_ADDRESS}` || null;
+import { AddressType } from '../utils';
+
+export const hypeAddress: AddressType =
+  (`${process.env.REACT_APP_HYPE_ADDRESS}` as AddressType) || null;
+export const escrowAddress: AddressType =
+  (`${process.env.REACT_APP_ESCROW_ADDRESS}` as AddressType) || null;

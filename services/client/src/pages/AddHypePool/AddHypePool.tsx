@@ -7,7 +7,6 @@ import { DetailsForm } from './DetailsForm';
 import { RewardForm } from './RewardForm';
 import { Summary } from './Summary';
 import { Completed } from './Completed';
-import { BigNumber } from 'ethers';
 
 export const AddHypePool = () => {
   const {

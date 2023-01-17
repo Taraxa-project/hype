@@ -3,8 +3,10 @@ export const shortenAddress = (address: string): string => {
     return address;
   }
   return shortenString(address);
-}
+};
 
 export const shortenString = (str: string) => {
   return str.substring(0, 6) + '...' + str.substring(str.length - 4);
-}
+};
+
+export type AddressType = `0x${string}`;

@@ -7,28 +7,29 @@ import { HypeThemeProvider } from './theme/HypeTheme';
 import { ModalsProvider } from './context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WagmiConfig, createClient, configureChains, defaultChains } from 'wagmi';
+import { WagmiConfig, createClient, configureChains } from 'wagmi';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthProvider } from './context/auth-context';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import { taraxaChains } from './utils';
+import { taraxaDevnet } from './utils';
 import { createClient as urqlCreatClient, Provider as UrqlProvider } from 'urql';
 import { GRAPHQL_API } from './api/types';
+import { mainnet, taraxa, taraxaTestnet } from 'wagmi/chains';
 
 const { provider, webSocketProvider } = configureChains(
-  [...defaultChains, ...taraxaChains],
+  [mainnet, taraxa, taraxaTestnet, taraxaDevnet],
   [
+    // publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => ({
-        // http: `https://rpc.${chain?.network}.taraxa.io`,
-        http: chain.rpcUrls.default,
+        http: chain.rpcUrls.default.http[0],
       }),
     }),
   ],
 );
 
 const metamaskConnector = new MetaMaskConnector({
-  chains: [...defaultChains, ...taraxaChains],
+  chains: [mainnet, taraxa, taraxaTestnet, taraxaDevnet],
   options: {
     shimDisconnect: true,
     shimChainChangedDisconnect: true,

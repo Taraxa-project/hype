@@ -11,6 +11,7 @@ import {
   useTokenDecimals,
 } from '../../hooks';
 import { HypePool } from '../../models';
+import { AddressType } from '../../utils';
 
 export const usePoolDetailsEffects = (poolId: number) => {
   const { authenticated } = useAuth();
@@ -40,7 +41,7 @@ export const usePoolDetailsEffects = (poolId: number) => {
     account,
     BigNumber.from(poolId),
     BigNumber.from(pool?.cap || 0),
-    pool?.tokenAddress,
+    pool?.tokenAddress as AddressType,
     enableApprove,
     successCallbackDeposit,
   );
