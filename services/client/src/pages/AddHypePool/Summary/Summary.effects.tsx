@@ -9,6 +9,7 @@ import {
   useContractEscrowDeposit,
   useContractEscrowGetDepositsOf,
 } from '../../../hooks';
+import { AddressType } from '../../../utils';
 
 export const useSummaryEffects = (
   createdPoolIndex: BigNumber,
@@ -35,7 +36,7 @@ export const useSummaryEffects = (
     account,
     createdPoolIndex,
     amount,
-    rewards.tokenAddress,
+    rewards.tokenAddress as AddressType,
     enableApprove,
     successCallbackDeposit,
   );

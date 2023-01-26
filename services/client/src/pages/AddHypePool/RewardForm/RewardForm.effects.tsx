@@ -6,7 +6,7 @@ import { AddHypePool } from '../../../models';
 import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
-import { networkOptions, tokensOptions } from '../../../utils';
+import { AddressType, networkOptions, tokensOptions } from '../../../utils';
 
 export interface HypePoolRewardForm
   extends Pick<AddHypePool, 'network' | 'token' | 'impressionReward' | 'cap' | 'endDate'> {
@@ -27,7 +27,7 @@ export const useRewardFormEffects = (
 ) => {
   const { authenticated } = useAuth();
   const [showToken, setShowToken] = useState<boolean>(false);
-  const [tokenAddress, setTokenAddress] = useState<`0x${string}`>(null);
+  const [tokenAddress, setTokenAddress] = useState<AddressType>(null);
   const { chain } = useNetwork();
   const isEthNetwork = chain?.name === 'Ethereum';
   const { data: ERC20tokenInfo } = useToken({
@@ -149,7 +149,7 @@ export const useRewardFormEffects = (
     setValue('tokenName', '');
     const tokenAddress = event.target.value?.trim();
     if (tokenAddress && tokenAddress.length === 42) {
-      setTokenAddress(tokenAddress as `0x${string}`);
+      setTokenAddress(tokenAddress as AddressType);
     }
   };
 

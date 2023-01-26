@@ -2,12 +2,12 @@ import ABIs from '../abi';
 import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useLoadingModals } from './useLoadingModals';
-import { NotificationType } from '../utils';
+import { AddressType, NotificationType } from '../utils';
 import { BigNumber } from 'ethers';
 import { useEffect } from 'react';
 
 export const useContractEscrowDeposit = (
-  spender: string,
+  spender: AddressType,
   poolId: BigNumber,
   amount: BigNumber,
   tokenAddress: string,
@@ -24,7 +24,7 @@ export const useContractEscrowDeposit = (
     args: [spender, poolId, amount, tokenAddress],
     enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
     overrides: {
-      from: spender as `0x${string}`,
+      from: spender,
       gasLimit: BigNumber.from(9999999),
       value: amount, // Not sure if this is needed
     },
