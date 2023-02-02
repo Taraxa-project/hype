@@ -16,6 +16,7 @@ RUN yarn install --frozen-lockfile \
 COPY packages/contracts /app/packages/contracts
 COPY services/hype-backend /app/services/hype-backend
 
+RUN yarn workspace hype-contracts compile
 RUN yarn workspace hype-backend build
 
 # Production image
@@ -31,6 +32,7 @@ RUN touch .env
 
 COPY package.json /app/package.json
 COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/packages/contracts /app/packages/contracts
 COPY --from=build /app/services/hype-backend/package.json /app/services/hype-backend/
 COPY --from=build /app/services/hype-backend/node_modules /app/services/hype-backend/node_modules
 COPY --from=build /app/services/hype-backend/dist /app/services/hype-backend/dist
