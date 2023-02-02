@@ -1,5 +1,5 @@
 # build environment
-FROM node:14-alpine as build
+FROM node:18.13-alpine as build
 
 # Default replace vars for entrypoint
 # Should be removed after we able to configure at runtime
@@ -22,11 +22,15 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json yarn.lock /app/
+COPY packages/contracts/package.json /app/packages/contracts/
 COPY services/client/package.json /app/services/client/
 
 RUN yarn install
 
-COPY . /app
+COPY packages/contracts /app/packages/contracts
+COPY services/client /app/services/client
+
+RUN SKIP_PREFLIGHT_CHECK=true yarn workspace hype-contracts compile
 RUN SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client build
 
 # nginx
