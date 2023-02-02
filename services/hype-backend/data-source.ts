@@ -19,6 +19,9 @@ const getDataSourceOptions = (): DataSourceOptions => {
         username: process.env.DB_USERNAME || 'postgres',
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_DATABASE || 'hypepool',
+        ssl: {
+          rejectUnauthorized: false,
+        },
       };
 };
 
