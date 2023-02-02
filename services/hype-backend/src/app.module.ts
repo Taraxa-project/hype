@@ -56,7 +56,12 @@ const HypeAppTypeOrmModule = () => {
       },
     };
   } else {
-    typeOrmOptions = { ...baseConnectionOptions };
+    typeOrmOptions = {
+      ...baseConnectionOptions,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
   }
   return TypeOrmModule.forRoot(typeOrmOptions);
 };
