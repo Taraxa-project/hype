@@ -81,24 +81,22 @@ jobs:
           name: Build image
           shell: /bin/bash -eo pipefail
           command: |
-            docker build -t taraxa/delegation:${VERSION} -f services/delegation/Dockerfile .
+            docker build -t hype-backend:${VERSION} -f services/hype-backend/Dockerfile .
       - run:
           name: Tag and push images
           shell: /bin/bash -eo pipefail
           command: |
+            echo ${DOCKERHUB_PASS} | docker login -u taraxa --password-stdin
             if [ "${ENV}" == "prod" ]; then
-              echo ${DOCKERHUB_PASS} | docker login -u taraxa --password-stdin
-
-              docker tag taraxa/delegation:${VERSION} taraxa/delegation:latest
-              docker push taraxa/delegation:${VERSION}
-              docker push taraxa/delegation:latest
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:${VERSION}
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:latest
+              docker push taraxa/hype-backend:${VERSION}
+              docker push taraxa/hype-backend:latest
             else
-              echo ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://gcr.io
-
-              docker tag taraxa/delegation:${VERSION} ${GCP_REGISTRY}/taraxa/delegation-develop:${VERSION}
-              docker tag taraxa/delegation:${VERSION} ${GCP_REGISTRY}/taraxa/delegation-develop:latest
-              docker push ${GCP_REGISTRY}/taraxa/delegation-develop:${VERSION}
-              docker push ${GCP_REGISTRY}/taraxa/delegation-develop:latest
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:${VERSION}-rc
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:latest-rc
+              docker push taraxa/hype-backend:${VERSION}-rc
+              docker push taraxa/hype-backend:latest-rc
             fi
 workflows:
   client:
