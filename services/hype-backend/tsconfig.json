@@ -28,7 +28,8 @@
       "@taraxa-hype/auth": ["src/modules/auth"],
       "@taraxa-hype/config": ["config"],
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
-      "@taraxa-hype/user": ["src/modules/user"]
+      "@taraxa-hype/user": ["src/modules/user"],
+      "@taraxa-hype/health": ["src/modules/health"]
     }
   },
   "include": [
