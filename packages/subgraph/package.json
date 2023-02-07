@@ -5,10 +5,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ taraxa/hypePool",
-    "create-local": "graph create --node http://localhost:8020/ taraxa/hypePool",
-    "remove-local": "graph remove --node http://localhost:8020/ taraxa/hypePool",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 taraxa/hypePool",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ taraxa/hype-pool",
+    "create-local": "graph create --node http://localhost:8020/ taraxa/hype-pool",
+    "remove-local": "graph remove --node http://localhost:8020/ taraxa/hype-pool",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs https://ipfs.hype.taraxa.io taraxa/hype-pool",
     "test": "graph test"
   },
   "dependencies": {

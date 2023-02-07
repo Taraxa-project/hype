@@ -1,4 +1,4 @@
-FROM node:16.10.0-alpine AS build
+FROM node:18.13-alpine AS build
 
 RUN apk --no-cache add --update \
     python3 git build-base
@@ -13,7 +13,10 @@ COPY services/hype-backend/package.json /app/services/hype-backend/
 RUN yarn install --frozen-lockfile \
     && yarn cache clean
 
-COPY . /app
+COPY packages/contracts /app/packages/contracts
+COPY services/hype-backend /app/services/hype-backend
+
+RUN yarn workspace hype-contracts compile
 RUN yarn workspace hype-backend build
 
 # Production image
@@ -21,7 +24,7 @@ RUN yarn workspace hype-backend build
 # Failure to do this might result in using a different image
 # Tags are not 100% reliable
 
-FROM node:16.10.0-alpine AS release
+FROM node:18.13-alpine AS release
 
 WORKDIR /app
 
@@ -29,6 +32,7 @@ RUN touch .env
 
 COPY package.json /app/package.json
 COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/packages/contracts /app/packages/contracts
 COPY --from=build /app/services/hype-backend/package.json /app/services/hype-backend/
 COPY --from=build /app/services/hype-backend/node_modules /app/services/hype-backend/node_modules
 COPY --from=build /app/services/hype-backend/dist /app/services/hype-backend/dist

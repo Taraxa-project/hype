@@ -8,6 +8,7 @@ import { general, auth, ethereum, ipfs } from '@taraxa-hype/config';
 import { BlockchainModule } from '@taraxa-hype/blockchain';
 import { RewardModule, HypeReward } from '@taraxa-hype/reward';
 import { HypeUser, UserModule } from '@taraxa-hype/user';
+import { HealthModule } from '@taraxa-hype/health';
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -56,7 +57,12 @@ const HypeAppTypeOrmModule = () => {
       },
     };
   } else {
-    typeOrmOptions = { ...baseConnectionOptions };
+    typeOrmOptions = {
+      ...baseConnectionOptions,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
   }
   return TypeOrmModule.forRoot(typeOrmOptions);
 };
@@ -73,6 +79,7 @@ const HypeAppTypeOrmModule = () => {
     BlockchainModule,
     RewardModule,
     UserModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

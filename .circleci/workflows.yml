@@ -1,0 +1,127 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1.7.0
+
+parameters:
+  run-client-service-workflow:
+    type: boolean
+    default: false
+  run-backend-service-workflow:
+    type: boolean
+    default: false
+
+aliases:
+  - &config
+    docker:
+      - image: alpine:3.14
+  - &step_setup_remote_docker
+    setup_remote_docker:
+      version: 19.03.14
+      docker_layer_caching: true
+  - &step_install_deps
+    run:
+      name: Install dependencies
+      shell: /bin/sh -eo pipefail
+      command: |
+        apk add --update openssl openssh-client sudo git bash curl docker-cli
+  - &step_prepare_environment
+    run:
+      name: Prepare Environment
+      shell: /bin/bash -eo pipefail
+      command: |
+        if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+          export ENV=stage
+          echo 'export ENV=stage' >> $BASH_ENV
+        elif [ "${CIRCLE_BRANCH}" == "main" ]; then
+          export ENV=prod
+          echo 'export ENV=prod' >> $BASH_ENV
+        else
+          echo 'Unknown branch' >&2
+          exit 1
+        fi
+        echo "export VERSION=$(git rev-parse --short HEAD)" >> $BASH_ENV
+jobs:
+  build-client:
+    <<: *config
+    steps:
+      - *step_install_deps
+      - checkout
+      - *step_setup_remote_docker
+      - *step_prepare_environment
+      - run:
+          name: Build image
+          shell: /bin/bash -eo pipefail
+          command: |
+            docker build --build-arg NODE_ENV=${ENV} -t hype-client:${VERSION} -f services/client/Dockerfile .
+      - run:
+          name: Tag and push images
+          shell: /bin/bash -eo pipefail
+          command: |
+            echo ${DOCKERHUB_PASS} | docker login -u taraxa --password-stdin
+            if [ "${ENV}" == "prod" ]; then
+              docker tag hype-client:${VERSION} taraxa/hype-client:${VERSION}
+              docker tag hype-client:${VERSION} taraxa/hype-client:latest
+              docker push taraxa/hype-client:${VERSION}
+              docker push taraxa/hype-client:latest
+            else
+              docker tag hype-client:${VERSION} taraxa/hype-client:${VERSION}-rc
+              docker tag hype-client:${VERSION} taraxa/hype-client:latest-rc
+              docker push taraxa/hype-client:${VERSION}-rc
+              docker push taraxa/hype-client:latest-rc
+            fi
+  build-backend:
+    <<: *config
+    steps:
+      - *step_install_deps
+      - checkout
+      - *step_setup_remote_docker
+      - *step_prepare_environment
+      - run:
+          name: Build image
+          shell: /bin/bash -eo pipefail
+          command: |
+            docker build -t hype-backend:${VERSION} -f services/hype-backend/Dockerfile .
+      - run:
+          name: Tag and push images
+          shell: /bin/bash -eo pipefail
+          command: |
+            echo ${DOCKERHUB_PASS} | docker login -u taraxa --password-stdin
+            if [ "${ENV}" == "prod" ]; then
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:${VERSION}
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:latest
+              docker push taraxa/hype-backend:${VERSION}
+              docker push taraxa/hype-backend:latest
+            else
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:${VERSION}-rc
+              docker tag hype-backend:${VERSION} taraxa/hype-backend:latest-rc
+              docker push taraxa/hype-backend:${VERSION}-rc
+              docker push taraxa/hype-backend:latest-rc
+            fi
+workflows:
+  client:
+    when:
+      or:
+        - << pipeline.parameters.run-client-service-workflow >>
+    jobs:
+      - build-client:
+          filters:
+            branches:
+              only:
+                - main
+                - develop
+          context:
+            - DOCKERHUB
+  backend:
+    when:
+      or:
+        - << pipeline.parameters.run-backend-service-workflow >>
+    jobs:
+      - build-backend:
+          filters:
+            branches:
+              only:
+                - main
+                - develop
+          context:
+            - DOCKERHUB
