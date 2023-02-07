@@ -9,11 +9,10 @@ schema:
 dataSources:
   - kind: ethereum
     name: HypePool
-    network: taraxa
+    network: mainnet
     source:
-      address: "0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E"
+      address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
       abi: HypePool
-      startBlock: 155827
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
