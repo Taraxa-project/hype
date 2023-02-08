@@ -14,8 +14,8 @@ const StyledCardContainer = styled.div`
   margin-bottom: 1rem;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 29.5rem;
-  margin-top: 3rem;
+  height: 25rem;
+  margin-top: 1rem;
   border-radius: 1rem;
 
   display: grid;
