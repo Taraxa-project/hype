@@ -47,7 +47,7 @@
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.7.2",
-    "ipfs-http-client": "56.0.3",
+    "ipfs-http-client": "60.0.0",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

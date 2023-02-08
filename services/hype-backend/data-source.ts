@@ -19,6 +19,13 @@ const getDataSourceOptions = (): DataSourceOptions => {
         username: process.env.DB_USERNAME || 'postgres',
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_DATABASE || 'hypepool',
+      };
+};
+
+const getSslRejectUnauthorized = () => {
+  return process.env.DB_SSL_REJECT_UNAUTHORIZED === 'false'
+    ? {}
+    : {
         ssl: {
           rejectUnauthorized: false,
         },
@@ -27,6 +34,7 @@ const getDataSourceOptions = (): DataSourceOptions => {
 
 const DataSourceConfig = new DataSource({
   ...getDataSourceOptions(),
+  ...getSslRejectUnauthorized(),
   synchronize: false,
   migrationsRun: true,
   logging: process.env.NODE_ENV !== 'production',
