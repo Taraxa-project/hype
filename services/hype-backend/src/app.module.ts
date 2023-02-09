@@ -9,6 +9,7 @@ import { BlockchainModule } from '@taraxa-hype/blockchain';
 import { RewardModule, HypeReward } from '@taraxa-hype/reward';
 import { HypeUser, UserModule } from '@taraxa-hype/user';
 import { HealthModule } from '@taraxa-hype/health';
+import { IpfsModule } from '@taraxa-hype/ipfs';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -87,6 +88,7 @@ const HypeAppTypeOrmModule = () => {
     RewardModule,
     UserModule,
     HealthModule,
+    IpfsModule,
   ],
 })
 export class AppModule {}

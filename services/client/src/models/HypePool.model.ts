@@ -18,3 +18,6 @@ export interface HypePool extends AddHypePool {
   active: boolean;
   tokenAddress?: string;
 }
+
+export interface HypeProjectDetails
+  extends Pick<AddHypePool, 'projectDescription' | 'description'> {}

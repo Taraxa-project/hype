@@ -47,7 +47,7 @@
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.7.2",
-    "ipfs-http-client": "60.0.0",
+    "ipfs-http-client": "56.0.3",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -110,6 +110,7 @@
     "@taraxa-hype/blockchain": "<rootDir>/src/modules/blockchain",
     "@taraxa-hype/config": "<rootDir>/config",
     "@taraxa-hype/user": "<rootDir>/src/modules/user",
-    "@taraxa-hype/health": "<rootDir>/src/modules/health"
+    "@taraxa-hype/health": "<rootDir>/src/modules/health",
+    "@taraxa-hype/ipfs": "<rootDir>/src/modules/ipfs"
   }
 }

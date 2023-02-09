@@ -3,7 +3,7 @@ import { hypeAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { NotificationType } from '../utils';
 import { BigNumber } from 'ethers';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoadingModals } from './useLoadingModals';
 
 export const useContractActivatePool = (
@@ -13,6 +13,7 @@ export const useContractActivatePool = (
 ) => {
   const { abi } = ABIs.contracts.HypePool;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
+  const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
     address: hypeAddress,
@@ -56,11 +57,17 @@ export const useContractActivatePool = (
   });
 
   useEffect(() => {
-    if (enabled && id && typeof write === 'function') {
+    if (typeof write === 'function') {
+      setIsWrite(true);
+    }
+  }, [write]);
+
+  useEffect(() => {
+    if (enabled && id && isWrite === true) {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, id]);
+  }, [enabled, isWrite]);
 
   return {
     isError,
