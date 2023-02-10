@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
-import { ipfsClient } from '../../constants';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
 import { BigNumber } from 'ethers';
+import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
+import { HypeProjectDetails } from '../../models';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
@@ -24,6 +25,8 @@ export const useAddHypePoolEffects = () => {
   const successCallbackActivatePool = (): void => {
     setCurrentStep(4);
   };
+
+  const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
@@ -47,7 +50,7 @@ export const useAddHypePoolEffects = () => {
     // word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
-    network: 843,
+    network: 842,
     token: null,
     tokenAddress: '',
     tokenName: '',
@@ -55,7 +58,7 @@ export const useAddHypePoolEffects = () => {
     impressionReward: null,
     cap: null,
     endDate: null,
-    // network: 843,
+    // network: 842,
     // token: 'TARA',
     // tokenAddress: '0x0000000000000000000000000000000000000000',
     // tokenName: 'TARA',
@@ -74,18 +77,18 @@ export const useAddHypePoolEffects = () => {
     setPoolTransaction,
   );
 
-  const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
-    const url = await uploadToIpfs(data);
-    setIpfsUrl(url);
-    if (url) {
+  useEffect(() => {
+    if (uploadedIpfsUrl?.data) {
+      setIpfsUrl(uploadedIpfsUrl?.data?.path);
       setCurrentStep(2);
     }
-  };
+  }, [uploadedIpfsUrl]);
 
-  const uploadToIpfs = async (data: HypePoolDetailsForm) => {
-    if (!data) {
-      return;
-    }
+  const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
+    const projectDetails: HypeProjectDetails = {
+      description: data.description,
+      projectDescription: data.projectDescription,
+    };
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
       payload: {
@@ -94,30 +97,7 @@ export const useAddHypePoolEffects = () => {
         text: ['Uploading description to IPFS'],
       },
     });
-    let url: string;
-    try {
-      const uploaded = await ipfsClient.add(
-        JSON.stringify({
-          description: data?.description,
-          projectDescription: data?.projectDescription,
-        }),
-      );
-      url = uploaded.path;
-      // console.log('url: ', url);
-      // console.log('uploaded: ', uploaded);
-    } catch (error) {
-      console.log('Error uploading to IPFS: ', error);
-    } finally {
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_LOADING,
-        payload: {
-          open: false,
-          title: null,
-          text: null,
-        },
-      });
-      return url;
-    }
+    submitHandler(projectDetails);
   };
 
   const createPool = (details: HypePoolDetailsForm, rewards: HypePoolRewardForm) => {

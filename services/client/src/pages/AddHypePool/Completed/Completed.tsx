@@ -5,7 +5,7 @@ import Text from '../../../components/styles/Text';
 import TitleText from '../../../components/titletext/TitleText';
 import Box from '../../../components/styles/Box';
 import { Link } from '../../../components/styles/Link';
-import { networkOptions } from '../../../utils';
+import { getExplorerFromNetwork } from '../../../utils';
 import Button from '../../../components/button/Button';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { TelegramShareButton, TwitterShareButton } from 'react-share';
@@ -26,6 +26,7 @@ export const Completed: FC<CompletedProps> = ({
 }) => {
   const poolUrl = `${window.location.href}/${createdPoolIndex}`;
   const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
+  const { text, href } = getExplorerFromNetwork(network, transaction);
 
   const onCopy = () => {
     setCopyBtnText('✔️');
@@ -38,26 +39,11 @@ export const Completed: FC<CompletedProps> = ({
     <FormColumn>
       <TitleText>{poolName} is active!</TitleText>
       <Box pb={4}>
-        {network === networkOptions[0].value ? (
+        {text && href && (
           <Box display="flex">
             <Text fontSize="1rem" fontWeight="500" color="greys.7">
               View your transaction on
-              <Link
-                target="_blank"
-                text={` Etherscan 🌐.`}
-                href={`https://etherscan.io/tx/${transaction}`}
-              />
-            </Text>
-          </Box>
-        ) : (
-          <Box display="flex">
-            <Text fontSize="1rem" fontWeight="500" color="greys.7" pr={2}>
-              View your transaction on the
-              <Link
-                target="_blank"
-                text={` Taraxa Network Explorer 🌐.`}
-                href={`https://explorer.devnet.taraxa.io/tx/${transaction}`}
-              />
+              <Link target="_blank" text={text} href={href} />
             </Text>
           </Box>
         )}

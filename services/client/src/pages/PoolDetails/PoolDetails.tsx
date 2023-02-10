@@ -38,9 +38,9 @@ export const PoolDetails = () => {
     authenticated,
     fund,
     activate,
+    account,
   } = usePoolDetailsEffects(+poolId);
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
-
   return (
     <PoolContainer>
       <TitleText>{title}</TitleText>
@@ -122,14 +122,20 @@ export const PoolDetails = () => {
           </InfoValue>
         )}
       </InfoContainer>
-      {!active && (
-        <Box my={3}>
+      {!active && authenticated && account?.toLowerCase() === creator?.toLowerCase() && (
+        <Box my={4}>
           {!isDeposited ? (
             <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
               Fund the Pool
             </Button>
           ) : (
-            <Button disabled={!authenticated} size="full-width" type="button" onClick={activate}>
+            <Button
+              disabled={!authenticated}
+              size="full-width"
+              variant="success"
+              type="button"
+              onClick={activate}
+            >
               Activate the Pool
             </Button>
           )}

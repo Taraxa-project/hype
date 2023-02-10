@@ -63,7 +63,6 @@ export const useContractCreatePool = (
       console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
-      resetWriteContract();
     },
   });
 
@@ -106,7 +105,7 @@ export const useContractCreatePool = (
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, args, isWrite]);
+  }, [enabled, isWrite]);
 
   return {
     isError,

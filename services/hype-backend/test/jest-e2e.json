@@ -12,6 +12,7 @@
     "@taraxa-hype/blockchain": "<rootDir>/../src/modules/blockchain",
     "@taraxa-hype/user": "<rootDir>/../src/modules/user",
     "@taraxa-hype/health": "<rootDir>/../src/modules/health",
+    "@taraxa-hype/ipfs": "<rootDir>/../src/modules/ipfs",
     "@taraxa-hype/config": "<rootDir>/../config"
   }
 }

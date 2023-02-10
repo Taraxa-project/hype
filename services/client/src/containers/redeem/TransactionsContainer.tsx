@@ -40,13 +40,7 @@ export const TransactionsContainer = ({
         alignItems="start"
         gridGap="1rem"
       >
-        <Box
-          display="flex"
-          flexDirection="column"
-          width="100%"
-          mt={{ _: '3.5rem', lg: '0' }}
-          justifyContent="center"
-        >
+        <Box display="flex" flexDirection="column" width="100%" mt={0} justifyContent="center">
           <Heading
             fontSize="1.25rem"
             fontWeight="700"
@@ -63,20 +57,26 @@ export const TransactionsContainer = ({
                   <LoadingSpinner />
                 </Box>
               )}
-              <Box display="flex" flexDirection="column" py="2rem" gridGap="1rem">
-                {totalPoolRewards?.map((pool) => (
-                  <Transaction
-                    key={`redeem-${pool.unclaimed?.toString()}-${pool.poolId}-${pool.poolName}`}
-                    value={pool.unclaimed}
-                    symbol={pool.symbol}
-                    pool={pool.poolName}
-                    date={new Date()}
-                    status={TransactionStatus.PENDING}
-                    buttonAction={() => onRedeem(pool)}
-                    buttonName="Redeem"
-                  />
-                ))}
-              </Box>
+              {totalPoolRewards?.length > 0 ? (
+                <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
+                  {totalPoolRewards?.map((pool) => (
+                    <Transaction
+                      key={`redeem-${pool.unclaimed?.toString()}-${pool.poolId}-${pool.poolName}`}
+                      value={pool.unclaimed}
+                      symbol={pool.symbol}
+                      pool={pool.poolName}
+                      date={new Date()}
+                      status={TransactionStatus.PENDING}
+                      buttonAction={() => onRedeem(pool)}
+                      buttonName="Redeem"
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Box>
+                  <NotAvailable message="There aren't any rewards available..." mt={3} />
+                </Box>
+              )}
             </>
           ) : (
             <Box>
@@ -84,7 +84,7 @@ export const TransactionsContainer = ({
             </Box>
           )}
         </Box>
-        <Box display="flex" flexDirection="column" width="100%" mt={{ _: '3.5rem', lg: '0' }}>
+        <Box display="flex" flexDirection="column" width="100%" mt={0}>
           <Heading
             fontSize="1.25rem"
             fontWeight="700"
@@ -101,20 +101,26 @@ export const TransactionsContainer = ({
                   <LoadingSpinner />
                 </Box>
               )}
-              <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
-                {claims?.map((claim) => (
-                  <Transaction
-                    key={`claim-${claim.id}-${claim.poolId}`}
-                    value={claim.amount}
-                    symbol={claim.symbol || 'TARA'}
-                    pool={claim.poolName || 'APE Hype 12'}
-                    date={new Date()}
-                    status={TransactionStatus.REDEEMED}
-                    buttonAction={() => onClaim(claim)}
-                    buttonName="Claim"
-                  />
-                ))}
-              </Box>
+              {claims?.length > 0 ? (
+                <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
+                  {claims?.map((claim) => (
+                    <Transaction
+                      key={`claim-${claim.id}-${claim.poolId}`}
+                      value={claim.amount}
+                      symbol={claim.symbol || 'TARA'}
+                      pool={claim.poolName || 'APE Hype 12'}
+                      date={new Date()}
+                      status={TransactionStatus.REDEEMED}
+                      buttonAction={() => onClaim(claim)}
+                      buttonName="Claim"
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Box>
+                  <NotAvailable message="There aren't any claims available..." mt={3} />
+                </Box>
+              )}
             </>
           ) : (
             <Box>

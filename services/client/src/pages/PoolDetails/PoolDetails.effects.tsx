@@ -1,7 +1,8 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'urql';
 import { useAccount } from 'wagmi';
-import { useGetPoolDetails } from '../../api/pools/useGetPoolDetails';
+import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
 import {
   useAuth,
   useContractActivatePool,
@@ -18,15 +19,23 @@ export const usePoolDetailsEffects = (poolId: number) => {
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();
   const { isCustomToken, tokenDecimals } = useTokenDecimals(pool);
-  const result = useGetPoolDetails(poolId);
+  const [{ data: hypePoolData }] = useQuery({
+    query: HYPEPOOL_QUERIES.poolQuery,
+    variables: { id: poolId },
+    pause: poolId === undefined || poolId === null,
+  });
+
   const [enableActivate, setEnableActivate] = useState<boolean>(false);
   const [enableApprove, setEnableApprove] = useState<boolean>(false);
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(BigNumber.from(poolId), true);
+  const [hasDeposited, setHasDeposited] = useState<boolean>(false);
+
+  const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
+  const { data: depositsOf } = useContractEscrowGetDepositsOf(BigNumber.from(poolId), hasDeposited);
 
   const successCallbackDeposit = (): void => {
-    setIsDeposited(true);
+    setHasDeposited(true);
   };
 
   const successCallbackActivatePool = (): void => {
@@ -40,7 +49,7 @@ export const usePoolDetailsEffects = (poolId: number) => {
   useContractERC20Approve(
     account,
     BigNumber.from(poolId),
-    BigNumber.from(pool?.cap || 0),
+    amount,
     pool?.tokenAddress as AddressType,
     enableApprove,
     successCallbackDeposit,
@@ -48,7 +57,7 @@ export const usePoolDetailsEffects = (poolId: number) => {
   useContractEscrowDeposit(
     account,
     BigNumber.from(poolId),
-    BigNumber.from(pool?.cap || 0),
+    amount,
     pool?.tokenAddress,
     enableDeposit,
     successCallbackDeposit,
@@ -66,12 +75,17 @@ export const usePoolDetailsEffects = (poolId: number) => {
   }, [depositsOf, pool, poolId]);
 
   useEffect(() => {
-    result.then((response) => {
-      if (response?.data?.hypePool) {
-        setPool(response?.data?.hypePool);
-      }
-    });
-  }, [result]);
+    if (hypePoolData) {
+      setPool(hypePoolData?.hypePool);
+    }
+  }, [hypePoolData]);
+
+  useEffect(() => {
+    if (pool?.cap) {
+      const amount = BigNumber.from(pool?.cap || 0);
+      setAmount(amount);
+    }
+  }, [pool]);
 
   const fund = () => {
     if (isCustomToken) {
@@ -94,5 +108,6 @@ export const usePoolDetailsEffects = (poolId: number) => {
     authenticated,
     fund,
     activate,
+    account,
   };
 };

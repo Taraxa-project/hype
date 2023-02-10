@@ -14,7 +14,6 @@ import {
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
 import { monthDiff, transformFromWei } from '../../../utils';
-import useWallet from '../../../hooks/useWallet';
 import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
@@ -42,15 +41,7 @@ export const CardDetails = () => {
     title,
     close: closeModal,
   };
-  const { isConnected, connect } = useWallet();
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
-
-  const modalAction: ModalAction = {
-    name: 'Connect Wallet',
-    onAction: connect,
-    disabled: isConnected,
-    closeButtonVariant: 'primary',
-  };
 
   const poolModalAction: ModalAction = {
     name: 'Go to Pool details page',
@@ -63,7 +54,7 @@ export const CardDetails = () => {
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={isConnected === true ? poolModalAction : modalAction}
+      modalAction={poolModalAction}
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -101,7 +92,7 @@ export const CardDetails = () => {
             <DataValue>{tokenName}</DataValue>
           </DataContainer>
         )}
-        {tokenAddress && (
+        {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
           <>
             <DataHeader>Token contract address:</DataHeader>
             <BlockiesContainer>
