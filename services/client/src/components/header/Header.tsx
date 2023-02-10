@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Megaphone from '../../assets/images/megaphone.png';
+import Image from '../../components/image/Image';
 
 import HamburgerMenuIcon from '../../assets/icons/HamburgerMenu';
-import { HypeIconSmall } from '../../assets/icons/HypeIcon';
 import { shortenAddress } from '../../utils';
 import { ConnectWalletBtn } from '../connect-wallet-btn/ConnectWalletBtn';
 import Box from '../styles/Box';
@@ -82,7 +83,9 @@ const Header = React.memo(
           <div>
             <div className="header-left">
               <Link to="/" style={{ textDecoration: 'none' }}>
-                <Logo>📣</Logo>
+                <Logo>
+                  <Image src={Megaphone} alt="Megaphone" width="60px" />
+                </Logo>
               </Link>
             </div>
 

@@ -8,6 +8,8 @@ import {
 
 export const Logo = styled.div`
   font-size: 3rem;
+  display: flex;
+  align-items: center;
 `;
 
 export const StyledHeader = styled.header<CustomStyledProps>`
