@@ -14,7 +14,7 @@ const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   };
 
   if (search) {
-    filters.text = search;
+    filters.text = `'${search}'`;
   }
 
   return filters;

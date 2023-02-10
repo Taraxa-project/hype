@@ -5,6 +5,7 @@ import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
 
 export const useHomeEffects = () => {
+  const [searchString, setSearchString] = useState<string>('');
   const [filters, setFilters] = useState<{
     page: number;
     searchString: string;
@@ -49,27 +50,33 @@ export const useHomeEffects = () => {
     }
     if (filters.searchString) {
       if (data?.poolSearch) {
-        setHypePools(hypePools.concat(data?.poolSearch));
+        // setHypePools(hypePools.concat(data?.poolSearch));
+        setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
       }
     } else {
       if (data?.hypePools) {
-        setHypePools(hypePools.concat(data?.hypePools));
+        // setHypePools(hypePools.concat(data?.poolSearch));
+        setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, filters.searchString]);
 
-  const handleChange = (e: any) => {
+  useEffect(() => {
     setHypePools([]);
     setFilters({
       page: 1,
-      searchString: e.target.value || '',
+      searchString: searchString || '',
       maxReached: false,
     });
+  }, [searchString]);
+
+  const handleChange = (e: React.BaseSyntheticEvent) => {
+    setSearchString(e.target.value?.trim());
   };
 
   const debouncedResults = useMemo(() => {
-    return debounce(handleChange, 300);
+    return debounce(handleChange, 350);
   }, []);
 
   useEffect(() => {
@@ -93,5 +100,6 @@ export const useHomeEffects = () => {
     hypePools,
     onClick,
     isFetchingNextPage,
+    filters,
   };
 };
