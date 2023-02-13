@@ -20,7 +20,8 @@ const StyledCardContainer = styled.div`
 
   display: grid;
   grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
+  // grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
+  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
   justify-content: start;
   align-items: start;
 

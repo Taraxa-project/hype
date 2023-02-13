@@ -14,17 +14,15 @@ const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   };
 
   if (search) {
-    filters.text = `'${search}'`;
+    filters.text = `'${search?.trim()}'`;
   }
 
   return filters;
 };
 
-export const useFetchHypePools = (filters: { page: number; searchString: string }) => {
-  const query = filters.searchString
-    ? HYPEPOOL_QUERIES.poolsSearchQuery
-    : HYPEPOOL_QUERIES.poolsQuery;
-  const computedFilters: FetchHypesFilter = computeFilters(filters.page, filters.searchString);
+export const useFetchHypePools = (page: number, searchString: string) => {
+  const query = searchString ? HYPEPOOL_QUERIES.poolsSearchQuery : HYPEPOOL_QUERIES.poolsQuery;
+  const computedFilters: FetchHypesFilter = computeFilters(page, searchString);
   const [result] = useQuery({
     query: query,
     variables: computedFilters,

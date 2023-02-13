@@ -36,7 +36,7 @@ export const CardDescription = styled.span`
 export const DataHeader = styled.span`
   flex: 1 0 50%;
   display: flex;
-  text-align: right;
+  text-align: left;
   font-weight: 700;
   line-height: 1.25rem;
   font-size: 0.875rem;
