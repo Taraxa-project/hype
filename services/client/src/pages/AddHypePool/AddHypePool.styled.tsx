@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   width: 100%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: 1rem 2rem 2rem;
+    padding: 2rem;
   }
 `;
 
