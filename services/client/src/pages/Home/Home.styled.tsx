@@ -8,15 +8,16 @@ export const Logo = styled.div`
 
 export const CardContainer = styled.div`
   position: relative;
-  margin-top: 2rem;
   z-index: 1;
-  padding: 0 3rem 2rem;
-  margin-bottom: 1rem;
   overflow: auto;
+  padding: 0 3rem 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 
   display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, max-content));
+  gap: 2rem;
+  // grid-template-columns: repeat(auto-fill, minmax(21rem, max-content));
+  grid-template-columns: repeat(auto-fill, minmax(21rem, max-content));
   justify-content: start;
   align-items: start;
 
