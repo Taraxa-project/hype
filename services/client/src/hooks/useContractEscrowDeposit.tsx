@@ -4,7 +4,7 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import { useLoadingModals } from './useLoadingModals';
 import { AddressType, NotificationType } from '../utils';
 import { BigNumber } from 'ethers';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useContractEscrowDeposit = (
   spender: AddressType,
@@ -16,13 +16,14 @@ export const useContractEscrowDeposit = (
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
+  const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
     address: escrowAddress,
     abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
-    enabled: !!spender || !!poolId || !!amount || !!tokenAddress,
+    enabled: !!spender && !!poolId && !!amount && !!tokenAddress && enabled,
     overrides: {
       from: spender,
       gasLimit: BigNumber.from(9999999),
@@ -60,11 +61,17 @@ export const useContractEscrowDeposit = (
   });
 
   useEffect(() => {
-    if (enabled && spender && poolId && amount && tokenAddress && typeof write === 'function') {
+    if (typeof write === 'function') {
+      setIsWrite(true);
+    }
+  }, [write]);
+
+  useEffect(() => {
+    if (enabled && spender && poolId && amount && tokenAddress && isWrite === true) {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, spender, poolId, amount, tokenAddress]);
+  }, [enabled, isWrite]);
 
   return {
     isError,

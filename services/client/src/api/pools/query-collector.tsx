@@ -46,7 +46,7 @@ export const HYPEPOOL_QUERIES = {
   profilePoolsQuery: `
     query HypePoolsByCreator($creator: String) {
       hypePools(
-        creator: $creator
+        where: { creator: $creator }
       ) {
         id
         title

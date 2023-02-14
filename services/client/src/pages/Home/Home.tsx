@@ -1,5 +1,7 @@
 import SearchIcon from '../../assets/icons/Search';
+import Megaphone from '../../assets/images/megaphone.png';
 import Input from '../../components/input/Input';
+import Image from '../../components/image/Image';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import NotFoundIcon from 'src/assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
@@ -28,9 +30,9 @@ export const Home = () => {
     <>
       <HeroContainer>
         <IntroContainer>
-          {/* <HypeIconBig /> */}
           <Logo>
-            📣 <LogoText>Hype</LogoText>
+            <Image src={Megaphone} alt="Megaphone" />
+            <LogoText>Hype</LogoText>
           </Logo>
           <TitleText>What is hype farming?</TitleText>
           <DescriptionContainer>

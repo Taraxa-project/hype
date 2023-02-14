@@ -38,7 +38,7 @@ const Card = ({ children, ...props }: CardProps) => {
           {projectName && (
             <DataContainer>
               <DataHeader>Project Name:</DataHeader>
-              <DataValue>{projectName}</DataValue>
+              <DataValue> {shortenText(projectName, 20)}</DataValue>
             </DataContainer>
           )}
           {cap && (

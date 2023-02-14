@@ -3,7 +3,8 @@ import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
 import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
 import useWallet from 'src/hooks/useWallet';
 import { TelegramUser } from 'src/models/HypeUser.model';
-import { useGetHypePoolsBy } from '../../api/pools/useGetHypePoolsBy';
+import { useQuery } from 'urql';
+import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 
@@ -18,18 +19,20 @@ export const useProfileEffects = () => {
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
   const [currentReward, setCurrentReward] = useState<number>(null);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
-  const resultHypePools = useGetHypePoolsBy(account);
+  const [{ data: hypePoolsData }] = useQuery({
+    query: HYPEPOOL_QUERIES.profilePoolsQuery,
+    variables: { creator: account },
+    pause: !account,
+  });
   const { data: hypeUser } = useGetHypeUserBy(account);
   const submitHandler = useUpdateTelegram();
   const dispatchModals = useModalsDispatch();
 
   useEffect(() => {
-    resultHypePools.then((response) => {
-      if (response?.data?.hypePools) {
-        setCreatedPools(response?.data?.hypePools);
-      }
-    });
-  }, [resultHypePools]);
+    if (hypePoolsData?.hypePools?.length > 0) {
+      setCreatedPools(hypePoolsData?.hypePools);
+    }
+  }, [hypePoolsData]);
 
   const onRedeem = () => {
     // console.log('Bazinga! You clicked the button!');

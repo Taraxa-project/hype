@@ -19,6 +19,7 @@ export const useSummaryEffects = (
 ) => {
   const { address: account } = useAccount();
   const { authenticated } = useAuth();
+
   const [enableActivate, setEnableActivate] = useState<boolean>(false);
   const [enableApprove, setEnableApprove] = useState<boolean>(false);
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);

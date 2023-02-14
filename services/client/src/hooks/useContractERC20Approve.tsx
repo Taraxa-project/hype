@@ -78,7 +78,7 @@ export const useContractERC20Approve = (
       approve();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, spender, poolId, amount, tokenAddress]);
+  }, [enabled]);
 
   return {
     isError,

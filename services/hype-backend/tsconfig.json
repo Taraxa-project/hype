@@ -21,6 +21,7 @@
     "esModuleInterop": true,
     "preserveWatchOutput": true,
     "strictBindCallApply": false,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
@@ -29,7 +30,8 @@
       "@taraxa-hype/config": ["config"],
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
       "@taraxa-hype/user": ["src/modules/user"],
-      "@taraxa-hype/health": ["src/modules/health"]
+      "@taraxa-hype/health": ["src/modules/health"],
+      "@taraxa-hype/ipfs": ["src/modules/ipfs"]
     }
   },
   "include": [

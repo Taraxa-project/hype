@@ -9,6 +9,9 @@ import { BlockchainModule } from '@taraxa-hype/blockchain';
 import { RewardModule, HypeReward } from '@taraxa-hype/reward';
 import { HypeUser, UserModule } from '@taraxa-hype/user';
 import { HealthModule } from '@taraxa-hype/health';
+import { IpfsModule } from '@taraxa-hype/ipfs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const getEnvFilePath = () => {
   const pathsToTest = ['../.env', '../../.env', '../../../.env'];
@@ -48,13 +51,17 @@ const HypeAppTypeOrmModule = () => {
         logging: ['info'],
       };
 
-  if (!!process.env.DATABASE_CERT) {
+  if (process.env.DATABASE_CERT) {
     typeOrmOptions = {
       ...baseConnectionOptions,
       ssl: {
         rejectUnauthorized: false,
         ca: process.env.DATABASE_CERT,
       },
+    };
+  } else if (process.env.DB_SSL_REJECT_UNAUTHORIZED === 'false') {
+    typeOrmOptions = {
+      ...baseConnectionOptions,
     };
   } else {
     typeOrmOptions = {
@@ -64,6 +71,7 @@ const HypeAppTypeOrmModule = () => {
       },
     };
   }
+
   return TypeOrmModule.forRoot(typeOrmOptions);
 };
 
@@ -80,6 +88,7 @@ const HypeAppTypeOrmModule = () => {
     RewardModule,
     UserModule,
     HealthModule,
+    IpfsModule,
   ],
 })
 export class AppModule {}

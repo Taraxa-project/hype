@@ -51,7 +51,7 @@
     "cross-env": "^7.0.3",
     "ethers": "^5.7.2",
     "graphql": "^16.5.0",
-    "ipfs-http-client": "^57.0.3",
+    "ipfs-http-client": "^60.0.0",
     "lodash.debounce": "^4.0.8",
     "luxon": "^2.4.0",
     "postcss-syntax": "^0.36.2",
