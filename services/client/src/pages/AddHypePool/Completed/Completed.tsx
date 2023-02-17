@@ -26,7 +26,7 @@ export const Completed: FC<CompletedProps> = ({
 }) => {
   const poolUrl = `${window.location.href}/${createdPoolIndex}`;
   const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
-  const { text, href } = getExplorerFromNetwork(network, transaction);
+  const { text, href } = getExplorerFromNetwork(Number(network), transaction);
 
   const onCopy = () => {
     setCopyBtnText('✔️');

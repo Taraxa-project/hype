@@ -13,6 +13,7 @@ export const HowItWorksWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.greys[0]};
   border-radius: 1.5rem;
   padding: 1.5rem 2.25rem;
+  margin-left: 1.5rem;
 `;
 
 export const HowItWorksTitle = styled(TitleText)`
