@@ -25,13 +25,21 @@ export interface IpfsAddResult {
 @Injectable()
 export class IpfsService {
   private logger = new Logger('IpfsService');
+
   private ipfsClient: IPFSHTTPClient;
+
   private ipfsUrl: string;
+
   private ipfsHost: string;
+
   private ipfsPort: number;
+
   private ipfsProtocol: string;
+
   private ipfsAuthorization: string;
+
   private ipfsUseAuth: boolean;
+
   private ipfsBaseUrl: string;
 
   constructor(
@@ -48,11 +56,9 @@ export class IpfsService {
       ipfsConfig.ipfsSecret &&
       ipfsConfig.ipfsUseAuth === 'true'
     ) {
-      this.ipfsAuthorization =
-        'Basic ' +
-        Buffer.from(
-          ipfsConfig.ipfsProjectId + ':' + ipfsConfig.ipfsSecret,
-        ).toString('base64');
+      this.ipfsAuthorization = `Basic ${Buffer.from(
+        `${ipfsConfig.ipfsProjectId}:${ipfsConfig.ipfsSecret}`,
+      ).toString('base64')}`;
       this.ipfsUseAuth = ipfsConfig.ipfsUseAuth === 'true';
     }
   }

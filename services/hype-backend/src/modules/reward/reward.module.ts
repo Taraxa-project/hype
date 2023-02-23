@@ -1,6 +1,8 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLRequestModule } from '@golevelup/nestjs-graphql-request';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from '../auth';
 import { BlockchainModule } from '../blockchain';
 import { UserModule } from '../user';
@@ -13,6 +15,15 @@ import { RewardService } from './reward.service';
   imports: [
     BlockchainModule,
     TypeOrmModule.forFeature([HypeReward, HypeClaim]),
+    GraphQLRequestModule.forRootAsync(GraphQLRequestModule, {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          endpoint: config.get<string>('auth.subGraphEndpoint'),
+        };
+      },
+    }),
     AuthModule,
     HttpModule,
     UserModule,

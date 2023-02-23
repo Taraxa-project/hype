@@ -15,13 +15,14 @@ contract HypePool is IHypePool, Pausable, Ownable {
     mapping(bytes32 => string) private _tokenURIs;
     // Mapping to store generated hash IDs
     mapping(bytes32 => bool) private _hashes;
+    bytes32 private _latestHash;
 
     constructor(address escrowContractAddress) {
         _escrowContractAddress = escrowContractAddress;
     }
 
     function getCurrentIndex() external view returns (bytes32) {
-        return _hashes.current();
+        return _latestHash;
     }
 
     function poolURI(bytes32 hash) public view returns (string memory) {
@@ -40,6 +41,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
     ) internal virtual {
         _pools[hash] = IHypePool.HypePool(hash, msg.sender, false, details, rewards);
         _hashes[hash] = true;
+        _latestHash = hash;
 
         emit PoolCreated(hash, msg.sender, _tokenURI);
         _emitPoolDetails(hash, details);
@@ -135,7 +137,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
     /**
      * @dev Function to generate a unique hash ID using block number, timestamp, and nonce
      */
-    function _generateHashId() private returns (bytes32) {
+    function _generateHashId() private view returns (bytes32) {
         uint256 blockNumber = block.number;
         uint256 timestamp = block.timestamp;
         uint256 nonce = 0;
@@ -149,9 +151,9 @@ contract HypePool is IHypePool, Pausable, Ownable {
 
     /**
      * @dev Function to check if a hash already exists
-     * @param hash The _hash of the pool to verify if exists.
+     * @param _hash The ID of the pool to verify if exists.
      */
     function _hashExists(bytes32 _hash) private view returns (bool) {
-        return _hashes[_hash] != bytes32(0);
+        return _hashes[_hash];
     }
 }

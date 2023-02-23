@@ -5,32 +5,32 @@ interface IEscrow {
     struct DynamicDeposit {
         uint256 weiAmount;
         address tokenAddress;
-        uint256 poolId;
+        bytes32 poolId;
     }
 
-    event Deposited(address indexed spender, uint256 weiAmount, uint256 poolId);
-    event Withdrawn(address indexed receiver, uint256 weiAmount, uint256 poolId);
-    event Claimed(address indexed receiver, uint256 weiAmount, uint256 poolId);
-    event RewardCredited(address indexed receiver, uint256 weiAmount, uint256 poolId);
+    event Deposited(address indexed spender, uint256 weiAmount, bytes32 poolId);
+    event Withdrawn(address indexed receiver, uint256 weiAmount, bytes32 poolId);
+    event Claimed(address indexed receiver, uint256 weiAmount, bytes32 poolId);
+    event RewardCredited(address indexed receiver, uint256 weiAmount, bytes32 poolId);
 
-    function depositsOf(address payee, uint256 poolId) external view returns (DynamicDeposit memory);
+    function depositsOf(address payee, bytes32 poolId) external view returns (DynamicDeposit memory);
 
     function deposit(
         address spender,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress
     ) external payable;
 
     function withdraw(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount
     ) external;
 
     function claim(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress,
         uint256 nonce,

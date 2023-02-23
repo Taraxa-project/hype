@@ -3,15 +3,16 @@ import { IsArray, IsNotEmpty, IsObject } from 'class-validator';
 import { BigNumber } from 'ethers';
 import { HypeClaim } from '../../entities/claim.entity';
 
+export interface TotalUnclaimed {
+  unclaimed: BigNumber;
+  poolId: number;
+  tokenAddress: string | undefined;
+}
 export class RewardStateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsObject()
-  totalUnclaimed: {
-    unclaimed: BigNumber;
-    poolId: number;
-    tokenAddress: string;
-  }[];
+  totalUnclaimed: TotalUnclaimed[];
 
   @ApiProperty()
   @IsNotEmpty()

@@ -3,13 +3,13 @@ import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { useContainer } from 'class-validator';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config({ path: '../.env' });
-
-import { entities, AppModule } from '../src/app.module';
 import { ConfigService } from '@nestjs/config';
+import { entities, AppModule } from '../src/app.module';
 import { HypeUser } from '../src/modules/user';
 import { WalletGuard } from '../src/modules/guards/wallet.guard';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({ path: '../.env' });
 
 const testLogger = new Logger('e2e');
 

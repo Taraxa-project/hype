@@ -4,11 +4,9 @@ export const HYPEPOOL_QUERIES = {
       poolSearch(first: $first, skip: $skip, text: $text) {
         id
         title
-        uri
         tokenName
         network
         tokenAddress
-        creator
         active
         projectName
         description
@@ -18,6 +16,7 @@ export const HYPEPOOL_QUERIES = {
         creator
         endDate
         impressionReward
+        word
       }
     }
   `,
@@ -26,11 +25,9 @@ export const HYPEPOOL_QUERIES = {
       hypePools(first: $first, skip: $skip, text: $text) {
         id
         title
-        uri
         tokenName
         network
         tokenAddress
-        creator
         active
         projectName
         description
@@ -40,6 +37,7 @@ export const HYPEPOOL_QUERIES = {
         creator
         endDate
         impressionReward
+        word
       }
     }
   `,
@@ -50,11 +48,9 @@ export const HYPEPOOL_QUERIES = {
       ) {
         id
         title
-        uri
         tokenName
         network
         tokenAddress
-        creator
         active
         projectName
         description
@@ -64,6 +60,7 @@ export const HYPEPOOL_QUERIES = {
         creator
         endDate
         impressionReward
+        word
       }
     }
   `,
@@ -75,11 +72,9 @@ export const HYPEPOOL_QUERIES = {
       ) {
         id
         title
-        uri
         tokenName
         network
         tokenAddress
-        creator
         active
         projectName
         description
@@ -89,6 +84,7 @@ export const HYPEPOOL_QUERIES = {
         creator
         endDate
         impressionReward
+        word
       }
     }
   `,

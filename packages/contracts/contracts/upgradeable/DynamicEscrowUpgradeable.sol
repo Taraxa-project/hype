@@ -69,13 +69,7 @@ contract DynamicEscrowUpgradeable is
     /* @dev Deposits always need to be tied to a pool. For now there is no check if
      * the pool exists because it would limit the contract, but its something worth to ideate on.
      */
-    mapping(uint256 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
-
-    /* @dev Rewards introduce the notion of reward pools. Reward pools are
-     * defined by their IDs as integers and every reward accrued must be associated
-     * with a reward pool. The reward pool ID is used to identify the reward itself
-     * and can be used throughout multiple applications.*/
-    mapping(uint256 => mapping(address => uint256)) private _accruedRewards;
+    mapping(bytes32 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
 
     /* @dev Reads the configured rewarder address. */
     function getRewarder() public view returns (address) {
@@ -93,7 +87,7 @@ contract DynamicEscrowUpgradeable is
      * @param poolId The reward pool id to serach after.
      * @return The deposits for the payee and pool given as params.
      */
-    function depositsOf(address payee, uint256 poolId) public view override returns (IEscrow.DynamicDeposit memory) {
+    function depositsOf(address payee, bytes32 poolId) public view override returns (IEscrow.DynamicDeposit memory) {
         return _deposits[poolId][payee];
     }
 
@@ -108,7 +102,7 @@ contract DynamicEscrowUpgradeable is
      */
     function deposit(
         address spender,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress
     ) public payable override nonReentrant whenNotPaused {
@@ -141,7 +135,7 @@ contract DynamicEscrowUpgradeable is
      */
     function claim(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress,
         uint256 nonce,
@@ -170,7 +164,7 @@ contract DynamicEscrowUpgradeable is
      */
     function withdraw(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount
     ) external override nonReentrant whenNotPaused {
         IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];

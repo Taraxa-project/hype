@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "sourceMap": true,
+    "composite": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -34,13 +35,6 @@
       "@taraxa-hype/ipfs": ["src/modules/ipfs"]
     }
   },
-  "include": [
-    "src/**/*",
-    "src/migrations/*",
-    "src/entities/*",
-    "test/**/*",
-    "data-source.ts",
-    ".eslintrc.js"
-  ],
+  "include": ["src/**/*", "test/**/*", "data-source.ts"],
   "exclude": ["node_modules", "dist"]
 }

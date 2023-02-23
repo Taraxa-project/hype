@@ -4,7 +4,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
-import { general, auth, ethereum, ipfs, gs } from '@taraxa-hype/config';
+import { general, auth, ethereum, ipfs } from '@taraxa-hype/config';
 import { BlockchainModule } from '@taraxa-hype/blockchain';
 import { RewardModule } from '@taraxa-hype/reward';
 import { HealthModule } from '@taraxa-hype/health';
@@ -82,7 +82,7 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
-      load: [general, auth, ethereum, ipfs, gs],
+      load: [general, auth, ethereum, ipfs],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,

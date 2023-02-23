@@ -22,8 +22,11 @@ export type ContractInstance = { [address: string]: Contract };
 @Injectable()
 export class BlockchainService {
   private provider: ethers.providers.JsonRpcProvider;
+
   private wallet: ethers.Wallet;
+
   private signer: ethers.Signer;
+
   private contractInstances: ContractInstance = {};
 
   constructor(

@@ -20,9 +20,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "name": "Claimed",
@@ -45,9 +45,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "name": "Deposited",
@@ -70,9 +70,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "name": "RewardCredited",
@@ -95,9 +95,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "name": "Withdrawn",
@@ -111,9 +111,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         },
         {
           "internalType": "uint256",
@@ -149,9 +149,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         },
         {
           "internalType": "uint256",
@@ -177,9 +177,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "name": "depositsOf",
@@ -197,9 +197,9 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
+              "internalType": "bytes32",
               "name": "poolId",
-              "type": "uint256"
+              "type": "bytes32"
             }
           ],
           "internalType": "struct IEscrow.DynamicDeposit",
@@ -218,9 +218,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "poolId",
-          "type": "uint256"
+          "type": "bytes32"
         },
         {
           "internalType": "uint256",

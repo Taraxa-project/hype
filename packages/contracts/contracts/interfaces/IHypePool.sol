@@ -14,7 +14,6 @@ interface IHypePool {
         address tokenAddress;
         uint256 impressionReward;
         uint256 cap;
-        uint256 startDate;
         uint256 endDate;
     }
 
@@ -32,9 +31,9 @@ interface IHypePool {
         Rewards memory rewards
     ) external returns (HypePool memory);
 
-    function activatePool(bytes32 id) external;
+    function activatePool(bytes32 poolId) external;
 
-    function deactivatePool(bytes32 id) external;
+    function deactivatePool(bytes32 poolId) external;
 
     function getPool(bytes32 poolId) external view returns (HypePool memory);
 

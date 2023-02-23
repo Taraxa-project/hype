@@ -35,11 +35,11 @@ const getSslRejectUnauthorized = () => {
 const DataSourceConfig = new DataSource({
   ...getDataSourceOptions(),
   ...getSslRejectUnauthorized(),
-  synchronize: true,
+  synchronize: false,
   migrationsRun: true,
   logging: process.env.NODE_ENV !== 'production',
-  entities: [`${__dirname}/**/entities/*.entity{.ts,.js}`],
-  migrations: [`${__dirname}/**/migrations/*{.ts,.js}`],
+  entities: [`${__dirname}/src/entities/*.entity{.ts,.js}`],
+  migrations: [`${__dirname}/src/migrations/*{.ts,.js}`],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);
 

@@ -1,5 +1,4 @@
 import {
-  Headers,
   Body,
   Controller,
   Get,
@@ -9,9 +8,7 @@ import {
   Patch,
   Post,
   Query,
-  Res,
   UseGuards,
-  HttpException,
   ForbiddenException,
 } from '@nestjs/common';
 import {
@@ -23,18 +20,18 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { HttpService } from '@nestjs/axios';
+import * as crypto from 'crypto';
+import { catchError, firstValueFrom, map } from 'rxjs';
+import { AxiosResponse } from '@nestjs/terminus/dist/health-indicator/http/axios.interfaces';
+import * as dotenv from 'dotenv';
 import { WalletGuard, HmacMiddleware } from '../guards';
 import { ImpressionDto } from './impression.dto';
 import { RewardDto } from './reward.dto';
 import { HypeReward } from '../../entities/reward.entity';
 import { ClaimResult, RewardService } from './reward.service';
 import { RewardStateDto } from './rewardState.dto';
-import { Response } from 'express';
-import * as crypto from 'crypto';
-import { catchError, firstValueFrom, map } from 'rxjs';
-import { HttpService } from '@nestjs/axios';
-import { AxiosResponse } from '@nestjs/terminus/dist/health-indicator/http/axios.interfaces';
-import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 @ApiTags('rewards')
@@ -71,6 +68,7 @@ export class RewardController {
     return await this.rewardService.getRewardSummaryForAddress(address);
   }
 
+  // TODO - Remove this
   @Post()
   @UseGuards(WalletGuard)
   @ApiBearerAuth('authorization')
@@ -125,6 +123,7 @@ export class RewardController {
     return await this.rewardService.releaseRewardHash(address, poolId);
   }
 
+  // TODO - Remove this
   // THESE ARE FOR TESTING PURPOSES
   /*
     HMAC Authentication: HMAC (Hash-based Message Authentication Code) is a method of message authentication that uses a secret key to generate a message authentication code. 
@@ -158,7 +157,8 @@ export class RewardController {
             console.log(res.data);
             return res.data;
           }),
-          catchError((err) => {
+          catchError((error) => {
+            console.log(error);
             throw new ForbiddenException('API not available');
           }),
         ),
