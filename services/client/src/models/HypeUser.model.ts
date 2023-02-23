@@ -2,6 +2,7 @@ export interface HypeUser {
   address: string;
   username: string;
   auth_date: number;
+  telegramId: number;
 }
 
 export type TelegramUser = Readonly<{

@@ -34,7 +34,7 @@ export const useContractEscrowDeposit = (
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading(['Please, sign the message...', 'Depositing rewards...']);
+      showLoading(['Please, sign the message...', 'Funding the pool...']);
     },
     onError(error: any) {
       console.log('onError', error);

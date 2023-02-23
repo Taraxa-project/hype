@@ -9,6 +9,7 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 
 interface TelegramProfile {
+  telegramId: number;
   address: string;
   username: string;
 }
@@ -41,15 +42,22 @@ export const useProfileEffects = () => {
   const connect = async (user: TelegramUser) => {
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
+      telegramId: user.id,
       address: account,
       username: usernameTemp,
     });
     try {
       if (account && user && user.auth_date && usernameTemp) {
-        submitHandler({ address: account, username: usernameTemp, auth_date: user.auth_date });
+        submitHandler({
+          address: account,
+          username: usernameTemp,
+          auth_date: user.auth_date,
+          telegramId: user.id,
+        });
       }
     } catch (err: any) {
       setTelegramProfile({
+        telegramId: undefined,
         address: account,
         username: undefined,
       });
@@ -82,14 +90,16 @@ export const useProfileEffects = () => {
 
   const onDisconnect = () => {
     setTelegramProfile({
+      telegramId: undefined,
       address: account,
       username: undefined,
     });
-    submitHandler({ address: account, username: null, auth_date: null });
+    submitHandler({ address: account, username: null, auth_date: null, telegramId: null });
   };
 
   useEffect(() => {
     setTelegramProfile({
+      telegramId: hypeUser?.telegramId,
       address: account,
       username: hypeUser?.username,
     });

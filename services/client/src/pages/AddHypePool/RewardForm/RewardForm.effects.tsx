@@ -76,8 +76,8 @@ export const useRewardFormEffects = (
         .label('Total rewards for the pool'),
       impressionReward: yup
         .number()
-        .typeError('Impression reward is required')
-        .required('Impression reward is required')
+        .typeError('Reward /Impressions is required')
+        .required('Reward /Impressions is required')
         .label('Reward per 1,000 impressions'),
       endDate: yup
         .date()

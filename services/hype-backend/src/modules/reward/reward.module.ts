@@ -1,10 +1,12 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth';
 import { BlockchainModule } from '../blockchain';
-import { HypeClaim } from './claim.entity';
+import { UserModule } from '../user';
+import { HypeClaim } from '../../entities/claim.entity';
 import { RewardController } from './reward.controller';
-import { HypeReward } from './reward.entity';
+import { HypeReward } from '../../entities/reward.entity';
 import { RewardService } from './reward.service';
 
 @Module({
@@ -12,6 +14,8 @@ import { RewardService } from './reward.service';
     BlockchainModule,
     TypeOrmModule.forFeature([HypeReward, HypeClaim]),
     AuthModule,
+    HttpModule,
+    UserModule,
   ],
   controllers: [RewardController],
   providers: [RewardService],

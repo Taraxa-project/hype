@@ -191,7 +191,7 @@ export const Summary: FC<SummaryProps> = ({
       {!isDeposited && (
         <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
           <Label>
-            Deposit {rewards.cap} {rewards.tokenName} into the pool.
+            Fund {rewards.cap} {rewards.tokenName} into the pool.
           </Label>
         </Box>
       )}

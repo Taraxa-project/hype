@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsObject } from 'class-validator';
 import { BigNumber } from 'ethers';
-import { HypeClaim } from './claim.entity';
+import { HypeClaim } from '../../entities/claim.entity';
 
 export class RewardStateDto {
   @ApiProperty()

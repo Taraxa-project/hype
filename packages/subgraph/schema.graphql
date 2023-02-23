@@ -11,6 +11,8 @@ type _Schema_
           { name: "title" }
           { name: "description" }
           { name: "projectDescription" }
+          { name: "tokenName" }
+          { name: "word" }
         ]
       }
     ]

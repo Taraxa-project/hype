@@ -23,4 +23,9 @@ export class UserDTO implements IHypeUser {
   @IsOptional()
   @IsNumber()
   auth_date: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  telegramId: number;
 }

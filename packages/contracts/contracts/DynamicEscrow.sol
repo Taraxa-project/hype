@@ -56,7 +56,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
     /* @dev Deposits always need to be tied to a pool. For now there is no check if
      * the pool exists because it would limit the contract, but its something worth to ideate on.
      */
-    mapping(uint256 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
+    mapping(bytes32 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
 
     /* @dev Reads the configured rewarder address. */
     function getRewarder() public view returns (address) {
@@ -74,7 +74,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @param poolId The reward pool id to serach after.
      * @return The deposits for the payee and pool given as params.
      */
-    function depositsOf(address payee, uint256 poolId) public view override returns (IEscrow.DynamicDeposit memory) {
+    function depositsOf(address payee, bytes32 poolId) public view override returns (IEscrow.DynamicDeposit memory) {
         return _deposits[poolId][payee];
     }
 
@@ -89,7 +89,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      */
     function deposit(
         address spender,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress
     ) public payable override nonReentrant whenNotPaused {
@@ -122,7 +122,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      */
     function claim(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount,
         address tokenAddress,
         uint256 nonce,
@@ -151,7 +151,7 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      */
     function withdraw(
         address payable receiver,
-        uint256 poolId,
+        bytes32 poolId,
         uint256 amount
     ) external override nonReentrant whenNotPaused {
         IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];

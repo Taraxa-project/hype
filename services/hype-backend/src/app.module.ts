@@ -4,13 +4,15 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
-import { general, auth, ethereum, ipfs } from '@taraxa-hype/config';
+import { general, auth, ethereum, ipfs, gs } from '@taraxa-hype/config';
 import { BlockchainModule } from '@taraxa-hype/blockchain';
-import { RewardModule, HypeReward } from '@taraxa-hype/reward';
-import { HypeUser, UserModule } from '@taraxa-hype/user';
+import { RewardModule } from '@taraxa-hype/reward';
 import { HealthModule } from '@taraxa-hype/health';
+import { UserModule } from '@taraxa-hype/user';
 import { IpfsModule } from '@taraxa-hype/ipfs';
 import * as dotenv from 'dotenv';
+import { HypeUser, HypeReward, HypeClaim } from './entities';
+
 dotenv.config();
 
 const getEnvFilePath = () => {
@@ -25,7 +27,7 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities = [HypeUser, HypeReward];
+export const entities = [HypeUser, HypeReward, HypeClaim];
 
 const HypeAppTypeOrmModule = () => {
   let typeOrmOptions: TypeOrmModuleOptions;
@@ -80,7 +82,7 @@ const HypeAppTypeOrmModule = () => {
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
       isGlobal: true,
-      load: [general, auth, ethereum, ipfs],
+      load: [general, auth, ethereum, ipfs, gs],
     }),
     HypeAppTypeOrmModule(),
     AuthModule,

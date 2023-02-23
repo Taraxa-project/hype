@@ -36,8 +36,9 @@
   },
   "include": [
     "src/**/*",
+    "src/migrations/*",
+    "src/entities/*",
     "test/**/*",
-    "migrations/*",
     "data-source.ts",
     ".eslintrc.js"
   ],

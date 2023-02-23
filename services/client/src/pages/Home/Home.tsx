@@ -31,8 +31,8 @@ export const Home = () => {
       <HeroContainer>
         <IntroContainer>
           <Logo>
-            <Image src={Megaphone} alt="Megaphone" />
-            <LogoText>Hype</LogoText>
+            <Image width="auto" height="50px" src={Megaphone} alt="Megaphone" />
+            <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
           </Logo>
           <TitleText>What is hype farming?</TitleText>
           <DescriptionContainer>

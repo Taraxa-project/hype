@@ -7,15 +7,17 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ethereum } from '@taraxa-hype/config';
+import { ethereum, gs } from '@taraxa-hype/config';
 import { BigNumber } from 'ethers';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
 import { RewardDto } from './reward.dto';
-import { HypeReward } from './reward.entity';
+import { HypeReward } from '../../entities/reward.entity';
 import { RewardStateDto } from './rewardState.dto';
-import { HypeClaim } from './claim.entity';
+import { HypeClaim } from '../../entities/claim.entity';
+import { ImpressionDto } from './impression.dto';
+import { UsersService } from '../user/user.service';
 
 export interface ClaimResult {
   nonce: number;
@@ -27,16 +29,21 @@ export interface ClaimResult {
 @Injectable()
 export class RewardService {
   privateKey: Buffer;
+  gsSecret: string;
   private logger = new Logger(RewardService.name);
   constructor(
     @Inject(ethereum.KEY)
     private readonly ethereumConfig: ConfigType<typeof ethereum>,
+    @Inject(gs.KEY)
+    private readonly gsConfig: ConfigType<typeof gs>,
     @InjectRepository(HypeReward)
     private readonly rewardRepository: Repository<HypeReward>,
     @InjectRepository(HypeClaim)
     private readonly claimRepository: Repository<HypeClaim>,
+    private userService: UsersService,
   ) {
     this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
+    this.gsSecret = gsConfig.secret;
   }
 
   async getAllRewards() {
@@ -161,5 +168,25 @@ export class RewardService {
       throw new InternalServerErrorException(
         `Unable to calculate hash for ${poolId} and ${address}`,
       );
+  }
+
+  async saveImpressions(impressions: ImpressionDto[]): Promise<void> {
+    await Promise.all(
+      impressions.map(async (i: ImpressionDto) => {
+        const user = await this.userService.getUserByTelegramId(i.user_id);
+        if (!user) {
+          return;
+        }
+        const newReward = this.rewardRepository.create({
+          amount: null, // calculate from GraphQl (impressionReward with i.message_impressions)
+          tokenAddress: null, // Get from GraphQl
+          rewardee: user.address,
+          poolId: i.pool_id,
+        });
+        const saved = await this.rewardRepository.save(newReward);
+        return saved;
+      }),
+    );
+    return;
   }
 }

@@ -98,7 +98,7 @@ export const PoolDetails = () => {
       )}
       {impressionReward && (
         <InfoContainer>
-          <InfoHeader>Reward per 1,000 impressions:</InfoHeader>
+          <InfoHeader>Reward / impressions:</InfoHeader>
           <InfoValue>
             {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
           </InfoValue>

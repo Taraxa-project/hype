@@ -21,8 +21,10 @@ import {
   StyledHeader,
   AddressContainer,
   Logo,
+  AccountContainer,
 } from './Header.styled';
 import LoadingSpinner from '../../assets/icons/Spinner';
+import Text from '../styles/Text';
 
 export interface HeaderProps {
   headerElements?: HeaderLink[];
@@ -43,6 +45,7 @@ const Header = React.memo(
       headerEntries,
       menuOpen,
       selected,
+      chain,
     } = useHeaderEffects(authenticated, headerElements);
 
     return (
@@ -105,10 +108,17 @@ const Header = React.memo(
                           <LoadingSpinner />
                         </Box>
                       ) : (
-                        <Account className="margin-right">
-                          <GreenDot />
-                          {shortenAddress(account)}
-                        </Account>
+                        <AccountContainer className="margin-right">
+                          <Account>
+                            <GreenDot />
+                            {shortenAddress(account)}
+                          </Account>
+                          {chain?.name && (
+                            <Text>
+                              Connected to <strong>{chain.name}</strong>
+                            </Text>
+                          )}
+                        </AccountContainer>
                       )}
                     </Box>
                     <MenuButton onClick={onMenuOpen}>
@@ -155,10 +165,17 @@ const Header = React.memo(
                     <LoadingSpinner />
                   </Box>
                 ) : (
-                  <Account>
-                    <GreenDot />
-                    <AddressContainer address={account} shortAddress={shortenAddress(account)} />
-                  </Account>
+                  <AccountContainer className="margin-right">
+                    <Account>
+                      <GreenDot />
+                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
+                    </Account>
+                    {chain?.name && (
+                      <Text>
+                        Connected to <strong>{chain.name}</strong>
+                      </Text>
+                    )}
+                  </AccountContainer>
                 )}
               </Box>
             </div>
