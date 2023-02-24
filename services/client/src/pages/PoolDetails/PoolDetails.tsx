@@ -39,7 +39,7 @@ export const PoolDetails = () => {
     fund,
     activate,
     account,
-  } = usePoolDetailsEffects(+poolId);
+  } = usePoolDetailsEffects(poolId);
   const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
   return (
     <PoolContainer>

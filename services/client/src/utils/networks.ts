@@ -76,7 +76,7 @@ export const networkOptions = [
     value: 1,
   },
   {
-    name: 'Taraxa Network',
+    name: 'Taraxa Mainnet',
     value: 841,
   },
   {

@@ -14,7 +14,7 @@ import {
 import { HypePool } from '../../models';
 import { AddressType } from '../../utils';
 
-export const usePoolDetailsEffects = (poolId: number) => {
+export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();

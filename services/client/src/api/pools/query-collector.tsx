@@ -66,7 +66,7 @@ export const HYPEPOOL_QUERIES = {
   `,
 
   poolQuery: `
-    query HypePoolById($id: Int) {
+    query HypePoolById($id: Bytes) {
       hypePool(
         id: $id
       ) {
