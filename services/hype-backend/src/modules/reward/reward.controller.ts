@@ -28,9 +28,9 @@ import * as dotenv from 'dotenv';
 import { WalletGuard, HmacMiddleware } from '../guards';
 import { ImpressionDto } from './impression.dto';
 import { RewardDto } from './reward.dto';
-import { HypeReward } from '../../entities/reward.entity';
 import { ClaimResult, RewardService } from './reward.service';
 import { RewardStateDto } from './rewardState.dto';
+import impressionsJson from '../../../pool_impressions_example.json';
 
 dotenv.config();
 
@@ -68,35 +68,13 @@ export class RewardController {
     return await this.rewardService.getRewardSummaryForAddress(address);
   }
 
-  // TODO - Remove this
-  @Post()
-  @UseGuards(WalletGuard)
-  @ApiBearerAuth('authorization')
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: RewardDto,
-    description: 'Returns a newly inserted pool reward',
-  })
-  @ApiUnauthorizedResponse({ description: 'You need a valid token' })
-  @ApiNotFoundResponse({ description: 'Claim not found' })
-  public async accrueReward(
-    @Body() rewardToAccrue: RewardDto,
-  ): Promise<HypeReward> {
-    try {
-      return await this.rewardService.accrueRewards(rewardToAccrue);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Something went wrong. Please try again!',
-      );
-    }
-  }
-
   @Post('impressions')
   @UseGuards(HmacMiddleware)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Returns 200 OK',
   })
+  @ApiNotFoundResponse({ description: 'Endpoint not found' })
   @ApiUnauthorizedResponse({ description: 'You need a valid key' })
   public async saveImpressions(
     @Body() impressions: ImpressionDto[],
@@ -118,7 +96,7 @@ export class RewardController {
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
   public async claimRewards(
     @Param('address') address: string,
-    @Query('poolId') poolId: number,
+    @Query('poolId') poolId: string,
   ): Promise<ClaimResult> {
     return await this.rewardService.releaseRewardHash(address, poolId);
   }
@@ -139,10 +117,8 @@ export class RewardController {
     const secretKey = process.env.GS_SECRET; // Get the secret key from environment variables
     // console.log('secret key: ', crypto.randomBytes(16).toString('hex'));
     console.log('Secret key:', secretKey);
-    const message = { message: 'Hello decrypt! Are you working fine?' }; // The message to send
-
     const hmac = crypto.createHmac('sha256', secretKey);
-    hmac.update(JSON.stringify(message)); // Hash the message with the secret key
+    hmac.update(Buffer.from(JSON.stringify(impressionsJson), 'utf-8')); // Hash the message with the secret key
     const digest = hmac.digest('hex'); // Generate the HMAC digest
 
     const headers = {
@@ -151,7 +127,9 @@ export class RewardController {
 
     return firstValueFrom(
       this.httpService
-        .post('http://localhost:3060/rewards/decrypt', message, { headers })
+        .post('http://localhost:3040/rewards/impressions', impressionsJson, {
+          headers,
+        })
         .pipe(
           map((res: AxiosResponse) => {
             console.log(res.data);
@@ -167,7 +145,7 @@ export class RewardController {
 
   @Post('decrypt')
   @UseGuards(HmacMiddleware)
-  receiveMessage(@Body() body: { message: string }) {
-    return { received: body.message, response: 'Hello encrypt! Yes I am !!!' };
+  public async receiveMessage(@Body() body: ImpressionDto[]) {
+    return body;
   }
 }

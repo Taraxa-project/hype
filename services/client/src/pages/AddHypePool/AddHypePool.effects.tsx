@@ -30,7 +30,7 @@ export const useAddHypePoolEffects = () => {
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(3)); //BigNumber.from(16)
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);

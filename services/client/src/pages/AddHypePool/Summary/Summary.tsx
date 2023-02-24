@@ -5,14 +5,13 @@ import { Account, BlockiesContainer, PoolContent, RewardContent } from './Summar
 import Text from '../../../components/styles/Text';
 import Blockies from 'react-blockies';
 import { useSummaryEffects } from './Summary.effects';
-import { BigNumber } from 'ethers';
 import Button from '../../../components/button/Button';
 import Box from '../../../components/styles/Box';
 import { FormColumn, Label, FormAction } from '../AddHypePool.styled';
 import TitleText from '../../../components/titletext/TitleText';
 
 export interface SummaryProps {
-  createdPoolIndex: BigNumber;
+  createdPoolIndex: string;
   details: HypePoolDetailsForm;
   rewards: HypePoolRewardForm;
   successCallbackActivatePool: () => void;

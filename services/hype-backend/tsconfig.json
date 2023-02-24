@@ -35,6 +35,12 @@
       "@taraxa-hype/ipfs": ["src/modules/ipfs"]
     }
   },
-  "include": ["config/*", "src/**/*", "test/**/*", "data-source.ts"],
+  "include": [
+    "config/*",
+    "src/**/*",
+    "test/**/*",
+    "data-source.ts",
+    "pool_impressions_example.json"
+  ],
   "exclude": ["node_modules", "dist"]
 }

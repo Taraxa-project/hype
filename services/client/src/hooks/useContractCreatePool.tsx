@@ -32,7 +32,7 @@ export const useContractCreatePool = (
   enabled: boolean,
   resetWriteContract: () => void,
   successCallback: () => void,
-  setCreatedPoolIndex: (index: BigNumber) => void,
+  setCreatedPoolIndex: (index: string) => void,
   setPoolTransaction: (tx: string) => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;

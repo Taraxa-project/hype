@@ -32,7 +32,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const [hasDeposited, setHasDeposited] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(BigNumber.from(poolId), hasDeposited);
+  const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited);
 
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
@@ -45,10 +45,10 @@ export const usePoolDetailsEffects = (poolId: string) => {
     });
   };
 
-  useContractActivatePool(BigNumber.from(poolId), enableActivate, successCallbackActivatePool);
+  useContractActivatePool(poolId, enableActivate, successCallbackActivatePool);
   useContractERC20Approve(
     account,
-    BigNumber.from(poolId),
+    poolId,
     amount,
     pool?.tokenAddress as AddressType,
     enableApprove,
@@ -56,7 +56,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   );
   useContractEscrowDeposit(
     account,
-    BigNumber.from(poolId),
+    poolId,
     amount,
     pool?.tokenAddress,
     enableDeposit,

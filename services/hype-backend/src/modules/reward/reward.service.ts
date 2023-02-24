@@ -58,10 +58,10 @@ export class RewardService {
     return await this.rewardRepository.find();
   }
 
-  private async getPoolById(id: number): Promise<IPool> {
+  private async getPoolById(id: string): Promise<{ hypePool: IPool }> {
     return await this.graphQLClient.request(
       gql`
-        query HypePoolById($id: Int) {
+        query HypePoolById($id: Bytes) {
           hypePool(id: $id) {
             id
             title
@@ -108,7 +108,7 @@ export class RewardService {
     const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
     const totalUnclaimed: {
       unclaimed: BigNumber;
-      poolId: number;
+      poolId: string;
       tokenAddress: string;
     }[] = [];
 
@@ -131,21 +131,9 @@ export class RewardService {
     };
   }
 
-  // TODO - Remove this
-  async accrueRewards(rewardDto: RewardDto): Promise<HypeReward> {
-    const newReward = this.rewardRepository.create({
-      amount: rewardDto.value,
-      tokenAddress: rewardDto.rewardAddress,
-      rewardee: rewardDto.targetAddress,
-      poolId: rewardDto.poolID,
-    });
-    const saved = await this.rewardRepository.save(newReward);
-    return saved;
-  }
-
   async releaseRewardHash(
     address: string,
-    poolId: number,
+    poolId: string,
   ): Promise<ClaimResult> {
     const rewardsOfAddress = await this.rewardRepository.findBy({
       poolId,
@@ -208,7 +196,7 @@ export class RewardService {
     );
   }
 
-  async saveImpressions(impressions: ImpressionDto[]): Promise<void> {
+  async saveImpressions(impressions: ImpressionDto[]): Promise<any> {
     await Promise.all(
       impressions.map(async (impression: ImpressionDto) => {
         const user = await this.userService.getUserByTelegramId(
@@ -217,9 +205,16 @@ export class RewardService {
         if (!user) {
           return;
         }
-        const pool: IPool = await this.getPoolById(impression.pool_id);
+        console.log('USER: ', user);
+        const result: { hypePool: IPool } = await this.getPoolById(
+          impression.pool_id,
+        );
+        const pool = result.hypePool;
+        console.log('pool: ', result.hypePool);
         const rewardValue =
-          (impression.message_impressions / 1000) * pool.impressionReward;
+          (impression.message_impressions / 1000) *
+          Number(pool.impressionReward); // We need to convert this to TARA from Wei but we need to know the decimals
+        console.log('rewardValue: ', rewardValue);
 
         const newReward = this.rewardRepository.create({
           amount: rewardValue?.toString(),

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 import { IReward } from '../models';
 
 @Entity('hype_reward')
@@ -14,8 +14,8 @@ export class HypeReward extends BaseEntity implements IReward {
 
   @Column({ nullable: false })
   @IsNotEmpty()
-  @IsNumber()
-  poolId: number;
+  @IsString()
+  poolId: string;
 
   @Column({ nullable: false })
   @IsNotEmpty()

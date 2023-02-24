@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ImpressionDto {
   @ApiProperty()
@@ -14,6 +14,6 @@ export class ImpressionDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  pool_id: number;
+  @IsString()
+  pool_id: string;
 }

@@ -5,7 +5,7 @@ import { HypeClaim } from '../../entities/claim.entity';
 
 export interface TotalUnclaimed {
   unclaimed: BigNumber;
-  poolId: number;
+  poolId: string;
   tokenAddress: string | undefined;
 }
 export class RewardStateDto {

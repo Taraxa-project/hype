@@ -12,7 +12,7 @@ import {
 import { AddressType } from '../../../utils';
 
 export const useSummaryEffects = (
-  createdPoolIndex: BigNumber,
+  createdPoolIndex: string,
   successCallbackActivatePool: () => void,
   rewards: HypePoolRewardForm,
   isCustomToken: boolean,

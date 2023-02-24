@@ -7,14 +7,14 @@ export interface HypeRewardSummary {
 
 export interface PoolRewards {
   unclaimed: BigNumber;
-  poolId: number;
+  poolId: string;
   tokenAddress: string;
   symbol?: string;
   poolName?: string;
 }
 export interface HypeReward {
   id: number;
-  poolId: number;
+  poolId: string;
   amount: BigNumber;
   symbol?: string;
   rewardee: string;

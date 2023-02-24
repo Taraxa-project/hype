@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 export const useContractEscrowDeposit = (
   spender: AddressType,
-  poolId: BigNumber,
+  poolId: string,
   amount: BigNumber,
   tokenAddress: string,
   enabled: boolean,
