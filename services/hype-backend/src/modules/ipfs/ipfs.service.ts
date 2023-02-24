@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { CID, create, IPFSHTTPClient, Options } from 'ipfs-http-client';
-import { ipfs } from '../../../config';
+import { ipfs } from '@taraxa-hype/config';
 import { ProjectDetailsDTO } from './dto';
 
 export interface IpfsResult {
