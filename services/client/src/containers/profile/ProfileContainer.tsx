@@ -92,7 +92,7 @@ export const ProfileContainer = ({
               </Text>
               {telegramUsername && (
                 <Text fontSize="0.875rem" color="greys.4">
-                  @{telegramUsername}
+                  {telegramUsername}
                 </Text>
               )}
             </Box>

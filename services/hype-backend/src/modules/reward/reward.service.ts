@@ -14,7 +14,6 @@ import { gql, GraphQLClient } from 'graphql-request';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
-import { RewardDto } from './reward.dto';
 import { HypeReward } from '../../entities/reward.entity';
 import { RewardStateDto } from './rewardState.dto';
 import { HypeClaim } from '../../entities/claim.entity';
@@ -213,7 +212,7 @@ export class RewardService {
         console.log('pool: ', result.hypePool);
         const rewardValue =
           (impression.message_impressions / 1000) *
-          Number(pool.impressionReward); // We need to convert this to TARA from Wei but we need to know the decimals
+          Number(pool.impressionReward);
         console.log('rewardValue: ', rewardValue);
 
         const newReward = this.rewardRepository.create({
