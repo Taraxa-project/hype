@@ -39,7 +39,7 @@ export const ProfileContainer = ({
     <Box
       backgroundColor="greys.1"
       p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="2rem"
+      borderRadius="10px"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -69,7 +69,7 @@ export const ProfileContainer = ({
         <Box
           backgroundColor="greys.0"
           p="1.5rem"
-          borderRadius="1rem"
+          borderRadius="10px"
           display="flex"
           flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
           justifyContent="space-between"

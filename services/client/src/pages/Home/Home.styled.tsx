@@ -28,7 +28,7 @@ export const CardContainer = styled.div`
 
 export const PageContainer = styled.div`
   background: #fafafa;
-  border-radius: 2rem;
+  border-radius: 10px;
   width: 100%;
   height: 100%;
   display: flex;

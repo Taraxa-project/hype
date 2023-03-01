@@ -21,7 +21,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
   maxheight: 100vh;
 
   background: ${({ theme }) => theme.colors.greys[1]};
-  border-radius: 2rem;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: left;

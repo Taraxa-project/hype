@@ -15,7 +15,7 @@ import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
 import { HypeReward } from '../../entities/reward.entity';
-import { RewardStateDto } from './rewardState.dto';
+import { PoolClaim, RewardStateDto, TotalUnclaimed } from './rewardState.dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { ImpressionDto } from './impression.dto';
 import { UsersService } from '../user/user.service';
@@ -93,37 +93,50 @@ export class RewardService {
       }),
       claimed: false,
     });
-    const claims = await this.claimRepository.findBy({
+    const fetchedClaims = await this.claimRepository.findBy({
       rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
         address,
       }),
       claimed: false,
     });
-    if (rewardsOfAddress?.length === 0 && claims?.length === 0) {
+    if (rewardsOfAddress?.length === 0 && fetchedClaims?.length === 0) {
       throw new NotFoundException(
-        'No rewards or claims found for given address.',
+        'No rewards or fetchedClaims found for given address.',
       );
     }
+    const claims: PoolClaim[] = await Promise.all(
+      fetchedClaims.map(async (claim) => {
+        const result: { hypePool: IPool } = await this.getPoolById(
+          claim.poolId,
+        );
+        return {
+          ...claim,
+          pool: result.hypePool,
+        };
+      }),
+    );
     const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
-    const totalUnclaimed: {
-      unclaimed: BigNumber;
-      poolId: string;
-      tokenAddress: string;
-    }[] = [];
+    const totalUnclaimed: TotalUnclaimed[] = [];
 
-    poolIds.forEach((poolId) => {
-      const rewardsOfPool = rewardsOfAddress.filter((r) => r.poolId === poolId);
-      const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
-      const unclaimed = rewardsOfPool.reduce(
-        (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
-        BigNumber.from('0'),
-      );
-      totalUnclaimed.push({
-        unclaimed,
-        poolId,
-        tokenAddress: token,
-      });
-    });
+    await Promise.all(
+      poolIds.map(async (poolId) => {
+        const rewardsOfPool = rewardsOfAddress.filter(
+          (r) => r.poolId === poolId,
+        );
+        const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
+        const unclaimed = rewardsOfPool.reduce(
+          (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
+          BigNumber.from('0'),
+        );
+        const result: { hypePool: IPool } = await this.getPoolById(poolId);
+        totalUnclaimed.push({
+          unclaimed,
+          poolId,
+          pool: result.hypePool,
+          tokenAddress: token,
+        });
+      }),
+    );
     return {
       totalUnclaimed,
       claims,

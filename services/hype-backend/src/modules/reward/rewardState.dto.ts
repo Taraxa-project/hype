@@ -1,13 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsObject } from 'class-validator';
 import { BigNumber } from 'ethers';
-import { HypeClaim } from '../../entities/claim.entity';
+import { IPool, IClaim } from '../../models';
 
 export interface TotalUnclaimed {
   unclaimed: BigNumber;
   poolId: string;
+  pool: IPool;
   tokenAddress: string | undefined;
 }
+
+export interface PoolClaim extends IClaim {
+  pool: IPool;
+}
+
 export class RewardStateDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -17,5 +23,5 @@ export class RewardStateDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
-  claims: HypeClaim[];
+  claims: PoolClaim[];
 }

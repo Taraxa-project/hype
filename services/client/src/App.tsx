@@ -12,7 +12,7 @@ import { useGetMe } from './api/auth/useGetMe';
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
   background: ${({ theme }) => theme.colors.greys[1]};
-  border-radius: 2rem;
+  border-radius: 10px;
   margin: 1.5rem auto;
   margin-top: 6.5rem;
   width: ${({ theme }) => `calc(${theme.breakpoints.lg} - 30px)`};

@@ -9,10 +9,10 @@ const getMyRewards = (address: string) => {
   return axios.get(url);
 };
 
-export const useGetMyRewards = (address: string) => {
+export const useGetMyRewards = (address: string, shouldRefetch: boolean) => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['rewards', address],
+    ['rewards', address, shouldRefetch],
     () => getMyRewards(address),
     {
       retry: false,

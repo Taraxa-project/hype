@@ -28,7 +28,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
       flexDirection="column"
       backgroundColor="greys.1"
       p="2rem"
-      borderRadius="2rem"
+      borderRadius="10px"
       width="unset"
     >
       <Heading

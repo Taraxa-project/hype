@@ -4,25 +4,24 @@ import { HypeClaim, PoolRewards } from 'src/models/Redeem.model';
 import { getPoolDetailsById } from 'src/utils/pools';
 import { getERC20TokenName } from 'src/utils/tokens';
 import { useProvider } from 'wagmi';
+import { useRequestRewards } from '../../api/rewards/useRequestRewards';
 import useWallet from '../../hooks/useWallet';
 
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
   const provider = useProvider();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {
-    data,
-    isLoading: isLoadingRewards,
-    refetch: isFetchingRedeemData,
-  } = useGetMyRewards(account);
-  const {
-    submitHandler,
-    data: requestHashData,
-    isLoading: isLoadingRequestRewardsHash,
-  } = requestRewardHash();
+  const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
+  const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, shouldRefetch);
+  const { submitHandler, data: requestHashData } = useRequestRewards();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
+
+  useEffect(() => {
+    if (requestHashData?.data) {
+      setShouldRefetch(true);
+    }
+  }, [requestHashData]);
 
   useEffect(() => {
     const setData = async () => {
@@ -48,6 +47,7 @@ export const useRedeemEffects = () => {
 
   const onRedeem = (poolReward: PoolRewards) => {
     console.log('Redeeming: ', poolReward);
+    submitHandler({ address: account, poolId: poolReward.poolId });
   };
   const onClaim = (poolClaim: HypeClaim) => {
     console.log('Redeeming: ', poolClaim);
@@ -56,17 +56,14 @@ export const useRedeemEffects = () => {
   const getClaimSymbols = async (targetArray: HypeClaim[], rewards: HypeClaim[]) => {
     for (const reward of rewards) {
       let symbol;
-      let name;
       try {
         symbol = await getERC20TokenName(reward.tokenAddress);
-        name = (await getPoolDetailsById(reward.poolId, provider))[3].title;
       } catch (error) {
         console.error(error);
       }
       targetArray.push({
         ...reward,
         symbol: symbol,
-        poolName: name,
       });
     }
   };
@@ -74,17 +71,14 @@ export const useRedeemEffects = () => {
   const getRewardSymbols = async (targetArray: PoolRewards[], rewards: PoolRewards[]) => {
     for (const reward of rewards) {
       let symbol;
-      let name;
       try {
         symbol = await getERC20TokenName(reward.tokenAddress);
-        name = (await getPoolDetailsById(reward.poolId, provider))[3].title;
       } catch (error) {
         console.error(error);
       }
       targetArray.push({
         ...reward,
         symbol: symbol,
-        poolName: name,
       });
     }
   };
@@ -99,6 +93,3 @@ export const useRedeemEffects = () => {
     isLoadingRewards,
   };
 };
-function requestRewardHash(): { submitHandler: any; data: any; isLoading: any } {
-  throw new Error('Function not implemented.');
-}

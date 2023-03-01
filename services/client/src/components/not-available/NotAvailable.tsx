@@ -13,7 +13,7 @@ export const NotAvailable = ({ ...props }: NotAvailableProps) => {
       {...props}
       backgroundColor="greys.0"
       p={{ _: '2rem', md: '4.5rem' }}
-      borderRadius="1rem"
+      borderRadius="10px"
       display="flex"
       flexDirection={{ _: 'column', md: 'row' }}
       justifyContent="center"
