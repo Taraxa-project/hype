@@ -41,6 +41,8 @@ type HypePool @entity(immutable: false) {
   tokenAddress: Bytes
   impressionReward: BigInt
   cap: BigInt
+  startDate: BigInt
+  duration: BigInt
   endDate: BigInt
 }
 

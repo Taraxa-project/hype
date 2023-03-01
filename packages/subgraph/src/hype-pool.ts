@@ -6,7 +6,7 @@ import {
   PoolUriSet,
 } from '../generated/HypePool/HypePool';
 import { HypePool, HypeUri } from '../generated/schema';
-import { ByteArray, ipfs, json } from '@graphprotocol/graph-ts';
+import { ipfs, json } from '@graphprotocol/graph-ts';
 
 export function handlePoolActivated(event: PoolActivated): void {
   const id = event.params.poolId;
@@ -17,6 +17,8 @@ export function handlePoolActivated(event: PoolActivated): void {
   }
   if (activator) {
     hypepool.active = true;
+    hypepool.startDate = event.params.startDate;
+    hypepool.endDate = event.params.endDate;
   }
   hypepool.save();
 }
@@ -53,6 +55,10 @@ export function handlePoolRewards(event: PoolRewardsCreated): void {
   hypepool.cap = event.params.cap;
   hypepool.tokenAddress = event.params.tokenAddress;
   hypepool.impressionReward = event.params.impressionReward;
+  hypepool.startDate = event.params.startDate;
+  hypepool.duration = event.params.duration;
+  hypepool.startDate = event.params.startDate;
+  hypepool.duration = event.params.duration;
   hypepool.endDate = event.params.endDate;
   hypepool.save();
 }

@@ -14,7 +14,9 @@ interface IHypePool {
         address tokenAddress;
         uint256 impressionReward;
         uint256 cap;
+        uint256 startDate;
         uint256 endDate;
+        uint256 duration;
     }
 
     struct HypePool {
@@ -41,7 +43,7 @@ interface IHypePool {
 
     event PoolCreated(bytes32 poolId, address creator, string uri);
 
-    event PoolDetailsCreated(bytes32 poolId,string title, string projectName, string tokenName, string word);
+    event PoolDetailsCreated(bytes32 poolId, string title, string projectName, string tokenName, string word);
 
     event PoolRewardsCreated(
         bytes32 poolId,
@@ -49,12 +51,14 @@ interface IHypePool {
         address tokenAddress,
         uint256 impressionReward,
         uint256 cap,
-        uint256 endDate
+        uint256 startDate,
+        uint256 endDate,
+        uint256 duration
     );
 
     event PoolUriSet(bytes32 poolId, string uri);
 
-    event PoolActivated(bytes32 poolId, address activator);
+    event PoolActivated(bytes32 poolId, address activator, uint256 startDate, uint256 endDate);
 
     event PoolDeactivated(bytes32 poolId, address deactivator);
 }

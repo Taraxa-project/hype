@@ -65,6 +65,8 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
             rewards.tokenAddress,
             rewards.impressionReward,
             rewards.cap,
+            rewards.startDate,
+            rewards.duration,
             rewards.endDate
         );
     }
@@ -86,7 +88,9 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
     ) external override whenNotPaused returns (HypePool memory) {
         require(bytes(uri).length > 0, "Missing metadata URI");
         require(rewards.cap > 0, "Invalid pool cap");
-        require(rewards.endDate > block.timestamp, "End date must be after current block time");
+        require(rewards.duration > 0, "Duration must be at least one day");
+        require(rewards.startDate == 0, "Start date must be zero");
+        require(rewards.endDate == 0, "End date must be zero");
         require(rewards.impressionReward > 0, "Invalid impression hype reward");
 
         bytes32 hash = _generateHashId();
@@ -115,8 +119,10 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
             "Deposited token address does not match pool token address"
         );
         _pool.active = true;
+        _pool.rewards.startDate = block.timestamp;
+        _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
         _pools[hash] = _pool;
-        emit PoolActivated(hash, msg.sender);
+        emit PoolActivated(hash, msg.sender, _pool.rewards.startDate, _pool.rewards.endDate);
     }
 
     /**
@@ -128,6 +134,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_pool.active == true, "Pool is already inactive");
         _pool.active = false;
+        _pool.rewards.endDate = block.timestamp;
         _pools[hash] = _pool;
         emit PoolDeactivated(hash, msg.sender);
     }
