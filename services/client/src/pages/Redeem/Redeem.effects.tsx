@@ -15,6 +15,11 @@ export const useRedeemEffects = () => {
     isLoading: isLoadingRewards,
     refetch: isFetchingRedeemData,
   } = useGetMyRewards(account);
+  const {
+    submitHandler,
+    data: requestHashData,
+    isLoading: isLoadingRequestRewardsHash,
+  } = requestRewardHash();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
@@ -94,3 +99,6 @@ export const useRedeemEffects = () => {
     isLoadingRewards,
   };
 };
+function requestRewardHash(): { submitHandler: any; data: any; isLoading: any } {
+  throw new Error('Function not implemented.');
+}

@@ -23,7 +23,7 @@ export enum HeaderValues {
   HypeFarming = 'Hype Farming',
   HypePool = '+Hype Pool',
   Redeem = 'Redeem',
-  Profile = 'User Profile',
+  Profile = 'My Account',
   None = 'none',
 }
 

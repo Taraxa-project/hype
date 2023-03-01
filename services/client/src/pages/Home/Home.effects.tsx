@@ -33,17 +33,22 @@ export const useHomeEffects = () => {
     }
     if (searchString) {
       if (data?.poolSearch) {
-        setHypePools(hypePools.concat(data?.poolSearch));
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data?.poolSearch)));
         // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
       }
     } else {
       if (data?.hypePools) {
-        setHypePools(hypePools.concat(data?.hypePools));
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data?.hypePools)));
         // setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
+
+  const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
+    const now = Date.now(); // get current timestamp in milliseconds
+    return pools.filter((p: HypePool) => p.active === true && +p.endDate > now);
+  };
 
   useEffect(() => {
     setSearchString(searchString || '');

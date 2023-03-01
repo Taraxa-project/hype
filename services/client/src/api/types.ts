@@ -4,8 +4,8 @@ export interface FetchHypesFilter {
   first: number;
   skip: number;
   text?: string;
-  orderBy?: PoolOrderByEnum;
-  order?: OrderDirection;
+  // orderBy?: PoolOrderByEnum;
+  // order?: OrderDirection;
 }
 
 export const API = `${process.env.REACT_APP_API_HOST}`;

@@ -20,8 +20,7 @@ export const useUpdateTelegram = () => {
     const updatedUser: HypeUser = { ...values };
     mutate(updatedUser, {
       onSuccess: () => {
-        // queryClient.resetQueries();
-        queryClient.invalidateQueries(['hype-user']);
+        queryClient.invalidateQueries(['request-rewards']);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {

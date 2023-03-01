@@ -69,11 +69,14 @@ export const RewardForm = ({
             <option disabled defaultValue="" value="">
               Please select your network
             </option>
-            {networkOptions.map((option) => (
-              <option key={`${option.value}-${option.name}`} value={option.value}>
-                {option.name}
-              </option>
-            ))}
+            {networkOptions.map(
+              (option) =>
+                option.show && (
+                  <option key={`${option.value}-${option.name}`} value={option.value}>
+                    {option.name}
+                  </option>
+                ),
+            )}
           </FormSelect>
           {errors.network && (
             <Text color="danger" fontSize="0.8rem">

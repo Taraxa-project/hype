@@ -50,7 +50,7 @@ export const useAddHypePoolEffects = () => {
     // word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
-    network: 842,
+    network: 841,
     token: null,
     tokenAddress: '',
     tokenName: '',
