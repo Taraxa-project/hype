@@ -59,7 +59,9 @@ contract HypePool is IHypePool, Pausable, Ownable {
             rewards.tokenAddress,
             rewards.impressionReward,
             rewards.cap,
-            rewards.endDate
+            rewards.startDate,
+            rewards.endDate,
+            rewards.duration
         );
     }
 
@@ -80,7 +82,9 @@ contract HypePool is IHypePool, Pausable, Ownable {
     ) external override whenNotPaused returns (IHypePool.HypePool memory) {
         require(bytes(uri).length > 0, "Missing metadata URI");
         require(rewards.cap > 0, "Invalid pool cap");
-        require(rewards.endDate > block.timestamp, "End date must be after current block time");
+        require(rewards.duration > 0, "Duration must be at least one day");
+        require(rewards.startDate == 0, "Start date must be zero");
+        require(rewards.endDate == 0, "End date must be zero");
         require(rewards.impressionReward > 0, "Invalid impression hype reward");
 
         bytes32 uuid = _generateHashId();
@@ -109,12 +113,14 @@ contract HypePool is IHypePool, Pausable, Ownable {
             "Deposited token address does not match pool token address"
         );
         _pool.active = true;
+        _pool.rewards.startDate = block.timestamp;
+        _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
         _pools[uuid] = _pool;
-        emit PoolActivated(uuid, msg.sender);
+        emit PoolActivated(uuid, msg.sender, _pool.rewards.startDate, _pool.rewards.endDate);
     }
 
     /**
-     * @dev Pool deactivator method. Must be triggered b when someone withdraws the pool funds from the escrow contract.
+     * @dev Pool deactivator method. Must be triggered when someone withdraws the pool funds from the escrow contract.
      * @param uuid The id of the pool to activate.
      */
     function deactivatePool(bytes32 uuid) external whenNotPaused onlyOwner {
@@ -122,6 +128,7 @@ contract HypePool is IHypePool, Pausable, Ownable {
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_pool.active == true, "Pool is already inactive");
         _pool.active = false;
+        _pool.rewards.endDate = block.timestamp;
         _pools[uuid] = _pool;
         emit PoolDeactivated(uuid, msg.sender);
     }

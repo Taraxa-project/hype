@@ -17,6 +17,18 @@
           "internalType": "address",
           "name": "activator",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "startDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "endDate",
+          "type": "uint256"
         }
       ],
       "name": "PoolActivated",
@@ -139,7 +151,19 @@
         {
           "indexed": false,
           "internalType": "uint256",
+          "name": "startDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
           "name": "endDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "duration",
           "type": "uint256"
         }
       ],
@@ -236,7 +260,17 @@
             },
             {
               "internalType": "uint256",
+              "name": "startDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "endDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "duration",
               "type": "uint256"
             }
           ],
@@ -315,7 +349,17 @@
                 },
                 {
                   "internalType": "uint256",
+                  "name": "startDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
                   "name": "endDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "duration",
                   "type": "uint256"
                 }
               ],
@@ -436,7 +480,17 @@
                 },
                 {
                   "internalType": "uint256",
+                  "name": "startDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
                   "name": "endDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "duration",
                   "type": "uint256"
                 }
               ],
