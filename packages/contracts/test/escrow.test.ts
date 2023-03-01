@@ -177,7 +177,10 @@ describe("DynamicEscrow", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const activation = await hypePool.connect(depositorOne).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorOne.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorOne.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Depositor one creates pool 1", async () => {
@@ -387,9 +390,13 @@ describe("DynamicEscrow", function () {
 
   it("DepositorTwo activates the pool", async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
-    const activation = hypePool.connect(depositorTwo).activatePool(currentPoolIndex);
+    const activation = await hypePool.connect(depositorTwo).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorTwo.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    console.log(block);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorTwo.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("DepositorTwo generates a signature for a claim of 0.1 ETH for an address, depositor one claims, emits Claimed event", async () => {
@@ -534,7 +541,10 @@ describe("DynamicEscrow", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const activation = await hypePool.connect(owner).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, owner.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, owner.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Owner withdraws the funds from pool2, Withdrawn event is emitted", async () => {
@@ -604,7 +614,10 @@ describe("DynamicEscrow", function () {
     const activation = await hypePool.connect(depositorOne).activatePool(currentPoolIndex);
     depositorOnePoolId = currentPoolIndex;
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorOne.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorOne.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Tests data retrieval from depositor one's POW", async () => {
@@ -742,7 +755,10 @@ describe("DynamicEscrow", function () {
   it("Owner tries to activate pool 2 with the right ERC20 payment, succeeds", async () => {
     const activation = await hypePool.connect(owner).activatePool(ownerPoolId);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(ownerPoolId, owner.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(ownerPoolId, owner.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Owner generates a signature for a claim of 1 ERC20 for an address, depositor one claims, emits Claimed event", async () => {
