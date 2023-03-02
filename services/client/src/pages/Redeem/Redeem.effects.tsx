@@ -4,15 +4,33 @@ import { getERC20TokenName } from '../../utils/tokens';
 import { useRequestRewards } from '../../api/rewards/useRequestRewards';
 import useWallet from '../../hooks/useWallet';
 import { HypeClaim, PoolRewards } from '../../models/Redeem.model';
+import { ClaimArgs, useContractEscrowClaim } from '../../hooks';
+import { BigNumber } from 'ethers';
 
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
+  const defaultContractArgs: ClaimArgs = {
+    receiver: null,
+    poolId: null,
+    amount: null,
+    tokenAddress: null,
+    nonce: null,
+    hash: null,
+  };
   const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
   const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, shouldRefetch);
   const { submitHandler, data: requestHashData } = useRequestRewards();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
+  const [claimArgs, setClaimArgs] = useState<ClaimArgs>(defaultContractArgs);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
+  const [enableClaim, setEnableClaim] = useState<boolean>(false);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
+  const onClaimSuccess = () => {
+    setEnableClaim(false);
+    setClaimArgs(defaultContractArgs);
+    // Send backend claim success
+  };
+  useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess);
 
   useEffect(() => {
     if (requestHashData?.data) {
@@ -47,7 +65,18 @@ export const useRedeemEffects = () => {
     submitHandler({ address: account, poolId: poolReward.poolId });
   };
   const onClaim = (poolClaim: HypeClaim) => {
-    console.log('Redeeming: ', poolClaim);
+    console.log('Claiming: ', poolClaim);
+    if (poolClaim) {
+      setClaimArgs({
+        receiver: poolClaim.rewardee,
+        poolId: poolClaim.poolId,
+        amount: BigNumber.from(poolClaim.amount),
+        tokenAddress: poolClaim.tokenAddress,
+        nonce: poolClaim.nonce,
+        hash: poolClaim.hash,
+      });
+      setEnableClaim(true);
+    }
   };
 
   const getClaimSymbols = async (targetArray: HypeClaim[], rewards: HypeClaim[]) => {

@@ -131,6 +131,7 @@ export class RewardService {
           BigNumber.from('0'),
         );
         const result: { hypePool: IPool } = await this.getPoolById(poolId);
+        console.log('RESULT: ', result);
         totalUnclaimed.push({
           unclaimed,
           poolId,
@@ -197,6 +198,7 @@ export class RewardService {
       claim.rewardee = address;
       claim.tokenAddress = tokenAddress;
       claim.hash = hash;
+      claim.nonce = nonce;
       const claimFinalized = await claim.save();
       return {
         nonce,

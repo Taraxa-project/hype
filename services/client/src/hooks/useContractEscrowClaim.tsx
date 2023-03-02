@@ -11,7 +11,8 @@ export interface ClaimArgs {
   poolId: string;
   amount: BigNumber;
   tokenAddress: string;
-  nonce: string;
+  nonce: number;
+  hash: string;
 }
 
 export const useContractEscrowClaim = (
@@ -26,18 +27,18 @@ export const useContractEscrowClaim = (
   const { config } = usePrepareContractWrite({
     address: escrowAddress,
     abi,
-    functionName: 'createPool',
-    args: [args.receiver, args.poolId, args.amount, args.tokenAddress, args.nonce],
-    overrides: {
-      gasLimit: BigNumber.from(9999999),
-    },
+    functionName: 'claim',
+    args: [args.receiver, args.poolId, args.amount, args.tokenAddress, args.nonce, args.hash],
+    // overrides: {
+    //   gasLimit: BigNumber.from(9999999),
+    // },
     enabled,
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading(['Please, sign the message...', 'Activating pool...']);
+      showLoading(['Please, sign the message...', 'Claiming rewards...']);
     },
     onSuccess(data: any) {
       // console.log('Successfully called', data);

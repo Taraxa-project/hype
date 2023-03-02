@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
 import { IClaim } from '../models/IClaim';
 
 @Entity('hype_claim')
@@ -41,4 +41,9 @@ export class HypeClaim extends BaseEntity implements IClaim {
   @IsNotEmpty()
   @IsString()
   hash: string;
+
+  @Column({ nullable: false })
+  @IsNotEmpty()
+  @IsNumber()
+  nonce: number;
 }

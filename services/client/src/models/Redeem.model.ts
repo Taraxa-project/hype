@@ -26,5 +26,6 @@ export interface HypeReward {
 
 export interface HypeClaim extends HypeReward {
   hash: string;
+  nonce: number;
   pool: HypePool;
 }

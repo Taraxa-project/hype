@@ -62,11 +62,11 @@ export const TransactionsContainer = ({
                   {totalPoolRewards?.map((reward) => (
                     <Transaction
                       key={`redeem-${reward.unclaimed?.toString()}-${reward.poolId}-${
-                        reward.pool.title
+                        reward.pool?.title
                       }`}
                       value={reward.unclaimed}
                       symbol={reward.symbol}
-                      pool={reward.pool.title}
+                      pool={reward.pool?.title}
                       date={new Date()}
                       status={TransactionStatus.PENDING}
                       buttonAction={() => onRedeem(reward)}
