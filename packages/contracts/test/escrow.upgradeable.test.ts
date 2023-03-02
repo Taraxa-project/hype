@@ -24,12 +24,10 @@ describe("DynamicEscrowUpgradeable", function () {
   let depositorOnePoolId: string;
   let ownerPoolId: string;
 
-  const SAMPLE_DATE = BigNumber.from(
-    (new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000).getTime() / 1000).toFixed(0).toString()
-  );
-  const PAST_DATE = BigNumber.from(
-    (new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000).getTime() / 1000).toFixed(0).toString()
-  );
+  const ZERO_TIMESTAMP = 0;
+  const ZERO_DURATION = 0;
+  const TEN_DAYS_TIMESTAMP = 10 * 24 * 60 * 60;
+  const NON_ZERO_TIMESTAMP = new Date().getTime();
 
   const halfEth = ethers.utils.parseEther("0.5");
   const oneEth = ethers.utils.parseEther("1");
@@ -128,7 +126,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: zeroAddress,
       network: 843,
       impressionReward: ethers.utils.parseEther("0.05"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
@@ -174,7 +174,10 @@ describe("DynamicEscrowUpgradeable", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const activation = await hypePool.connect(depositorOne).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorOne.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorOne.address, block.timestamp, block.timestamp! + TEN_DAYS_TIMESTAMP);
   });
 
   it("Depositor one creates pool 1", async () => {
@@ -189,7 +192,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: zeroAddress,
       network: 843,
       impressionReward: ethers.utils.parseEther("0.05"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     const secondaryCreation = await hypePool
       .connect(depositorOne)
@@ -215,7 +220,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: zeroAddress,
       network: 843,
       impressionReward: ethers.utils.parseEther("0.03"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     await expect(hypePool.connect(depositorOne).createPool("", details, rewards)).to.be.revertedWith(
       "Missing metadata URI"
@@ -226,7 +233,9 @@ describe("DynamicEscrowUpgradeable", function () {
         network: 843,
         cap: ethers.utils.parseEther("0.0"),
         impressionReward: ethers.utils.parseEther("0.0"),
-        endDate: SAMPLE_DATE,
+        startDate: ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: ZERO_TIMESTAMP,
       })
     ).to.be.revertedWith("Invalid pool cap");
     await expect(
@@ -235,19 +244,44 @@ describe("DynamicEscrowUpgradeable", function () {
         network: 843,
         cap: oneEth,
         impressionReward: ethers.utils.parseEther("0.0"),
-        endDate: SAMPLE_DATE,
+        startDate: ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: ZERO_TIMESTAMP,
       })
     ).to.be.revertedWith("Invalid impression hype reward");
-    console.log("date is", PAST_DATE);
     await expect(
       hypePool.connect(depositorOne).createPool("as", details, {
         cap: oneEth,
         tokenAddress: zeroAddress,
         network: 843,
         impressionReward: ethers.utils.parseEther("0.03"),
-        endDate: PAST_DATE,
+        startDate: NON_ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: ZERO_TIMESTAMP,
       })
-    ).to.be.revertedWith("End date must be after current block time");
+    ).to.be.revertedWith("Start date must be zero");
+    await expect(
+      hypePool.connect(depositorOne).createPool("as", details, {
+        cap: oneEth,
+        tokenAddress: zeroAddress,
+        network: 843,
+        impressionReward: ethers.utils.parseEther("0.03"),
+        startDate: ZERO_TIMESTAMP,
+        duration: ZERO_DURATION,
+        endDate: ZERO_TIMESTAMP,
+      })
+    ).to.be.revertedWith("Duration must be at least one day");
+    await expect(
+      hypePool.connect(depositorOne).createPool("as", details, {
+        cap: oneEth,
+        tokenAddress: zeroAddress,
+        network: 843,
+        impressionReward: ethers.utils.parseEther("0.03"),
+        startDate: ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: NON_ZERO_TIMESTAMP,
+      })
+    ).to.be.revertedWith("End date must be zero");
   });
 
   it("DepositorTwo deposits 1 ETH into escrow for pool 1 and emits Deposited event, then withdraws", async () => {
@@ -355,7 +389,10 @@ describe("DynamicEscrowUpgradeable", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const activation = hypePool.connect(depositorTwo).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorTwo.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorTwo.address, block.timestamp + 1, block.timestamp + TEN_DAYS_TIMESTAMP + 1);
   });
 
   it("DepositorTwo generates a signature for a claim of 0.1 ETH for an address, depositor one claims, emits Claimed event", async () => {
@@ -424,7 +461,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: erc20.address,
       network: 843,
       impressionReward: ethers.utils.parseEther("1"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     const createPool = await hypePool.connect(owner).createPool("https://pool.data.json", details, rewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
@@ -498,7 +537,10 @@ describe("DynamicEscrowUpgradeable", function () {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const activation = await hypePool.connect(owner).activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, owner.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, owner.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Owner withdraws the funds from pool2, Withdrawn event is emitted", async () => {
@@ -538,7 +580,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: zeroAddress,
       network: 843,
       impressionReward: ethers.utils.parseEther("0.05"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
     expect(createPool).not.to.be.undefined;
@@ -566,7 +610,10 @@ describe("DynamicEscrowUpgradeable", function () {
     const activation = await hypePool.connect(depositorOne).activatePool(currentPoolIndex);
     depositorOnePoolId = currentPoolIndex;
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(currentPoolIndex, depositorOne.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(currentPoolIndex, depositorOne.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Tests data retrieval from depositor one's POW", async () => {
@@ -609,7 +656,9 @@ describe("DynamicEscrowUpgradeable", function () {
         tokenAddress: zeroAddress,
         network: 843,
         impressionReward: ethers.utils.parseEther("0.05"),
-        endDate: SAMPLE_DATE,
+        startDate: ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: ZERO_TIMESTAMP,
       };
       const createPool = await hypePool.connect(depositorOne).createPool("https://pool.data.json", details, rewards);
       await expect(createPool).to.be.revertedWith("Pausable: paused");
@@ -643,7 +692,9 @@ describe("DynamicEscrowUpgradeable", function () {
         tokenAddress: zeroAddress,
         network: 843,
         impressionReward: ethers.utils.parseEther("0.05"),
-        endDate: SAMPLE_DATE,
+        startDate: ZERO_TIMESTAMP,
+        duration: TEN_DAYS_TIMESTAMP,
+        endDate: ZERO_TIMESTAMP,
       };
       expect(hypePool.connect(depositorOne).createPool("", details, rewards)).to.be.revertedWith(
         "Missing metadata URI"
@@ -668,7 +719,9 @@ describe("DynamicEscrowUpgradeable", function () {
       tokenAddress: erc20.address,
       network: 843,
       impressionReward: ethers.utils.parseEther("1"),
-      endDate: SAMPLE_DATE,
+      startDate: ZERO_TIMESTAMP,
+      duration: TEN_DAYS_TIMESTAMP,
+      endDate: ZERO_TIMESTAMP,
     };
     const createPool = await hypePool.connect(owner).createPool("https://pool.data.json", details, rewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
@@ -701,7 +754,10 @@ describe("DynamicEscrowUpgradeable", function () {
   it("Owner tries to activate pool 2 with the right ERC20 payment, succeeds", async () => {
     const activation = await hypePool.connect(owner).activatePool(ownerPoolId);
     expect(activation).not.to.be.undefined;
-    await expect(activation).to.emit(hypePool, "PoolActivated").withArgs(ownerPoolId, owner.address);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, "PoolActivated")
+      .withArgs(ownerPoolId, owner.address, block.timestamp, block.timestamp + TEN_DAYS_TIMESTAMP);
   });
 
   it("Owner generates a signature for a claim of 1 ERC20 for an address, depositor one claims, emits Claimed event", async () => {
