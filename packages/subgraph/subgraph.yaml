@@ -21,7 +21,7 @@ dataSources:
         - HypePool
       abis:
         - name: HypePool
-          file: ./abis/HypePool.json
+          file: ./abis/HypePool/HypePool.json
       eventHandlers:
         - event: PoolActivated(bytes32,address,uint256,uint256)
           handler: handlePoolActivated
@@ -34,3 +34,26 @@ dataSources:
         - event: PoolUriSet(bytes32,string)
           handler: handlePoolUriSet
       file: ./src/hype-pool.ts
+  - kind: ethereum
+    name: DynamicEscrow
+    network: mainnet
+    source:
+      address: '0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E'
+      abi: DynamicEscrow
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DynamicEscrow
+      abis:
+        - name: DynamicEscrow
+          file: ./abis/DynamicEscrow/DynamicEscrow.json
+      eventHandlers:
+        - event: Claimed(indexed address,uint256,bytes32)
+          handler: handleClaimed
+        - event: Deposited(indexed address,uint256,bytes32)
+          handler: handleDeposited
+        - event: Withdrawn(indexed address,uint256,bytes32)
+          handler: handleWithdrawn
+      file: ./src/escrow.ts
