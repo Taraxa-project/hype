@@ -1,6 +1,6 @@
 import React from 'react';
 import { HypePool } from '../../models';
-import { monthDiff, shortenText, transformFromWei } from '../../utils';
+import { getPoolDuration, monthDiff, shortenText, transformFromWei } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -25,7 +25,6 @@ const Card = ({ children, ...props }: CardProps) => {
   const { title, projectName, description, tokenName, cap, active, impressionReward, endDate } =
     pool;
   const { tokenDecimals } = useTokenDecimals(pool);
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   return (
     <StyledCard>
@@ -51,16 +50,16 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Reward /Impressions:</DataHeader>
+              <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
                 {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
               </DataValue>
             </DataContainer>
           )}
-          {endDate && duration && (
+          {endDate && (
             <DataContainer>
-              <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
-              <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
+              <DataHeader key={`endDate-${Date.now()}`}>Duration:</DataHeader>
+              <DataValue key={`${endDate}-${Date.now()}`}>{getPoolDuration(+endDate)}</DataValue>
             </DataContainer>
           )}
           <DataContainer>

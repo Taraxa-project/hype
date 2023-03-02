@@ -213,34 +213,27 @@ export const RewardForm = ({
           )}
         </FormElement>
 
-        {/* End date */}
+        {/* Pool duration */}
         <FormElement>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Max duration of the pool:</Label>
           </Box>
           <Example>
             Defines how long the Hype Pool will last. At the end of the Hype Pool if rewards have
-            not been fully doled out, they'll be returned.
+            not been fully doled out, they`ll be returned.
           </Example>
-          <Controller
-            name="endDate"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <DatePicker
-                wrapperClassName="date-picker"
-                placeholderText="ex: 30 Days"
-                disabled={!authenticated}
-                selected={value}
-                showTimeSelect
-                dateFormat="MM/dd/yyyy HH:mm"
-                onChange={onChange}
-                minDate={new Date()}
-              />
-            )}
+          <FormInput
+            disabled={!authenticated}
+            placeholder="ex: 30 days"
+            type="number"
+            min="1"
+            max="180"
+            name="duration"
+            {...register('duration')}
           />
-          {errors.endDate && (
+          {errors.duration && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.endDate.message}
+              {errors.duration.message}
             </Text>
           )}
         </FormElement>

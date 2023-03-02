@@ -47,7 +47,7 @@ export const useHomeEffects = () => {
 
   const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
     const now = Date.now(); // get current timestamp in milliseconds
-    return pools.filter((p: HypePool) => p.active === true && +p.endDate > now);
+    return pools.filter((p: HypePool) => p.active === true && +p.endDate * 1000 > now);
   };
 
   useEffect(() => {

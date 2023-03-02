@@ -31,9 +31,6 @@ export const Summary: FC<SummaryProps> = ({
     rewards,
     isCustomToken,
   );
-  const ageString = Math.round(
-    (new Date(rewards.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-  );
 
   return (
     <FormColumn>
@@ -175,13 +172,13 @@ export const Summary: FC<SummaryProps> = ({
             </Text>
           </RewardContent>
         )}
-        {rewards?.endDate && ageString && (
+        {rewards?.duration && (
           <RewardContent>
             <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
               Duration:
             </Text>
             <Text fontSize="0.875rem" color="greys.7">
-              {ageString}
+              {rewards?.duration} days
             </Text>
           </RewardContent>
         )}

@@ -123,7 +123,7 @@ export const DescriptionContainer = styled.span`
   letter-spacing: -0.02em;
   text-align: left;
   color: #595959;
-  max-width: 19.5rem;
+  max-width: 22rem;
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -145,7 +145,7 @@ export const LogoText = styled.h1`
 
 export const TitleText = styled.h3`
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1.625rem;
   display: flex;
   align-items: center;

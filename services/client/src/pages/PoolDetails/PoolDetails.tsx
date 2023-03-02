@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import { transformFromWei, monthDiff } from '../../utils';
+import { transformFromWei, formatDate } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
   PoolContainer,
@@ -33,6 +33,7 @@ export const PoolDetails = () => {
     impressionReward,
     active,
     endDate,
+    startDate,
     tokenDecimals,
     isDeposited,
     authenticated,
@@ -40,7 +41,9 @@ export const PoolDetails = () => {
     activate,
     account,
   } = usePoolDetailsEffects(poolId);
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
+  const startedAt = startDate ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = endDate ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+
   return (
     <PoolContainer>
       <TitleText>{title}</TitleText>
@@ -104,12 +107,24 @@ export const PoolDetails = () => {
           </InfoValue>
         </InfoContainer>
       )}
-      {endDate && duration && (
+
+      <InfoContainer>
+        <InfoHeader key={`startDate-${Date.now()}`}>Start Date:</InfoHeader>
+        <InfoValue key={`${startDate}-${Date.now()}`}>{startedAt}</InfoValue>
+      </InfoContainer>
+
+      <InfoContainer>
+        <InfoHeader key={`endDate-${Date.now()}`}>End Date:</InfoHeader>
+        <InfoValue key={`${endDate}-${Date.now()}`}>{endsAt}</InfoValue>
+      </InfoContainer>
+
+      {/* {endDate && (
         <InfoContainer>
-          <InfoHeader key={`duration-${Date.now()}`}>Duration:</InfoHeader>
-          <InfoValue key={`${duration}-${Date.now()}`}>{duration}</InfoValue>
+          <InfoHeader key={`endDate-${Date.now()}`}>Duration:</InfoHeader>
+          <InfoValue key={`${endDate}-${Date.now()}`}>{getPoolDuration(+endDate)}</InfoValue>
         </InfoContainer>
-      )}
+      )} */}
+
       <InfoContainer>
         <InfoHeader>Status:</InfoHeader>
         {active ? (
@@ -118,7 +133,7 @@ export const PoolDetails = () => {
           </InfoValue>
         ) : (
           <InfoValue key={`active-${Date.now()}`}>
-            <DotIcon color="#C2C2C2" /> Inactive
+            <DotIcon color="#C2C2C2" /> (not yet active)
           </InfoValue>
         )}
       </InfoContainer>

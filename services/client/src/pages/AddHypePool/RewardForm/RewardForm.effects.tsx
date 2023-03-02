@@ -9,7 +9,10 @@ import { useNetwork, useToken } from 'wagmi';
 import { AddressType, networkOptions, tokensOptions } from '../../../utils';
 
 export interface HypePoolRewardForm
-  extends Pick<AddHypePool, 'network' | 'token' | 'impressionReward' | 'cap' | 'endDate'> {
+  extends Pick<
+    AddHypePool,
+    'network' | 'token' | 'impressionReward' | 'cap' | 'endDate' | 'startDate' | 'duration'
+  > {
   tokenAddress: string;
   tokenName: string;
   tokenDecimals: number;
@@ -76,13 +79,15 @@ export const useRewardFormEffects = (
         .label('Total rewards for the pool'),
       impressionReward: yup
         .number()
-        .typeError('Reward /Impressions is required')
-        .required('Reward /Impressions is required')
+        .typeError('Reward / impression is required')
+        .required('Reward / impression is required')
         .label('Reward per 1,000 impressions'),
-      endDate: yup
-        .date()
-        .typeError('Pool ends is required')
-        .required('Pool ends is required')
+      duration: yup
+        .number()
+        .typeError('Pool duration is required')
+        .min(0)
+        .max(180)
+        .required('Pool duration is required')
         .label('Max duration of the pool'),
     })
     .required();

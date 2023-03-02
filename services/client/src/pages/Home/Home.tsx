@@ -34,10 +34,11 @@ export const Home = () => {
             <Image width="auto" height="50px" src={Megaphone} alt="Megaphone" />
             <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
           </Logo>
-          <TitleText>What is hype farming?</TitleText>
+          <TitleText>Automated Social Campaigns for Web3</TitleText>
           <DescriptionContainer>
-            APE is launching it's testnet, and we'd like everyone to come & check it out! All
-            participants will be able to claim rewards...
+            Hype your project and expand your community with automated social campaigns with
+            measurable + verifiable outcomes, spam-filtering, and reward. Decentralized,
+            open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>

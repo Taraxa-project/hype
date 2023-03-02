@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useGetMyRewards } from 'src/api/rewards/useGetUserRewards';
-import { HypeClaim, PoolRewards } from 'src/models/Redeem.model';
-import { getPoolDetailsById } from 'src/utils/pools';
-import { getERC20TokenName } from 'src/utils/tokens';
-import { useProvider } from 'wagmi';
+import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
+import { getERC20TokenName } from '../../utils/tokens';
 import { useRequestRewards } from '../../api/rewards/useRequestRewards';
 import useWallet from '../../hooks/useWallet';
+import { HypeClaim, PoolRewards } from '../../models/Redeem.model';
 
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
-  const provider = useProvider();
   const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
   const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, shouldRefetch);
   const { submitHandler, data: requestHashData } = useRequestRewards();

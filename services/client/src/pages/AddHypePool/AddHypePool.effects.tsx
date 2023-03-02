@@ -57,7 +57,9 @@ export const useAddHypePoolEffects = () => {
     tokenDecimals: 18,
     impressionReward: null,
     cap: null,
-    endDate: null,
+    duration: null,
+    startDate: 0,
+    endDate: 0,
     // network: 842,
     // token: 'TARA',
     // tokenAddress: '0x0000000000000000000000000000000000000000',
@@ -117,7 +119,9 @@ export const useAddHypePoolEffects = () => {
         impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
-        endDate: rewards.endDate?.getTime(),
+        endDate: 0,
+        startDate: 0,
+        duration: rewards.duration * 24 * 60 * 60,
       },
     });
     setContractEnabled(true);

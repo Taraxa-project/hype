@@ -75,6 +75,8 @@ export class RewardService {
             cap
             creator
             endDate
+            startDate
+            duration
             impressionReward
             word
           }

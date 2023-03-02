@@ -15,6 +15,8 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
+        startDate
+        duration
         impressionReward
         word
       }
@@ -36,6 +38,8 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
+        startDate
+        duration
         impressionReward
         word
       }
@@ -59,6 +63,8 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
+        startDate
+        duration
         impressionReward
         word
       }
@@ -83,6 +89,8 @@ export const HYPEPOOL_QUERIES = {
         cap
         creator
         endDate
+        startDate
+        duration
         impressionReward
         word
       }

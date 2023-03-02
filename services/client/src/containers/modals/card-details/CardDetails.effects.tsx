@@ -30,7 +30,9 @@ export const useCardDetailsEffects = () => {
           cap: 0,
           impressionReward: 0,
           active: null,
-          endDate: null,
+          endDate: 0,
+          startDate: 0,
+          duration: null,
         },
       },
     });

@@ -19,6 +19,8 @@ export interface WritePoolRewardsArgs {
   impressionReward: BigNumber;
   cap: BigNumber;
   endDate: number;
+  startDate: number;
+  duration: number;
 }
 
 export interface WritePoolArgs {

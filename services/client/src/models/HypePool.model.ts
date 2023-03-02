@@ -9,7 +9,9 @@ export interface AddHypePool {
   token: string;
   impressionReward: number;
   cap: number;
-  endDate: Date;
+  startDate: number;
+  endDate: number;
+  duration: number;
 }
 
 export interface HypePool extends AddHypePool {

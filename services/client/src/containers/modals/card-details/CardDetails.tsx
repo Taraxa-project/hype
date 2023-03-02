@@ -13,7 +13,7 @@ import {
   CardInnerContainer,
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { monthDiff, transformFromWei } from '../../../utils';
+import { formatDate, monthDiff, transformFromWei } from '../../../utils';
 import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
@@ -32,6 +32,7 @@ export const CardDetails = () => {
     impressionReward,
     active,
     endDate,
+    startDate,
     closeModal,
     onRedirect,
     tokenDecimals,
@@ -41,7 +42,8 @@ export const CardDetails = () => {
     title,
     close: closeModal,
   };
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
+  const startedAt = startDate ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = endDate ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
 
   const poolModalAction: ModalAction = {
     name: 'Go to Pool details page',
@@ -117,12 +119,14 @@ export const CardDetails = () => {
             </DataValue>
           </DataContainer>
         )}
-        {endDate && duration && (
           <DataContainer>
-            <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
-            <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
+            <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
+            <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
           </DataContainer>
-        )}
+          <DataContainer>
+            <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
+            <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
+          </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
           {active ? (
