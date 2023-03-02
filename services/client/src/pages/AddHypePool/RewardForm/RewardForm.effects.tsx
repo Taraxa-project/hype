@@ -86,7 +86,7 @@ export const useRewardFormEffects = (
         .number()
         .typeError('Pool duration is required')
         .min(0)
-        .max(180)
+        .max(30)
         .required('Pool duration is required')
         .label('Max duration of the pool'),
     })
