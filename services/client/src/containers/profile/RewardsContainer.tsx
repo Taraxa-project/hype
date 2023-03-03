@@ -35,7 +35,7 @@ export const RewardsContainer = (props: RewardProps) => {
       </Heading>
       <Box display="flex" flexDirection="column" gridGap="0.5rem" mb="3rem">
         <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
-          Total unredeemed
+          Total rewards unredeemed
         </Text>
         <Heading
           fontSize="2.25rem"
