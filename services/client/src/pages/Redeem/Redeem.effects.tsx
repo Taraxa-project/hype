@@ -6,6 +6,7 @@ import useWallet from '../../hooks/useWallet';
 import { HypeClaim, PoolRewards } from '../../models/Redeem.model';
 import { ClaimArgs, useContractEscrowClaim } from '../../hooks';
 import { BigNumber } from 'ethers';
+import { useRewardsClaim } from '../../api/rewards/useRewardsClaim';
 
 export const useRedeemEffects = () => {
   const { isConnected, account } = useWallet();
@@ -20,15 +21,22 @@ export const useRedeemEffects = () => {
   const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
   const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, shouldRefetch);
   const { submitHandler, data: requestHashData } = useRequestRewards();
+  const { submitHandler: claimReward } = useRewardsClaim();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimArgs, setClaimArgs] = useState<ClaimArgs>(defaultContractArgs);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
   const [enableClaim, setEnableClaim] = useState<boolean>(false);
+  const [currentClaimId, setCurrentClaimId] = useState<number>(null);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
+
   const onClaimSuccess = () => {
-    setEnableClaim(false);
-    setClaimArgs(defaultContractArgs);
-    // Send backend claim success
+    if (currentClaimId !== null && currentClaimId !== undefined) {
+      setEnableClaim(false);
+      setClaimArgs(defaultContractArgs);
+      // Send backend claim success
+      claimReward(currentClaimId);
+      setShouldRefetch(true);
+    }
   };
   useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess);
 
@@ -41,19 +49,12 @@ export const useRedeemEffects = () => {
   useEffect(() => {
     const setData = async () => {
       if (account && data) {
-        const claims: HypeClaim[] = [];
-        await getClaimSymbols(claims, data.claims);
+        const claims: HypeClaim[] = await getClaimSymbols(data.claims);
         setClaims(claims);
-        const rewards: PoolRewards[] = [];
-        await getRewardSymbols(rewards, data.totalUnclaimed);
+        const rewards: PoolRewards[] = await getRewardSymbols(data.totalUnclaimed);
         setPoolRewards(rewards);
-
-        // remove this after TheGraph is connected
-        const claimHistory = [...claims];
-        for (const claim of claimHistory) {
-          claim.claimed = true;
-        }
-        setClaimHistory(claimHistory);
+        const releasedRewards: HypeClaim[] = await getClaimSymbols(data.rewardsReceived);
+        setClaimHistory(releasedRewards);
       }
     };
     setData();
@@ -67,6 +68,7 @@ export const useRedeemEffects = () => {
   const onClaim = (poolClaim: HypeClaim) => {
     console.log('Claiming: ', poolClaim);
     if (poolClaim) {
+      setCurrentClaimId(poolClaim.id);
       setClaimArgs({
         receiver: poolClaim.rewardee,
         poolId: poolClaim.poolId,
@@ -79,7 +81,8 @@ export const useRedeemEffects = () => {
     }
   };
 
-  const getClaimSymbols = async (targetArray: HypeClaim[], rewards: HypeClaim[]) => {
+  const getClaimSymbols = async (rewards: HypeClaim[]) => {
+    let targetArray: HypeClaim[] = [];
     for (const reward of rewards) {
       let symbol;
       try {
@@ -91,10 +94,12 @@ export const useRedeemEffects = () => {
         ...reward,
         symbol: symbol,
       });
+      return targetArray;
     }
   };
 
-  const getRewardSymbols = async (targetArray: PoolRewards[], rewards: PoolRewards[]) => {
+  const getRewardSymbols = async (rewards: PoolRewards[]) => {
+    let targetArray: PoolRewards[] = [];
     for (const reward of rewards) {
       let symbol;
       try {
@@ -106,6 +111,7 @@ export const useRedeemEffects = () => {
         ...reward,
         symbol: symbol,
       });
+      return targetArray;
     }
   };
 

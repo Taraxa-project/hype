@@ -23,15 +23,14 @@ export const useContractEscrowClaim = (
   const { abi } = ABIs.contracts.DynamicEscrow;
   const [isWrite, setIsWrite] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
-
   const { config } = usePrepareContractWrite({
     address: escrowAddress,
     abi,
     functionName: 'claim',
     args: [args.receiver, args.poolId, args.amount, args.tokenAddress, args.nonce, args.hash],
-    // overrides: {
-    //   gasLimit: BigNumber.from(9999999),
-    // },
+    overrides: {
+      gasLimit: BigNumber.from(9999999),
+    },
     enabled,
   });
 
@@ -54,6 +53,7 @@ export const useContractEscrowClaim = (
     hash: data?.hash,
     onSuccess() {
       hideLoadingModal();
+      successCallback();
     },
     onError(error: any) {
       console.log('Error', error);
@@ -62,7 +62,6 @@ export const useContractEscrowClaim = (
     },
     onSettled(data, error) {
       hideLoadingModal();
-      successCallback();
     },
   });
 

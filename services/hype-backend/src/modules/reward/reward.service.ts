@@ -101,11 +101,23 @@ export class RewardService {
       }),
       claimed: false,
     });
-    if (rewardsOfAddress?.length === 0 && fetchedClaims?.length === 0) {
-      throw new NotFoundException(
-        'No rewards or fetchedClaims found for given address.',
-      );
-    }
+    const rewardClaims = await this.claimRepository.findBy({
+      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+        address,
+      }),
+      claimed: true,
+    });
+    const rewardsReceived: PoolClaim[] = await Promise.all(
+      rewardClaims.map(async (claim) => {
+        const result: { hypePool: IPool } = await this.getPoolById(
+          claim.poolId,
+        );
+        return {
+          ...claim,
+          pool: result.hypePool,
+        };
+      }),
+    );
     const claims: PoolClaim[] = await Promise.all(
       fetchedClaims.map(async (claim) => {
         const result: { hypePool: IPool } = await this.getPoolById(
@@ -131,7 +143,6 @@ export class RewardService {
           BigNumber.from('0'),
         );
         const result: { hypePool: IPool } = await this.getPoolById(poolId);
-        console.log('RESULT: ', result);
         totalUnclaimed.push({
           unclaimed,
           poolId,
@@ -143,6 +154,7 @@ export class RewardService {
     return {
       totalUnclaimed,
       claims,
+      rewardsReceived,
     };
   }
 
@@ -157,11 +169,7 @@ export class RewardService {
       }),
       claimed: false,
     });
-    if (rewardsOfAddress.length < 1)
-      throw new NotFoundException(
-        HypeReward,
-        `There are no unclaimed rewards for the address ${address} in pool ${poolId}`,
-      );
+
     const biggestId = rewardsOfAddress
       .map((r) => r.id)
       .sort((a, b) => a - b)[0];
@@ -210,6 +218,17 @@ export class RewardService {
     throw new InternalServerErrorException(
       `Unable to calculate hash for ${poolId} and ${address}`,
     );
+  }
+
+  async claim(id: number): Promise<any> {
+    const claim = await this.claimRepository.findOneBy({ id });
+    if (!claim) {
+      throw new NotFoundException('Claim not found!');
+    }
+    claim.claimed = true;
+    const savedClaim = await claim.save();
+    console.log('Saved claim: ', savedClaim);
+    return;
   }
 
   async saveImpressions(impressions: ImpressionDto[]): Promise<any> {

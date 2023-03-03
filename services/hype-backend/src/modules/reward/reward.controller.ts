@@ -88,6 +88,15 @@ export class RewardController {
     }
   }
 
+  @Post('claim')
+  @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
+  @ApiCreatedResponse({ description: 'Claim details' })
+  @ApiNotFoundResponse({ description: 'Claim not found' })
+  public async claimed(@Query('id') id: number): Promise<void> {
+    return await this.rewardService.claim(id);
+  }
+
   @Patch(':address')
   @UseGuards(WalletGuard)
   @ApiBearerAuth('authorization')

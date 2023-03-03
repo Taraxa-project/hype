@@ -4,6 +4,7 @@ import { HypePool } from './HypePool.model';
 export interface HypeRewardSummary {
   totalUnclaimed: PoolRewards[];
   claims: HypeClaim[];
+  rewardsReceived: HypeClaim[];
 }
 
 export interface PoolRewards {
