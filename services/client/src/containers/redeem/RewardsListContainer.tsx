@@ -38,7 +38,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
         color="black"
         letterSpacing="-0.02em"
       >
-        Rewards received {claims?.length ? `(${claims?.length})` : ''}
+        Rewards received {claims?.length ? `(${claims?.length})` : '0'}
       </Heading>
       {isConnected && (
         <Box

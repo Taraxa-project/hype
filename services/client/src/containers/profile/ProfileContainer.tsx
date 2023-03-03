@@ -57,7 +57,7 @@ export const ProfileContainer = ({
         Your profile
       </Heading>
       {address && (
-        <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
+        <Box display="flex" alignItems="center" gridGap="1.5rem" my="1rem">
           <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
           <Account>{address}</Account>
         </Box>

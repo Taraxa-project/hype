@@ -48,7 +48,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Rewards by pool ({totalPoolRewards?.length})
+            Rewards by pool ({totalPoolRewards?.length || 0})
           </Heading>
           {isConnected ? (
             <>
@@ -94,7 +94,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Claims by pool ({claims?.length})
+            Claims by pool ({claims?.length || 0})
           </Heading>
           {isConnected ? (
             <>
