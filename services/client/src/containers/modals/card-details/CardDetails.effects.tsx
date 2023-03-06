@@ -43,6 +43,11 @@ export const useCardDetailsEffects = () => {
     closeModal();
   };
 
+  const onParticipate = () => {
+    navigate(`/participate`);
+    closeModal();
+  }
+
   return {
     open,
     ...cardData,
@@ -50,5 +55,6 @@ export const useCardDetailsEffects = () => {
     onRedirect,
     isPrivate,
     tokenDecimals,
+    onParticipate,
   };
 };

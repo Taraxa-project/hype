@@ -16,17 +16,19 @@ export const MetamaskInfo = () => {
     close: closeModal,
   };
 
-  const modalAction: ModalAction = {
-    name: 'OK',
-    onAction: closeModal,
-  };
+  const modalActions: ModalAction[] = [
+    {
+      name: 'OK',
+      onAction: closeModal,
+    },
+  ];
 
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={modalAction}
+      modalActions={modalActions}
     >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>

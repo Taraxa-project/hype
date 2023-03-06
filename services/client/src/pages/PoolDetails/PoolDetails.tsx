@@ -16,6 +16,7 @@ import {
 import TitleText from '../../components/titletext/TitleText';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
+import Text from '../../components/styles/Text';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -144,15 +145,24 @@ export const PoolDetails = () => {
               Fund the Pool
             </Button>
           ) : (
-            <Button
-              disabled={!authenticated}
-              size="full-width"
-              variant="success"
-              type="button"
-              onClick={activate}
-            >
-              Activate the Pool
-            </Button>
+            <Box>
+              <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You need to activate the pool for participating community members to be rewarded.
+              </Text>
+              <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You may activate the pool at any time, but once you activate the pool it cannot be
+                deactivated.
+              </Text>
+              <Button
+                disabled={!authenticated}
+                size="full-width"
+                type="submit"
+                variant="success"
+                onClick={activate}
+              >
+                Activate the Pool
+              </Button>
+            </Box>
           )}
         </Box>
       )}

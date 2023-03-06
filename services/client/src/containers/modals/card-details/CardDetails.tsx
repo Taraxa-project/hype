@@ -13,7 +13,7 @@ import {
   CardInnerContainer,
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { formatDate, monthDiff, transformFromWei } from '../../../utils';
+import { formatDate, transformFromWei } from '../../../utils';
 import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
@@ -36,6 +36,8 @@ export const CardDetails = () => {
     closeModal,
     onRedirect,
     tokenDecimals,
+    isPrivate,
+    onParticipate,
   } = useCardDetailsEffects();
 
   const titleProps: ModalTitleProps = {
@@ -50,13 +52,25 @@ export const CardDetails = () => {
     onAction: onRedirect,
     closeButtonVariant: 'primary',
   };
+  const participateModalAction: ModalAction = {
+    name: '📣 Participate Now!',
+    onAction: onParticipate,
+    closeButtonVariant: 'primary',
+  };
+  const modalActions: ModalAction[] = [];
 
+  if (isPrivate) {
+    modalActions.push(poolModalAction);
+  } else {
+    modalActions.push(participateModalAction);
+  }
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={poolModalAction}
+      modalActions={modalActions}
+      // height='42rem' // This is usefull when adding two buttons
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -113,20 +127,20 @@ export const CardDetails = () => {
         )}
         {impressionReward && (
           <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Reward per 1,000 impressions:</DataHeader>
+            <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}
-          <DataContainer>
-            <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
-            <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
-          </DataContainer>
-          <DataContainer>
-            <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
-            <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
-          </DataContainer>
+        <DataContainer>
+          <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
+          <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
+        </DataContainer>
+        <DataContainer>
+          <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
+          <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
+        </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
           {active ? (

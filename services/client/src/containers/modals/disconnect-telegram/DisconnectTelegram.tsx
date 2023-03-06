@@ -16,20 +16,20 @@ export const DisconnectTelegram = () => {
     close: closeModal,
   };
 
-  const modalAction: ModalAction = {
+  const modalActions: ModalAction[] = [{
     name: 'Yes, disconnect this account',
     onAction: () => {
       onDisconnect();
       closeModal();
     },
-  };
+  }];
 
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={modalAction}
+      modalActions={modalActions}
       showCancel={true}
     >
       <Box display="flex" flexDirection="column" height="100%">

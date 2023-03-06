@@ -51,6 +51,7 @@ export const Profile = () => {
         emptyMessage="Looks like you haven`t joined any pools yet..."
         target="/joinedPools"
         poolModalAction={null}
+        isPrivate={true}
       />
     </Box>
   );
