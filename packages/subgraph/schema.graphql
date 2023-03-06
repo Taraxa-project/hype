@@ -41,6 +41,7 @@ type HypePool @entity(immutable: false) {
   tokenAddress: Bytes
   impressionReward: BigInt
   cap: BigInt
+  remainingFunds: BigInt!
   startDate: BigInt
   duration: BigInt
   endDate: BigInt
@@ -49,4 +50,32 @@ type HypePool @entity(immutable: false) {
 type HypeUri @entity(immutable: true) {
   id: Bytes!
   uri: String!
+}
+
+type DepositedEvent @entity(immutable: true) {
+  id: ID!
+  weiAmount: BigInt!
+  spender: Bytes!
+  poolId: Bytes!
+}
+
+type WithdrawnEvent @entity(immutable: true) {
+  id: ID!
+  weiAmount: BigInt!
+  receiver: Bytes!
+  poolId: Bytes!
+}
+
+type ClaimedEvent @entity(immutable: true) {
+  id: ID!
+  weiAmount: BigInt!
+  receiver: Bytes!
+  poolId: Bytes!
+}
+
+type RewardCreditedEvent @entity(immutable: true) {
+  id: ID!
+  weiAmount: BigInt!
+  receiver: Bytes!
+  poolId: Bytes!
 }
