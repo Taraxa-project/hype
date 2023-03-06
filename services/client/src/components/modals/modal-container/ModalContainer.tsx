@@ -66,17 +66,18 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               marginTop="1rem"
               maxWidth={modalActions[0]?.maxWidth || '23rem'}
             >
-              {modalActions.map((modalAction) => (
-                <Button
-                  type={modalAction.type || 'button'}
-                  variant={modalAction.closeButtonVariant || 'primary'}
-                  size="full-width"
-                  onClick={modalAction.onAction}
-                  disabled={modalAction.disabled}
-                >
-                  {modalAction.name}
-                </Button>
-              ))}
+              {modalActions.length > 0 &&
+                modalActions.map((modalAction) => (
+                  <Button
+                    type={modalAction.type || 'button'}
+                    variant={modalAction.closeButtonVariant || 'primary'}
+                    size="full-width"
+                    onClick={modalAction.onAction}
+                    disabled={modalAction.disabled}
+                  >
+                    {modalAction.name}
+                  </Button>
+                ))}
               {showCancel && (
                 <Button
                   variant="secondary"
