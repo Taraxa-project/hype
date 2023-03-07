@@ -10,6 +10,7 @@ import { HypeClaim } from '../../entities/claim.entity';
 import { RewardController } from './reward.controller';
 import { HypeReward } from '../../entities/reward.entity';
 import { RewardService } from './reward.service';
+import { PoolsController } from './pools.controller';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { RewardService } from './reward.service';
     HttpModule,
     UserModule,
   ],
-  controllers: [RewardController],
+  controllers: [RewardController, PoolsController],
   providers: [RewardService],
   exports: [RewardService],
 })

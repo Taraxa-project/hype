@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { HypeRewardSummary } from 'src/models/Redeem.model';
 import { useAuth } from '../../hooks';
+import { HypeRewardSummary } from '../../models/Redeem.model';
 import { API } from '../types';
 
 const getMyRewards = (address: string) => {
@@ -9,10 +9,10 @@ const getMyRewards = (address: string) => {
   return axios.get(url);
 };
 
-export const useGetMyRewards = (address: string, shouldRefetch: boolean) => {
+export const useGetMyRewards = (address: string) => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['user-rewards', address, shouldRefetch],
+    ['user-rewards', address],
     () => getMyRewards(address),
     {
       retry: false,

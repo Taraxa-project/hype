@@ -18,7 +18,7 @@ export const useRedeemEffects = () => {
     nonce: null,
     hash: null,
   };
-  const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, true);
+  const { data, isLoading: isLoadingRewards } = useGetMyRewards(account);
   const { submitHandler } = useRequestRewards();
   const { submitHandler: claimReward } = useRewardsClaim();
   const [claims, setClaims] = useState<HypeClaim[]>([]);

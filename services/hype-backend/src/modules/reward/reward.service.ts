@@ -108,6 +108,7 @@ export class RewardService {
       }),
       claimed: true,
     });
+
     const rewardsReceived: PoolClaim[] = await Promise.all(
       rewardClaims.map(async (claim) => {
         const result: { hypePool: IPool } = await this.getPoolById(
@@ -245,16 +246,13 @@ export class RewardService {
         if (!user) {
           return;
         }
-        console.log('USER: ', user);
         const result: { hypePool: IPool } = await this.getPoolById(
           impression.pool_id,
         );
         const pool = result.hypePool;
-        console.log('pool: ', result.hypePool);
         const rewardValue =
           (impression.message_impressions / 1000) *
           Number(pool.impressionReward);
-        console.log('rewardValue: ', rewardValue);
 
         const newReward = this.rewardRepository.create({
           amount: rewardValue?.toString(),
@@ -267,5 +265,24 @@ export class RewardService {
         console.log('Saved: ', saved);
       }),
     );
+  }
+
+  async getJoinedPools(address: string): Promise<IPool[]> {
+    const rewards: Partial<HypeReward[]> = await this.rewardRepository
+      .createQueryBuilder()
+      .select('DISTINCT "poolId"')
+      .where('rewardee = :address', { address })
+      .getRawMany();
+
+    const pools: IPool[] = [];
+    await Promise.all(
+      rewards.map(async (reward) => {
+        const result: { hypePool: IPool } = await this.getPoolById(
+          reward.poolId,
+        );
+        pools.push(result.hypePool);
+      }),
+    );
+    return pools;
   }
 }

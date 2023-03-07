@@ -6,6 +6,7 @@ import useWallet from 'src/hooks/useWallet';
 import { TelegramUser } from 'src/models/HypeUser.model';
 import { useQuery } from 'urql';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
+import { useGetJoinedPools } from '../../api/pools/useGetJoinedPools';
 import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
@@ -21,7 +22,8 @@ export const useProfileEffects = () => {
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
   const [currentRewardsNo, setCurrentRewardsNo] = useState<number>(null);
-  const { data } = useGetMyRewards(account, true);
+  const { data } = useGetMyRewards(account);
+  const { data: fetchedJoinedPolls } = useGetJoinedPools(account);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const [{ data: hypePoolsData }] = useQuery({
     query: HYPEPOOL_QUERIES.profilePoolsQuery,
@@ -34,8 +36,8 @@ export const useProfileEffects = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (hypePoolsData?.hypePools?.length > 0) {
-      setCreatedPools(hypePoolsData?.hypePools);
+    if (hypePoolsData) {
+      setCreatedPools(hypePoolsData.hypePools);
     }
   }, [hypePoolsData]);
 
@@ -45,9 +47,15 @@ export const useProfileEffects = () => {
 
   useEffect(() => {
     if (account && data) {
-      setCurrentRewardsNo(data.totalUnclaimed?.length);
+      setCurrentRewardsNo(data.totalUnclaimed.length);
     }
   }, [account, data]);
+
+  useEffect(() => {
+    if (fetchedJoinedPolls) {
+      setJoinedPools(fetchedJoinedPolls);
+    }
+  }, [fetchedJoinedPolls]);
 
   const connect = async (user: TelegramUser) => {
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
