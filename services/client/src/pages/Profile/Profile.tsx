@@ -38,7 +38,7 @@ export const Profile = () => {
         <RewardsContainer rewardAmount={currentRewardsNo} onRedeem={onRedeem} />
       </Box>
       <CardContainer
-        title={`Created Pools (${createdPools?.length})`}
+        title={`Created Pools (${createdPools.length})`}
         cards={createdPools}
         emptyMessage="Looks like you haven`t created any pools yet..."
         target="/createdPools"
@@ -46,7 +46,7 @@ export const Profile = () => {
         isPrivate={true}
       />
       <CardContainer
-        title={`Joined Pools (${joinedPools?.length})`}
+        title={`Joined Pools (${joinedPools.length})`}
         cards={joinedPools}
         emptyMessage="Looks like you haven`t joined any pools yet..."
         target="/joinedPools"

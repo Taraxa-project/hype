@@ -14,14 +14,14 @@ interface RewardProps {
   claims: HypeClaim[];
 }
 
-export const ClaimHistoryContainer = (props: RewardProps) => {
+export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
   const { isConnected } = useWallet();
   const [showHistory, setShowHistory] = useState<boolean>(true);
 
   const toggleHistory = () => {
     setShowHistory(!showHistory);
   };
-  const { claims } = props;
+
   return (
     <Box
       display="flex"
@@ -38,7 +38,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
         color="black"
         letterSpacing="-0.02em"
       >
-        Rewards received {claims?.length ? `(${claims?.length})` : '0'}
+        Rewards received {claims.length}
       </Heading>
       {isConnected && (
         <Box
@@ -58,7 +58,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
       {isConnected ? (
         showHistory ? (
           <Box>
-            {!!claims?.length ? (
+            {claims.length > 0 ? (
               <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
                 {claims.map((transactionItem: HypeReward) => (
                   <Transaction
@@ -67,7 +67,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
                     }-${Date.now()}`}
                     value={transactionItem.amount}
                     symbol={transactionItem.symbol}
-                    pool={transactionItem.pool?.title}
+                    pool={transactionItem.pool.title}
                     date={new Date()}
                     status={TransactionStatus.REDEEMED}
                   />

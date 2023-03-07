@@ -32,7 +32,7 @@ export const Notification = () => {
       height="20rem"
     >
       <Box display="flex" flexDirection="column" gridGap="1rem">
-        {message?.map((text: string) => (
+        {message && message.map((text: string) => (
           <Text key={text} fontWeight="600" fontSize="14px" color="greys.11">
             {text}
           </Text>

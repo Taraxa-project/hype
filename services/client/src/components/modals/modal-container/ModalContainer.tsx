@@ -66,8 +66,8 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               marginTop="1rem"
               maxWidth="23rem"
             >
-              {modalActions?.length > 0 &&
-                modalActions?.map((modalAction) => (
+              {modalActions &&
+                modalActions.map((modalAction) => (
                   <Button
                     key={`${modalAction.name}-${new Date().getTime()}`}
                     type={modalAction.type || 'button'}

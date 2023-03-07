@@ -116,11 +116,13 @@ export const useProfileEffects = () => {
   };
 
   useEffect(() => {
-    setTelegramProfile({
-      telegramId: hypeUser?.telegramId,
-      address: account,
-      username: hypeUser?.username,
-    });
+    if (hypeUser) {
+      setTelegramProfile({
+        telegramId: hypeUser.telegramId,
+        address: account,
+        username: hypeUser.username,
+      });
+    }
   }, [account, hypeUser]);
 
   return {

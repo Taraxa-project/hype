@@ -109,7 +109,7 @@ const Header = React.memo(
                         </Box>
                       ) : (
                         <AccountContainer className="margin-right">
-                          {chain?.name && (
+                          {chain && (
                             <Text>
                               Connected to <strong>{chain.name}</strong>
                             </Text>
@@ -166,7 +166,7 @@ const Header = React.memo(
                   </Box>
                 ) : (
                   <AccountContainer className="margin-right">
-                    {chain?.name && (
+                    {chain && (
                       <Text>
                         Connected to <strong>{chain.name}</strong>
                       </Text>

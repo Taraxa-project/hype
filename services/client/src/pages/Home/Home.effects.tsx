@@ -28,17 +28,15 @@ export const useHomeEffects = () => {
   }, [isFetchingNextPage, maxReached]);
 
   useEffect(() => {
-    if (data?.poolSearch?.length === 0 || data?.hypePools?.length === 0) {
-      setMaxReached(true);
-    }
-    if (searchString) {
-      if (data?.poolSearch) {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data?.poolSearch)));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+    if (data) {
+      if (data.length === 0 || data.length === 0) {
+        setMaxReached(true);
       }
-    } else {
-      if (data?.hypePools) {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data?.hypePools)));
+      if (searchString) {
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
+        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+      } else {
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
         // setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
       }
     }

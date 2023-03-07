@@ -50,137 +50,99 @@ export const Summary: FC<SummaryProps> = ({
               <Account>{account}</Account>
             </BlockiesContainer>
 
-            {details?.title && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Hype pool tile:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {details?.title}
-                </Text>
-              </>
-            )}
-            {details?.projectName && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Project name:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {details?.projectName}
-                </Text>
-              </>
-            )}
-            {details?.tokenName && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Token name:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {details?.tokenName?.toUpperCase()}
-                </Text>
-              </>
-            )}
-            {details?.projectDescription && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Brief project description:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {details?.projectDescription}
-                </Text>
-              </>
-            )}
-            {details?.description && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  What are you hyping:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {details?.description}
-                </Text>
-              </>
-            )}
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Hype pool tile:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {details.title}
+            </Text>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Project name:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {details.projectName}
+            </Text>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Token name:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {details.tokenName.toUpperCase()}
+            </Text>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Brief project description:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {details.projectDescription}
+            </Text>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              What are you hyping:
+            </Text>
+            <Text fontSize="0.875rem" color="greys.7">
+              {details.description}
+            </Text>
 
-            {details?.word && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Hype word:
-                </Text>
-                <Text pb={3} fontSize="0.875rem" color="greys.7">
-                  {details?.word}
-                </Text>
-              </>
-            )}
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Hype word:
+            </Text>
+            <Text pb={3} fontSize="0.875rem" color="greys.7">
+              {details.word}
+            </Text>
 
-            {rewards?.network && (
-              <RewardContent>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Network:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.network}
-                </Text>
-              </RewardContent>
-            )}
-            {rewards?.tokenName && (
-              <RewardContent>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Token:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.tokenName}
-                </Text>
-              </RewardContent>
-            )}
-            {rewards?.tokenDecimals && (
-              <RewardContent>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Token decimals:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.tokenDecimals}
-                </Text>
-              </RewardContent>
-            )}
-            {rewards?.tokenAddress && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Token contract address:
-                </Text>
+            <RewardContent>
+              <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                Network:
+              </Text>
+              <Text fontSize="0.875rem" color="greys.7">
+                {rewards.network}
+              </Text>
+            </RewardContent>
+            <RewardContent>
+              <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                Token:
+              </Text>
+              <Text fontSize="0.875rem" color="greys.7">
+                {rewards.tokenName}
+              </Text>
+            </RewardContent>
+            <RewardContent>
+              <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                Token decimals:
+              </Text>
+              <Text fontSize="0.875rem" color="greys.7">
+                {rewards.tokenDecimals}
+              </Text>
+            </RewardContent>
+            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+              Token contract address:
+            </Text>
 
-                <BlockiesContainer>
-                  <Blockies seed={rewards?.tokenAddress} />
-                  <Account>{rewards?.tokenAddress}</Account>
-                </BlockiesContainer>
-              </>
-            )}
-            {rewards?.impressionReward && (
-              <RewardContent>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Reward per 1,000 impressions:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.impressionReward}
-                </Text>
-              </RewardContent>
-            )}
-            {rewards?.cap && (
-              <RewardContent>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Total rewards for the pool:
-                </Text>
-                <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.cap}
-                </Text>
-              </RewardContent>
-            )}
-            {rewards?.duration && (
+            <BlockiesContainer>
+              <Blockies seed={rewards.tokenAddress} />
+              <Account>{rewards.tokenAddress}</Account>
+            </BlockiesContainer>
+            <RewardContent>
+              <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                Reward per 1,000 impressions:
+              </Text>
+              <Text fontSize="0.875rem" color="greys.7">
+                {rewards.impressionReward}
+              </Text>
+            </RewardContent>
+            <RewardContent>
+              <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                Total rewards for the pool:
+              </Text>
+              <Text fontSize="0.875rem" color="greys.7">
+                {rewards.cap}
+              </Text>
+            </RewardContent>
+            {rewards.duration && (
               <RewardContent>
                 <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
                   Duration:
                 </Text>
                 <Text fontSize="0.875rem" color="greys.7">
-                  {rewards?.duration} days
+                  {rewards.duration} days
                 </Text>
               </RewardContent>
             )}

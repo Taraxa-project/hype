@@ -58,9 +58,9 @@ export const Home = () => {
           onChange={debouncedResults}
         />
       </PoolContainer>
-      {hypePools?.length > 0 && (
+      {hypePools.length > 0 && (
         <CardContainer>
-          {hypePools?.map(
+          {hypePools.map(
             (data: HypePool, i: number) =>
               data && <Card key={`${data.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
           )}
@@ -71,7 +71,7 @@ export const Home = () => {
           <LoadingSpinner />
         </Box>
       )}
-      {(!hypePools || hypePools?.length === 0) && (
+      {(!hypePools || hypePools.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
             <NotFoundIcon /> Nothing found...

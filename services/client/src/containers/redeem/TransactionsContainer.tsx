@@ -48,7 +48,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Rewards by pool ({totalPoolRewards?.length || 0})
+            Rewards by pool ({totalPoolRewards.length})
           </Heading>
           {isConnected ? (
             <>
@@ -57,16 +57,16 @@ export const TransactionsContainer = ({
                   <LoadingSpinner />
                 </Box>
               )}
-              {totalPoolRewards?.length > 0 ? (
+              {totalPoolRewards.length > 0 ? (
                 <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
-                  {totalPoolRewards?.map((reward) => (
+                  {totalPoolRewards.map((reward) => (
                     <Transaction
-                      key={`redeem-${reward.unclaimed?.toString()}-${reward.poolId}-${
-                        reward.pool?.title
+                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${
+                        reward.pool.title
                       }`}
                       value={reward.unclaimed}
                       symbol={reward.symbol}
-                      pool={reward.pool?.title}
+                      pool={reward.pool.title}
                       date={new Date()}
                       status={TransactionStatus.PENDING}
                       buttonAction={() => onRedeem(reward)}
@@ -94,7 +94,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Claims by pool ({claims?.length || 0})
+            Claims by pool ({claims.length})
           </Heading>
           {isConnected ? (
             <>
@@ -103,14 +103,14 @@ export const TransactionsContainer = ({
                   <LoadingSpinner />
                 </Box>
               )}
-              {claims?.length > 0 ? (
+              {claims.length > 0 ? (
                 <Box display="flex" flexDirection="column" pt="2rem" gridGap="1rem">
-                  {claims?.map((claim) => (
+                  {claims.map((claim) => (
                     <Transaction
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
                       symbol={claim.symbol || 'TARA'}
-                      pool={claim.pool?.title || 'APE Hype 12'}
+                      pool={claim.pool.title || 'APE Hype 12'}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}

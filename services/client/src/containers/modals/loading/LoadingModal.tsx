@@ -19,7 +19,7 @@ export const LoadingModal = () => {
       closeModal={closeModal}
     >
       <Box display="flex" flexDirection="column" height="100%">
-        {text?.map((value: string) => (
+        {text && text.map((value: string) => (
           <Text key={value} fontWeight="600" fontSize="14px" color="greys.11">
             {value}
           </Text>

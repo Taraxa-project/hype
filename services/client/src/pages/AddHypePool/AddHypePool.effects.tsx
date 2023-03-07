@@ -42,12 +42,6 @@ export const useAddHypePoolEffects = () => {
     description: '',
     projectDescription: '',
     word: 'testnet',
-    // title: 'Dragon Ball',
-    // projectName: 'Dragon Ball Super, Dragon Ball, DBS',
-    // tokenName: 'DBS',
-    // description: 'Dragon Ball super NFT marketplace',
-    // projectDescription: 'Something nice about DBS',
-    // word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
     network: 841,
@@ -60,14 +54,6 @@ export const useAddHypePoolEffects = () => {
     duration: null,
     startDate: 0,
     endDate: 0,
-    // network: 842,
-    // token: 'TARA',
-    // tokenAddress: '0x0000000000000000000000000000000000000000',
-    // tokenName: 'TARA',
-    // tokenDecimals: 18,
-    // impressionReward: 2,
-    // cap: 10,
-    // endDate: new Date('12-02-2023'),
   });
 
   useContractCreatePool(
@@ -80,8 +66,8 @@ export const useAddHypePoolEffects = () => {
   );
 
   useEffect(() => {
-    if (uploadedIpfsUrl?.data) {
-      setIpfsUrl(uploadedIpfsUrl?.data?.path);
+    if (uploadedIpfsUrl) {
+      setIpfsUrl(uploadedIpfsUrl.data.path);
       setCurrentStep(2);
     }
   }, [uploadedIpfsUrl]);
@@ -131,13 +117,10 @@ export const useAddHypePoolEffects = () => {
   const onSubmitDetails = async (data: HypePoolDetailsForm) => {
     setPoolDetails(data);
     await onUploadToIpfs(data);
-    // setCurrentStep(2);
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
     createPool(poolDetails, data);
-    // setCurrentStep(3);
-    // setPoolReward(data);
   };
 
   const onBackFromRewards = () => {

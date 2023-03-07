@@ -1,6 +1,7 @@
 import { FetchHypesFilter } from '../types';
 import { useQuery } from 'urql';
 import { HYPEPOOL_QUERIES } from './query-collector';
+import { HypePool } from '../../models';
 
 const hypePoolsPerPage = 6;
 
@@ -14,7 +15,7 @@ const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   };
 
   if (search) {
-    filters.text = `'${search?.trim()}'`;
+    filters.text = `'${search.trim()}'`;
   }
 
   return filters;
@@ -31,7 +32,9 @@ export const useFetchHypePools = (page: number, searchString: string) => {
   const { data, fetching, error } = result;
 
   return {
-    data,
+    data: searchString
+      ? (data?.poolSearch as HypePool[])
+      : (data?.hypePools as HypePool[]),
     fetching,
     error,
   };
