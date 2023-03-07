@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
 import {
   useAuth,
@@ -9,10 +9,11 @@ import {
   useContractERC20Approve,
   useContractEscrowDeposit,
   useContractEscrowGetDepositsOf,
+  useLoadingModals,
   useTokenDecimals,
 } from '../../hooks';
 import { HypePool } from '../../models';
-import { AddressType } from '../../utils';
+import { AddressType, NotificationType } from '../../utils';
 
 export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
@@ -33,6 +34,8 @@ export const usePoolDetailsEffects = (poolId: string) => {
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
   const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited);
+  const { data: balance } = useBalance({ address: account });
+  const { showNotificationModal } = useLoadingModals();
 
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
@@ -88,10 +91,19 @@ export const usePoolDetailsEffects = (poolId: string) => {
   }, [pool]);
 
   const fund = () => {
-    if (isCustomToken) {
-      setEnableApprove(true);
-    } else {
-      setEnableDeposit(true);
+    if (balance && pool?.cap) {
+      if (balance?.value.lt(BigNumber.from(pool?.cap))) {
+        showNotificationModal(
+          NotificationType.ERROR,
+          'You don`t have enough balance in your account! Please add funds into your account in order to fund the pool!',
+        );
+      } else {
+        if (isCustomToken) {
+          setEnableApprove(true);
+        } else {
+          setEnableDeposit(true);
+        }
+      }
     }
   };
 

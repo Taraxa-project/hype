@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { API } from '../types';
 
 const requestRewardHash = (address: string, poolId: string) => {
@@ -11,6 +11,7 @@ const requestRewardHash = (address: string, poolId: string) => {
 };
 
 export const useRequestRewards = () => {
+  const queryClient = useQueryClient();
   const { mutate, data, isLoading } = useMutation(
     ({ address, poolId }: { address: string; poolId: string }) =>
       requestRewardHash(address, poolId),
@@ -20,8 +21,8 @@ export const useRequestRewards = () => {
     const requestObject: { address: string; poolId: string } = { address, poolId };
     mutate(requestObject, {
       onSuccess: () => {
-        // queryClient.resetQueries();
-        // queryClient.invalidateQueries(['hype-user']);
+        queryClient.resetQueries();
+        queryClient.invalidateQueries(['user-rewards']);
       },
       onError: (error: any) => {
         console.log('Error: ', error);

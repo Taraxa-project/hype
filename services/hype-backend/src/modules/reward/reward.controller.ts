@@ -31,6 +31,8 @@ import { RewardDto } from './reward.dto';
 import { ClaimResult, RewardService } from './reward.service';
 import { RewardStateDto } from './rewardState.dto';
 import impressionsJson from '../../../pool_impressions_example.json';
+import { ClaimDto } from './claim.dto';
+import { HypeClaim } from '../../entities';
 
 dotenv.config();
 
@@ -86,6 +88,15 @@ export class RewardController {
         'Something went wrong. Please try again!',
       );
     }
+  }
+
+  @Post('claim')
+  @UseGuards(WalletGuard)
+  @ApiBearerAuth('authorization')
+  @ApiCreatedResponse({ description: 'Claim details' })
+  @ApiNotFoundResponse({ description: 'Claim not found' })
+  public async claimed(@Body() claim: ClaimDto): Promise<HypeClaim> {
+    return await this.rewardService.claim(claim);
   }
 
   @Patch(':address')

@@ -48,7 +48,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Rewards by pool ({totalPoolRewards?.length})
+            Rewards by pool ({totalPoolRewards?.length || 0})
           </Heading>
           {isConnected ? (
             <>
@@ -62,11 +62,11 @@ export const TransactionsContainer = ({
                   {totalPoolRewards?.map((reward) => (
                     <Transaction
                       key={`redeem-${reward.unclaimed?.toString()}-${reward.poolId}-${
-                        reward.pool.title
+                        reward.pool?.title
                       }`}
                       value={reward.unclaimed}
                       symbol={reward.symbol}
-                      pool={reward.pool.title}
+                      pool={reward.pool?.title}
                       date={new Date()}
                       status={TransactionStatus.PENDING}
                       buttonAction={() => onRedeem(reward)}
@@ -94,7 +94,7 @@ export const TransactionsContainer = ({
             color="black"
             letterSpacing="-0.02em"
           >
-            Claims by pool ({claims?.length})
+            Claims by pool ({claims?.length || 0})
           </Heading>
           {isConnected ? (
             <>

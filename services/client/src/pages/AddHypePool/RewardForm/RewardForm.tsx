@@ -2,8 +2,6 @@ import TitleText from '../../../components/titletext/TitleText';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 import {
   FormColumn,
@@ -15,7 +13,6 @@ import {
   FormSelect,
   InfoCard,
 } from '../AddHypePool.styled';
-import { Controller } from 'react-hook-form';
 import Box from '../../../components/styles/Box';
 import { HypePoolRewardForm, useRewardFormEffects } from './RewardForm.effects';
 
@@ -37,7 +34,6 @@ export const RewardForm = ({
     handleSubmit,
     errors,
     authenticated,
-    control,
     networkOptions,
     handleNetworkSelect,
     tokensOptions,
@@ -224,10 +220,10 @@ export const RewardForm = ({
           </Example>
           <FormInput
             disabled={!authenticated}
-            placeholder="ex: 30 days"
+            placeholder="ex: 28 days"
             type="number"
             min="1"
-            max="30"
+            max="28"
             name="duration"
             {...register('duration')}
           />

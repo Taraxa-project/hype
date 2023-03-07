@@ -20,6 +20,7 @@ import { HypeClaim } from '../../entities/claim.entity';
 import { ImpressionDto } from './impression.dto';
 import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
+import { ClaimDto } from './claim.dto';
 
 export interface ClaimResult {
   nonce: number;
@@ -101,11 +102,23 @@ export class RewardService {
       }),
       claimed: false,
     });
-    if (rewardsOfAddress?.length === 0 && fetchedClaims?.length === 0) {
-      throw new NotFoundException(
-        'No rewards or fetchedClaims found for given address.',
-      );
-    }
+    const rewardClaims = await this.claimRepository.findBy({
+      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+        address,
+      }),
+      claimed: true,
+    });
+    const rewardsReceived: PoolClaim[] = await Promise.all(
+      rewardClaims.map(async (claim) => {
+        const result: { hypePool: IPool } = await this.getPoolById(
+          claim.poolId,
+        );
+        return {
+          ...claim,
+          pool: result.hypePool,
+        };
+      }),
+    );
     const claims: PoolClaim[] = await Promise.all(
       fetchedClaims.map(async (claim) => {
         const result: { hypePool: IPool } = await this.getPoolById(
@@ -142,6 +155,7 @@ export class RewardService {
     return {
       totalUnclaimed,
       claims,
+      rewardsReceived,
     };
   }
 
@@ -156,11 +170,7 @@ export class RewardService {
       }),
       claimed: false,
     });
-    if (rewardsOfAddress.length < 1)
-      throw new NotFoundException(
-        HypeReward,
-        `There are no unclaimed rewards for the address ${address} in pool ${poolId}`,
-      );
+
     const biggestId = rewardsOfAddress
       .map((r) => r.id)
       .sort((a, b) => a - b)[0];
@@ -197,6 +207,7 @@ export class RewardService {
       claim.rewardee = address;
       claim.tokenAddress = tokenAddress;
       claim.hash = hash;
+      claim.nonce = nonce;
       const claimFinalized = await claim.save();
       return {
         nonce,
@@ -208,6 +219,21 @@ export class RewardService {
     throw new InternalServerErrorException(
       `Unable to calculate hash for ${poolId} and ${address}`,
     );
+  }
+
+  async claim(claim: ClaimDto): Promise<HypeClaim> {
+    const fetchedClaim = await this.claimRepository.findOneBy({
+      id: claim.id,
+      rewardee: claim.rewardee,
+      poolId: claim.poolId,
+    });
+    if (!fetchedClaim) {
+      throw new NotFoundException('Claim not found!');
+    }
+    fetchedClaim.claimed = true;
+    const savedClaim = await fetchedClaim.save();
+    console.log('Saved claim: ', savedClaim);
+    return savedClaim;
   }
 
   async saveImpressions(impressions: ImpressionDto[]): Promise<any> {

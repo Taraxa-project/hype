@@ -24,4 +24,9 @@ export class RewardStateDto {
   @IsNotEmpty()
   @IsArray()
   claims: PoolClaim[];
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsArray()
+  rewardsReceived: PoolClaim[];
 }

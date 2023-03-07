@@ -7,7 +7,7 @@ export const Profile = () => {
   const {
     joinedPools,
     createdPools,
-    currentReward,
+    currentRewardsNo,
     onRedeem,
     telegramProfile,
     connect,
@@ -35,7 +35,7 @@ export const Profile = () => {
           connect={connect}
           disconnect={disconnect}
         />
-        <RewardsContainer rewardAmount={currentReward} onRedeem={onRedeem} />
+        <RewardsContainer rewardAmount={currentRewardsNo} onRedeem={onRedeem} />
       </Box>
       <CardContainer
         title={`Created Pools (${createdPools?.length})`}
@@ -51,6 +51,7 @@ export const Profile = () => {
         emptyMessage="Looks like you haven`t joined any pools yet..."
         target="/joinedPools"
         poolModalAction={null}
+        isPrivate={true}
       />
     </Box>
   );

@@ -16,6 +16,7 @@ import {
 import TitleText from '../../components/titletext/TitleText';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
+import Text from '../../components/styles/Text';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -41,8 +42,9 @@ export const PoolDetails = () => {
     activate,
     account,
   } = usePoolDetailsEffects(poolId);
-  const startedAt = startDate ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
-  const endsAt = endDate ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+  const startedAt =
+    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
 
   return (
     <PoolContainer>
@@ -144,15 +146,24 @@ export const PoolDetails = () => {
               Fund the Pool
             </Button>
           ) : (
-            <Button
-              disabled={!authenticated}
-              size="full-width"
-              variant="success"
-              type="button"
-              onClick={activate}
-            >
-              Activate the Pool
-            </Button>
+            <Box>
+              <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You need to activate the pool for participating community members to be rewarded.
+              </Text>
+              <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You may activate the pool at any time, but once you activate the pool it cannot be
+                deactivated.
+              </Text>
+              <Button
+                disabled={!authenticated}
+                size="full-width"
+                type="submit"
+                variant="success"
+                onClick={activate}
+              >
+                Activate the Pool
+              </Button>
+            </Box>
           )}
         </Box>
       )}

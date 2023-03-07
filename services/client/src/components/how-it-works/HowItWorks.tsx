@@ -54,8 +54,7 @@ export const HowItWorks = ({ step }: HowItWorksProps) => {
             <HowItWorksTitle>How to activate the Hype Pool:</HowItWorksTitle>
             <HowItWorksDescription>
               <p>
-                This is the last step, simply fund the Hype Pool with the rewards defined and the
-                pool will be activated!
+                This is the last step, simply fund the Hype Pool with the rewards defined and then click on 'Activate'!
               </p>
             </HowItWorksDescription>
           </>

@@ -11,7 +11,7 @@ dataSources:
     name: HypePool
     network: mainnet
     source:
-      address: '0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E'
+      address: '0x46e5cF315f17846933d7B2C7Fd09e369215574E3'
       abi: HypePool
     mapping:
       kind: ethereum/events
@@ -38,7 +38,7 @@ dataSources:
     name: DynamicEscrow
     network: mainnet
     source:
-      address: '0xaB6601D8F40EEdC0285D25e00CC867A78e17DF7E'
+      address: '0xaFa303eF0bd951839759E5A69e4628169fe541Ab'
       abi: DynamicEscrow
     mapping:
       kind: ethereum/events

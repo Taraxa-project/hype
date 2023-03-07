@@ -4,6 +4,7 @@ import { HypePool } from './HypePool.model';
 export interface HypeRewardSummary {
   totalUnclaimed: PoolRewards[];
   claims: HypeClaim[];
+  rewardsReceived: HypeClaim[];
 }
 
 export interface PoolRewards {
@@ -22,9 +23,10 @@ export interface HypeReward {
   tokenAddress: string;
   claimed: boolean;
   poolName?: string;
+  pool: HypePool;
 }
 
 export interface HypeClaim extends HypeReward {
   hash: string;
-  pool: HypePool;
+  nonce: number;
 }

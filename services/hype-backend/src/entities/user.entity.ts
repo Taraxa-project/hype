@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
 import { IsString, IsNumber, IsOptional } from 'class-validator';
 import { IHypeUser } from '../models';
 
-@Entity('hype-user')
+@Entity('hype_user')
 export class HypeUser extends BaseEntity implements IHypeUser {
   @PrimaryGeneratedColumn()
   id!: number;

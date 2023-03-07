@@ -109,15 +109,15 @@ const Header = React.memo(
                         </Box>
                       ) : (
                         <AccountContainer className="margin-right">
-                          <Account>
-                            <GreenDot />
-                            {shortenAddress(account)}
-                          </Account>
                           {chain?.name && (
                             <Text>
                               Connected to <strong>{chain.name}</strong>
                             </Text>
                           )}
+                          <Account>
+                            <GreenDot />
+                            {shortenAddress(account)}
+                          </Account>
                         </AccountContainer>
                       )}
                     </Box>
@@ -166,15 +166,15 @@ const Header = React.memo(
                   </Box>
                 ) : (
                   <AccountContainer className="margin-right">
-                    <Account>
-                      <GreenDot />
-                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
-                    </Account>
                     {chain?.name && (
                       <Text>
                         Connected to <strong>{chain.name}</strong>
                       </Text>
                     )}
+                    <Account>
+                      <GreenDot />
+                      <AddressContainer address={account} shortAddress={shortenAddress(account)} />
+                    </Account>
                   </AccountContainer>
                 )}
               </Box>
