@@ -23,10 +23,10 @@ export interface HypeReward {
   tokenAddress: string;
   claimed: boolean;
   poolName?: string;
+  pool: HypePool;
 }
 
 export interface HypeClaim extends HypeReward {
   hash: string;
   nonce: number;
-  pool: HypePool;
 }

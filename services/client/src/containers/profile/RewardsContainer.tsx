@@ -46,7 +46,7 @@ export const RewardsContainer = (props: RewardProps) => {
         >
           {isConnected
             ? formatNumber(props.rewardAmount)
-              ? `${formatNumber(props.rewardAmount)} TARA`
+              ? `${formatNumber(props.rewardAmount)} Pools`
               : `N/A`
             : `N/A`}
         </Heading>
@@ -59,7 +59,7 @@ export const RewardsContainer = (props: RewardProps) => {
         onClick={props.onRedeem}
         disabled={!isConnected}
       >
-        Redeem all
+        Go to Redeem
       </Button>
     </Box>
   );
