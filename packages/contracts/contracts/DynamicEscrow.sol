@@ -58,6 +58,11 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      */
     mapping(bytes32 => mapping(address => IEscrow.DynamicDeposit)) private _deposits;
 
+    /**
+     * @dev Log of claimed hashes. No hash should be claimable twice
+     */
+    mapping(bytes32 => uint256) private _claimed;
+
     /* @dev Reads the configured rewarder address. */
     function getRewarder() public view returns (address) {
         return _rewarder;
@@ -131,7 +136,9 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         bytes32 hash = _hash(receiver, amount, nonce);
 
         require(ECDSA.recover(hash, sig) == _trustedAccountAddress, "Claim: Invalid signature");
+        require(_claimed[hash] == 0, "Claim: Hash already claimed");
 
+        _claimed[hash] = amount;
         if (tokenAddress == address(0)) {
             receiver.transfer(amount);
         } else {
