@@ -59,7 +59,9 @@ const Card = ({ children, ...props }: CardProps) => {
           {endDate && (
             <DataContainer>
               <DataHeader key={`endDate-${Date.now()}`}>Duration:</DataHeader>
-              <DataValue key={`${endDate}-${Date.now()}`}>{getPoolDuration(+endDate)}</DataValue>
+              <DataValue key={`${endDate}-${Date.now()}`}>
+                {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
+              </DataValue>
             </DataContainer>
           )}
           <DataContainer>
@@ -70,7 +72,7 @@ const Card = ({ children, ...props }: CardProps) => {
               </DataValue>
             ) : (
               <DataValue key={`active-${Date.now()}`}>
-                <DotIcon color="#C2C2C2" /> Inactive
+                <DotIcon color="#C2C2C2" /> (not yet active)
               </DataValue>
             )}
           </DataContainer>

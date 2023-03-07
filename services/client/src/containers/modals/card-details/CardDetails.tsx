@@ -44,8 +44,9 @@ export const CardDetails = () => {
     title,
     close: closeModal,
   };
-  const startedAt = startDate ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
-  const endsAt = endDate ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+  const startedAt =
+    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
 
   const poolModalAction: ModalAction = {
     name: 'Go to Pool details page',
@@ -149,7 +150,7 @@ export const CardDetails = () => {
             </DataValue>
           ) : (
             <DataValue key={`active-${Date.now()}`}>
-              <DotIcon color="#C2C2C2" /> Inactive
+              <DotIcon color="#C2C2C2" /> (not yet active)
             </DataValue>
           )}
         </DataContainer>

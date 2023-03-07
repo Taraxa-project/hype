@@ -64,11 +64,12 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               gridGap="0.75rem"
               margin="0 auto"
               marginTop="1rem"
-              maxWidth='23rem'
+              maxWidth="23rem"
             >
               {modalActions?.length > 0 &&
                 modalActions?.map((modalAction) => (
                   <Button
+                    key={`${modalAction.name}-${new Date().getTime()}`}
                     type={modalAction.type || 'button'}
                     variant={modalAction.closeButtonVariant || 'primary'}
                     size="full-width"

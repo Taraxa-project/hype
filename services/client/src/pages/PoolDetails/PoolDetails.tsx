@@ -42,8 +42,9 @@ export const PoolDetails = () => {
     activate,
     account,
   } = usePoolDetailsEffects(poolId);
-  const startedAt = startDate ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
-  const endsAt = endDate ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+  const startedAt =
+    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
 
   return (
     <PoolContainer>
