@@ -20,6 +20,7 @@ import { HypeClaim } from '../../entities/claim.entity';
 import { ImpressionDto } from './impression.dto';
 import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
+import { ClaimDto } from './claim.dto';
 
 export interface ClaimResult {
   nonce: number;
@@ -220,15 +221,19 @@ export class RewardService {
     );
   }
 
-  async claim(id: number): Promise<any> {
-    const claim = await this.claimRepository.findOneBy({ id });
-    if (!claim) {
+  async claim(claim: ClaimDto): Promise<HypeClaim> {
+    const fetchedClaim = await this.claimRepository.findOneBy({
+      id: claim.id,
+      rewardee: claim.rewardee,
+      poolId: claim.poolId,
+    });
+    if (!fetchedClaim) {
       throw new NotFoundException('Claim not found!');
     }
-    claim.claimed = true;
-    const savedClaim = await claim.save();
+    fetchedClaim.claimed = true;
+    const savedClaim = await fetchedClaim.save();
     console.log('Saved claim: ', savedClaim);
-    return;
+    return savedClaim;
   }
 
   async saveImpressions(impressions: ImpressionDto[]): Promise<any> {

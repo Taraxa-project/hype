@@ -12,7 +12,7 @@ const getMyRewards = (address: string) => {
 export const useGetMyRewards = (address: string, shouldRefetch: boolean) => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['rewards', address, shouldRefetch],
+    ['user-rewards', address, shouldRefetch],
     () => getMyRewards(address),
     {
       retry: false,

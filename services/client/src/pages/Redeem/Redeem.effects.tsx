@@ -18,33 +18,29 @@ export const useRedeemEffects = () => {
     nonce: null,
     hash: null,
   };
-  const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
-  const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, shouldRefetch);
-  const { submitHandler, data: requestHashData } = useRequestRewards();
+  const { data, isLoading: isLoadingRewards } = useGetMyRewards(account, true);
+  const { submitHandler } = useRequestRewards();
   const { submitHandler: claimReward } = useRewardsClaim();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimArgs, setClaimArgs] = useState<ClaimArgs>(defaultContractArgs);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
   const [enableClaim, setEnableClaim] = useState<boolean>(false);
-  const [currentClaimId, setCurrentClaimId] = useState<number>(null);
+  const [currentClaim, setCurrentClaim] = useState<HypeClaim>(null);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
 
   const onClaimSuccess = () => {
-    if (currentClaimId !== null && currentClaimId !== undefined) {
+    if (currentClaim) {
       setEnableClaim(false);
       setClaimArgs(defaultContractArgs);
       // Send backend claim success
-      claimReward(currentClaimId);
-      setShouldRefetch(true);
+      claimReward({
+        id: currentClaim.id,
+        rewardee: currentClaim.rewardee,
+        poolId: currentClaim.poolId,
+      });
     }
   };
   useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess);
-
-  useEffect(() => {
-    if (requestHashData?.data) {
-      setShouldRefetch(true);
-    }
-  }, [requestHashData]);
 
   useEffect(() => {
     const setData = async () => {
@@ -62,13 +58,11 @@ export const useRedeemEffects = () => {
   }, [account, data]);
 
   const onRedeem = (poolReward: PoolRewards) => {
-    console.log('Redeeming: ', poolReward);
     submitHandler({ address: account, poolId: poolReward.poolId });
   };
   const onClaim = (poolClaim: HypeClaim) => {
-    console.log('Claiming: ', poolClaim);
     if (poolClaim) {
-      setCurrentClaimId(poolClaim.id);
+      setCurrentClaim(poolClaim);
       setClaimArgs({
         receiver: poolClaim.rewardee,
         poolId: poolClaim.poolId,
@@ -81,38 +75,44 @@ export const useRedeemEffects = () => {
     }
   };
 
-  const getClaimSymbols = async (rewards: HypeClaim[]) => {
+  const getClaimSymbols = async (claims: HypeClaim[]) => {
     let targetArray: HypeClaim[] = [];
-    for (const reward of rewards) {
-      let symbol;
-      try {
-        symbol = await getERC20TokenName(reward.tokenAddress);
-      } catch (error) {
-        console.error(error);
-      }
-      targetArray.push({
-        ...reward,
-        symbol: symbol,
-      });
-      return targetArray;
-    }
+    await Promise.all(
+      claims.map(async (claim) => {
+        let symbol;
+        try {
+          symbol = await getERC20TokenName(claim.tokenAddress);
+        } catch (error) {
+          console.error(error);
+        }
+        targetArray.push({
+          ...claim,
+          symbol: symbol,
+        });
+        return targetArray;
+      }),
+    );
+    return targetArray;
   };
 
   const getRewardSymbols = async (rewards: PoolRewards[]) => {
     let targetArray: PoolRewards[] = [];
-    for (const reward of rewards) {
-      let symbol;
-      try {
-        symbol = await getERC20TokenName(reward.tokenAddress);
-      } catch (error) {
-        console.error(error);
-      }
-      targetArray.push({
-        ...reward,
-        symbol: symbol,
-      });
-      return targetArray;
-    }
+    await Promise.all(
+      rewards.map(async (reward) => {
+        let symbol;
+        try {
+          symbol = await getERC20TokenName(reward.tokenAddress);
+        } catch (error) {
+          console.error(error);
+        }
+        targetArray.push({
+          ...reward,
+          symbol: symbol,
+        });
+        return targetArray;
+      }),
+    );
+    return targetArray;
   };
 
   return {
