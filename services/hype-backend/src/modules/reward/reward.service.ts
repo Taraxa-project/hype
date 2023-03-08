@@ -55,9 +55,9 @@ export class RewardService {
     this.gsSecret = authConfig.gsSecret;
   }
 
-  @Cron(CronExpression.EVERY_6_HOURS)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async checkClaims() {
-    this.logger.debug('Called every 6 hours');
+    this.logger.debug('Called every day at 1 AM');
     const claims = await this.claimRepository.find({
       where: {
         claimed: false,
