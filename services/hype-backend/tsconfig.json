@@ -32,7 +32,8 @@
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
       "@taraxa-hype/user": ["src/modules/user"],
       "@taraxa-hype/health": ["src/modules/health"],
-      "@taraxa-hype/ipfs": ["src/modules/ipfs"]
+      "@taraxa-hype/ipfs": ["src/modules/ipfs"],
+      "@taraxa-hype/graphql": ["src/modules/graphql"]
     }
   },
   "include": [

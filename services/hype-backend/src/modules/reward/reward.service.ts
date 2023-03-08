@@ -9,8 +9,6 @@ import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ethereum, auth } from '@taraxa-hype/config';
 import { BigNumber } from 'ethers';
-import { InjectGraphQLClient } from '@golevelup/nestjs-graphql-request';
-import { gql, GraphQLClient } from 'graphql-request';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
@@ -26,6 +24,7 @@ import { HypeClaim } from '../../entities/claim.entity';
 import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { GraphQlService } from '../graphql';
 
 export interface ClaimResult {
   nonce: number;
@@ -52,8 +51,7 @@ export class RewardService {
     @InjectRepository(HypeClaim)
     private readonly claimRepository: Repository<HypeClaim>,
     private userService: UsersService,
-    @InjectGraphQLClient()
-    private readonly graphQLClient: GraphQLClient,
+    private graphQlService: GraphQlService,
   ) {
     this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
     this.gsSecret = authConfig.gsSecret;
@@ -70,7 +68,7 @@ export class RewardService {
     if (claims.length > 0) {
       await Promise.all(
         claims.map(async (claim: HypeClaim) => {
-          const onChainclaims = await this.getClaimedEvents(
+          const onChainclaims = await this.graphQlService.getClaimedEvents(
             claim.poolId,
             claim.rewardee,
             claim.amount,
@@ -88,76 +86,6 @@ export class RewardService {
 
   async getAllRewards() {
     return await this.rewardRepository.find();
-  }
-
-  private async getPoolById(id: string): Promise<{ hypePool: IPool }> {
-    return await this.graphQLClient.request(
-      gql`
-        query HypePoolById($id: Bytes) {
-          hypePool(id: $id) {
-            id
-            title
-            tokenName
-            network
-            tokenAddress
-            active
-            projectName
-            description
-            projectDescription
-            uri
-            cap
-            creator
-            endDate
-            startDate
-            duration
-            impressionReward
-            word
-          }
-        }
-      `,
-      {
-        id,
-      },
-    );
-  }
-
-  private async getClaimedEvents(
-    poolId: string,
-    receiver: string,
-    weiAmount: string,
-  ): Promise<{
-    claimedEvents: {
-      poolId: string;
-      receiver: string;
-      weiAmount: string;
-    }[];
-  }> {
-    return await this.graphQLClient.request(
-      gql`
-        query ClaimedEvents(
-          $poolId: String
-          $receiver: String
-          $weiAmount: String
-        ) {
-          claimedEvents(
-            where: {
-              poolId: $poolId
-              receiver: $receiver
-              weiAmount: $weiAmount
-            }
-          ) {
-            weiAmount
-            receiver
-            poolId
-          }
-        }
-      `,
-      {
-        poolId,
-        receiver,
-        weiAmount,
-      },
-    );
   }
 
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
@@ -182,9 +110,8 @@ export class RewardService {
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
       rewardClaims.map(async (claim) => {
-        const result: { hypePool: IPool } = await this.getPoolById(
-          claim.poolId,
-        );
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(claim.poolId);
         return {
           ...claim,
           pool: result.hypePool,
@@ -193,9 +120,8 @@ export class RewardService {
     );
     const claims: PoolClaim[] = await Promise.all(
       fetchedClaims.map(async (claim) => {
-        const result: { hypePool: IPool } = await this.getPoolById(
-          claim.poolId,
-        );
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(claim.poolId);
         return {
           ...claim,
           pool: result.hypePool,
@@ -215,7 +141,8 @@ export class RewardService {
           (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
           BigNumber.from('0'),
         );
-        const result: { hypePool: IPool } = await this.getPoolById(poolId);
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(poolId);
         totalUnclaimed.push({
           unclaimed,
           poolId,
@@ -317,9 +244,8 @@ export class RewardService {
         if (!user) {
           return;
         }
-        const result: { hypePool: IPool } = await this.getPoolById(
-          impression.pool_id,
-        );
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
         const rewardValue =
           (impression.message_impressions / 1000) *
@@ -348,9 +274,8 @@ export class RewardService {
     const pools: IPool[] = [];
     await Promise.all(
       rewards.map(async (reward) => {
-        const result: { hypePool: IPool } = await this.getPoolById(
-          reward.poolId,
-        );
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(reward.poolId);
         pools.push(result.hypePool);
       }),
     );

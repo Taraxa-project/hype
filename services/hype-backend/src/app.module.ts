@@ -10,6 +10,7 @@ import { RewardModule } from '@taraxa-hype/reward';
 import { HealthModule } from '@taraxa-hype/health';
 import { UserModule } from '@taraxa-hype/user';
 import { IpfsModule } from '@taraxa-hype/ipfs';
+import { GraphQlModule } from '@taraxa-hype/graphql';
 import * as dotenv from 'dotenv';
 import { HypeUser, HypeReward, HypeClaim } from './entities';
 
@@ -91,6 +92,7 @@ const HypeAppTypeOrmModule = () => {
     UserModule,
     HealthModule,
     IpfsModule,
+    GraphQlModule,
   ],
 })
 export class AppModule {}
