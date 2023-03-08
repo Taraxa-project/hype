@@ -8,11 +8,11 @@ import TelegramLoginButton, {
 } from '../../components/button/TelegramLoginButton';
 import Heading from '../../components/styles/Heading';
 import { HypeThemeType } from '../../theme';
-import { TelegramBotName } from '../../api/types';
 import { TelegramUser } from '../../models';
 import Button from '../../components/button/Button';
 import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
 import { TelegramLogo } from '../../assets/icons/Telegram';
+import { TelegramBotName } from '../../constants';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;

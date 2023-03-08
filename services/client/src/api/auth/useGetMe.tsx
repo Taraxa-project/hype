@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { AUTH_API } from '../../constants';
 import { useAuth } from '../../hooks';
 import { AuthUser } from '../../models';
-import { AUTH_API } from '../types';
 
 const getMe = () => {
   const url = `${AUTH_API}/auth/me`;

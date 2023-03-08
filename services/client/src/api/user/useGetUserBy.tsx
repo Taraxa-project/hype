@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { API } from '../../constants';
 import { HypeUser } from '../../models';
-import { API } from '../types';
 
 const getByAddress = (publicAddress: string) => {
   if (!publicAddress) {

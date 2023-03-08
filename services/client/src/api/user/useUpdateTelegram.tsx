@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
-import { API } from '../types';
 import { HypeUser } from '../../models';
+import { API } from '../../constants';
 
 const updateUser = (user: HypeUser) => {
   const url = `${API}/users`;

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { API } from '../../constants';
 import { useAuth } from '../../hooks';
 import { HypeRewardSummary } from '../../models/Redeem.model';
-import { API } from '../types';
 
 const getMyRewards = (address: string) => {
   const url = `${API}/rewards/${address}`;

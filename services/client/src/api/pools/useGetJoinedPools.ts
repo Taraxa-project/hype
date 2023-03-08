@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { API } from '../../constants';
 import { useAuth } from '../../hooks';
 import { HypePool } from '../../models';
-import { API } from '../types';
 
 const getJoinedPools = (address: string) => {
   const url = `${API}/pools/joined/${address}`;

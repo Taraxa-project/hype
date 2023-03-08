@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { API } from '../types';
+import { API } from '../../constants';
 
 export interface ClaimReward {
   id: number;

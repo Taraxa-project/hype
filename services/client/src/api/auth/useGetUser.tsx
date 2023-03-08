@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { AUTH_API } from '../../constants';
 import { AuthUser } from '../../models';
-import { AUTH_API } from '../types';
 
 const login = (publicAddress: string) => {
   if (!publicAddress) {

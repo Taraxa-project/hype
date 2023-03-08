@@ -1,9 +1,15 @@
-import { FetchHypesFilter } from '../types';
 import { useQuery } from 'urql';
 import { HYPEPOOL_QUERIES } from './query-collector';
 import { HypePool } from '../../models';
 
 const hypePoolsPerPage = 6;
+
+interface FetchHypesFilter {
+  first: number;
+  skip: number;
+  text?: string;
+}
+
 
 const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   const first = hypePoolsPerPage;
