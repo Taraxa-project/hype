@@ -15,12 +15,16 @@ import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
 import { HypeReward } from '../../entities/reward.entity';
-import { PoolClaim, RewardStateDto, TotalUnclaimed } from './rewardState.dto';
+import {
+  ImpressionDto,
+  ClaimDto,
+  PoolClaim,
+  RewardStateDto,
+  TotalUnclaimed,
+} from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
-import { ImpressionDto } from './impression.dto';
 import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
-import { ClaimDto } from './claim.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 export interface ClaimResult {

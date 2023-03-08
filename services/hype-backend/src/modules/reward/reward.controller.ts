@@ -20,10 +20,8 @@ import {
 import { HttpService } from '@nestjs/axios';
 import * as dotenv from 'dotenv';
 import { WalletGuard } from '../guards';
-import { RewardDto } from './reward.dto';
 import { ClaimResult, RewardService } from './reward.service';
-import { RewardStateDto } from './rewardState.dto';
-import { ClaimDto } from './claim.dto';
+import { RewardDto, RewardStateDto, ClaimDto } from './dto';
 import { HypeClaim } from '../../entities';
 dotenv.config();
 

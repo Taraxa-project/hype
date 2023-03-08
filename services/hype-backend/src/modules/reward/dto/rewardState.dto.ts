@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsObject } from 'class-validator';
 import { BigNumber } from 'ethers';
-import { IPool, IClaim } from '../../models';
+import { IPool, IClaim } from '../../../models';
 
 export interface TotalUnclaimed {
   unclaimed: BigNumber;
