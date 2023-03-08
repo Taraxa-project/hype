@@ -2,8 +2,8 @@ import React from 'react';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Heading from '../../components/styles/Heading';
-import Button from 'src/components/button/Button';
-import useWallet from 'src/hooks/useWallet';
+import Button from '../../components/button/Button';
+import useWallet from '../../hooks/useWallet';
 import { formatNumber } from '../../utils';
 
 interface RewardProps {

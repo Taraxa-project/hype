@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
 import { API } from '../types';
-import { HypeUser } from 'src/models/HypeUser.model';
+import { HypeUser } from '../../models';
 
 const updateUser = (user: HypeUser) => {
   const url = `${API}/users`;

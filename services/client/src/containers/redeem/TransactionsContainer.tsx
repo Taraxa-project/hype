@@ -1,9 +1,9 @@
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
-import useWallet from 'src/hooks/useWallet';
+import useWallet from '../../hooks/useWallet';
 import Transaction from '../../components/transaction/Transaction';
-import { HypeClaim, PoolRewards } from 'src/models/Redeem.model';
-import { TransactionStatus } from 'src/utils';
+import { HypeClaim, PoolRewards } from '../../models';
+import { TransactionStatus } from '../../utils';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import LoadingSpinner from '../../assets/icons/Spinner';
 

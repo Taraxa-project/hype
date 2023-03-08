@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
-import useWallet from 'src/hooks/useWallet';
+import useWallet from '../../hooks/useWallet';
 import Text from '../../components/styles/Text';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
-import { HypeClaim, HypeReward } from 'src/models/Redeem.model';
-import UpIcon from 'src/assets/icons/Up';
-import DownIcon from 'src/assets/icons/Down';
-import { TransactionStatus } from 'src/utils';
+import { HypeClaim, HypeReward } from '../../models/Redeem.model';
+import UpIcon from '../../assets/icons/Up';
+import DownIcon from '../../assets/icons/Down';
+import { TransactionStatus } from '../../utils';
 
 interface RewardProps {
   claims: HypeClaim[];

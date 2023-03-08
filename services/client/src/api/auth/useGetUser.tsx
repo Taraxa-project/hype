@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { User } from '../../models';
+import { AuthUser } from '../../models';
 import { AUTH_API } from '../types';
 
 const login = (publicAddress: string) => {
@@ -26,7 +26,7 @@ export const useGetUser = (publicAddress: string) => {
     },
   );
   return {
-    data: data?.data as User,
+    data: data?.data as AuthUser,
     refetch,
     isError,
     error,

@@ -11,7 +11,9 @@ export interface IPool {
   uri: string;
   cap: number;
   creator: string;
-  endDate: Date;
+  startDate: number;
+  endDate: number;
+  duration: number;
   impressionReward: number;
   word: string;
 }

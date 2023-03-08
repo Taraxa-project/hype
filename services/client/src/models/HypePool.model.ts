@@ -1,7 +1,6 @@
 export interface AddHypePool {
   title: string;
   projectName: string;
-  tokenName?: string;
   projectDescription: string;
   description: string;
   word: string;
@@ -12,6 +11,7 @@ export interface AddHypePool {
   startDate: number;
   endDate: number;
   duration: number;
+  tokenName?: string;
 }
 
 export interface HypePool extends AddHypePool {

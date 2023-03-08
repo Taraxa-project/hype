@@ -1,18 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
-import { TelegramLogo } from 'src/assets/icons/Telegram';
-import Button from 'src/components/button/Button';
 import TelegramLoginButton, {
   TelegramLoginButtonSize,
 } from '../../components/button/TelegramLoginButton';
 import Heading from '../../components/styles/Heading';
-import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
-import { TelegramUser } from 'src/models/HypeUser.model';
-import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
-import { TelegramBotName } from 'src/config';
+import { TelegramBotName } from '../../api/types';
+import { TelegramUser } from '../../models';
+import Button from '../../components/button/Button';
+import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
+import { TelegramLogo } from '../../assets/icons/Telegram';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;

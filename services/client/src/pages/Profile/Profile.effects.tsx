@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
-import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
-import useWallet from 'src/hooks/useWallet';
-import { TelegramUser } from 'src/models/HypeUser.model';
+import { useGetHypeUserBy } from '../../api/user/useGetUserBy';
+import { useUpdateTelegram } from '../../api/user/useUpdateTelegram';
+import useWallet from '../../hooks/useWallet';
 import { useQuery } from 'urql';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
 import { useGetJoinedPools } from '../../api/pools/useGetJoinedPools';
 import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
-import { HypePool } from '../../models';
+import { HypePool, TelegramUser } from '../../models';
 
 interface TelegramProfile {
   telegramId: number;

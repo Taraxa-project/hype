@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { HypeUser } from 'src/models/HypeUser.model';
+import { HypeUser } from '../../models';
 import { API } from '../types';
 
 const getByAddress = (publicAddress: string) => {

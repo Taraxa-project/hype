@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useAuth } from '../../hooks';
-import { User } from '../../models';
+import { AuthUser } from '../../models';
 import { AUTH_API } from '../types';
 
 const getMe = () => {
@@ -19,7 +19,7 @@ export const useGetMe = () => {
     },
   });
   return {
-    data: data?.data as User,
+    data: data?.data as AuthUser,
     refetch,
     isError,
     error,
