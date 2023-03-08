@@ -21,6 +21,7 @@ import { ImpressionDto } from './impression.dto';
 import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
 import { ClaimDto } from './claim.dto';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 export interface ClaimResult {
   nonce: number;
@@ -54,6 +55,33 @@ export class RewardService {
     this.gsSecret = authConfig.gsSecret;
   }
 
+  @Cron(CronExpression.EVERY_6_HOURS)
+  async checkClaims() {
+    this.logger.debug('Called every 6 hours');
+    const claims = await this.claimRepository.find({
+      where: {
+        claimed: false,
+      },
+    });
+    if (claims.length > 0) {
+      await Promise.all(
+        claims.map(async (claim: HypeClaim) => {
+          const onChainclaims = await this.getClaimedEvents(
+            claim.poolId,
+            claim.rewardee,
+            claim.amount,
+          );
+          if (onChainclaims.claimedEvents.length > 0) {
+            this.logger.log(`Found unclaimed claims`);
+            claim.claimed = true;
+            this.logger.log(`Updating claims`);
+            await claim.save();
+          }
+        }),
+      );
+    }
+  }
+
   async getAllRewards() {
     return await this.rewardRepository.find();
   }
@@ -85,6 +113,45 @@ export class RewardService {
       `,
       {
         id,
+      },
+    );
+  }
+
+  private async getClaimedEvents(
+    poolId: string,
+    receiver: string,
+    weiAmount: string,
+  ): Promise<{
+    claimedEvents: {
+      poolId: string;
+      receiver: string;
+      weiAmount: string;
+    }[];
+  }> {
+    return await this.graphQLClient.request(
+      gql`
+        query ClaimedEvents(
+          $poolId: String
+          $receiver: String
+          $weiAmount: String
+        ) {
+          claimedEvents(
+            where: {
+              poolId: $poolId
+              receiver: $receiver
+              weiAmount: $weiAmount
+            }
+          ) {
+            weiAmount
+            receiver
+            poolId
+          }
+        }
+      `,
+      {
+        poolId,
+        receiver,
+        weiAmount,
       },
     );
   }

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLRequestModule } from '@golevelup/nestjs-graphql-request';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from '../auth';
 import { BlockchainModule } from '../blockchain';
 import { UserModule } from '../user';
@@ -25,6 +26,7 @@ import { PoolsController } from './pools.controller';
         };
       },
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     HttpModule,
     UserModule,
