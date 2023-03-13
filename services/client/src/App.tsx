@@ -8,6 +8,7 @@ import { HypeThemeType } from './theme';
 import useWallet from './hooks/useWallet';
 import { useAuth, useAxiosInterceptors } from './hooks';
 import { useGetMe } from './api/auth/useGetMe';
+import ScrollToTop from './components/scrollToTop/ScrollToTop';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -53,6 +54,7 @@ const Root = () => {
         onConnect={connect}
         connectionLoading={isSignatureLoading}
       />
+      <ScrollToTop />
       <StyledAppContainer>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -46,7 +46,7 @@ export const RewardsContainer = (props: RewardProps) => {
         >
           {isConnected
             ? formatNumber(props.rewardAmount)
-              ? `${formatNumber(props.rewardAmount)} Pools`
+              ? `${formatNumber(props.rewardAmount)} Pool(s)`
               : `N/A`
             : `N/A`}
         </Heading>
