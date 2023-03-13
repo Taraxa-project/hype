@@ -74,7 +74,7 @@ export class RewardService {
             claim.amount,
           );
           if (onChainclaims.claimedEvents.length > 0) {
-            this.logger.log(`Found unclaimed claims`);
+            this.logger.warn(`Found unclaimed claims`);
             claim.claimed = true;
             this.logger.log(`Updating claims`);
             await claim.save();
@@ -231,7 +231,6 @@ export class RewardService {
     }
     fetchedClaim.claimed = true;
     const savedClaim = await fetchedClaim.save();
-    console.log('Saved claim: ', savedClaim);
     return savedClaim;
   }
 
@@ -258,8 +257,7 @@ export class RewardService {
           poolId: impression.pool_id,
         });
         const saved = await this.rewardRepository.save(newReward);
-        // eslint-disable-next-line no-console
-        console.log('Saved: ', saved);
+        return saved;
       }),
     );
   }

@@ -9,7 +9,6 @@ dotenv.config();
 export class HmacMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const secretKey = process.env.GS_SECRET; // Get the secret key from environment variables
-    console.log('I AM INSIDE THE MIDDLEWARE');
     const hmac = crypto.createHmac('sha256', secretKey);
     hmac.update(JSON.stringify(req.body)); // Hash the request body with the secret key
     const calculatedDigest = hmac.digest('hex'); // Generate the HMAC digest
@@ -21,9 +20,6 @@ export class HmacMiddleware implements NestMiddleware {
 
     const [scheme, digest] = authHeader.split(' ');
 
-    console.log('scheme: ', scheme);
-    console.log('digest: ', digest);
-    console.log('calculatedDigest: ', calculatedDigest);
     if (scheme !== 'HMAC' || !digest) {
       return res.status(401).send('Unauthorized');
     }
