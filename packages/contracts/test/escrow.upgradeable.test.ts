@@ -412,6 +412,22 @@ describe("DynamicEscrowUpgradeable", function () {
     await expect(claiming).to.emit(dynamicEscrow, "Claimed").withArgs(depositorTwo.address, value, currentPoolIndex);
   });
 
+  it("DepositorTwo uses the same signature again, reverts", async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const value = BigNumber.from("100000000000000000");
+    const nonce = await ethers.provider.getTransactionCount(depositorTwo.address);
+    const addr = depositorTwo.address;
+
+    const encodedPayload = abi.soliditySHA3(["address", "uint", "uint"], [addr, value.toString(), nonce]);
+
+    const { v, r, s } = ethUtil.ecsign(encodedPayload, Buffer.from(`${process.env.TEST_KEY_5}`, "hex"));
+    const hash = ethUtil.toRpcSig(v, r, s);
+
+    await expect(
+      dynamicEscrow.connect(depositorTwo).claim(depositorTwo.address, currentPoolIndex, value, zeroAddress, nonce, hash)
+    ).to.be.revertedWith("Claim: Hash already claimed");
+  });
+
   it("DepositorTwo generates a signature for a claim of 0.1 ETH for an address different than his, depositor one claims, emits Claimed event", async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const value = BigNumber.from("100000000000000000");
