@@ -34,6 +34,8 @@ const Card = ({ children, ...props }: CardProps) => {
           <CardDescription key={`${description}-${Date.now()}`}>
             {shortenText(description)}
           </CardDescription>
+        </div>
+        <div>
           {projectName && (
             <DataContainer>
               <DataHeader>Project Name:</DataHeader>
