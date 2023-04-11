@@ -1,3 +1,4 @@
+import { isProd } from '../constants';
 import { ethToken, taraToken, zeroAddress } from './enums';
 
 interface Network {
@@ -74,18 +75,22 @@ export const networkOptions = [
   {
     name: 'Ethereum Network',
     value: 1,
+    show: true,
   },
   {
-    name: 'Taraxa Network',
+    name: 'Taraxa Mainnet',
     value: 841,
+    show: true,
   },
   {
     name: 'Taraxa Devnet',
     value: 843,
+    show: !isProd,
   },
   {
     name: 'Taraxa Testnet',
     value: 842,
+    show: !isProd,
   },
 ];
 

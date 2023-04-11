@@ -24,6 +24,7 @@ describe('User tests', () => {
       address: '0xA2222D333C33333339999999911111111111eee1',
       username: 'coolUser',
       auth_date: 123123,
+      telegramId: 1123,
     };
     const { body: createdUser } = await postUser(HttpStatus.CREATED, newUser);
     expect(createdUser.username).toBe(newUser.username);
@@ -33,6 +34,7 @@ describe('User tests', () => {
       address: '0xA2222D333C33333339999999911111111111eee1',
       username: 'coolUser 2',
       auth_date: 123124,
+      telegramId: 1143,
     };
     const { body: updatedUser } = await postUser(
       HttpStatus.CREATED,

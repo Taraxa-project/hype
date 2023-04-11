@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import ABIs from '../abi';
 
-export async function getPoolDetailsById(id: number, provider: ethers.providers.Provider) {
+export async function getPoolDetailsById(id: string, provider: ethers.providers.Provider) {
   const contract = new ethers.Contract(
     process.env.REACT_APP_HYPE_ADDRESS || '',
     ABIs.contracts.HypePool.abi,

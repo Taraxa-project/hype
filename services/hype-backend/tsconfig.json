@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "sourceMap": true,
+    "composite": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -31,15 +32,16 @@
       "@taraxa-hype/blockchain": ["src/modules/blockchain"],
       "@taraxa-hype/user": ["src/modules/user"],
       "@taraxa-hype/health": ["src/modules/health"],
-      "@taraxa-hype/ipfs": ["src/modules/ipfs"]
+      "@taraxa-hype/ipfs": ["src/modules/ipfs"],
+      "@taraxa-hype/graphql": ["src/modules/graphql"]
     }
   },
   "include": [
+    "config/*",
     "src/**/*",
     "test/**/*",
-    "migrations/*",
     "data-source.ts",
-    ".eslintrc.js"
+    "pool_impressions_example.json"
   ],
   "exclude": ["node_modules", "dist"]
 }

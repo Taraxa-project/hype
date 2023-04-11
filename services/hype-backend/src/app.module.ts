@@ -6,11 +6,14 @@ import { existsSync } from 'fs';
 import { AuthModule } from '@taraxa-hype/auth';
 import { general, auth, ethereum, ipfs } from '@taraxa-hype/config';
 import { BlockchainModule } from '@taraxa-hype/blockchain';
-import { RewardModule, HypeReward } from '@taraxa-hype/reward';
-import { HypeUser, UserModule } from '@taraxa-hype/user';
+import { RewardModule } from '@taraxa-hype/reward';
 import { HealthModule } from '@taraxa-hype/health';
+import { UserModule } from '@taraxa-hype/user';
 import { IpfsModule } from '@taraxa-hype/ipfs';
+import { GraphQlModule } from '@taraxa-hype/graphql';
 import * as dotenv from 'dotenv';
+import { HypeUser, HypeReward, HypeClaim } from './entities';
+
 dotenv.config();
 
 const getEnvFilePath = () => {
@@ -25,7 +28,7 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities = [HypeUser, HypeReward];
+export const entities = [HypeUser, HypeReward, HypeClaim];
 
 const HypeAppTypeOrmModule = () => {
   let typeOrmOptions: TypeOrmModuleOptions;
@@ -89,6 +92,7 @@ const HypeAppTypeOrmModule = () => {
     UserModule,
     HealthModule,
     IpfsModule,
+    GraphQlModule,
   ],
 })
 export class AppModule {}

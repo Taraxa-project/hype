@@ -14,11 +14,13 @@ interface IHypePool {
         address tokenAddress;
         uint256 impressionReward;
         uint256 cap;
+        uint256 startDate;
         uint256 endDate;
+        uint256 duration;
     }
 
     struct HypePool {
-        uint256 id;
+        bytes32 id;
         address creator;
         bool active;
         Details details;
@@ -31,30 +33,32 @@ interface IHypePool {
         Rewards memory rewards
     ) external returns (HypePool memory);
 
-    function activatePool(uint256 id) external;
+    function activatePool(bytes32 poolId) external;
 
-    function deactivatePool(uint256 id) external;
+    function deactivatePool(bytes32 poolId) external;
 
-    function getPool(uint256 poolId) external view returns (HypePool memory);
+    function getPool(bytes32 poolId) external view returns (HypePool memory);
 
-    function getCurrentIndex() external view returns (uint256);
+    function getCurrentIndex() external view returns (bytes32);
 
-    event PoolCreated(uint256 poolId, address creator, string uri);
+    event PoolCreated(bytes32 poolId, address creator, string uri);
 
-    event PoolDetailsCreated(uint256 poolId,string title, string projectName, string tokenName, string word);
+    event PoolDetailsCreated(bytes32 poolId, string title, string projectName, string tokenName, string word);
 
     event PoolRewardsCreated(
-        uint256 poolId,
+        bytes32 poolId,
         uint256 network,
         address tokenAddress,
         uint256 impressionReward,
         uint256 cap,
-        uint256 endDate
+        uint256 startDate,
+        uint256 endDate,
+        uint256 duration
     );
 
-    event PoolUriSet(uint256 poolId, string uri);
+    event PoolUriSet(bytes32 poolId, string uri);
 
-    event PoolActivated(uint256 poolId, address activator);
+    event PoolActivated(bytes32 poolId, address activator, uint256 startDate, uint256 endDate);
 
-    event PoolDeactivated(uint256 poolId, address deactivator);
+    event PoolDeactivated(bytes32 poolId, address deactivator);
 }

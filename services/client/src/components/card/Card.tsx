@@ -1,6 +1,6 @@
 import React from 'react';
 import { HypePool } from '../../models';
-import { monthDiff, shortenText, transformFromWei } from '../../utils';
+import { getPoolDuration, monthDiff, shortenText, transformFromWei } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -25,7 +25,6 @@ const Card = ({ children, ...props }: CardProps) => {
   const { title, projectName, description, tokenName, cap, active, impressionReward, endDate } =
     pool;
   const { tokenDecimals } = useTokenDecimals(pool);
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
 
   return (
     <StyledCard>
@@ -35,6 +34,8 @@ const Card = ({ children, ...props }: CardProps) => {
           <CardDescription key={`${description}-${Date.now()}`}>
             {shortenText(description)}
           </CardDescription>
+        </div>
+        <div>
           {projectName && (
             <DataContainer>
               <DataHeader>Project Name:</DataHeader>
@@ -51,16 +52,18 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Impressions reward:</DataHeader>
+              <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
                 {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
               </DataValue>
             </DataContainer>
           )}
-          {endDate && duration && (
+          {endDate && (
             <DataContainer>
-              <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
-              <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
+              <DataHeader key={`endDate-${Date.now()}`}>Duration:</DataHeader>
+              <DataValue key={`${endDate}-${Date.now()}`}>
+                {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
+              </DataValue>
             </DataContainer>
           )}
           <DataContainer>
@@ -71,7 +74,7 @@ const Card = ({ children, ...props }: CardProps) => {
               </DataValue>
             ) : (
               <DataValue key={`active-${Date.now()}`}>
-                <DotIcon color="#C2C2C2" /> Inactive
+                <DotIcon color="#C2C2C2" /> (not yet active)
               </DataValue>
             )}
           </DataContainer>

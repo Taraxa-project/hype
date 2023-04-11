@@ -3,16 +3,13 @@ import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { useContainer } from 'class-validator';
 
+import { ConfigService } from '@nestjs/config';
+import { entities, AppModule } from '../src/app.module';
+import { HypeUser } from '../src/modules/user';
+import { WalletGuard } from '../src/modules/guards/wallet.guard';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config({ path: '../.env' });
-
-import { entities, AppModule } from '../src/app.module';
-import { PoolsService } from '../src/modules/pool/pool.service';
-import { ConfigService } from '@nestjs/config';
-import { HypePool } from '../src/modules/pool';
-import { HypeUser } from '../src/modules/user';
-import { UsersService } from '../src/modules/user/user.service';
-import { WalletGuard } from '../src/modules/auth/wallet.guard';
 
 const testLogger = new Logger('e2e');
 
@@ -30,7 +27,7 @@ export const bootstrapTestInstance: any = async () => {
         dropSchema: true,
         synchronize: true,
       }),
-      TypeOrmModule.forFeature([HypePool, HypeUser]),
+      TypeOrmModule.forFeature([HypeUser]),
       AppModule,
     ],
   })
@@ -43,8 +40,6 @@ export const bootstrapTestInstance: any = async () => {
     .compile();
 
   const app = moduleFixture.createNestApplication();
-  const poolService = await app.resolve<PoolsService>(PoolsService);
-  const userService = await app.resolve<UsersService>(UsersService);
   const configService = await app.resolve<ConfigService>(ConfigService);
 
   app.useLogger(testLogger);
@@ -54,7 +49,6 @@ export const bootstrapTestInstance: any = async () => {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   return {
-    poolService,
     configService,
     app,
   };

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { User } from '../../models';
-import { AUTH_API } from '../types';
+import { AUTH_API } from '../../constants';
+import { AuthUser } from '../../models';
 
 const login = (publicAddress: string) => {
   if (!publicAddress) {
@@ -26,7 +26,7 @@ export const useGetUser = (publicAddress: string) => {
     },
   );
   return {
-    data: data?.data as User,
+    data: data?.data as AuthUser,
     refetch,
     isError,
     error,

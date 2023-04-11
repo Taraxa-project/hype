@@ -7,15 +7,24 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ethereum } from '@taraxa-hype/config';
+import { ethereum, auth } from '@taraxa-hype/config';
 import { BigNumber } from 'ethers';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
-import { RewardDto } from './reward.dto';
-import { HypeReward } from './reward.entity';
-import { RewardStateDto } from './rewardState.dto';
-import { HypeClaim } from './claim.entity';
+import { HypeReward } from '../../entities/reward.entity';
+import {
+  ImpressionDto,
+  ClaimDto,
+  PoolClaim,
+  RewardStateDto,
+  TotalUnclaimed,
+} from './dto';
+import { HypeClaim } from '../../entities/claim.entity';
+import { UsersService } from '../user/user.service';
+import { IPool } from '../../models';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { GraphQlService } from '../graphql';
 
 export interface ClaimResult {
   nonce: number;
@@ -27,16 +36,52 @@ export interface ClaimResult {
 @Injectable()
 export class RewardService {
   privateKey: Buffer;
+
+  gsSecret: string;
+
   private logger = new Logger(RewardService.name);
+
   constructor(
     @Inject(ethereum.KEY)
     private readonly ethereumConfig: ConfigType<typeof ethereum>,
+    @Inject(auth.KEY)
+    private readonly authConfig: ConfigType<typeof auth>,
     @InjectRepository(HypeReward)
     private readonly rewardRepository: Repository<HypeReward>,
     @InjectRepository(HypeClaim)
     private readonly claimRepository: Repository<HypeClaim>,
+    private userService: UsersService,
+    private graphQlService: GraphQlService,
   ) {
     this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
+    this.gsSecret = authConfig.gsSecret;
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  async checkClaims() {
+    this.logger.debug('Called every day at 1 AM');
+    const claims = await this.claimRepository.find({
+      where: {
+        claimed: false,
+      },
+    });
+    if (claims.length > 0) {
+      await Promise.all(
+        claims.map(async (claim: HypeClaim) => {
+          const onChainclaims = await this.graphQlService.getClaimedEvents(
+            claim.poolId,
+            claim.rewardee,
+            claim.amount,
+          );
+          if (onChainclaims.claimedEvents.length > 0) {
+            this.logger.warn(`Found unclaimed claims`);
+            claim.claimed = true;
+            this.logger.log(`Updating claims`);
+            await claim.save();
+          }
+        }),
+      );
+    }
   }
 
   async getAllRewards() {
@@ -50,57 +95,72 @@ export class RewardService {
       }),
       claimed: false,
     });
-    const claims = await this.claimRepository.findBy({
+    const fetchedClaims = await this.claimRepository.findBy({
       rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
         address,
       }),
       claimed: false,
     });
-    if (rewardsOfAddress?.length + claims?.length === 0) {
-      throw new NotFoundException(
-        'No rewards or claims found for given address.',
-      );
-    }
-    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
-    const totalUnclaimed: {
-      unclaimed: BigNumber;
-      poolId: number;
-      tokenAddress: string;
-    }[] = [];
-
-    poolIds.forEach((poolId) => {
-      const rewardsOfPool = rewardsOfAddress.filter((r) => r.poolId === poolId);
-      const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : undefined;
-      const unclaimed = rewardsOfPool.reduce(
-        (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
-        BigNumber.from('0'),
-      );
-      totalUnclaimed.push({
-        unclaimed,
-        poolId,
-        tokenAddress: token,
-      });
+    const rewardClaims = await this.claimRepository.findBy({
+      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+        address,
+      }),
+      claimed: true,
     });
+
+    const rewardsReceived: PoolClaim[] = await Promise.all(
+      rewardClaims.map(async (claim) => {
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(claim.poolId);
+        return {
+          ...claim,
+          pool: result.hypePool,
+        };
+      }),
+    );
+    const claims: PoolClaim[] = await Promise.all(
+      fetchedClaims.map(async (claim) => {
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(claim.poolId);
+        return {
+          ...claim,
+          pool: result.hypePool,
+        };
+      }),
+    );
+    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
+    const totalUnclaimed: TotalUnclaimed[] = [];
+
+    await Promise.all(
+      poolIds.map(async (poolId) => {
+        const rewardsOfPool = rewardsOfAddress.filter(
+          (r) => r.poolId === poolId,
+        );
+        const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
+        const unclaimed = rewardsOfPool.reduce(
+          (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
+          BigNumber.from('0'),
+        );
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(poolId);
+        totalUnclaimed.push({
+          unclaimed,
+          poolId,
+          pool: result.hypePool,
+          tokenAddress: token,
+        });
+      }),
+    );
     return {
       totalUnclaimed,
       claims,
+      rewardsReceived,
     };
-  }
-
-  async accrueRewards(rewardDto: RewardDto): Promise<HypeReward> {
-    const newReward = this.rewardRepository.create({
-      amount: rewardDto.value,
-      tokenAddress: rewardDto.rewardAddress,
-      rewardee: rewardDto.targetAddress,
-      poolId: rewardDto.poolID,
-    });
-    const saved = await this.rewardRepository.save(newReward);
-    return saved;
   }
 
   async releaseRewardHash(
     address: string,
-    poolId: number,
+    poolId: string,
   ): Promise<ClaimResult> {
     const rewardsOfAddress = await this.rewardRepository.findBy({
       poolId,
@@ -109,11 +169,7 @@ export class RewardService {
       }),
       claimed: false,
     });
-    if (rewardsOfAddress.length < 1)
-      throw new NotFoundException(
-        HypeReward,
-        `There are no unclaimed rewards for the address ${address} in pool ${poolId}`,
-      );
+
     const biggestId = rewardsOfAddress
       .map((r) => r.id)
       .sort((a, b) => a - b)[0];
@@ -131,7 +187,7 @@ export class RewardService {
     );
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
-    let tokenAddress;
+    let tokenAddress = '';
     if (nonce && hash && total) {
       for (const reward of rewardsOfAddress) {
         reward.claimed = true;
@@ -150,6 +206,7 @@ export class RewardService {
       claim.rewardee = address;
       claim.tokenAddress = tokenAddress;
       claim.hash = hash;
+      claim.nonce = nonce;
       const claimFinalized = await claim.save();
       return {
         nonce,
@@ -157,9 +214,69 @@ export class RewardService {
         claimedAmount: total,
         claim: claimFinalized,
       };
-    } else
-      throw new InternalServerErrorException(
-        `Unable to calculate hash for ${poolId} and ${address}`,
-      );
+    }
+    throw new InternalServerErrorException(
+      `Unable to calculate hash for ${poolId} and ${address}`,
+    );
+  }
+
+  async claim(claim: ClaimDto): Promise<HypeClaim> {
+    const fetchedClaim = await this.claimRepository.findOneBy({
+      id: claim.id,
+      rewardee: claim.rewardee,
+      poolId: claim.poolId,
+    });
+    if (!fetchedClaim) {
+      throw new NotFoundException('Claim not found!');
+    }
+    fetchedClaim.claimed = true;
+    const savedClaim = await fetchedClaim.save();
+    return savedClaim;
+  }
+
+  async saveImpressions(impressions: ImpressionDto[]): Promise<any> {
+    await Promise.all(
+      impressions.map(async (impression: ImpressionDto) => {
+        const user = await this.userService.getUserByTelegramId(
+          impression.user_id,
+        );
+        if (!user) {
+          return;
+        }
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(impression.pool_id);
+        const pool = result.hypePool;
+        const rewardValue =
+          (impression.message_impressions / 1000) *
+          Number(pool.impressionReward);
+
+        const newReward = this.rewardRepository.create({
+          amount: rewardValue?.toString(),
+          tokenAddress: pool.tokenAddress,
+          rewardee: user.address,
+          poolId: impression.pool_id,
+        });
+        const saved = await this.rewardRepository.save(newReward);
+        return saved;
+      }),
+    );
+  }
+
+  async getJoinedPools(address: string): Promise<IPool[]> {
+    const rewards: Partial<HypeReward[]> = await this.rewardRepository
+      .createQueryBuilder()
+      .select('DISTINCT "poolId"')
+      .where('rewardee = :address', { address })
+      .getRawMany();
+
+    const pools: IPool[] = [];
+    await Promise.all(
+      rewards.map(async (reward) => {
+        const result: { hypePool: IPool } =
+          await this.graphQlService.getPoolById(reward.poolId);
+        pools.push(result.hypePool);
+      }),
+    );
+    return pools;
   }
 }

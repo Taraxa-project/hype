@@ -3,7 +3,7 @@ import Megaphone from '../../assets/images/megaphone.png';
 import Input from '../../components/input/Input';
 import Image from '../../components/image/Image';
 import LoadingSpinner from '../../assets/icons/Spinner';
-import NotFoundIcon from 'src/assets/icons/NotFound';
+import NotFoundIcon from '../../assets/icons/NotFound';
 import { useHomeEffects } from './Home.effects';
 import {
   HeroContainer,
@@ -31,13 +31,14 @@ export const Home = () => {
       <HeroContainer>
         <IntroContainer>
           <Logo>
-            <Image src={Megaphone} alt="Megaphone" />
-            <LogoText>Hype</LogoText>
+            <Image width="auto" height="50px" src={Megaphone} alt="Megaphone" />
+            <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
           </Logo>
-          <TitleText>What is hype farming?</TitleText>
+          <TitleText>Automated Social Campaigns for Web3</TitleText>
           <DescriptionContainer>
-            APE is launching it's testnet, and we'd like everyone to come & check it out! All
-            participants will be able to claim rewards...
+            Hype your project and expand your community with automated social campaigns with
+            measurable + verifiable outcomes, spam-filtering, and reward. Decentralized,
+            open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
         <VideoContainer>
@@ -57,9 +58,9 @@ export const Home = () => {
           onChange={debouncedResults}
         />
       </PoolContainer>
-      {hypePools?.length > 0 && (
+      {hypePools.length > 0 && (
         <CardContainer>
-          {hypePools?.map(
+          {hypePools.map(
             (data: HypePool, i: number) =>
               data && <Card key={`${data.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
           )}
@@ -70,7 +71,7 @@ export const Home = () => {
           <LoadingSpinner />
         </Box>
       )}
-      {(!hypePools || hypePools?.length === 0) && (
+      {(!hypePools || hypePools.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
             <NotFoundIcon /> Nothing found...

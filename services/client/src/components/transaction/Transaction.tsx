@@ -27,7 +27,7 @@ const Transaction = ({
   symbol,
 }: TransactionProps) => {
   return (
-    <Box backgroundColor="greys.0" p="1.313rem" borderRadius="16px">
+    <Box backgroundColor="greys.0" p="1.313rem" borderRadius="10px">
       <Box
         display="flex"
         flexDirection="row"

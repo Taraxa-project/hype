@@ -1,5 +1,5 @@
 import { Component, createRef, ReactNode } from 'react';
-import { TelegramUser } from 'src/models/HypeUser.model';
+import { TelegramUser } from '../../models';
 
 export enum TelegramLoginButtonSize {
   Large = 'large',

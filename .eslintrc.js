@@ -1,10 +1,26 @@
 module.exports = {
   root: true,
+  parser: '@typescript-eslint/parser',
+  ignorePatterns: ['node_modules/*'],
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint', 'react'],
   settings: {
-    'import/resolver': {
-      typescript: {},
+    react: {
+      version: 'detect',
     },
   },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+    'prettier/react',
+  ],
   overrides: [
     {
       // JavaScript and JSX
@@ -84,6 +100,13 @@ module.exports = {
         'react/jsx-no-useless-fragment': 'off',
         'react/jsx-props-no-spreading': 'off',
         'react-hooks/exhaustive-deps': 'off',
+        'prettier/prettier': [
+          'error',
+          {
+            printWidth: 80,
+            singleQuote: true,
+          },
+        ],
       },
     },
   ],
@@ -91,7 +114,7 @@ module.exports = {
     'max-len': [
       'error',
       {
-        code: 100,
+        code: 200,
         ignoreUrls: true,
       },
     ],

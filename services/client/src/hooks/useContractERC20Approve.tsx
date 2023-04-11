@@ -8,7 +8,7 @@ import { BigNumber } from 'ethers';
 
 export const useContractERC20Approve = (
   spender: string,
-  poolId: BigNumber,
+  poolId: string,
   amount: BigNumber,
   tokenAddress: AddressType,
   enabled: boolean,

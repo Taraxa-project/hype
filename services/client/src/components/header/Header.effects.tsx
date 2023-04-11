@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useNetwork } from 'wagmi';
 
 export interface CustomStyledProps {
   variant?: 'mobile' | 'desktop';
@@ -22,7 +23,7 @@ export enum HeaderValues {
   HypeFarming = 'Hype Farming',
   HypePool = '+Hype Pool',
   Redeem = 'Redeem',
-  Profile = 'User Profile',
+  Profile = 'My Account',
   None = 'none',
 }
 
@@ -35,6 +36,7 @@ export interface HeaderLink {
 export const useHeaderEffects = (authenticated: boolean, headerElements?: HeaderLink[]) => {
   let navigate = useNavigate();
   let location = useLocation();
+  const { chain } = useNetwork();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const headerValues: HeaderLink[] = [
     {
@@ -101,5 +103,6 @@ export const useHeaderEffects = (authenticated: boolean, headerElements?: Header
     headerEntries,
     menuOpen,
     selected,
+    chain,
   };
 };

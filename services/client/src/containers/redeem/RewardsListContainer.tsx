@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
-import useWallet from 'src/hooks/useWallet';
+import useWallet from '../../hooks/useWallet';
 import Text from '../../components/styles/Text';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import Transaction from '../../components/transaction/Transaction';
-import { HypeClaim, HypeReward } from 'src/models/Redeem.model';
-import UpIcon from 'src/assets/icons/Up';
-import DownIcon from 'src/assets/icons/Down';
-import { TransactionStatus } from 'src/utils';
+import { HypeClaim, HypeReward } from '../../models/Redeem.model';
+import UpIcon from '../../assets/icons/Up';
+import DownIcon from '../../assets/icons/Down';
+import { TransactionStatus } from '../../utils';
 
 interface RewardProps {
   claims: HypeClaim[];
 }
 
-export const ClaimHistoryContainer = (props: RewardProps) => {
+export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
   const { isConnected } = useWallet();
   const [showHistory, setShowHistory] = useState<boolean>(true);
 
   const toggleHistory = () => {
     setShowHistory(!showHistory);
   };
-  const { claims } = props;
+
   return (
     <Box
       display="flex"
       flexDirection="column"
       backgroundColor="greys.1"
       p="2rem"
-      borderRadius="2rem"
+      borderRadius="10px"
       width="unset"
     >
       <Heading
@@ -38,7 +38,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
         color="black"
         letterSpacing="-0.02em"
       >
-        Rewards received {claims?.length ? `(${claims?.length})` : ''}
+        Rewards received {claims.length}
       </Heading>
       {isConnected && (
         <Box
@@ -58,7 +58,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
       {isConnected ? (
         showHistory ? (
           <Box>
-            {!!claims?.length ? (
+            {claims.length > 0 ? (
               <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
                 {claims.map((transactionItem: HypeReward) => (
                   <Transaction
@@ -67,7 +67,7 @@ export const ClaimHistoryContainer = (props: RewardProps) => {
                     }-${Date.now()}`}
                     value={transactionItem.amount}
                     symbol={transactionItem.symbol}
-                    pool={'hype Pool12'}
+                    pool={transactionItem.pool.title}
                     date={new Date()}
                     status={TransactionStatus.REDEEMED}
                   />

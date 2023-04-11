@@ -30,7 +30,9 @@ export const useCardDetailsEffects = () => {
           cap: 0,
           impressionReward: 0,
           active: null,
-          endDate: null,
+          endDate: 0,
+          startDate: 0,
+          duration: null,
         },
       },
     });
@@ -41,6 +43,11 @@ export const useCardDetailsEffects = () => {
     closeModal();
   };
 
+  const onParticipate = () => {
+    navigate(`/participate`);
+    closeModal();
+  }
+
   return {
     open,
     ...cardData,
@@ -48,5 +55,6 @@ export const useCardDetailsEffects = () => {
     onRedirect,
     isPrivate,
     tokenDecimals,
+    onParticipate,
   };
 };

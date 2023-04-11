@@ -13,7 +13,7 @@ import {
   CardInnerContainer,
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { monthDiff, transformFromWei } from '../../../utils';
+import { formatDate, transformFromWei } from '../../../utils';
 import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
@@ -32,29 +32,46 @@ export const CardDetails = () => {
     impressionReward,
     active,
     endDate,
+    startDate,
     closeModal,
     onRedirect,
     tokenDecimals,
+    isPrivate,
+    onParticipate,
   } = useCardDetailsEffects();
 
   const titleProps: ModalTitleProps = {
     title,
     close: closeModal,
   };
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
+  const startedAt =
+    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
 
   const poolModalAction: ModalAction = {
     name: 'Go to Pool details page',
     onAction: onRedirect,
     closeButtonVariant: 'primary',
   };
+  const participateModalAction: ModalAction = {
+    name: '📣 Participate Now!',
+    onAction: onParticipate,
+    closeButtonVariant: 'primary',
+  };
+  const modalActions: ModalAction[] = [];
 
+  if (isPrivate) {
+    modalActions.push(poolModalAction);
+  } else {
+    modalActions.push(participateModalAction);
+  }
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={poolModalAction}
+      modalActions={modalActions}
+      // height='42rem' // This is usefull when adding two buttons
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -111,18 +128,20 @@ export const CardDetails = () => {
         )}
         {impressionReward && (
           <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Reward per 1,000 impressions:</DataHeader>
+            <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
             </DataValue>
           </DataContainer>
         )}
-        {endDate && duration && (
-          <DataContainer>
-            <DataHeader key={`duration-${Date.now()}`}>Duration:</DataHeader>
-            <DataValue key={`${duration}-${Date.now()}`}>{duration}</DataValue>
-          </DataContainer>
-        )}
+        <DataContainer>
+          <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
+          <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
+        </DataContainer>
+        <DataContainer>
+          <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
+          <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
+        </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
           {active ? (
@@ -131,7 +150,7 @@ export const CardDetails = () => {
             </DataValue>
           ) : (
             <DataValue key={`active-${Date.now()}`}>
-              <DotIcon color="#C2C2C2" /> Inactive
+              <DotIcon color="#C2C2C2" /> (not yet active)
             </DataValue>
           )}
         </DataContainer>

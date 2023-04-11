@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
-import { API } from '../types';
-import { HypeUser } from 'src/models/HypeUser.model';
+import { HypeUser } from '../../models';
+import { API } from '../../constants';
 
 const updateUser = (user: HypeUser) => {
   const url = `${API}/users`;
@@ -20,8 +20,7 @@ export const useUpdateTelegram = () => {
     const updatedUser: HypeUser = { ...values };
     mutate(updatedUser, {
       onSuccess: () => {
-        // queryClient.resetQueries();
-        queryClient.invalidateQueries(['hype-user']);
+        queryClient.invalidateQueries(['request-rewards']);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {

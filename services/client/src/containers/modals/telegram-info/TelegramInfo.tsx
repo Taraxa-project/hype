@@ -16,17 +16,17 @@ export const TelegramInfo = () => {
     close: closeModal,
   };
 
-  const modalAction: ModalAction = {
+  const modalActions: ModalAction[] = [{
     name: 'OK',
     onAction: closeModal,
-  };
+  }];
 
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={modalAction}
+      modalActions={modalActions}
     >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>
@@ -39,7 +39,7 @@ export const TelegramInfo = () => {
         >
           <TelegramLogo />
           {message && (
-            <Box borderRadius="1rem" py="2" px="4" backgroundColor="greys.10" mt="4">
+            <Box borderRadius="10px" py="2" px="4" backgroundColor="greys.10" mt="4">
               <Text fontWeight="600" fontSize="0.875rem" color="greys.11">
                 {message}
               </Text>

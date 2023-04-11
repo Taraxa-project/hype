@@ -1,6 +1,6 @@
 import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { WalletGuard } from '../auth/wallet.guard';
+import { WalletGuard } from '../guards/wallet.guard';
 import { ProjectDetailsDTO } from './dto';
 import { IpfsAddResult, IpfsResult, IpfsService } from './ipfs.service';
 

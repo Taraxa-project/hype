@@ -13,8 +13,8 @@ import { AuthProvider } from './context/auth-context';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { taraxaDevnet } from './utils';
 import { createClient as urqlCreatClient, Provider as UrqlProvider } from 'urql';
-import { GRAPHQL_API } from './api/types';
 import { mainnet, taraxa, taraxaTestnet } from 'wagmi/chains';
+import { GRAPHQL_API } from './constants';
 
 const { provider, webSocketProvider } = configureChains(
   [mainnet, taraxa, taraxaTestnet, taraxaDevnet],

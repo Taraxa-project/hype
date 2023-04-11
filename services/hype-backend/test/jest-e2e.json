@@ -13,6 +13,7 @@
     "@taraxa-hype/user": "<rootDir>/../src/modules/user",
     "@taraxa-hype/health": "<rootDir>/../src/modules/health",
     "@taraxa-hype/ipfs": "<rootDir>/../src/modules/ipfs",
+    "@taraxa-hype/graphql": "<rootDir>/../src/modules/graphql",
     "@taraxa-hype/config": "<rootDir>/../config"
   }
 }

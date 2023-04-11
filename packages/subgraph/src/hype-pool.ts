@@ -6,10 +6,10 @@ import {
   PoolUriSet,
 } from '../generated/HypePool/HypePool';
 import { HypePool, HypeUri } from '../generated/schema';
-import { ByteArray, ipfs, json } from '@graphprotocol/graph-ts';
+import { BigInt, ipfs, json } from '@graphprotocol/graph-ts';
 
 export function handlePoolActivated(event: PoolActivated): void {
-  const id = event.params.poolId.toString();
+  const id = event.params.poolId;
   const activator = event.params.activator;
   let hypepool = HypePool.load(id);
   if (!hypepool) {
@@ -17,12 +17,14 @@ export function handlePoolActivated(event: PoolActivated): void {
   }
   if (activator) {
     hypepool.active = true;
+    hypepool.startDate = event.params.startDate;
+    hypepool.endDate = event.params.endDate;
   }
   hypepool.save();
 }
 
 export function handlePoolCreated(event: PoolCreated): void {
-  const id = event.params.poolId.toString();
+  const id = event.params.poolId;
   const hypepool = new HypePool(id);
   hypepool.creator = event.params.creator;
   hypepool.uri = event.params.uri;
@@ -31,7 +33,7 @@ export function handlePoolCreated(event: PoolCreated): void {
 }
 
 export function handlePoolDetails(event: PoolDetailsCreated): void {
-  const id = event.params.poolId.toString();
+  const id = event.params.poolId;
   let hypepool = HypePool.load(id);
   if (!hypepool) {
     hypepool = new HypePool(id);
@@ -44,21 +46,26 @@ export function handlePoolDetails(event: PoolDetailsCreated): void {
 }
 
 export function handlePoolRewards(event: PoolRewardsCreated): void {
-  const id = event.params.poolId.toString();
+  const id = event.params.poolId;
   let hypepool = HypePool.load(id);
   if (!hypepool) {
     hypepool = new HypePool(id);
   }
   hypepool.network = event.params.network;
   hypepool.cap = event.params.cap;
+  hypepool.remainingFunds = BigInt.zero();
   hypepool.tokenAddress = event.params.tokenAddress;
   hypepool.impressionReward = event.params.impressionReward;
+  hypepool.startDate = event.params.startDate;
+  hypepool.duration = event.params.duration;
+  hypepool.startDate = event.params.startDate;
+  hypepool.duration = event.params.duration;
   hypepool.endDate = event.params.endDate;
   hypepool.save();
 }
 
 export function handlePoolUriSet(event: PoolUriSet): void {
-  const id = event.params.poolId.toString();
+  const id = event.params.poolId;
   const uri = event.params.uri;
 
   let hypepool = HypePool.load(id);

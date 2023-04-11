@@ -3,5 +3,5 @@ export interface IReward {
   amount: string;
   tokenAddress: string;
   claimed: boolean;
-  poolId: number;
+  poolId: string;
 }

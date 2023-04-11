@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useGetHypeUserBy } from 'src/api/user/useGetUserBy';
-import { useUpdateTelegram } from 'src/api/user/useUpdateTelegram';
-import useWallet from 'src/hooks/useWallet';
-import { TelegramUser } from 'src/models/HypeUser.model';
+import { useNavigate } from 'react-router-dom';
+import { useGetHypeUserBy } from '../../api/user/useGetUserBy';
+import { useUpdateTelegram } from '../../api/user/useUpdateTelegram';
+import useWallet from '../../hooks/useWallet';
 import { useQuery } from 'urql';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
+import { useGetJoinedPools } from '../../api/pools/useGetJoinedPools';
+import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
-import { HypePool } from '../../models';
+import { HypePool, TelegramUser } from '../../models';
 
 interface TelegramProfile {
+  telegramId: number;
   address: string;
   username: string;
 }
@@ -17,7 +20,9 @@ export const useProfileEffects = () => {
   const { account } = useWallet();
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
-  const [currentReward, setCurrentReward] = useState<number>(null);
+  const [currentRewardsNo, setCurrentRewardsNo] = useState<number>(null);
+  const { data } = useGetMyRewards(account);
+  const { data: fetchedJoinedPolls } = useGetJoinedPools(account);
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const [{ data: hypePoolsData }] = useQuery({
     query: HYPEPOOL_QUERIES.profilePoolsQuery,
@@ -27,29 +32,49 @@ export const useProfileEffects = () => {
   const { data: hypeUser } = useGetHypeUserBy(account);
   const submitHandler = useUpdateTelegram();
   const dispatchModals = useModalsDispatch();
+  let navigate = useNavigate();
 
   useEffect(() => {
-    if (hypePoolsData?.hypePools?.length > 0) {
-      setCreatedPools(hypePoolsData?.hypePools);
+    if (hypePoolsData) {
+      setCreatedPools(hypePoolsData.hypePools);
     }
   }, [hypePoolsData]);
 
   const onRedeem = () => {
-    // console.log('Bazinga! You clicked the button!');
+    navigate(`/redeem`);
   };
+
+  useEffect(() => {
+    if (account && data) {
+      setCurrentRewardsNo(data.totalUnclaimed.length);
+    }
+  }, [account, data]);
+
+  useEffect(() => {
+    if (fetchedJoinedPolls) {
+      setJoinedPools(fetchedJoinedPolls);
+    }
+  }, [fetchedJoinedPolls]);
 
   const connect = async (user: TelegramUser) => {
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
+      telegramId: user.id,
       address: account,
       username: usernameTemp,
     });
     try {
       if (account && user && user.auth_date && usernameTemp) {
-        submitHandler({ address: account, username: usernameTemp, auth_date: user.auth_date });
+        submitHandler({
+          address: account,
+          username: usernameTemp,
+          auth_date: user.auth_date,
+          telegramId: user.id,
+        });
       }
     } catch (err: any) {
       setTelegramProfile({
+        telegramId: undefined,
         address: account,
         username: undefined,
       });
@@ -82,23 +107,27 @@ export const useProfileEffects = () => {
 
   const onDisconnect = () => {
     setTelegramProfile({
+      telegramId: undefined,
       address: account,
       username: undefined,
     });
-    submitHandler({ address: account, username: null, auth_date: null });
+    submitHandler({ address: account, username: null, auth_date: null, telegramId: null });
   };
 
   useEffect(() => {
-    setTelegramProfile({
-      address: account,
-      username: hypeUser?.username,
-    });
+    if (hypeUser) {
+      setTelegramProfile({
+        telegramId: hypeUser.telegramId,
+        address: account,
+        username: hypeUser.username,
+      });
+    }
   }, [account, hypeUser]);
 
   return {
     joinedPools,
     createdPools,
-    currentReward,
+    currentRewardsNo,
     onRedeem,
     telegramProfile,
     connect,

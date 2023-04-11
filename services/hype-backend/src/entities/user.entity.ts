@@ -1,23 +1,23 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { IHypeUser } from '../../models';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IHypeUser } from '../models';
 
-export const tableName = 'hype-user';
-
-@Entity(tableName)
+@Entity('hype_user')
 export class HypeUser extends BaseEntity implements IHypeUser {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ nullable: false, unique: true })
-  @IsNotEmpty()
   @IsString()
   address!: string;
 
   @Column({ nullable: true, unique: true })
-  @IsOptional()
   @IsString()
   username: string;
+
+  @Column({ nullable: true, unique: true })
+  @IsNumber()
+  telegramId: number;
 
   @Column({ nullable: true })
   @IsOptional()

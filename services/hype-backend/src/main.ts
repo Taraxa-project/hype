@@ -1,10 +1,9 @@
 import 'reflect-metadata';
-import { ValidationPipe } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
+import { AppModule } from './app.module';
 
 export function getPort(): number {
   return parseInt(process.env.PORT || process.env.SERVER_PORT || '3000', 10);

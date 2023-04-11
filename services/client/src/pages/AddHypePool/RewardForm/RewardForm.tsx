@@ -2,8 +2,6 @@ import TitleText from '../../../components/titletext/TitleText';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 import {
   FormColumn,
@@ -15,7 +13,6 @@ import {
   FormSelect,
   InfoCard,
 } from '../AddHypePool.styled';
-import { Controller } from 'react-hook-form';
 import Box from '../../../components/styles/Box';
 import { HypePoolRewardForm, useRewardFormEffects } from './RewardForm.effects';
 
@@ -37,7 +34,6 @@ export const RewardForm = ({
     handleSubmit,
     errors,
     authenticated,
-    control,
     networkOptions,
     handleNetworkSelect,
     tokensOptions,
@@ -69,11 +65,14 @@ export const RewardForm = ({
             <option disabled defaultValue="" value="">
               Please select your network
             </option>
-            {networkOptions.map((option) => (
-              <option key={`${option.value}-${option.name}`} value={option.value}>
-                {option.name}
-              </option>
-            ))}
+            {networkOptions.map(
+              (option) =>
+                option.show && (
+                  <option key={`${option.value}-${option.name}`} value={option.value}>
+                    {option.name}
+                  </option>
+                ),
+            )}
           </FormSelect>
           {errors.network && (
             <Text color="danger" fontSize="0.8rem">
@@ -210,34 +209,27 @@ export const RewardForm = ({
           )}
         </FormElement>
 
-        {/* End date */}
+        {/* Pool duration */}
         <FormElement>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Max duration of the pool:</Label>
           </Box>
           <Example>
             Defines how long the Hype Pool will last. At the end of the Hype Pool if rewards have
-            not been fully doled out, they'll be returned.
+            not been fully doled out, they`ll be returned.
           </Example>
-          <Controller
-            name="endDate"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <DatePicker
-                wrapperClassName="date-picker"
-                placeholderText="ex: 30 Days"
-                disabled={!authenticated}
-                selected={value}
-                showTimeSelect
-                dateFormat="MM/dd/yyyy HH:mm"
-                onChange={onChange}
-                minDate={new Date()}
-              />
-            )}
+          <FormInput
+            disabled={!authenticated}
+            placeholder="ex: 28 days"
+            type="number"
+            min="1"
+            max="28"
+            name="duration"
+            {...register('duration')}
           />
-          {errors.endDate && (
+          {errors.duration && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.endDate.message}
+              {errors.duration.message}
             </Text>
           )}
         </FormElement>

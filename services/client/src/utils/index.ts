@@ -8,4 +8,5 @@ export * from './localStorage';
 export * from './fullIpfsUrl';
 export * from './chainIDs';
 export * from './networks';
-export * from './transformFromWei';
+export * from './poolDuration';
+export * from './eth';
