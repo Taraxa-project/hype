@@ -1,10 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
-import { IReward } from '../../models';
+import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IReward } from '../models';
 
-export const tableName = 'hype_reward';
-
-@Entity(tableName)
+@Entity('hype_reward')
 export class HypeReward extends BaseEntity implements IReward {
   constructor(reward?: Partial<HypeReward>) {
     super();
@@ -16,8 +14,8 @@ export class HypeReward extends BaseEntity implements IReward {
 
   @Column({ nullable: false })
   @IsNotEmpty()
-  @IsNumber()
-  poolId: number;
+  @IsString()
+  poolId: string;
 
   @Column({ nullable: false })
   @IsNotEmpty()

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
 import {
   useAuth,
@@ -8,11 +8,12 @@ import {
   useContractActivatePool,
   useContractEscrowDeposit,
   useContractEscrowGetDepositsOf,
+  useLoadingModals,
 } from '../../../hooks';
-import { AddressType } from '../../../utils';
+import { AddressType, NotificationType } from '../../../utils';
 
 export const useSummaryEffects = (
-  createdPoolIndex: BigNumber,
+  createdPoolIndex: string,
   successCallbackActivatePool: () => void,
   rewards: HypePoolRewardForm,
   isCustomToken: boolean,
@@ -28,6 +29,8 @@ export const useSummaryEffects = (
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
   const { data: depositsOf } = useContractEscrowGetDepositsOf(createdPoolIndex, hasDeposited);
+  const { data: balance } = useBalance({ address: account });
+  const { showNotificationModal } = useLoadingModals();
 
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
@@ -69,10 +72,19 @@ export const useSummaryEffects = (
   }, [rewards]);
 
   const fund = () => {
-    if (isCustomToken) {
-      setEnableApprove(true);
-    } else {
-      setEnableDeposit(true);
+    if (balance && amount) {
+      if (balance?.value.lt(amount)) {
+        showNotificationModal(
+          NotificationType.ERROR,
+          'You don`t have enough balance in your account! Please add funds into your account in order to fund the pool!',
+        );
+      } else {
+        if (isCustomToken) {
+          setEnableApprove(true);
+        } else {
+          setEnableDeposit(true);
+        }
+      }
     }
   };
 

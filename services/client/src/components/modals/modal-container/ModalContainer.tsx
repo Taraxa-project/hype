@@ -21,7 +21,7 @@ export interface ModalContainerProps {
   open: boolean;
   closeModal: () => void;
   children?: React.ReactNode;
-  modalAction?: ModalAction;
+  modalActions?: ModalAction[];
   showCancel?: boolean;
   cancelButtonText?: string;
   closeOutside?: boolean;
@@ -33,7 +33,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
   children,
   open,
   closeModal,
-  modalAction,
+  modalActions,
   showCancel,
   cancelButtonText,
   closeOutside = true,
@@ -64,19 +64,21 @@ export const ModalContainer: FC<ModalContainerProps> = ({
               gridGap="0.75rem"
               margin="0 auto"
               marginTop="1rem"
-              maxWidth={modalAction?.maxWidth || '23rem'}
+              maxWidth="23rem"
             >
-              {modalAction && (
-                <Button
-                  type={modalAction.type || 'button'}
-                  variant={modalAction.closeButtonVariant || 'primary'}
-                  size="full-width"
-                  onClick={modalAction.onAction}
-                  disabled={modalAction.disabled}
-                >
-                  {modalAction.name}
-                </Button>
-              )}
+              {modalActions &&
+                modalActions.map((modalAction) => (
+                  <Button
+                    key={`${modalAction.name}-${new Date().getTime()}`}
+                    type={modalAction.type || 'button'}
+                    variant={modalAction.closeButtonVariant || 'primary'}
+                    size="full-width"
+                    onClick={modalAction.onAction}
+                    disabled={modalAction.disabled}
+                  >
+                    {modalAction.name}
+                  </Button>
+                ))}
               {showCancel && (
                 <Button
                   variant="secondary"

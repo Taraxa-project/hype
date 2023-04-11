@@ -9,10 +9,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { WalletGuard } from '../auth/wallet.guard';
+import { WalletGuard } from '../guards/wallet.guard';
 import { UserDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
-import { HypeUser } from './user.entity';
+import { HypeUser } from '../../entities/user.entity';
 import { UsersService } from './user.service';
 
 @ApiTags('users')

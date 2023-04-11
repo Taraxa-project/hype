@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { HypeRewardSummary } from 'src/models/Redeem.model';
+import { API } from '../../constants';
 import { useAuth } from '../../hooks';
-import { API } from '../types';
+import { HypeRewardSummary } from '../../models/Redeem.model';
 
 const getMyRewards = (address: string) => {
   const url = `${API}/rewards/${address}`;
@@ -12,7 +12,7 @@ const getMyRewards = (address: string) => {
 export const useGetMyRewards = (address: string) => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['rewards', address],
+    ['user-rewards', address],
     () => getMyRewards(address),
     {
       retry: false,

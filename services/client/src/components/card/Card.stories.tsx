@@ -24,7 +24,9 @@ const pool = {
   tokenName: 'APE',
   impressionReward: 2,
   active: true,
-  endDate: new Date(new Date().setMonth(new Date().getMonth() + 5)),
+  startDate: new Date().getTime(),
+  duration: 10 * 24 * 60 * 60,
+  endDate: new Date().getTime() + 10 * 24 * 60 * 60,
 };
 Regular.args = {
   pool,

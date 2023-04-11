@@ -12,7 +12,7 @@ import { TelegramShareButton, TwitterShareButton } from 'react-share';
 import { SocialButton } from './Completed.styled';
 
 export interface CompletedProps {
-  createdPoolIndex: BigNumber;
+  createdPoolIndex: string;
   network: number;
   poolName: string;
   transaction: string;

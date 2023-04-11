@@ -11,7 +11,7 @@ dataSources:
     name: HypePool
     network: mainnet
     source:
-      address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+      address: '0x46e5cF315f17846933d7B2C7Fd09e369215574E3'
       abi: HypePool
     mapping:
       kind: ethereum/events
@@ -21,16 +21,39 @@ dataSources:
         - HypePool
       abis:
         - name: HypePool
-          file: ./abis/HypePool.json
+          file: ./abis/HypePool/HypePool.json
       eventHandlers:
-        - event: PoolActivated(uint256,address)
+        - event: PoolActivated(bytes32,address,uint256,uint256)
           handler: handlePoolActivated
-        - event: PoolCreated(uint256,address,string)
+        - event: PoolCreated(bytes32,address,string)
           handler: handlePoolCreated
-        - event: PoolDetailsCreated(uint256,string,string,string,string)
+        - event: PoolDetailsCreated(bytes32,string,string,string,string)
           handler: handlePoolDetails
-        - event: PoolRewardsCreated(uint256,uint256,address,uint256,uint256,uint256)
+        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256)
           handler: handlePoolRewards
-        - event: PoolUriSet(uint256,string)
+        - event: PoolUriSet(bytes32,string)
           handler: handlePoolUriSet
       file: ./src/hype-pool.ts
+  - kind: ethereum
+    name: DynamicEscrow
+    network: mainnet
+    source:
+      address: '0xaFa303eF0bd951839759E5A69e4628169fe541Ab'
+      abi: DynamicEscrow
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DynamicEscrow
+      abis:
+        - name: DynamicEscrow
+          file: ./abis/DynamicEscrow/DynamicEscrow.json
+      eventHandlers:
+        - event: Claimed(indexed address,uint256,bytes32)
+          handler: handleClaimed
+        - event: Deposited(indexed address,uint256,bytes32)
+          handler: handleDeposited
+        - event: Withdrawn(indexed address,uint256,bytes32)
+          handler: handleWithdrawn
+      file: ./src/escrow.ts

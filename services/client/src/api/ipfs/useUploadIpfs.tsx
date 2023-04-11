@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { HypeProjectDetails } from '../../models';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
-import { API } from '../types';
+import { API } from '../../constants';
 
 const upload = (details: HypeProjectDetails) => {
   const url = `${API}/ipfs/upload`;

@@ -1,12 +1,14 @@
 import { create, Options } from 'ipfs-http-client';
 import { Buffer } from 'buffer';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 const ipfsSecret = `${process.env.IPFS_SECRET}`;
 const ipfsProject = `${process.env.IPFS_PROJECT_ID}`;
-const authorization =
-  'Basic ' + Buffer.from(ipfsProject + ':' + ipfsSecret).toString('base64');
+const authorization = `Basic ${Buffer.from(
+  `${ipfsProject}:${ipfsSecret}`,
+).toString('base64')}`;
 
 export const ipfsBaseUrl = `${process.env.IPFS_BASE_URL}`;
 

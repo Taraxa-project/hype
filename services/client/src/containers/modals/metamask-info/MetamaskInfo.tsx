@@ -16,17 +16,19 @@ export const MetamaskInfo = () => {
     close: closeModal,
   };
 
-  const modalAction: ModalAction = {
-    name: 'OK',
-    onAction: closeModal,
-  };
+  const modalActions: ModalAction[] = [
+    {
+      name: 'OK',
+      onAction: closeModal,
+    },
+  ];
 
   return (
     <ModalContainer
       titleProps={titleProps}
       open={open}
       closeModal={closeModal}
-      modalAction={modalAction}
+      modalActions={modalActions}
     >
       <Box display="flex" flexDirection="column" height="100%">
         <Text>{text}</Text>
@@ -39,7 +41,7 @@ export const MetamaskInfo = () => {
         >
           <MetamaskLogo />
           {message && (
-            <Box borderRadius="1rem" py="2" px="5" backgroundColor="greys.10">
+            <Box borderRadius="10px" py="2" px="5" backgroundColor="greys.10">
               <Text fontWeight="600" fontSize="0.875rem" color="greys.11">
                 {message}
               </Text>

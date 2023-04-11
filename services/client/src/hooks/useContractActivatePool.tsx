@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useLoadingModals } from './useLoadingModals';
 
 export const useContractActivatePool = (
-  id: BigNumber,
+  id: string,
   enabled: boolean,
   successCallbackActivatePool: () => void,
 ) => {

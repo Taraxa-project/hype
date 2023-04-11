@@ -4,7 +4,7 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { LoginSignature } from '../../models';
 import { NotificationType } from '../../utils';
 import { setAuthenticationToken } from '../../utils';
-import { AUTH_API } from '../types';
+import { AUTH_API } from '../../constants';
 
 const sendSignature = (login: LoginSignature) => {
   if (!login) {

@@ -14,7 +14,7 @@ export class RewardDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString() //hex number
+  @IsString() // hex number
   value: string;
 
   @ApiProperty()

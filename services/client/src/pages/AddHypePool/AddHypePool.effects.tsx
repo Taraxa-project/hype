@@ -30,7 +30,7 @@ export const useAddHypePoolEffects = () => {
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
-  const [createdPoolIndex, setCreatedPoolIndex] = useState<BigNumber>(BigNumber.from(3)); //BigNumber.from(16)
+  const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
@@ -42,30 +42,18 @@ export const useAddHypePoolEffects = () => {
     description: '',
     projectDescription: '',
     word: 'testnet',
-    // title: 'Dragon Ball',
-    // projectName: 'Dragon Ball Super, Dragon Ball, DBS',
-    // tokenName: 'DBS',
-    // description: 'Dragon Ball super NFT marketplace',
-    // projectDescription: 'Something nice about DBS',
-    // word: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
-    network: 842,
+    network: 841,
     token: null,
     tokenAddress: '',
     tokenName: '',
     tokenDecimals: 18,
     impressionReward: null,
     cap: null,
-    endDate: null,
-    // network: 842,
-    // token: 'TARA',
-    // tokenAddress: '0x0000000000000000000000000000000000000000',
-    // tokenName: 'TARA',
-    // tokenDecimals: 18,
-    // impressionReward: 2,
-    // cap: 10,
-    // endDate: new Date('12-02-2023'),
+    duration: null,
+    startDate: 0,
+    endDate: 0,
   });
 
   useContractCreatePool(
@@ -78,8 +66,8 @@ export const useAddHypePoolEffects = () => {
   );
 
   useEffect(() => {
-    if (uploadedIpfsUrl?.data) {
-      setIpfsUrl(uploadedIpfsUrl?.data?.path);
+    if (uploadedIpfsUrl) {
+      setIpfsUrl(uploadedIpfsUrl.data.path);
       setCurrentStep(2);
     }
   }, [uploadedIpfsUrl]);
@@ -117,7 +105,9 @@ export const useAddHypePoolEffects = () => {
         impressionReward,
         tokenAddress:
           rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
-        endDate: rewards.endDate?.getTime(),
+        endDate: 0,
+        startDate: 0,
+        duration: rewards.duration * 24 * 60 * 60,
       },
     });
     setContractEnabled(true);
@@ -127,13 +117,10 @@ export const useAddHypePoolEffects = () => {
   const onSubmitDetails = async (data: HypePoolDetailsForm) => {
     setPoolDetails(data);
     await onUploadToIpfs(data);
-    // setCurrentStep(2);
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
     createPool(poolDetails, data);
-    // setCurrentStep(3);
-    // setPoolReward(data);
   };
 
   const onBackFromRewards = () => {

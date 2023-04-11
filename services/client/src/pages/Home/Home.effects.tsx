@@ -28,22 +28,25 @@ export const useHomeEffects = () => {
   }, [isFetchingNextPage, maxReached]);
 
   useEffect(() => {
-    if (data?.poolSearch?.length === 0 || data?.hypePools?.length === 0) {
-      setMaxReached(true);
-    }
-    if (searchString) {
-      if (data?.poolSearch) {
-        setHypePools(hypePools.concat(data?.poolSearch));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+    if (data) {
+      if (data.length === 0 || data.length === 0) {
+        setMaxReached(true);
       }
-    } else {
-      if (data?.hypePools) {
-        setHypePools(hypePools.concat(data?.hypePools));
+      if (searchString) {
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
+        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+      } else {
+        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
         // setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
+
+  const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
+    const now = Date.now(); // get current timestamp in milliseconds
+    return pools.filter((p: HypePool) => p.active === true && +p.endDate * 1000 > now);
+  };
 
   useEffect(() => {
     setSearchString(searchString || '');

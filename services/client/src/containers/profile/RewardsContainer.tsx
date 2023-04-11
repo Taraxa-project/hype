@@ -2,8 +2,8 @@ import React from 'react';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Heading from '../../components/styles/Heading';
-import Button from 'src/components/button/Button';
-import useWallet from 'src/hooks/useWallet';
+import Button from '../../components/button/Button';
+import useWallet from '../../hooks/useWallet';
 import { formatNumber } from '../../utils';
 
 interface RewardProps {
@@ -17,7 +17,7 @@ export const RewardsContainer = (props: RewardProps) => {
   return (
     <Box
       p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="2rem"
+      borderRadius="10px"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -35,7 +35,7 @@ export const RewardsContainer = (props: RewardProps) => {
       </Heading>
       <Box display="flex" flexDirection="column" gridGap="0.5rem" mb="3rem">
         <Text pt="2rem" color="greys.2" fontSize="1rem" fontWeight="700">
-          Total unredeemed
+          Total rewards unredeemed
         </Text>
         <Heading
           fontSize="2.25rem"
@@ -46,7 +46,7 @@ export const RewardsContainer = (props: RewardProps) => {
         >
           {isConnected
             ? formatNumber(props.rewardAmount)
-              ? `${formatNumber(props.rewardAmount)} TARA`
+              ? `${formatNumber(props.rewardAmount)} Pool(s)`
               : `N/A`
             : `N/A`}
         </Heading>
@@ -59,7 +59,7 @@ export const RewardsContainer = (props: RewardProps) => {
         onClick={props.onRedeem}
         disabled={!isConnected}
       >
-        Redeem all
+        Go to Redeem
       </Button>
     </Box>
   );

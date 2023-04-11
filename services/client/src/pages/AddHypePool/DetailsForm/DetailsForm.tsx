@@ -1,5 +1,5 @@
-import TitleText from 'src/components/titletext/TitleText';
-import { Link } from 'src/components/styles/Link';
+import TitleText from '../../../components/titletext/TitleText';
+// import { Link } from '../../../components/styles/Link';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
@@ -16,6 +16,7 @@ import {
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
 import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
+import { Link } from 'react-router-dom';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
@@ -122,7 +123,14 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
           <InfoCard>
             Enter messages, keywords, links, whatever you want hyped up in social. Currently we only
             support Telegram. Need some ideas? Check out some other{' '}
-            <Link text="hype pools" href={'/'} />.
+            <Link
+              to={'/'}
+              target="_blank"
+              style={{ textDecoration: 'none', lineHeight: '1.875rem', color: '#0081CA' }}
+            >
+              hype pools
+            </Link>
+            .
           </InfoCard>
           <Example>
             Your project's latest news that crypto community should know about, e.g., the latest

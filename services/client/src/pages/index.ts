@@ -3,3 +3,4 @@ export * from './Redeem';
 export * from './AddHypePool';
 export * from './Profile';
 export * from './PoolDetails';
+export * from './Participate';

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import { transformFromWei, monthDiff } from '../../utils';
+import { transformFromWei, formatDate } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
   PoolContainer,
@@ -16,6 +16,7 @@ import {
 import TitleText from '../../components/titletext/TitleText';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
+import Text from '../../components/styles/Text';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -33,14 +34,18 @@ export const PoolDetails = () => {
     impressionReward,
     active,
     endDate,
+    startDate,
     tokenDecimals,
     isDeposited,
     authenticated,
     fund,
     activate,
     account,
-  } = usePoolDetailsEffects(+poolId);
-  const duration = `${monthDiff(new Date(), new Date(+endDate))} months left`;
+  } = usePoolDetailsEffects(poolId);
+  const startedAt =
+    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
+  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+
   return (
     <PoolContainer>
       <TitleText>{title}</TitleText>
@@ -98,18 +103,30 @@ export const PoolDetails = () => {
       )}
       {impressionReward && (
         <InfoContainer>
-          <InfoHeader>Reward per 1,000 impressions:</InfoHeader>
+          <InfoHeader>Reward / impressions:</InfoHeader>
           <InfoValue>
             {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
           </InfoValue>
         </InfoContainer>
       )}
-      {endDate && duration && (
+
+      <InfoContainer>
+        <InfoHeader key={`startDate-${Date.now()}`}>Start Date:</InfoHeader>
+        <InfoValue key={`${startDate}-${Date.now()}`}>{startedAt}</InfoValue>
+      </InfoContainer>
+
+      <InfoContainer>
+        <InfoHeader key={`endDate-${Date.now()}`}>End Date:</InfoHeader>
+        <InfoValue key={`${endDate}-${Date.now()}`}>{endsAt}</InfoValue>
+      </InfoContainer>
+
+      {/* {endDate && (
         <InfoContainer>
-          <InfoHeader key={`duration-${Date.now()}`}>Duration:</InfoHeader>
-          <InfoValue key={`${duration}-${Date.now()}`}>{duration}</InfoValue>
+          <InfoHeader key={`endDate-${Date.now()}`}>Duration:</InfoHeader>
+          <InfoValue key={`${endDate}-${Date.now()}`}>{getPoolDuration(+endDate)}</InfoValue>
         </InfoContainer>
-      )}
+      )} */}
+
       <InfoContainer>
         <InfoHeader>Status:</InfoHeader>
         {active ? (
@@ -118,7 +135,7 @@ export const PoolDetails = () => {
           </InfoValue>
         ) : (
           <InfoValue key={`active-${Date.now()}`}>
-            <DotIcon color="#C2C2C2" /> Inactive
+            <DotIcon color="#C2C2C2" /> (not yet active)
           </InfoValue>
         )}
       </InfoContainer>
@@ -129,15 +146,24 @@ export const PoolDetails = () => {
               Fund the Pool
             </Button>
           ) : (
-            <Button
-              disabled={!authenticated}
-              size="full-width"
-              variant="success"
-              type="button"
-              onClick={activate}
-            >
-              Activate the Pool
-            </Button>
+            <Box>
+              <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You need to activate the pool for participating community members to be rewarded.
+              </Text>
+              <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                You may activate the pool at any time, but once you activate the pool it cannot be
+                deactivated.
+              </Text>
+              <Button
+                disabled={!authenticated}
+                size="full-width"
+                type="submit"
+                variant="success"
+                onClick={activate}
+              >
+                Activate the Pool
+              </Button>
+            </Box>
           )}
         </Box>
       )}

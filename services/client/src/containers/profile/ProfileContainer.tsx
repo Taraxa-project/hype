@@ -1,18 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import Blockies from 'react-blockies';
-import { TelegramLogo } from 'src/assets/icons/Telegram';
-import Button from 'src/components/button/Button';
 import TelegramLoginButton, {
   TelegramLoginButtonSize,
 } from '../../components/button/TelegramLoginButton';
 import Heading from '../../components/styles/Heading';
-import styled from 'styled-components';
 import { HypeThemeType } from '../../theme';
-import { TelegramUser } from 'src/models/HypeUser.model';
-import { ConnectWalletBtn } from 'src/components/connect-wallet-btn/ConnectWalletBtn';
-import { TelegramBotName } from 'src/config';
+import { TelegramUser } from '../../models';
+import Button from '../../components/button/Button';
+import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
+import { TelegramLogo } from '../../assets/icons/Telegram';
+import { TelegramBotName } from '../../constants';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -39,7 +39,7 @@ export const ProfileContainer = ({
     <Box
       backgroundColor="greys.1"
       p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="2rem"
+      borderRadius="10px"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
@@ -57,7 +57,7 @@ export const ProfileContainer = ({
         Your profile
       </Heading>
       {address && (
-        <Box display="flex" alignItems="center" maxWidth="300px" gridGap="1.5rem" my="1rem">
+        <Box display="flex" alignItems="center" gridGap="1.5rem" my="1rem">
           <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
           <Account>{address}</Account>
         </Box>
@@ -69,7 +69,7 @@ export const ProfileContainer = ({
         <Box
           backgroundColor="greys.0"
           p="1.5rem"
-          borderRadius="1rem"
+          borderRadius="10px"
           display="flex"
           flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
           justifyContent="space-between"
@@ -92,7 +92,7 @@ export const ProfileContainer = ({
               </Text>
               {telegramUsername && (
                 <Text fontSize="0.875rem" color="greys.4">
-                  @{telegramUsername}
+                  {telegramUsername}
                 </Text>
               )}
             </Box>

@@ -63,7 +63,7 @@
     "react-hook-form": "^7.32.1",
     "react-player": "^2.10.1",
     "react-query": "^3.39.1",
-    "react-router-dom": "6.3.0",
+    "react-router-dom": "6.9.0",
     "react-scripts": "5.0.1",
     "react-share": "^4.4.1",
     "styled-components": "^5.3.5",

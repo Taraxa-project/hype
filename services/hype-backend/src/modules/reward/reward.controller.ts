@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpStatus,
-  InternalServerErrorException,
   Param,
   Patch,
   Post,
@@ -17,17 +16,22 @@ import {
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { WalletGuard } from '../auth/wallet.guard';
-import { RewardDto } from './reward.dto';
-import { HypeReward } from './reward.entity';
+import { HttpService } from '@nestjs/axios';
+import * as dotenv from 'dotenv';
+import { WalletGuard } from '../guards';
 import { ClaimResult, RewardService } from './reward.service';
-import { RewardStateDto } from './rewardState.dto';
+import { RewardDto, RewardStateDto, ClaimDto } from './dto';
+import { HypeClaim } from '../../entities';
+dotenv.config();
+
 @ApiTags('rewards')
 @Controller('rewards')
 export class RewardController {
-  constructor(private readonly rewardService: RewardService) {}
+  constructor(
+    private readonly rewardService: RewardService,
+    private httpService: HttpService,
+  ) {}
 
   @Get()
   @UseGuards(WalletGuard)
@@ -47,7 +51,7 @@ export class RewardController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
-    description: 'Returns a newly inserted pool reward',
+    description: 'Returns rewards and claims based on address',
   })
   async getAllRewardsForAddress(
     @Param('address') address: string,
@@ -55,26 +59,13 @@ export class RewardController {
     return await this.rewardService.getRewardSummaryForAddress(address);
   }
 
-  @Post()
+  @Post('claim')
   @UseGuards(WalletGuard)
   @ApiBearerAuth('authorization')
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: RewardDto,
-    description: 'Returns a newly inserted pool reward',
-  })
-  @ApiUnauthorizedResponse({ description: 'You need a valid token' })
+  @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Claim not found' })
-  public async accrueReward(
-    @Body() rewardToAccrue: RewardDto,
-  ): Promise<HypeReward> {
-    try {
-      return await this.rewardService.accrueRewards(rewardToAccrue);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Something went wrong. Please try again!',
-      );
-    }
+  public async claimed(@Body() claim: ClaimDto): Promise<HypeClaim> {
+    return await this.rewardService.claim(claim);
   }
 
   @Patch(':address')
@@ -85,7 +76,7 @@ export class RewardController {
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
   public async claimRewards(
     @Param('address') address: string,
-    @Query('poolId') poolId: number,
+    @Query('poolId') poolId: string,
   ): Promise<ClaimResult> {
     return await this.rewardService.releaseRewardHash(address, poolId);
   }

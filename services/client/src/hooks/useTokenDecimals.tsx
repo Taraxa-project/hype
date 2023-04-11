@@ -12,7 +12,7 @@ export const useTokenDecimals = (pool: HypePool) => {
   });
 
   useEffect(() => {
-    if (pool?.network === networkOptions[0].value && pool?.tokenAddress !== zeroAddress) {
+    if (pool && pool.network === networkOptions[0].value && pool.tokenAddress !== zeroAddress) {
       setIsCustomToken(true);
     }
   }, [pool]);

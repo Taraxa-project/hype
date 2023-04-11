@@ -170,6 +170,15 @@ export const MenuButton = styled.button`
   background-color: transparent;
 `;
 
+export const AccountContainer = styled.div`
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: ${({ theme }) => theme.colors.greys[11]};
+  padding: 0.375rem 1.5rem;
+`;
+
 export const Account = styled.div`
   background: #f7f7f7;
   border-radius: 1.625rem;

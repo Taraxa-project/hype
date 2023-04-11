@@ -1,18 +1,19 @@
 import React from 'react';
 import Header from './components/header/Header';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Home, Redeem, AddHypePool, Profile, PoolDetails } from './pages';
+import { Home, Redeem, AddHypePool, Profile, PoolDetails, Participate } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
 import useWallet from './hooks/useWallet';
 import { useAuth, useAxiosInterceptors } from './hooks';
 import { useGetMe } from './api/auth/useGetMe';
+import ScrollToTop from './components/scrollToTop/ScrollToTop';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
   background: ${({ theme }) => theme.colors.greys[1]};
-  border-radius: 2rem;
+  border-radius: 10px;
   margin: 1.5rem auto;
   margin-top: 6.5rem;
   width: ${({ theme }) => `calc(${theme.breakpoints.lg} - 30px)`};
@@ -53,9 +54,11 @@ const Root = () => {
         onConnect={connect}
         connectionLoading={isSignatureLoading}
       />
+      <ScrollToTop />
       <StyledAppContainer>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/participate" element={<Participate />} />
           <Route path="/pool" element={<AddHypePool />} />
           <Route path="/pool/:poolId" element={<PoolDetails />} />
           <Route path="/redeem" element={<Redeem />} />

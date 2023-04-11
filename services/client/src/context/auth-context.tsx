@@ -6,7 +6,7 @@ import { useLogin } from '../api/auth/useLogin';
 import useWallet from '../hooks/useWallet';
 import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
 import { useSignMessage } from 'wagmi';
-import { LoginSignature, User } from '../models';
+import { LoginSignature, AuthUser } from '../models';
 import { RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from './modal';
 
@@ -20,7 +20,7 @@ export interface IAuthContext {
   authenticated: boolean;
   logout: () => void;
   signMessage: (args?: SignMessageArgs) => void;
-  user: User;
+  user: AuthUser;
   tokenExists: boolean;
   refetch: <TPageData>(options?: RefetchOptions & RefetchQueryFilters<TPageData>) => Promise<any>;
   isLoginLoading: boolean;

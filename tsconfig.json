@@ -22,12 +22,16 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "paths": {
-      "@hype_project/client": ["services/client/src/index.tsx"]
+      "@hype_project/client": ["services/client/src/index.tsx"],
+      "@hype_project/hype-backend": ["services/hype-backend/src/main.ts"]
     }
   },
   "references": [
     {
       "path": "services/client"
+    },
+    {
+      "path": "services/hype-backend"
     }
   ],
   "exclude": ["node_modules", "lib", "*.d.ts"]

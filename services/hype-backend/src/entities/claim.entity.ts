@@ -1,10 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
-import { IClaim } from 'src/models/IClaim';
+import { IsString, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
+import { IClaim } from '../models/IClaim';
 
-export const tableName = 'hype_claim';
-
-@Entity(tableName)
+@Entity('hype_claim')
 export class HypeClaim extends BaseEntity implements IClaim {
   constructor(claim?: Partial<HypeClaim>) {
     super();
@@ -16,8 +14,8 @@ export class HypeClaim extends BaseEntity implements IClaim {
 
   @Column({ nullable: false })
   @IsNotEmpty()
-  @IsNumber()
-  poolId: number;
+  @IsString()
+  poolId: string;
 
   @Column({ nullable: false })
   @IsNotEmpty()
@@ -43,4 +41,9 @@ export class HypeClaim extends BaseEntity implements IClaim {
   @IsNotEmpty()
   @IsString()
   hash: string;
+
+  @Column({ nullable: false })
+  @IsNotEmpty()
+  @IsNumber()
+  nonce: number;
 }
