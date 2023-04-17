@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "hardhat/console.sol";
 import "../interfaces/IEscrow.sol";
 import "../interfaces/IHypePool.sol";
 
@@ -177,7 +176,6 @@ contract DynamicEscrowUpgradeable is
         IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];
         address contractAddress = depo.tokenAddress;
         require(depo.weiAmount >= amount, "Not enough funds");
-        console.log("token address is", depo.tokenAddress);
         if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];
         } else {

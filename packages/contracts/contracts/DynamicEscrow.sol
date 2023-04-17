@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "hardhat/console.sol";
 import "./interfaces/IEscrow.sol";
 import "./interfaces/IHypePool.sol";
 
@@ -164,7 +163,6 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
         IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];
         address contractAddress = depo.tokenAddress;
         require(depo.weiAmount >= amount, "Not enough funds");
-        console.log("token address is", depo.tokenAddress);
         if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];
         } else {
