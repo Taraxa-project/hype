@@ -9,7 +9,7 @@
     "create-local": "graph create --node http://localhost:8020/ taraxa/hype-pool",
     "remove-local": "graph remove --node http://localhost:8020/ taraxa/hype-pool",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs https://ipfs.hype.taraxa.io taraxa/hype-pool",
-    "deploy-dev-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5002 taraxa/hype-pool",
+    "deploy-dev-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 taraxa/hype-pool",
     "test": "graph test"
   },
   "dependencies": {

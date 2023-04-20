@@ -39,17 +39,10 @@ abstract contract ERC20 is ERC20Basic {
 contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
     using Address for address payable;
 
-    constructor(address rewarder, address trustedAccountAddress) {
-        _rewarder = rewarder;
+    constructor(address trustedAccountAddress) {
         _trustedAccountAddress = trustedAccountAddress;
     }
 
-    modifier onlyRewarder() {
-        require(msg.sender == _rewarder, "OnlyRewarder");
-        _;
-    }
-
-    address private _rewarder;
     address private _trustedAccountAddress;
 
     /* @dev Deposits always need to be tied to a pool. For now there is no check if
@@ -61,11 +54,6 @@ contract DynamicEscrow is IEscrow, Ownable, Pausable, ReentrancyGuard {
      * @dev Log of claimed hashes. No hash should be claimable twice
      */
     mapping(bytes32 => uint256) private _claimed;
-
-    /* @dev Reads the configured rewarder address. */
-    function getRewarder() public view returns (address) {
-        return _rewarder;
-    }
 
     /* @dev Reads the configured trusted wallet address. */
     function getTrustedAccount() public view returns (address) {

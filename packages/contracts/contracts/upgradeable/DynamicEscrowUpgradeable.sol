@@ -48,21 +48,14 @@ contract DynamicEscrowUpgradeable is
 
     function __DynamicEscrow_init_unchained() internal onlyInitializing {}
 
-    function initialize(address rewarder, address trustedAccountAddress) public initializer {
+    function initialize(address trustedAccountAddress) public initializer {
         __DynamicEscrow_init();
         __ReentrancyGuard_init();
-        _rewarder = rewarder;
         _trustedAccountAddress = trustedAccountAddress;
     }
 
     using AddressUpgradeable for address payable;
 
-    modifier onlyRewarder() {
-        require(msg.sender == _rewarder, "OnlyRewarder");
-        _;
-    }
-
-    address private _rewarder;
     address private _trustedAccountAddress;
 
     /* @dev Deposits always need to be tied to a pool. For now there is no check if
@@ -74,11 +67,6 @@ contract DynamicEscrowUpgradeable is
      * @dev Log of claimed hashes. No hash should be claimable twice
      */
     mapping(bytes32 => uint256) private _claimed;
-
-    /* @dev Reads the configured rewarder address. */
-    function getRewarder() public view returns (address) {
-        return _rewarder;
-    }
 
     /* @dev Reads the configured trusted wallet address. */
     function getTrustedAccount() public view returns (address) {
