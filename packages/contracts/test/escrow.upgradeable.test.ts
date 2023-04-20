@@ -79,7 +79,7 @@ describe("DynamicEscrowUpgradeable", function () {
       console.log("new wallet address is: ", trustedWallet.address);
       console.log("owner address is: ", owner.address);
 
-      dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, [rewarder.address, trustedWallet.address]);
+      dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, [trustedWallet.address]);
       const escrowDeployed = await dynamicEscrow.deployed();
 
       initialAddress = dynamicEscrow.address;
@@ -90,10 +90,6 @@ describe("DynamicEscrowUpgradeable", function () {
       console.log("the contract owner should be the owner signer's address");
       const cOwner = await dynamicEscrow.owner();
       expect(cOwner).to.equal(owner.address);
-
-      console.log("The rewarder address should be the provided account");
-      const rewarderFromContract = await dynamicEscrow.getRewarder();
-      expect(rewarderFromContract).to.equal(rewarder.address);
 
       console.log("The trusted address should be the provided account");
       const trustedAccountFromContract = await dynamicEscrow.getTrustedAccount();
