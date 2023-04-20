@@ -11,7 +11,7 @@ dataSources:
     name: HypePool
     network: mainnet
     source:
-      address: '0x46e5cF315f17846933d7B2C7Fd09e369215574E3'
+      address: '0x721A716b5eb9eF1A09Ca785215F74D460987052A'
       abi: HypePool
     mapping:
       kind: ethereum/events
@@ -21,7 +21,7 @@ dataSources:
         - HypePool
       abis:
         - name: HypePool
-          file: ./abis/HypePool/HypePool.json
+          file: ./abis/HypePool.json
       eventHandlers:
         - event: PoolActivated(bytes32,address,uint256,uint256)
           handler: handlePoolActivated
@@ -38,7 +38,7 @@ dataSources:
     name: DynamicEscrow
     network: mainnet
     source:
-      address: '0xaFa303eF0bd951839759E5A69e4628169fe541Ab'
+      address: '0xC875Ab7E3a6e8906C3f7C20fB74106061772EC9b'
       abi: DynamicEscrow
     mapping:
       kind: ethereum/events
@@ -48,7 +48,7 @@ dataSources:
         - DynamicEscrow
       abis:
         - name: DynamicEscrow
-          file: ./abis/DynamicEscrow/DynamicEscrow.json
+          file: ./abis/DynamicEscrow.json
       eventHandlers:
         - event: Claimed(indexed address,uint256,bytes32)
           handler: handleClaimed
