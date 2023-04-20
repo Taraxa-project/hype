@@ -4,6 +4,9 @@ orbs:
   docker: circleci/docker@1.7.0
 
 parameters:
+  run-contracts-package-workflow:
+    type: boolean
+    default: false
   run-client-service-workflow:
     type: boolean
     default: false
@@ -103,6 +106,7 @@ workflows:
     when:
       or:
         - << pipeline.parameters.run-client-service-workflow >>
+        - << pipeline.parameters.run-contracts-package-workflow >>
     jobs:
       - build-client:
           filters:
@@ -116,6 +120,7 @@ workflows:
     when:
       or:
         - << pipeline.parameters.run-backend-service-workflow >>
+        - << pipeline.parameters.run-contracts-package-workflow >>
     jobs:
       - build-backend:
           filters:

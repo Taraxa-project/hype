@@ -8,6 +8,7 @@ workflows:
       - path-filtering/filter:
           name: check-updated-files
           mapping: |
+            packages/contracts/.* run-contracts-package-workflow true
             services/client/.* run-client-service-workflow true
             services/hype-backend/.* run-backend-service-workflow true
           base-revision: << pipeline.git.branch >>
