@@ -28,6 +28,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   const hypepool = new HypePool(id);
   hypepool.creator = event.params.creator;
   hypepool.uri = event.params.uri;
+  hypepool.remainingFunds = BigInt.zero();
   hypepool.active = false;
   hypepool.save();
 }
