@@ -90,15 +90,14 @@ export const useProfileEffects = () => {
     }
   };
 
-  const disconnect = async (user: TelegramUser) => {
-    const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
+  const disconnect = async () => {
     dispatchModals({
       type: ModalsActionsEnum.SHOW_DISCONNECT_TELEGRAM,
       payload: {
         open: true,
         title: 'Disconnect account',
         text: 'Are you sure you want to disconnect this account?',
-        username: usernameTemp,
+        username: telegramProfile.username,
         onDisconnect,
       },
     });
