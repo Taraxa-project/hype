@@ -5,5 +5,5 @@ export default registerAs('auth', () => ({
   gsSecret: process.env.GS_SECRET,
   subGraphEndpoint:
     process.env.SUBGRAPH_HOST ||
-    'https://indexer.qa.hype.taraxa.io/subgraphs/name/taraxa/hype-pool',
+    'https://indexer.qa.gethyped.app/subgraphs/name/taraxa/hype-pool',
 }));
