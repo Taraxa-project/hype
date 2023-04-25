@@ -140,7 +140,7 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
             disabled={!authenticated}
             maxLength={280}
             rows={12}
-            placeholder="Taraxa's Hype app just launched! Come check it out at: https://hype.taraxa.io. 
+            placeholder="Taraxa's Hype app just launched! Come check it out at: https://gethyped.app. 
                 &#13;&#10;  
                 Drop by if you want to, 
                 &#13;&#10;  

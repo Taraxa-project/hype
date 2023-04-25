@@ -1,12 +1,12 @@
 #!/bin/sh
 
-export API_HOST=${API_HOST:="https://api.qa.hype.taraxa.io"}
-export WALLET_HOST=${WALLET_HOST:="https://wallet.qa.hype.taraxa.io"}
-export GRAPHQL_HOST=${GRAPHQL_HOST:="https://indexer.qa.hype.taraxa.io/subgraphs/name/taraxa/hype-pool"}
+export API_HOST=${API_HOST:="https://api.qa.gethyped.app"}
+export WALLET_HOST=${WALLET_HOST:="https://wallet.qa.gethyped.app"}
+export GRAPHQL_HOST=${GRAPHQL_HOST:="https://indexer.qa.gethyped.app/subgraphs/name/taraxa/hype-pool"}
 export TELEGRAM_BOT_NAME=${TELEGRAM_BOT_NAME:="HypeAppBot"}
 export HYPE_ADDRESS=${HYPE_ADDRESS:="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"}
 export ESCROW_ADDRESS=${ESCROW_ADDRESS:="0x5FbDB2315678afecb367f032d93F642f64180aa3"}
-export IPFS_BASE_URL=${IPFS_BASE_URL:="https://gateway.qa.hype.taraxa.io/ipfs/"}
+export IPFS_BASE_URL=${IPFS_BASE_URL:="https://gateway.qa.gethyped.app/ipfs/"}
 
 
 export STATIC_FOLDER="/usr/share/nginx/html"

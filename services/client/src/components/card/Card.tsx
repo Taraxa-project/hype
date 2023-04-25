@@ -1,6 +1,5 @@
-import React from 'react';
 import { HypePool } from '../../models';
-import { getPoolDuration, monthDiff, shortenText, transformFromWei } from '../../utils';
+import { getPoolDuration, shortenText, transformFromWei } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,

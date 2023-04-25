@@ -1,7 +1,6 @@
-import React from 'react';
-import { useProfileEffects } from './Profile.effects';
 import Box from '../../components/styles/Box';
 import { ProfileContainer, RewardsContainer, CardContainer } from '../../containers/profile';
+import { useProfileEffects } from './Profile.effects';
 
 export const Profile = () => {
   const {

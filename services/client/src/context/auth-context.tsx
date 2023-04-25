@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetUser } from '../api/auth/useGetUser';
+import { useGetAuthMessage } from '../api/auth/useGetAuthMessage';
 import { useLogin } from '../api/auth/useLogin';
 import useWallet from '../hooks/useWallet';
 import { getAuthenticationToken, NotificationType, removeAuthenticationToken } from '../utils';
 import { useSignMessage } from 'wagmi';
-import { LoginSignature, AuthUser } from '../models';
-import { RefetchOptions, RefetchQueryFilters } from 'react-query';
+import { LoginSignature } from '../models';
 import { ModalsActionsEnum, useModalsDispatch } from './modal';
 
 type SignMessageArgs = {
@@ -20,9 +19,7 @@ export interface IAuthContext {
   authenticated: boolean;
   logout: () => void;
   signMessage: (args?: SignMessageArgs) => void;
-  user: AuthUser;
   tokenExists: boolean;
-  refetch: <TPageData>(options?: RefetchOptions & RefetchQueryFilters<TPageData>) => Promise<any>;
   isLoginLoading: boolean;
   isLoginSuccess: boolean;
   isSignatureLoading: boolean;
@@ -33,9 +30,7 @@ export const AuthContext = createContext<IAuthContext>({
   authenticated: false,
   logout: () => {},
   signMessage: () => {},
-  user: null,
   tokenExists: false,
-  refetch: () => new Promise(null),
   isLoginLoading: false,
   isLoginSuccess: false,
   isSignatureLoading: false,
@@ -43,7 +38,7 @@ export const AuthContext = createContext<IAuthContext>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { account, connector, isConnected, disconnect, isDisconnected } = useWallet();
-  const { data: user, refetch } = useGetUser(account);
+  const { data: authMessage, refetch: refetchAuthMessage } = useGetAuthMessage(account);
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [isSignatureLoading, setIsSignatureLoading] = useState<boolean>(false);
@@ -100,15 +95,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isDisconnected, isConnected]);
 
   useEffect(() => {
-    if (user && connector) {
+    if (authMessage && connector) {
       setIsSignatureLoading(true);
-      signMessage({ message: `${user.nonce}` });
+      signMessage({ message: authMessage.message });
     }
-  }, [user, connector]);
+  }, [authMessage, connector]);
 
   useEffect(() => {
     if (account && !tokenExists) {
-      refetch();
+      refetchAuthMessage();
     }
   }, [account, tokenExists]);
 
@@ -123,9 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     authenticated,
     logout,
     signMessage,
-    user,
     tokenExists,
-    refetch,
     isLoginLoading,
     isLoginSuccess,
     isSignatureLoading,

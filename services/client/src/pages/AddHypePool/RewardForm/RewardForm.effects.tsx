@@ -16,12 +16,6 @@ export interface HypePoolRewardForm
   tokenAddress: string;
   tokenName: string;
   tokenDecimals: number;
-
-  // Some examples of custom ERC20 Tokens:
-  // SHIBA INU: 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE
-  // FoxCoin: 0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d
-  // ApeCoin: 0x4d224452801ACEd8B2F0aebE155379bb5D594381
-  // ENS: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72
 }
 
 export const useRewardFormEffects = (
@@ -150,17 +144,16 @@ export const useRewardFormEffects = (
     }
   };
 
-  const handleTokenAddressInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue('tokenName', '');
-    const tokenAddress = event.target.value?.trim();
-    if (tokenAddress && tokenAddress.length === 42) {
-      setTokenAddress(tokenAddress as AddressType);
-    }
-  };
-
   const debouncedResults = useMemo(() => {
+    const handleTokenAddressInput = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue('tokenName', '');
+      const tokenAddress = event.target.value?.trim();
+      if (tokenAddress && tokenAddress.length === 42) {
+        setTokenAddress(tokenAddress as AddressType);
+      }
+    };
     return debounce(handleTokenAddressInput, 300);
-  }, []);
+  }, [setValue]);
 
   useEffect(() => {
     return () => {

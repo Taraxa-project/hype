@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { BigNumber } from 'ethers';
 import { FormColumn, FormInput } from '../AddHypePool.styled';
 import Text from '../../../components/styles/Text';
 import TitleText from '../../../components/titletext/TitleText';

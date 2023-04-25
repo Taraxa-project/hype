@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from './components/header/Header';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home, Redeem, AddHypePool, Profile, PoolDetails, Participate } from './pages';

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
@@ -10,7 +9,6 @@ import Heading from '../../components/styles/Heading';
 import { HypeThemeType } from '../../theme';
 import { TelegramUser } from '../../models';
 import Button from '../../components/button/Button';
-import { ConnectWalletBtn } from '../../components/connect-wallet-btn/ConnectWalletBtn';
 import { TelegramLogo } from '../../assets/icons/Telegram';
 import { TelegramBotName } from '../../constants';
 
@@ -65,56 +63,52 @@ export const ProfileContainer = ({
       <Text color="greys.14" fontSize="0.875rem" fontWeight="600">
         Connected Apps:
       </Text>
-      {address ? (
-        <Box
-          backgroundColor="greys.0"
-          p="1.5rem"
-          borderRadius="10px"
-          display="flex"
-          flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
-          justifyContent="space-between"
-          alignItems="center"
-          gridGap="1.1rem"
-          mt="0.75rem"
-        >
-          <Box display="flex" flexDirection="row">
-            <TelegramLogo width="90" height="54.75" />
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-evenly"
-              alignItems="center"
-              marginLeft="1rem"
-              width="100%"
-            >
-              <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
-                Telegram:
+      <Box
+        backgroundColor="greys.0"
+        p="1.5rem"
+        borderRadius="10px"
+        display="flex"
+        flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
+        justifyContent="space-between"
+        alignItems="center"
+        gridGap="1.1rem"
+        mt="0.75rem"
+      >
+        <Box display="flex" flexDirection="row">
+          <TelegramLogo width="90" height="54.75" />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-evenly"
+            alignItems="center"
+            marginLeft="1rem"
+            width="100%"
+          >
+            <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+              Telegram:
+            </Text>
+            {telegramUsername && (
+              <Text fontSize="0.875rem" color="greys.4">
+                {telegramUsername}
               </Text>
-              {telegramUsername && (
-                <Text fontSize="0.875rem" color="greys.4">
-                  {telegramUsername}
-                </Text>
-              )}
-            </Box>
+            )}
           </Box>
-          {telegramUsername ? (
-            <Button variant="secondary" onClick={disconnect}>
-              Disconnect this account
-            </Button>
-          ) : (
-            <TelegramLoginButton
-              botName={TelegramBotName}
-              cornerRadius={20}
-              onAuthCallback={connect}
-              buttonSize={TelegramLoginButtonSize.Medium}
-              usePic
-              lang="EN"
-            />
-          )}
         </Box>
-      ) : (
-        <ConnectWalletBtn size="full-width" />
-      )}
+        {telegramUsername ? (
+          <Button variant="secondary" onClick={disconnect}>
+            Disconnect this account
+          </Button>
+        ) : (
+          <TelegramLoginButton
+            botName={TelegramBotName}
+            cornerRadius={20}
+            onAuthCallback={connect}
+            buttonSize={TelegramLoginButtonSize.Medium}
+            usePic
+            lang="EN"
+          />
+        )}
+      </Box>
     </Box>
   );
 };
