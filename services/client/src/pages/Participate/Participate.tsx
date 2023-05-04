@@ -14,10 +14,10 @@ export const Participate = () => {
     console.log('List of Indexed Telegram Groups');
   };
   const onSubmitTelegram = () => {
-    console.log('Submit a New Telegram Group');
+    window.open("https://forms.gle/fuSNPsuVaUwaB8wbA", "_blank");
   };
   const onHypeAnalytics = () => {
-    console.log('Hype`s Analytics Pipeline');
+    window.open("https://medium.com/taraxa-project/taraxa-echo-analytics-pipeline-walkthrough-e54d0531d1ab", "_blank");
   };
   return (
     <ParticipateContainer>
