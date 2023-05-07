@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export const StyledFooter = styled.footer`
   width: 100%;
-  padding: 0.3rem;
+  padding: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.black};
   color: ${({ theme }) => theme.colors.white};
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   width: 100%;
   box-sizing: border-box;
 `;

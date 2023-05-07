@@ -25,6 +25,7 @@ import {
 } from './Header.styled';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import Text from '../styles/Text';
+import { LogoText } from '../../pages/Home/Home.styled';
 
 export interface HeaderProps {
   headerElements?: HeaderLink[];
@@ -88,6 +89,9 @@ const Header = React.memo(
               <Link to="/" style={{ textDecoration: 'none' }}>
                 <Logo>
                   <Image src={Megaphone} alt="Megaphone" width="60px" />
+                  <Box display={{ _: 'none', xs: 'flex' }}>
+                    <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
+                  </Box>
                 </Logo>
               </Link>
             </div>

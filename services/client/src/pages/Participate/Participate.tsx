@@ -72,8 +72,8 @@ export const Participate = () => {
             cycle.
           </Text>
           <ButtonsContainer>
-            <Button onClick={onlistTelegram}>📋 List of Indexed Telegram Groups</Button>
-            <Button onClick={onSubmitTelegram}>⬆ Submit a New Telegram Group</Button>
+            <Button variant='secondary' onClick={onlistTelegram}>📋 List of Indexed Telegram Groups</Button>
+            <Button variant='secondary' onClick={onSubmitTelegram}>⬆ Submit a New Telegram Group</Button>
           </ButtonsContainer>
         </Box>
         <Box display="flex" flexDirection="column">
@@ -92,7 +92,7 @@ export const Participate = () => {
             analytics pipeline.
           </Text>
           <ButtonsContainer>
-            <Button onClick={onHypeAnalytics}>🔢 Hype`s Analytics Pipeline</Button>
+            <Button variant='secondary' onClick={onHypeAnalytics}>🔢 Hype`s Analytics Pipeline</Button>
           </ButtonsContainer>
         </Box>
       </Box>
