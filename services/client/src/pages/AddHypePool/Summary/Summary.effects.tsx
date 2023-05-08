@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
@@ -72,7 +72,10 @@ export const useSummaryEffects = (
 
   useEffect(() => {
     if (rewards.tokenDecimals) {
-      const amount = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
+      const amount = ethers.utils.parseUnits(
+        rewards.cap.toString().replace(',', '.'),
+        rewards.tokenDecimals,
+      );
       setAmount(amount);
     }
   }, [rewards]);

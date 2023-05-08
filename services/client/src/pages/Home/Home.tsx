@@ -88,7 +88,7 @@ export const Home = () => {
         <CardContainer>
           {hypePools.map(
             (data: HypePool, i: number) =>
-              data && <Card key={`${data.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
+              data && <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
           )}
         </CardContainer>
       )}
