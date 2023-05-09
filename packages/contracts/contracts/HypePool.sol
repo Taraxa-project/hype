@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import '@openzeppelin/contracts/security/Pausable.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/access/AccessControl.sol';
 
-import "./interfaces/IHypePool.sol";
+import './interfaces/IHypePool.sol';
 
-import "./interfaces/IEscrow.sol";
+import './interfaces/IEscrow.sol';
 
 contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
-    bytes32 public constant ACTIVATOR_ROLE = keccak256("ACTIVATOR_ROLE");
-    address private _activator;
+    bytes32 public immutable ACTIVATOR_ROLE = keccak256('ACTIVATOR_ROLE');
+    address private immutable _activator;
     address _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
@@ -21,6 +21,14 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
     bytes32 private _latestUuid;
 
     constructor(address escrowContractAddress, address activator) {
+        require(
+            escrowContractAddress != address(0),
+            'Escrow contract address cannot be zero address'
+        );
+        require(
+            activator != address(0),
+            'Activator address cannot be zero address'
+        );
         _escrowContractAddress = escrowContractAddress;
         _setupRole(ACTIVATOR_ROLE, activator);
         _activator = activator;
@@ -44,7 +52,13 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
         IHypePool.Details memory details,
         IHypePool.Rewards memory rewards
     ) internal virtual {
-        _pools[uuid] = IHypePool.HypePool(uuid, msg.sender, false, details, rewards);
+        _pools[uuid] = IHypePool.HypePool(
+            uuid,
+            msg.sender,
+            false,
+            details,
+            rewards
+        );
         _hashes[uuid] = true;
         _latestUuid = uuid;
 
@@ -53,11 +67,23 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
         _emitPoolRewards(uuid, rewards);
     }
 
-    function _emitPoolDetails(bytes32 uuid, IHypePool.Details memory details) internal virtual {
-        emit PoolDetailsCreated(uuid, details.title, details.projectName, details.tokenName, details.word);
+    function _emitPoolDetails(
+        bytes32 uuid,
+        IHypePool.Details memory details
+    ) internal virtual {
+        emit PoolDetailsCreated(
+            uuid,
+            details.title,
+            details.projectName,
+            details.tokenName,
+            details.word
+        );
     }
 
-    function _emitPoolRewards(bytes32 uuid, IHypePool.Rewards memory rewards) internal virtual {
+    function _emitPoolRewards(
+        bytes32 uuid,
+        IHypePool.Rewards memory rewards
+    ) internal virtual {
         emit PoolRewardsCreated(
             uuid,
             rewards.network,
@@ -70,7 +96,10 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
         );
     }
 
-    function _setPoolURI(bytes32 uuid, string memory _tokenURI) internal virtual {
+    function _setPoolURI(
+        bytes32 uuid,
+        string memory _tokenURI
+    ) internal virtual {
         _tokenURIs[uuid] = _tokenURI;
         emit PoolUriSet(uuid, _tokenURI);
     }
@@ -85,15 +114,15 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
         IHypePool.Details memory details,
         IHypePool.Rewards memory rewards
     ) external override whenNotPaused returns (IHypePool.HypePool memory) {
-        require(bytes(uri).length > 0, "Missing metadata URI");
-        require(rewards.cap > 0, "Invalid pool cap");
-        require(rewards.duration > 0, "Duration must be at least one day");
-        require(rewards.startDate == 0, "Start date must be zero");
-        require(rewards.endDate == 0, "End date must be zero");
-        require(rewards.impressionReward > 0, "Invalid impression hype reward");
+        require(bytes(uri).length > 0, 'Missing metadata URI');
+        require(rewards.cap > 0, 'Invalid pool cap');
+        require(rewards.duration > 0, 'Duration must be at least one day');
+        require(rewards.startDate == 0, 'Start date must be zero');
+        require(rewards.endDate == 0, 'End date must be zero');
+        require(rewards.impressionReward > 0, 'Invalid impression hype reward');
 
         bytes32 uuid = _generateHashId();
-        require(!_hashes[uuid], "Uuid already exists");
+        require(!_hashes[uuid], 'Uuid already exists');
 
         _setPool(uuid, uri, details, rewards);
         _setPoolURI(uuid, uri);
@@ -108,24 +137,35 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
     function activatePool(bytes32 uuid) external whenNotPaused {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_hashes[uuid], "Pool does not exist");
-        require(_pool.active == false, "Pool is already active");
+        require(_hashes[uuid], 'Pool does not exist');
+        require(_pool.active == false, 'Pool is already active');
 
         bool hasActivatorRole = hasRole(ACTIVATOR_ROLE, msg.sender);
         if (!hasActivatorRole) {
             IEscrow escrowContract = IEscrow(_escrowContractAddress);
-            IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, uuid);
-            require(_deposit.weiAmount == _pool.rewards.cap, "Deposited amount does not match pool cap");
+            IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(
+                msg.sender,
+                uuid
+            );
+            require(
+                _deposit.weiAmount == _pool.rewards.cap,
+                'Deposited amount does not match pool cap'
+            );
             require(
                 _deposit.tokenAddress == _pool.rewards.tokenAddress,
-                "Deposited token address does not match pool token address"
+                'Deposited token address does not match pool token address'
             );
         }
         _pool.active = true;
         _pool.rewards.startDate = block.timestamp;
         _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
         _pools[uuid] = _pool;
-        emit PoolActivated(uuid, msg.sender, _pool.rewards.startDate, _pool.rewards.endDate);
+        emit PoolActivated(
+            uuid,
+            msg.sender,
+            _pool.rewards.startDate,
+            _pool.rewards.endDate
+        );
     }
 
     /**
@@ -135,7 +175,7 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
     function deactivatePool(bytes32 uuid) external whenNotPaused onlyOwner {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_pool.active == true, "Pool is already inactive");
+        require(_pool.active == true, 'Pool is already inactive');
         _pool.active = false;
         _pool.rewards.endDate = block.timestamp;
         _pools[uuid] = _pool;
@@ -157,7 +197,9 @@ contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
         uint256 blockNumber = block.number;
         uint256 timestamp = block.timestamp;
         uint256 nonce = 0;
-        bytes32 uuid = keccak256(abi.encodePacked(blockNumber, timestamp, nonce));
+        bytes32 uuid = keccak256(
+            abi.encodePacked(blockNumber, timestamp, nonce)
+        );
         while (_hashExists(uuid)) {
             nonce++;
             uuid = keccak256(abi.encodePacked(blockNumber, timestamp, nonce));
