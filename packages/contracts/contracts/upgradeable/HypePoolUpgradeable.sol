@@ -3,11 +3,21 @@ pragma solidity 0.8.18;
 
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "../interfaces/IHypePool.sol";
 import "../interfaces/IEscrow.sol";
 
-contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, OwnableUpgradeable {
+contract HypePoolUpgradeable is
+    IHypePool,
+    Initializable,
+    PausableUpgradeable,
+    OwnableUpgradeable,
+    AccessControlUpgradeable
+{
+    bytes32 public constant ACTIVATOR_ROLE = keccak256("ACTIVATOR_ROLE");
+    address private _activator;
     address _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
@@ -21,10 +31,12 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         _disableInitializers();
     }
 
-    function initialize(address escrowContractAddress) public initializer {
+    function initialize(address escrowContractAddress, address activator) public initializer {
         __Pausable_init();
         _escrowContractAddress = escrowContractAddress;
         __Ownable_init();
+        _setupRole(ACTIVATOR_ROLE, activator);
+        _activator = activator;
     }
 
     function getCurrentIndex() external view returns (bytes32) {
@@ -111,13 +123,22 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_hashes[hash], "Pool does not exist");
         require(_pool.active == false, "Pool is already active");
-        IEscrow escrowContract = IEscrow(_escrowContractAddress);
-        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, hash);
-        require(_deposit.weiAmount == _pool.rewards.cap, "Deposited amount does not match pool cap");
-        require(
-            _deposit.tokenAddress == _pool.rewards.tokenAddress,
-            "Deposited token address does not match pool token address"
-        );
+
+        bool hasActivatorRole = hasRole(ACTIVATOR_ROLE, msg.sender);
+
+        if (!hasActivatorRole) {
+            IEscrow escrowContract = IEscrow(_escrowContractAddress);
+            IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, hash);
+            require(
+                !hasActivatorRole && _deposit.weiAmount == _pool.rewards.cap,
+                "Deposited amount does not match pool cap"
+            );
+            require(
+                _deposit.tokenAddress == _pool.rewards.tokenAddress,
+                "Deposited token address does not match pool token address"
+            );
+        }
+
         _pool.active = true;
         _pool.rewards.startDate = block.timestamp;
         _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;

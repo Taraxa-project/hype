@@ -3,12 +3,15 @@ pragma solidity 0.8.18;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 import "./interfaces/IHypePool.sol";
 
 import "./interfaces/IEscrow.sol";
 
-contract HypePool is IHypePool, Pausable, Ownable {
+contract HypePool is IHypePool, Pausable, Ownable, AccessControl {
+    bytes32 public constant ACTIVATOR_ROLE = keccak256("ACTIVATOR_ROLE");
+    address private _activator;
     address _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
@@ -17,8 +20,10 @@ contract HypePool is IHypePool, Pausable, Ownable {
     mapping(bytes32 => bool) private _hashes;
     bytes32 private _latestUuid;
 
-    constructor(address escrowContractAddress) {
+    constructor(address escrowContractAddress, address activator) {
         _escrowContractAddress = escrowContractAddress;
+        _setupRole(ACTIVATOR_ROLE, activator);
+        _activator = activator;
     }
 
     function getCurrentIndex() external view returns (bytes32) {
@@ -105,13 +110,17 @@ contract HypePool is IHypePool, Pausable, Ownable {
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_hashes[uuid], "Pool does not exist");
         require(_pool.active == false, "Pool is already active");
-        IEscrow escrowContract = IEscrow(_escrowContractAddress);
-        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, uuid);
-        require(_deposit.weiAmount == _pool.rewards.cap, "Deposited amount does not match pool cap");
-        require(
-            _deposit.tokenAddress == _pool.rewards.tokenAddress,
-            "Deposited token address does not match pool token address"
-        );
+
+        bool hasActivatorRole = hasRole(ACTIVATOR_ROLE, msg.sender);
+        if (!hasActivatorRole) {
+            IEscrow escrowContract = IEscrow(_escrowContractAddress);
+            IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, uuid);
+            require(_deposit.weiAmount == _pool.rewards.cap, "Deposited amount does not match pool cap");
+            require(
+                _deposit.tokenAddress == _pool.rewards.tokenAddress,
+                "Deposited token address does not match pool token address"
+            );
+        }
         _pool.active = true;
         _pool.rewards.startDate = block.timestamp;
         _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
