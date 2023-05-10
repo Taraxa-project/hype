@@ -26,6 +26,6 @@ export class UserDTO implements IHypeUser {
 
   @ApiProperty()
   @IsOptional()
-  @IsNumber()
-  telegramId: number;
+  @IsString()
+  telegramId: string;
 }

@@ -21,7 +21,7 @@ export class UsersService {
     });
   }
 
-  async getUserByTelegramId(telegramId: number): Promise<HypeUser> {
+  async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
     return await this.repository.findOne({
       where: {
         telegramId,
