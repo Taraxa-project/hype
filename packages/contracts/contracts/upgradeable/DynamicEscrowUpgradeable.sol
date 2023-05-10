@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "../interfaces/IEscrow.sol";
-import "../interfaces/IHypePool.sol";
+import "../interfaces/IHypePoolBase.sol";
 
 /**
  * @title ERC20Basic

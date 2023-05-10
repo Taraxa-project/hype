@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
-interface IHypePool {
+interface IHypePoolBase {
     struct Details {
         string title;
         string projectName;
@@ -26,16 +26,6 @@ interface IHypePool {
         Details details;
         Rewards rewards;
     }
-
-    function createPool(
-        string memory uri,
-        Details memory details,
-        Rewards memory rewards
-    ) external returns (HypePool memory);
-
-    function activatePool(bytes32 poolId) external;
-
-    function deactivatePool(bytes32 poolId) external;
 
     function getPool(bytes32 poolId) external view returns (HypePool memory);
 

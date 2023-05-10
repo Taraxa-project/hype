@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "./interfaces/IEscrow.sol";
-import "./interfaces/IHypePool.sol";
+import "./interfaces/IHypePoolBase.sol";
 
 /**
  * @title ERC20Basic

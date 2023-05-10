@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IHypePool",
-  "sourceName": "contracts/interfaces/IHypePool.sol",
+  "contractName": "IHypePoolBase",
+  "sourceName": "contracts/interfaces/IHypePoolBase.sol",
   "abi": [
     {
       "anonymous": false,
@@ -190,206 +190,6 @@
       "type": "event"
     },
     {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "activatePool",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "uri",
-          "type": "string"
-        },
-        {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "title",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "projectName",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "tokenName",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "word",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct IHypePool.Details",
-          "name": "details",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "network",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "tokenAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "impressionReward",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "cap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "startDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "endDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "duration",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct IHypePool.Rewards",
-          "name": "rewards",
-          "type": "tuple"
-        }
-      ],
-      "name": "createPool",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "bytes32",
-              "name": "id",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "address",
-              "name": "creator",
-              "type": "address"
-            },
-            {
-              "internalType": "bool",
-              "name": "active",
-              "type": "bool"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "title",
-                  "type": "string"
-                },
-                {
-                  "internalType": "string",
-                  "name": "projectName",
-                  "type": "string"
-                },
-                {
-                  "internalType": "string",
-                  "name": "tokenName",
-                  "type": "string"
-                },
-                {
-                  "internalType": "string",
-                  "name": "word",
-                  "type": "string"
-                }
-              ],
-              "internalType": "struct IHypePool.Details",
-              "name": "details",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint256",
-                  "name": "network",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "address",
-                  "name": "tokenAddress",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "impressionReward",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "cap",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "startDate",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "endDate",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "duration",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct IHypePool.Rewards",
-              "name": "rewards",
-              "type": "tuple"
-            }
-          ],
-          "internalType": "struct IHypePool.HypePool",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "deactivatePool",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "getCurrentIndex",
       "outputs": [
@@ -452,7 +252,7 @@
                   "type": "string"
                 }
               ],
-              "internalType": "struct IHypePool.Details",
+              "internalType": "struct IHypePoolBase.Details",
               "name": "details",
               "type": "tuple"
             },
@@ -494,12 +294,12 @@
                   "type": "uint256"
                 }
               ],
-              "internalType": "struct IHypePool.Rewards",
+              "internalType": "struct IHypePoolBase.Rewards",
               "name": "rewards",
               "type": "tuple"
             }
           ],
-          "internalType": "struct IHypePool.HypePool",
+          "internalType": "struct IHypePoolBase.HypePool",
           "name": "",
           "type": "tuple"
         }
