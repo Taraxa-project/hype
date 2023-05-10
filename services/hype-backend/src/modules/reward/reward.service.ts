@@ -240,9 +240,6 @@ export class RewardService {
         const user = await this.userService.getUserByTelegramId(
           impression.user_id,
         );
-        if (!user) {
-          return;
-        }
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
@@ -253,7 +250,8 @@ export class RewardService {
         const newReward = this.rewardRepository.create({
           amount: rewardValue?.toString(),
           tokenAddress: pool.tokenAddress,
-          rewardee: user.address,
+          rewardee: user ? user.address : null,
+          telegramId: impression.user_id,
           poolId: impression.pool_id,
         });
         const saved = await this.rewardRepository.save(newReward);

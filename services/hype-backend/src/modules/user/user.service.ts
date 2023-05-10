@@ -45,6 +45,9 @@ export class UsersService {
       auth_date: userDTO.auth_date,
       telegramId: userDTO.telegramId,
     });
+    if (userDTO.telegramId) {
+      // Update the rewards
+    }
     return await this.getUserBy({ publicAddress });
   }
 }
