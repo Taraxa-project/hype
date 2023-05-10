@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ERC20Basic",
-  "sourceName": "contracts/DynamicEscrow.sol",
+  "sourceName": "contracts/DynamicEscrowBase.sol",
   "abi": [
     {
       "inputs": [
