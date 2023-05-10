@@ -3,6 +3,8 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { HypeClaim, HypeReward, HypeUser } from './src/entities';
 import { Schema1678191755364 } from './src/migrations/1678191755364-Schema';
+import { RewardsTelegramUser1683714914155 } from './src/migrations/1683714914155-RewardsTelegramUser';
+import { UserTelegramIdUpdate1683716076672 } from './src/migrations/1683716076672-UserTelegramIdUpdate';
 dotenv.config();
 
 const getDataSourceOptions = (): DataSourceOptions => {
@@ -43,7 +45,11 @@ const DataSourceConfig = new DataSource({
   // entities: [`${__dirname}/src/entities/*.entity{.ts,.js}`],
   entities: [HypeUser, HypeReward, HypeClaim],
   // migrations: [`${__dirname}/src/migrations/*{.ts,.js}`],
-  migrations: [Schema1678191755364],
+  migrations: [
+    Schema1678191755364,
+    RewardsTelegramUser1683714914155,
+    UserTelegramIdUpdate1683716076672,
+  ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);
 

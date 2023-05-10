@@ -11,7 +11,7 @@ import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool, TelegramUser } from '../../models';
 
 interface TelegramProfile {
-  telegramId: number;
+  telegramId: string;
   address: string;
   username: string;
 }
@@ -59,7 +59,7 @@ export const useProfileEffects = () => {
   const connect = async (user: TelegramUser) => {
     const usernameTemp = user.username || `${user.first_name} ${user.last_name}`;
     setTelegramProfile({
-      telegramId: user.id,
+      telegramId: user.id?.toString(),
       address: account,
       username: usernameTemp,
     });
@@ -69,7 +69,7 @@ export const useProfileEffects = () => {
           address: account,
           username: usernameTemp,
           auth_date: user.auth_date,
-          telegramId: user.id,
+          telegramId: user.id?.toString(),
         });
       }
     } catch (err: any) {
