@@ -16,17 +16,17 @@ contract HypePool is HypePoolBase, Pausable, Ownable {
         IHypePoolBase.Details memory details,
         IHypePoolBase.Rewards memory rewards
     ) external whenNotPaused returns (IHypePoolBase.HypePool memory) {
-        return super._createPool(uri, details, rewards);
+        return _createPool(uri, details, rewards);
     }
 
     function activatePool(bytes32 uuid) external whenNotPaused {
-        return super._activatePool(uuid);
+        return _activatePool(uuid);
     }
 
     function deactivatePool(
         bytes32 uuid
     ) external whenNotPaused onlyOwner {
-        return super._deactivatePool(uuid);
+        return _deactivatePool(uuid);
     }
 
     function pause() public onlyOwner {

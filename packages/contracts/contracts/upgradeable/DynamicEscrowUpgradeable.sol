@@ -44,7 +44,7 @@ contract DynamicEscrowUpgradeable is
         uint256 amount,
         address tokenAddress
     ) public payable nonReentrant whenNotPaused {
-        super._deposit(spender, poolId, amount, tokenAddress);
+        _deposit(spender, poolId, amount, tokenAddress);
     }
 
     function claim(
@@ -61,7 +61,7 @@ contract DynamicEscrowUpgradeable is
             ECDSAUpgradeable.recover(hash, sig) == _trustedAccountAddress,
             'Claim: Invalid signature'
         );
-        super._claim(receiver, poolId, amount, tokenAddress, nonce);
+        _claim(receiver, poolId, amount, tokenAddress, nonce);
     }
 
     function withdraw(
@@ -69,7 +69,7 @@ contract DynamicEscrowUpgradeable is
         bytes32 poolId,
         uint256 amount
     ) external nonReentrant whenNotPaused {
-        super._withdraw(receiver, poolId, amount);
+        _withdraw(receiver, poolId, amount);
     }
 
     function pause() public onlyOwner {
