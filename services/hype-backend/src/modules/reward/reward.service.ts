@@ -21,10 +21,10 @@ import {
   TotalUnclaimed,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
-import { UsersService } from '../user/user.service';
 import { IPool } from '../../models';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { GraphQlService } from '../graphql';
+import { HypeUser } from '../user';
 
 export interface ClaimResult {
   nonce: number;
@@ -50,7 +50,8 @@ export class RewardService {
     private readonly rewardRepository: Repository<HypeReward>,
     @InjectRepository(HypeClaim)
     private readonly claimRepository: Repository<HypeClaim>,
-    private userService: UsersService,
+    @InjectRepository(HypeUser)
+    private readonly userRepository: Repository<HypeUser>,
     private graphQlService: GraphQlService,
   ) {
     this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
@@ -86,6 +87,14 @@ export class RewardService {
 
   async getAllRewards() {
     return await this.rewardRepository.find();
+  }
+
+  private async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
+    return await this.userRepository.findOne({
+      where: {
+        telegramId,
+      },
+    });
   }
 
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
@@ -237,9 +246,7 @@ export class RewardService {
   async saveImpressions(impressions: ImpressionDto[]): Promise<any> {
     await Promise.all(
       impressions.map(async (impression: ImpressionDto) => {
-        const user = await this.userService.getUserByTelegramId(
-          impression.user_id,
-        );
+        const user = await this.getUserByTelegramId(impression.user_id);
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;

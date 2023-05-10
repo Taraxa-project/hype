@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from '../auth';
 import { BlockchainModule } from '../blockchain';
-import { UserModule } from '../user';
+import { HypeUser } from '../user';
 import { HypeClaim } from '../../entities/claim.entity';
 import { RewardController } from './reward.controller';
 import { HypeReward } from '../../entities/reward.entity';
@@ -15,12 +15,11 @@ import { GraphQlModule } from '../graphql';
 @Module({
   imports: [
     BlockchainModule,
-    TypeOrmModule.forFeature([HypeReward, HypeClaim]),
+    TypeOrmModule.forFeature([HypeReward, HypeClaim, HypeUser]),
     GraphQlModule,
     ScheduleModule.forRoot(),
     AuthModule,
     HttpModule,
-    UserModule,
   ],
   controllers: [RewardController, PoolsController],
   providers: [RewardService],
