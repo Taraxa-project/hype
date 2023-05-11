@@ -33,7 +33,8 @@
       "@taraxa-hype/user": ["src/modules/user"],
       "@taraxa-hype/health": ["src/modules/health"],
       "@taraxa-hype/ipfs": ["src/modules/ipfs"],
-      "@taraxa-hype/graphql": ["src/modules/graphql"]
+      "@taraxa-hype/graphql": ["src/modules/graphql"],
+      "@taraxa-hype/group": ["src/modules/group"]
     }
   },
   "include": [

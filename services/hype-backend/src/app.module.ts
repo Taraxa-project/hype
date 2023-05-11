@@ -11,8 +11,9 @@ import { HealthModule } from '@taraxa-hype/health';
 import { UserModule } from '@taraxa-hype/user';
 import { IpfsModule } from '@taraxa-hype/ipfs';
 import { GraphQlModule } from '@taraxa-hype/graphql';
+import { GroupModule } from '@taraxa-hype/group';
 import * as dotenv from 'dotenv';
-import { HypeUser, HypeReward, HypeClaim } from './entities';
+import { HypeUser, HypeReward, HypeClaim, Group } from './entities';
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ const getEnvFilePath = () => {
   }
 };
 
-export const entities = [HypeUser, HypeReward, HypeClaim];
+export const entities = [HypeUser, HypeReward, HypeClaim, Group];
 
 const HypeAppTypeOrmModule = () => {
   let typeOrmOptions: TypeOrmModuleOptions;
@@ -93,6 +94,7 @@ const HypeAppTypeOrmModule = () => {
     HealthModule,
     IpfsModule,
     GraphQlModule,
+    GroupModule,
   ],
 })
 export class AppModule {}
