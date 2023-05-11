@@ -13,9 +13,9 @@ contract HypePool is HypePoolBase, Pausable, Ownable {
 
     function createPool(
         string memory uri,
-        IHypePoolBase.Details memory details,
-        IHypePoolBase.Rewards memory rewards
-    ) external whenNotPaused returns (IHypePoolBase.HypePool memory) {
+        IHypePool.Details memory details,
+        IHypePool.Rewards memory rewards
+    ) external whenNotPaused returns (IHypePool.HypePool memory) {
         return _createPool(uri, details, rewards);
     }
 

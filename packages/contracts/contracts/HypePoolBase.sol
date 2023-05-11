@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
-import './interfaces/IHypePoolBase.sol';
+import './interfaces/IHypePool.sol';
 import './interfaces/IEscrow.sol';
 
 import './AccessControl.sol';
 
-contract HypePoolBase is IHypePoolBase, AccessControl {
+contract HypePoolBase is IHypePool, AccessControl {
     bytes32 public constant ACTIVATOR_ROLE = keccak256('ACTIVATOR_ROLE');
     address private _activator;
     address _escrowContractAddress;
 
-    mapping(bytes32 => IHypePoolBase.HypePool) private _pools;
+    mapping(bytes32 => IHypePool.HypePool) private _pools;
     mapping(bytes32 => string) private _tokenURIs;
     // Mapping to store generated hash IDs
     mapping(bytes32 => bool) private _hashes;
@@ -46,10 +46,10 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
     function _setPool(
         bytes32 uuid,
         string memory _tokenURI,
-        IHypePoolBase.Details memory details,
-        IHypePoolBase.Rewards memory rewards
+        IHypePool.Details memory details,
+        IHypePool.Rewards memory rewards
     ) internal virtual {
-        _pools[uuid] = IHypePoolBase.HypePool(
+        _pools[uuid] = IHypePool.HypePool(
             uuid,
             msg.sender,
             false,
@@ -66,7 +66,7 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
 
     function _emitPoolDetails(
         bytes32 uuid,
-        IHypePoolBase.Details memory details
+        IHypePool.Details memory details
     ) internal virtual {
         emit PoolDetailsCreated(
             uuid,
@@ -79,7 +79,7 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
 
     function _emitPoolRewards(
         bytes32 uuid,
-        IHypePoolBase.Rewards memory rewards
+        IHypePool.Rewards memory rewards
     ) internal virtual {
         emit PoolRewardsCreated(
             uuid,
@@ -108,9 +108,9 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
      */
     function _createPool(
         string memory uri,
-        IHypePoolBase.Details memory details,
-        IHypePoolBase.Rewards memory rewards
-    ) internal returns (IHypePoolBase.HypePool memory) {
+        IHypePool.Details memory details,
+        IHypePool.Rewards memory rewards
+    ) internal returns (IHypePool.HypePool memory) {
         require(bytes(uri).length > 0, 'Missing metadata URI');
         require(rewards.cap > 0, 'Invalid pool cap');
         require(rewards.duration > 0, 'Duration must be at least one day');
@@ -132,7 +132,7 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
      * Short note: The escrow can be deposited by a third party (e.g. a sponsor). However, the pool owner is the only one who can activate it.
      */
     function _activatePool(bytes32 uuid) internal {
-        IHypePoolBase.HypePool memory _pool = _pools[uuid];
+        IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_hashes[uuid], 'Pool does not exist');
         require(_pool.active == false, 'Pool is already active');
@@ -170,7 +170,7 @@ contract HypePoolBase is IHypePoolBase, AccessControl {
      * @param hash The id of the pool to activate.
      */
     function _deactivatePool(bytes32 hash) internal {
-        IHypePoolBase.HypePool memory _pool = _pools[hash];
+        IHypePool.HypePool memory _pool = _pools[hash];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_pool.active == true, 'Pool is already inactive');
         _pool.active = false;

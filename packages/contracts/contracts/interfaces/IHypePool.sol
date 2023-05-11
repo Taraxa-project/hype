@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
-interface IHypePoolBase {
+interface IHypePool {
     struct Details {
         string title;
         string projectName;

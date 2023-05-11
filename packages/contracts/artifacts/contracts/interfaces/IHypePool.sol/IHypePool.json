@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IHypePoolBase",
-  "sourceName": "contracts/interfaces/IHypePoolBase.sol",
+  "contractName": "IHypePool",
+  "sourceName": "contracts/interfaces/IHypePool.sol",
   "abi": [
     {
       "anonymous": false,
@@ -252,7 +252,7 @@
                   "type": "string"
                 }
               ],
-              "internalType": "struct IHypePoolBase.Details",
+              "internalType": "struct IHypePool.Details",
               "name": "details",
               "type": "tuple"
             },
@@ -294,12 +294,12 @@
                   "type": "uint256"
                 }
               ],
-              "internalType": "struct IHypePoolBase.Rewards",
+              "internalType": "struct IHypePool.Rewards",
               "name": "rewards",
               "type": "tuple"
             }
           ],
-          "internalType": "struct IHypePoolBase.HypePool",
+          "internalType": "struct IHypePool.HypePool",
           "name": "",
           "type": "tuple"
         }

@@ -1,7 +1,7 @@
 pragma solidity 0.8.18;
 // SPDX-License-Identifier: UNLICENSED
 import './interfaces/IEscrow.sol';
-import './interfaces/IHypePoolBase.sol';
+import './interfaces/IHypePool.sol';
 
 /**
  * @title ERC20Basic

@@ -29,8 +29,8 @@ contract HypePoolUpgradeable is
 
     function createPool(
         string memory uri,
-        IHypePoolBase.Details memory details,
-        IHypePoolBase.Rewards memory rewards
+        IHypePool.Details memory details,
+        IHypePool.Rewards memory rewards
     ) external whenNotPaused returns (HypePool memory) {
         return _createPool(uri, details, rewards);
     }
