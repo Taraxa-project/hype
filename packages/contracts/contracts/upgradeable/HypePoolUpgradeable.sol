@@ -165,7 +165,7 @@ contract HypePoolUpgradeable is
                 hash
             );
             require(
-                !hasActivatorRole && _deposit.weiAmount == _pool.rewards.cap,
+                _deposit.weiAmount == _pool.rewards.cap,
                 'Deposited amount does not match pool cap'
             );
             require(
