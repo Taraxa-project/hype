@@ -8,6 +8,7 @@ import useWallet from './hooks/useWallet';
 import { useAuth, useAxiosInterceptors } from './hooks';
 import { useGetMe } from './api/auth/useGetMe';
 import ScrollToTop from './components/scrollToTop/ScrollToTop';
+import Footer from './components/footer/Footer';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
@@ -66,6 +67,7 @@ const Root = () => {
         </Routes>
         <ModalsCenter />
       </StyledAppContainer>
+      <Footer />
     </AppWrapper>
   );
 };

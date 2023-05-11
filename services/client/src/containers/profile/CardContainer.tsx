@@ -69,7 +69,7 @@ export const CardContainer = ({
         <StyledCardContainer>
           {cards.map((data, i) => (
             <Card
-              key={`${data.title}-${i}`}
+              key={`${data?.title}-${i}`}
               pool={data}
               onClick={() => {
                 dispatchModals({

@@ -79,10 +79,19 @@ export const useHomeEffects = () => {
     });
   };
 
+  const onlistTelegram = () => {
+    console.log('List of Indexed Telegram Groups');
+  };
+  const onSubmitTelegram = () => {
+    window.open('https://forms.gle/fuSNPsuVaUwaB8wbA', '_blank');
+  };
+
   return {
     debouncedResults,
     hypePools,
     onClick,
     isFetchingNextPage,
+    onlistTelegram,
+    onSubmitTelegram,
   };
 };

@@ -77,6 +77,9 @@ export class PoolsController {
    * Your API then calculates the MAC using the same hashing algorithm and secret key, and verifies that it matches the MAC provided by the client.
    * If the MACs match, your API grants access to the requested resource.
    */
+  /*
+   This can be removed after finishing the implementation from the Analytics point of view and testing the whole flow
+  */
   @Post('encrypt')
   async sendMessage() {
     const secretKey = process.env.GS_SECRET; // Get the secret key from environment variables

@@ -33,7 +33,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const [hasDeposited, setHasDeposited] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited);
+  const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited, isCustomToken);
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
 
@@ -55,6 +55,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
     amount,
     pool?.tokenAddress as AddressType,
     enableApprove,
+    isCustomToken,
     successCallbackDeposit,
   );
   useContractEscrowDeposit(
@@ -63,6 +64,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
     amount,
     pool?.tokenAddress,
     enableDeposit,
+    isCustomToken,
     successCallbackDeposit,
   );
 

@@ -1,13 +1,23 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.18;
 
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "../interfaces/IHypePool.sol";
-import "../interfaces/IEscrow.sol";
+import '@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 
-contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, OwnableUpgradeable {
+import '../interfaces/IHypePool.sol';
+import '../interfaces/IEscrow.sol';
+
+contract HypePoolUpgradeable is
+    IHypePool,
+    Initializable,
+    PausableUpgradeable,
+    OwnableUpgradeable,
+    AccessControlUpgradeable
+{
+    bytes32 public constant ACTIVATOR_ROLE = keccak256('ACTIVATOR_ROLE');
+    address private _activator;
     address _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
@@ -21,10 +31,23 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         _disableInitializers();
     }
 
-    function initialize(address escrowContractAddress) public initializer {
+    function initialize(
+        address escrowContractAddress,
+        address activator
+    ) public initializer {
+        require(
+            escrowContractAddress != address(0),
+            'Escrow contract address cannot be zero address'
+        );
+        require(
+            activator != address(0),
+            'Activator address cannot be zero address'
+        );
         __Pausable_init();
         _escrowContractAddress = escrowContractAddress;
         __Ownable_init();
+        _setupRole(ACTIVATOR_ROLE, activator);
+        _activator = activator;
     }
 
     function getCurrentIndex() external view returns (bytes32) {
@@ -45,7 +68,13 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         IHypePool.Details memory details,
         IHypePool.Rewards memory rewards
     ) internal virtual {
-        _pools[hash] = IHypePool.HypePool(hash, msg.sender, false, details, rewards);
+        _pools[hash] = IHypePool.HypePool(
+            hash,
+            msg.sender,
+            false,
+            details,
+            rewards
+        );
         _hashes[hash] = true;
         _latestHash = hash;
 
@@ -54,11 +83,23 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         _emitPoolRewards(hash, rewards);
     }
 
-    function _emitPoolDetails(bytes32 hash, IHypePool.Details memory details) internal virtual {
-        emit PoolDetailsCreated(hash, details.title, details.projectName, details.tokenName, details.word);
+    function _emitPoolDetails(
+        bytes32 hash,
+        IHypePool.Details memory details
+    ) internal virtual {
+        emit PoolDetailsCreated(
+            hash,
+            details.title,
+            details.projectName,
+            details.tokenName,
+            details.word
+        );
     }
 
-    function _emitPoolRewards(bytes32 hash, IHypePool.Rewards memory rewards) internal virtual {
+    function _emitPoolRewards(
+        bytes32 hash,
+        IHypePool.Rewards memory rewards
+    ) internal virtual {
         emit PoolRewardsCreated(
             hash,
             rewards.network,
@@ -71,7 +112,10 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         );
     }
 
-    function _setPoolURI(bytes32 hash, string memory _tokenURI) internal virtual {
+    function _setPoolURI(
+        bytes32 hash,
+        string memory _tokenURI
+    ) internal virtual {
         _tokenURIs[hash] = _tokenURI;
         emit PoolUriSet(hash, _tokenURI);
     }
@@ -86,15 +130,15 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         IHypePool.Details memory details,
         IHypePool.Rewards memory rewards
     ) external override whenNotPaused returns (HypePool memory) {
-        require(bytes(uri).length > 0, "Missing metadata URI");
-        require(rewards.cap > 0, "Invalid pool cap");
-        require(rewards.duration > 0, "Duration must be at least one day");
-        require(rewards.startDate == 0, "Start date must be zero");
-        require(rewards.endDate == 0, "End date must be zero");
-        require(rewards.impressionReward > 0, "Invalid impression hype reward");
+        require(bytes(uri).length > 0, 'Missing metadata URI');
+        require(rewards.cap > 0, 'Invalid pool cap');
+        require(rewards.duration > 0, 'Duration must be at least one day');
+        require(rewards.startDate == 0, 'Start date must be zero');
+        require(rewards.endDate == 0, 'End date must be zero');
+        require(rewards.impressionReward > 0, 'Invalid impression hype reward');
 
         bytes32 hash = _generateHashId();
-        require(!_hashes[hash], "Hash already exists");
+        require(!_hashes[hash], 'Hash already exists');
 
         _setPool(hash, uri, details, rewards);
         _setPoolURI(hash, uri);
@@ -109,20 +153,37 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
     function activatePool(bytes32 hash) external whenNotPaused {
         IHypePool.HypePool memory _pool = _pools[hash];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_hashes[hash], "Pool does not exist");
-        require(_pool.active == false, "Pool is already active");
-        IEscrow escrowContract = IEscrow(_escrowContractAddress);
-        IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(msg.sender, hash);
-        require(_deposit.weiAmount == _pool.rewards.cap, "Deposited amount does not match pool cap");
-        require(
-            _deposit.tokenAddress == _pool.rewards.tokenAddress,
-            "Deposited token address does not match pool token address"
-        );
+        require(_hashes[hash], 'Pool does not exist');
+        require(_pool.active == false, 'Pool is already active');
+
+        bool hasActivatorRole = hasRole(ACTIVATOR_ROLE, msg.sender);
+
+        if (!hasActivatorRole) {
+            IEscrow escrowContract = IEscrow(_escrowContractAddress);
+            IEscrow.DynamicDeposit memory _deposit = escrowContract.depositsOf(
+                msg.sender,
+                hash
+            );
+            require(
+                _deposit.weiAmount == _pool.rewards.cap,
+                'Deposited amount does not match pool cap'
+            );
+            require(
+                _deposit.tokenAddress == _pool.rewards.tokenAddress,
+                'Deposited token address does not match pool token address'
+            );
+        }
+
         _pool.active = true;
         _pool.rewards.startDate = block.timestamp;
         _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
         _pools[hash] = _pool;
-        emit PoolActivated(hash, msg.sender, _pool.rewards.startDate, _pool.rewards.endDate);
+        emit PoolActivated(
+            hash,
+            msg.sender,
+            _pool.rewards.startDate,
+            _pool.rewards.endDate
+        );
     }
 
     /**
@@ -132,7 +193,7 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
     function deactivatePool(bytes32 hash) external whenNotPaused onlyOwner {
         IHypePool.HypePool memory _pool = _pools[hash];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_pool.active == true, "Pool is already inactive");
+        require(_pool.active == true, 'Pool is already inactive');
         _pool.active = false;
         _pool.rewards.endDate = block.timestamp;
         _pools[hash] = _pool;
@@ -154,7 +215,9 @@ contract HypePoolUpgradeable is IHypePool, Initializable, PausableUpgradeable, O
         uint256 blockNumber = block.number;
         uint256 timestamp = block.timestamp;
         uint256 nonce = 0;
-        bytes32 hash = keccak256(abi.encodePacked(blockNumber, timestamp, nonce));
+        bytes32 hash = keccak256(
+            abi.encodePacked(blockNumber, timestamp, nonce)
+        );
         while (_hashExists(hash)) {
             nonce++;
             hash = keccak256(abi.encodePacked(blockNumber, timestamp, nonce));

@@ -16,8 +16,8 @@ export class HypeUser extends BaseEntity implements IHypeUser {
   username: string;
 
   @Column({ nullable: true, unique: true })
-  @IsNumber()
-  telegramId: number;
+  @IsString()
+  telegramId: string;
 
   @Column({ nullable: true })
   @IsOptional()

@@ -4,8 +4,8 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class ImpressionDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  user_id: number;
+  @IsString()
+  user_id: string;
 
   @ApiProperty()
   @IsNotEmpty()

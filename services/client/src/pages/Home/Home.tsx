@@ -10,21 +10,32 @@ import {
   IntroContainer,
   TitleText,
   DescriptionContainer,
-  VideoContainer,
+  GuideContainer,
   PoolContainer,
   NotFoundContainer,
   NotFoundText,
   CardContainer,
-  VideoPlayer,
   Logo,
   LogoText,
+  TelegramInfoContainer,
+  TelegramButtonsContainer,
+  TelegramDetails,
+  StepGuide,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
 import { HypePool } from '../../models';
+import Button from '../../components/button/Button';
 
 export const Home = () => {
-  const { debouncedResults, hypePools, onClick, isFetchingNextPage } = useHomeEffects();
+  const {
+    debouncedResults,
+    hypePools,
+    onClick,
+    isFetchingNextPage,
+    onlistTelegram,
+    onSubmitTelegram,
+  } = useHomeEffects();
 
   return (
     <>
@@ -41,15 +52,30 @@ export const Home = () => {
             open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
-        <VideoContainer>
-          <VideoPlayer
-            url="https://www.youtube.com/embed/E7wJTI-1dvQ"
-            width=""
-            height=""
-            controls={true}
-          />
-        </VideoContainer>
+        <GuideContainer>
+          <StepGuide>
+            <TitleText>Step by Step guide</TitleText>
+          </StepGuide>
+        </GuideContainer>
       </HeroContainer>
+      <TelegramInfoContainer>
+        <TelegramDetails>
+          <TitleText>Make sure Telegram groups you`re in are indexed!</TitleText>
+          <DescriptionContainer>
+            To be rewarded, the groups where you`re hyping in must be indexed. Please check to see
+            if the crypto Telegram groups you frequent are indexed, if they`re not, submit them to
+            us and we`ll add them to the list.
+          </DescriptionContainer>
+        </TelegramDetails>
+        <TelegramButtonsContainer>
+          <Button variant="secondary" onClick={onlistTelegram}>
+            📋 List of Indexed Telegram Groups
+          </Button>
+          <Button variant="secondary" onClick={onSubmitTelegram}>
+            ⬆ Submit a New Telegram Group
+          </Button>
+        </TelegramButtonsContainer>
+      </TelegramInfoContainer>
       <PoolContainer>
         <TitleText>Active Hype Pools</TitleText>
         <Input
@@ -62,7 +88,7 @@ export const Home = () => {
         <CardContainer>
           {hypePools.map(
             (data: HypePool, i: number) =>
-              data && <Card key={`${data.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
+              data && <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
           )}
         </CardContainer>
       )}

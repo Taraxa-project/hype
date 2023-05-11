@@ -3,5 +3,5 @@ export interface IHypeUser {
   address: string;
   username: string;
   auth_date: number;
-  telegramId: number;
+  telegramId: string;
 }
