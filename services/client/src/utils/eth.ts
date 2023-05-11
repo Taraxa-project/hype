@@ -7,5 +7,5 @@ export const transformFromWei = (amount: number, tokenDecimals: number) => {
   if (!amount || !tokenDecimals) {
     return;
   }
-  return ethers.utils.formatUnits(amount?.toString(), tokenDecimals)?.toString();
+  return ethers.utils.formatUnits(amount.toString(), tokenDecimals)?.toString();
 };
