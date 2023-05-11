@@ -30,7 +30,7 @@ export class UserController {
   public getUserBy(
     @Query(ValidationPipe) filterDto: GetByDTO,
   ): Promise<HypeUser> {
-    return this.service.getUserBy(filterDto);
+    return this.service.getUserByAddress(filterDto);
   }
 
   @Post()
