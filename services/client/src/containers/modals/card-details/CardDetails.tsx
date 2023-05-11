@@ -13,7 +13,7 @@ import {
   CardInnerContainer,
 } from './CardDetails.styled';
 import Blockies from 'react-blockies';
-import { formatDate, transformFromWei } from '../../../utils';
+import { formatDate, networks, transformFromWei } from '../../../utils';
 import DotIcon from '../../../assets/icons/Dot';
 
 export const CardDetails = () => {
@@ -93,14 +93,14 @@ export const CardDetails = () => {
         )}
         {word && (
           <DataContainer>
-            <DataHeader>Word:</DataHeader>
+            <DataHeader>Campaign keyword:</DataHeader>
             <DataValue>{word}</DataValue>
           </DataContainer>
         )}
         {network && (
           <DataContainer>
             <DataHeader>Network:</DataHeader>
-            <DataValue>{network}</DataValue>
+            <DataValue>{networks[network].chainName}</DataValue>
           </DataContainer>
         )}
         {tokenName && (
