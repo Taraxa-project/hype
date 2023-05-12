@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import walkthrough from '../../assets/images/walkthrough.png';
+
 import { HypeThemeType } from '../../theme';
 
 interface CustomStyledProps {
@@ -63,29 +65,18 @@ export const IntroContainer = styled.div<CustomStyledProps>`
   flex-direction: column;
 `;
 
-export const GuideContainer = styled.div<CustomStyledProps>`
-  background: ${({ theme }) => theme.colors.greys[0]};
-  padding: 1.5rem;
+export const GuideContainer = styled.a<CustomStyledProps>`
+  min-height: 100%;
+  min-width: 400px;
+  background: ${({ theme }) => theme.colors.greys[0]} url(${walkthrough}) no-repeat;
+  background-size: contain;
   border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: right;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: column;
-  }
-`;
-
-export const StepGuide = styled.div<CustomStyledProps>`
-  width: 30rem;
-  height: 12rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 20rem;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
     width: 100%;
   }
 `;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
 import {
@@ -10,14 +11,18 @@ import {
 } from './Participate.styled';
 
 export const Participate = () => {
+  let navigate = useNavigate();
   const onlistTelegram = () => {
-    console.log('List of Indexed Telegram Groups');
+    navigate('/group');
   };
   const onSubmitTelegram = () => {
-    window.open("https://forms.gle/fuSNPsuVaUwaB8wbA", "_blank");
+    window.open('https://forms.gle/fuSNPsuVaUwaB8wbA', '_blank');
   };
   const onHypeAnalytics = () => {
-    window.open("https://medium.com/taraxa-project/taraxa-echo-analytics-pipeline-walkthrough-e54d0531d1ab", "_blank");
+    window.open(
+      'https://medium.com/taraxa-project/taraxa-echo-analytics-pipeline-walkthrough-e54d0531d1ab',
+      '_blank',
+    );
   };
   return (
     <ParticipateContainer>
@@ -72,8 +77,12 @@ export const Participate = () => {
             cycle.
           </Text>
           <ButtonsContainer>
-            <Button variant='secondary' onClick={onlistTelegram}>📋 List of Indexed Telegram Groups</Button>
-            <Button variant='secondary' onClick={onSubmitTelegram}>⬆ Submit a New Telegram Group</Button>
+            <Button variant="secondary" onClick={onlistTelegram}>
+              📋 List of Indexed Telegram Groups
+            </Button>
+            <Button onClick={onSubmitTelegram}>
+              ⬆ Submit a New Telegram Group
+            </Button>
           </ButtonsContainer>
         </Box>
         <Box display="flex" flexDirection="column">
@@ -92,7 +101,9 @@ export const Participate = () => {
             analytics pipeline.
           </Text>
           <ButtonsContainer>
-            <Button variant='secondary' onClick={onHypeAnalytics}>🔢 Hype`s Analytics Pipeline</Button>
+            <Button variant="secondary" onClick={onHypeAnalytics}>
+              🔢 Hype`s Analytics Pipeline
+            </Button>
           </ButtonsContainer>
         </Box>
       </Box>

@@ -20,7 +20,6 @@ import {
   TelegramInfoContainer,
   TelegramButtonsContainer,
   TelegramDetails,
-  StepGuide,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
@@ -52,11 +51,7 @@ export const Home = () => {
             open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
-        <GuideContainer>
-          <StepGuide>
-            <TitleText>Step by Step guide</TitleText>
-          </StepGuide>
-        </GuideContainer>
+        <GuideContainer href='https://docs.taraxa.io/social-listening/hype-app' target='_blank' />
       </HeroContainer>
       <TelegramInfoContainer>
         <TelegramDetails>
@@ -71,7 +66,7 @@ export const Home = () => {
           <Button variant="secondary" onClick={onlistTelegram}>
             📋 List of Indexed Telegram Groups
           </Button>
-          <Button variant="secondary" onClick={onSubmitTelegram}>
+          <Button onClick={onSubmitTelegram}>
             ⬆ Submit a New Telegram Group
           </Button>
         </TelegramButtonsContainer>
@@ -88,7 +83,9 @@ export const Home = () => {
         <CardContainer>
           {hypePools.map(
             (data: HypePool, i: number) =>
-              data && <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
+              data && (
+                <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />
+              ),
           )}
         </CardContainer>
       )}

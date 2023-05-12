@@ -3,6 +3,7 @@ import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
+import { useNavigate } from 'react-router-dom';
 
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState<string>('');
@@ -11,7 +12,7 @@ export const useHomeEffects = () => {
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
   const dispatchModals = useModalsDispatch();
   const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, searchString);
-
+  let navigate = useNavigate();
   useEffect(() => {
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
@@ -80,7 +81,7 @@ export const useHomeEffects = () => {
   };
 
   const onlistTelegram = () => {
-    console.log('List of Indexed Telegram Groups');
+  navigate('/group');
   };
   const onSubmitTelegram = () => {
     window.open('https://forms.gle/fuSNPsuVaUwaB8wbA', '_blank');

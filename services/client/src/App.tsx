@@ -1,6 +1,6 @@
 import Header from './components/header/Header';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Home, Redeem, AddHypePool, Profile, PoolDetails, Participate } from './pages';
+import { Home, Redeem, AddHypePool, Profile, PoolDetails, Participate, Group } from './pages';
 import styled from 'styled-components';
 import { ModalsCenter } from './containers/modals';
 import { HypeThemeType } from './theme';
@@ -62,6 +62,7 @@ const Root = () => {
           <Route path="/pool" element={<AddHypePool />} />
           <Route path="/pool/:poolId" element={<PoolDetails />} />
           <Route path="/redeem" element={<Redeem />} />
+          <Route path="/group" element={<Group />} />
           <Route path="/profile" element={isConnected && authenticated ? <Profile /> : <Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

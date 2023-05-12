@@ -21,7 +21,7 @@ export interface AddressContainerProps extends React.HTMLProps<HTMLSpanElement> 
 
 export enum HeaderValues {
   HypeFarming = 'Hype Farming',
-  HypePool = '+Hype Pool',
+  HypePool = '+ Hype Pool',
   Redeem = 'Redeem',
   Profile = 'My Account',
   None = 'none',
@@ -45,7 +45,7 @@ export const useHeaderEffects = (authenticated: boolean, headerElements?: Header
       display: true,
     },
     {
-      route: '/pool',
+      route: 'https://forms.gle/rZcHY9dwBfbEzkRN6',
       name: HeaderValues.HypePool,
       display: true,
     },
@@ -73,7 +73,11 @@ export const useHeaderEffects = (authenticated: boolean, headerElements?: Header
   }, [location]);
 
   const onSelect = (e: HeaderLink) => {
-    navigate(e.route);
+    if (e.route.includes('http')) {
+      window.open(e.route, '_blank');
+    } else {
+      navigate(e.route);
+    }
     setMenuOpen(false);
   };
 
