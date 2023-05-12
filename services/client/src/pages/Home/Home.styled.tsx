@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import walkthrough from '../../assets/images/walkthrough.png';
 
 import { HypeThemeType } from '../../theme';
 
@@ -65,18 +64,17 @@ export const IntroContainer = styled.div<CustomStyledProps>`
   flex-direction: column;
 `;
 
-export const GuideContainer = styled.a<CustomStyledProps>`
-  min-height: 100%;
-  min-width: 400px;
-  background: ${({ theme }) => theme.colors.greys[0]} url(${walkthrough}) no-repeat;
-  background-size: contain;
-  border-radius: 10px;
+export const GuideContainer = styled.a`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    width: 20rem;
-  }
+export const Guide = styled.img<CustomStyledProps>`
+  border-radius: 10px;
+  width: 400px;
+  border-radius: 10px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: column;
     width: 100%;
   }
 `;
@@ -123,6 +121,9 @@ export const TelegramButtonsContainer = styled.div<CustomStyledProps>`
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
+    > * {
+      width: 100%;
+    }
   }
 `;
 

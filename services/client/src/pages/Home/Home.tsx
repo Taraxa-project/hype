@@ -20,11 +20,13 @@ import {
   TelegramInfoContainer,
   TelegramButtonsContainer,
   TelegramDetails,
+  Guide,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
 import { HypePool } from '../../models';
 import Button from '../../components/button/Button';
+import walkthrough from '../../assets/images/walkthrough.png';
 
 export const Home = () => {
   const {
@@ -51,7 +53,9 @@ export const Home = () => {
             open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
-        <GuideContainer href='https://docs.taraxa.io/social-listening/hype-app' target='_blank' />
+        <GuideContainer href="https://docs.taraxa.io/social-listening/hype-app" target="_blank" >
+          <Guide src={walkthrough} alt="Hype! app Guide" />
+        </GuideContainer>
       </HeroContainer>
       <TelegramInfoContainer>
         <TelegramDetails>
@@ -66,9 +70,7 @@ export const Home = () => {
           <Button variant="secondary" onClick={onlistTelegram}>
             📋 List of Indexed Telegram Groups
           </Button>
-          <Button onClick={onSubmitTelegram}>
-            ⬆ Submit a New Telegram Group
-          </Button>
+          <Button onClick={onSubmitTelegram}>⬆ Submit a New Telegram Group</Button>
         </TelegramButtonsContainer>
       </TelegramInfoContainer>
       <PoolContainer>
