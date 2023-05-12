@@ -16,10 +16,12 @@ export const TelegramInfo = () => {
     close: closeModal,
   };
 
-  const modalActions: ModalAction[] = [{
-    name: 'OK',
-    onAction: closeModal,
-  }];
+  const modalActions: ModalAction[] = [
+    {
+      name: 'OK',
+      onAction: closeModal,
+    },
+  ];
 
   return (
     <ModalContainer

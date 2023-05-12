@@ -16,17 +16,11 @@ const BackgroundStyled = styled.div<BackgroundProps>`
   left: 0;
   top: 0;
   z-index: 1000;
-  ${(props) => props.show ? 'opacity: 0.5;' : ' opacity: 0;'}
+  ${(props) => (props.show ? 'opacity: 0.5;' : ' opacity: 0;')}
   ${(props) => props.show && 'pointer-events: all'}
 `;
-const BackgroundHover = ({show, children }: BackgroundProps): JSX.Element => (
-  <>
-    {show ? (
-      <BackgroundStyled show={show}>{children}</BackgroundStyled>
-    ) : (
-      children
-    )}
-  </>
+const BackgroundHover = ({ show, children }: BackgroundProps): JSX.Element => (
+  <>{show ? <BackgroundStyled show={show}>{children}</BackgroundStyled> : children}</>
 );
 
 export default BackgroundHover;

@@ -16,12 +16,14 @@ export const Notification = () => {
     icon: notificationIcon,
   };
 
-  const modalActions: ModalAction[] = [{
-    name: 'OK',
-    onAction: closeModal,
-    closeButtonVariant: 'primary',
-    maxWidth: '17rem',
-  }];
+  const modalActions: ModalAction[] = [
+    {
+      name: 'OK',
+      onAction: closeModal,
+      closeButtonVariant: 'primary',
+      maxWidth: '17rem',
+    },
+  ];
 
   return (
     <ModalContainer
@@ -32,11 +34,12 @@ export const Notification = () => {
       height="20rem"
     >
       <Box display="flex" flexDirection="column" gridGap="1rem">
-        {message && message.map((text: string) => (
-          <Text key={text} fontWeight="600" fontSize="14px" color="greys.11">
-            {text}
-          </Text>
-        ))}
+        {message &&
+          message.map((text: string) => (
+            <Text key={text} fontWeight="600" fontSize="14px" color="greys.11">
+              {text}
+            </Text>
+          ))}
       </Box>
     </ModalContainer>
   );

@@ -3,11 +3,15 @@ import { escrowAddress, ethEscrowAddress } from '../constants';
 import { useAccount, useContractRead } from 'wagmi';
 import { BigNumber } from 'ethers';
 
-export const useContractEscrowGetDepositsOf = (poolId: string, enabled: boolean, isCustomToken: boolean) => {
+export const useContractEscrowGetDepositsOf = (
+  poolId: string,
+  enabled: boolean,
+  isCustomToken: boolean,
+) => {
   const { address: payee } = useAccount();
   const { abi } = ABIs.contracts.DynamicEscrow;
   const { data, isError, isLoading } = useContractRead({
-    address: isCustomToken ? ethEscrowAddress: escrowAddress,
+    address: isCustomToken ? ethEscrowAddress : escrowAddress,
     abi,
     functionName: 'depositsOf',
     args: [payee, poolId],

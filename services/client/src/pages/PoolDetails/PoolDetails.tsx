@@ -84,7 +84,7 @@ export const PoolDetails = () => {
           <InfoValue>{tokenName}</InfoValue>
         </InfoContainer>
       )}
-      {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' &&  (
+      {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
         <>
           <InfoHeader>Token contract address:</InfoHeader>
           <BlockiesContainer>

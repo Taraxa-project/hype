@@ -18,9 +18,7 @@ const claimReward = (claim: ClaimReward) => {
 
 export const useRewardsClaim = () => {
   const queryClient = useQueryClient();
-  const { mutate, data, isLoading } = useMutation((claim: ClaimReward) =>
-    claimReward(claim),
-  );
+  const { mutate, data, isLoading } = useMutation((claim: ClaimReward) => claimReward(claim));
 
   const submitHandler = (claim: ClaimReward) => {
     const requestObject: ClaimReward = claim;

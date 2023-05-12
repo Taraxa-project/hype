@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledP = styled.p`
   top: calc(50% - 0.625rem);
 `;
 
 interface PProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const MediatedParagraph = (props: PProps) => {

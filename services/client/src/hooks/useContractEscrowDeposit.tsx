@@ -20,7 +20,7 @@ export const useContractEscrowDeposit = (
   const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
-    address: isCustomToken ? ethEscrowAddress: escrowAddress,
+    address: isCustomToken ? ethEscrowAddress : escrowAddress,
     abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],

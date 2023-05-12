@@ -10,7 +10,6 @@ interface FetchHypesFilter {
   text?: string;
 }
 
-
 const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   const first = hypePoolsPerPage;
   const skip = (page - 1) * hypePoolsPerPage;
@@ -38,9 +37,7 @@ export const useFetchHypePools = (page: number, searchString: string) => {
   const { data, fetching, error } = result;
 
   return {
-    data: searchString
-      ? (data?.poolSearch as HypePool[])
-      : (data?.hypePools as HypePool[]),
+    data: searchString ? (data?.poolSearch as HypePool[]) : (data?.hypePools as HypePool[]),
     fetching,
     error,
   };

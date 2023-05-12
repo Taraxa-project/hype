@@ -61,9 +61,7 @@ export const TransactionsContainer = ({
                 <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
                   {totalPoolRewards.map((reward) => (
                     <Transaction
-                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${
-                        reward.pool?.title
-                      }`}
+                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${reward.pool?.title}`}
                       value={reward.unclaimed}
                       symbol={reward.symbol}
                       pool={reward.pool?.title}

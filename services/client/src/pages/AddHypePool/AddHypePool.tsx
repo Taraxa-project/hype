@@ -72,20 +72,16 @@ export const AddHypePool = () => {
           <HowItWorks step={currentStep} />
         </StepContent>
       )}
-      {currentStep === 4 &&
-        createdPoolIndex &&
-        poolTransaction &&
-        poolDetails &&
-        poolReward && (
-          <StepContent>
-            <Completed
-              createdPoolIndex={createdPoolIndex}
-              transaction={poolTransaction}
-              poolName={poolDetails.title}
-              network={poolReward.network}
-            />
-          </StepContent>
-        )}
+      {currentStep === 4 && createdPoolIndex && poolTransaction && poolDetails && poolReward && (
+        <StepContent>
+          <Completed
+            createdPoolIndex={createdPoolIndex}
+            transaction={poolTransaction}
+            poolName={poolDetails.title}
+            network={poolReward.network}
+          />
+        </StepContent>
+      )}
       {/* {currentStep === 4 &&
         (
           <StepContent>
