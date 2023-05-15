@@ -1,6 +1,13 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { GroupService } from './group.service';
+import { GroupPaginate, GroupService } from './group.service';
+import { GetFilterDto } from './dto/get-filter.dto';
 import { Group } from '../../entities';
 
 @ApiTags('group')
@@ -10,9 +17,13 @@ export class GroupController {
 
   @ApiOkResponse({
     status: HttpStatus.OK,
+    type: [Group],
+    description: 'Returns filtered telegram groups',
   })
   @Get()
-  async getAll(): Promise<Group[]> {
-    return await this.groupService.getAll();
+  async getAll(
+    @Query(ValidationPipe) filterDto: GetFilterDto,
+  ): Promise<GroupPaginate> {
+    return await this.groupService.findAll(filterDto);
   }
 }
