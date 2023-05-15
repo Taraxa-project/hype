@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import ReactPlayer from 'react-player';
 
+import { HypeThemeType } from '../../theme';
+
+interface CustomStyledProps {
+  theme?: HypeThemeType;
+}
 export const Logo = styled.div`
   font-size: 5rem;
   display: flex;
@@ -42,6 +46,47 @@ export const HeroContainer = styled.div`
   margin-top: 3rem;
   padding-left: 3rem;
   padding-right: 3rem;
+  gap: 4rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
+    margin-top: 2rem;
+    padding: 0 1.5rem;
+    gap: 2rem;
+  }
+`;
+
+export const IntroContainer = styled.div<CustomStyledProps>`
+  background: ${({ theme }) => theme.colors.greys[0]};
+  padding: 1.5rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const GuideContainer = styled.a`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+export const Guide = styled.img<CustomStyledProps>`
+  border-radius: 10px;
+  width: 400px;
+  border-radius: 10px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+  }
+`;
+
+export const TelegramInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  gap: 2rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
@@ -50,29 +95,35 @@ export const HeroContainer = styled.div`
   }
 `;
 
-export const IntroContainer = styled.div`
+export const TelegramDetails = styled.div<CustomStyledProps>`
+  background: ${({ theme }) => theme.colors.greys[0]};
+  padding: 1.5rem;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  justify-content: center;
-`;
-
-export const VideoContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: right;
-
+  width: 70%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: column;
+    width: auto;
   }
 `;
 
-export const VideoPlayer = styled(ReactPlayer)`
-  width: 29.625rem;
-  height: 16.75rem;
-
+export const TelegramButtonsContainer = styled.div<CustomStyledProps>`
+  background: ${({ theme }) => theme.colors.greys[0]};
+  padding: 1.5rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  > * {
+    width: 420px;
+  }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 100%;
+    flex-direction: column;
+    > * {
+      width: 100%;
+    }
   }
 `;
 
@@ -123,7 +174,6 @@ export const DescriptionContainer = styled.span`
   letter-spacing: -0.02em;
   text-align: left;
   color: #595959;
-  max-width: 22rem;
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -133,7 +183,7 @@ export const DescriptionContainer = styled.span`
 `;
 
 export const LogoText = styled.h1`
-  font-weight: 600;
+  font-weight: 700;
   font-size: 2rem;
   line-height: 1.625rem;
   display: flex;

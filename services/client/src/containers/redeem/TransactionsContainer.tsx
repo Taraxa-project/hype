@@ -61,12 +61,10 @@ export const TransactionsContainer = ({
                 <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
                   {totalPoolRewards.map((reward) => (
                     <Transaction
-                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${
-                        reward.pool.title
-                      }`}
+                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${reward.pool?.title}`}
                       value={reward.unclaimed}
                       symbol={reward.symbol}
-                      pool={reward.pool.title}
+                      pool={reward.pool?.title}
                       date={new Date()}
                       status={TransactionStatus.PENDING}
                       buttonAction={() => onRedeem(reward)}
@@ -110,7 +108,7 @@ export const TransactionsContainer = ({
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
                       symbol={claim.symbol || 'TARA'}
-                      pool={claim.pool.title || 'APE Hype 12'}
+                      pool={claim.pool?.title || 'APE Hype 12'}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}

@@ -3,7 +3,7 @@ import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCre
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
-import { BigNumber } from 'ethers';
+import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 
@@ -92,9 +92,13 @@ export const useAddHypePoolEffects = () => {
     if (!details || !rewards || !ipfsUrl) {
       return;
     }
-    const cap = BigNumber.from(rewards.cap).mul(BigNumber.from(10).pow(rewards.tokenDecimals));
-    const impressionReward = BigNumber.from(rewards.impressionReward).mul(
-      BigNumber.from(10).pow(rewards.tokenDecimals),
+    const cap = ethers.utils.parseUnits(
+      rewards.cap.toString().replace(',', '.'),
+      rewards.tokenDecimals,
+    );
+    const impressionReward = ethers.utils.parseUnits(
+      rewards.impressionReward.toString().replace(',', '.'),
+      rewards.tokenDecimals,
     );
     setWritePoolArgs({
       uri: ipfsUrl,

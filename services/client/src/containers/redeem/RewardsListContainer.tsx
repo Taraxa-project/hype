@@ -67,7 +67,7 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
                     }-${Date.now()}`}
                     value={transactionItem.amount}
                     symbol={transactionItem.symbol}
-                    pool={transactionItem.pool.title}
+                    pool={transactionItem.pool?.title}
                     date={new Date()}
                     status={TransactionStatus.REDEEMED}
                   />

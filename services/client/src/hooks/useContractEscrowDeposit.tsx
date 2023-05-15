@@ -1,5 +1,5 @@
 import ABIs from '../abi';
-import { escrowAddress } from '../constants';
+import { escrowAddress, ethEscrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useLoadingModals } from './useLoadingModals';
 import { AddressType, NotificationType } from '../utils';
@@ -12,6 +12,7 @@ export const useContractEscrowDeposit = (
   amount: BigNumber,
   tokenAddress: string,
   enabled: boolean,
+  isCustomToken: boolean,
   successCallbackDeposit: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
@@ -19,7 +20,7 @@ export const useContractEscrowDeposit = (
   const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
-    address: escrowAddress,
+    address: isCustomToken ? ethEscrowAddress : escrowAddress,
     abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],

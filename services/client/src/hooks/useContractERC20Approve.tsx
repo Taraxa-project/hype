@@ -12,6 +12,7 @@ export const useContractERC20Approve = (
   amount: BigNumber,
   tokenAddress: AddressType,
   enabled: boolean,
+  isCustomToken: boolean,
   successCallbackDeposit: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
@@ -23,6 +24,7 @@ export const useContractERC20Approve = (
     amount,
     tokenAddress,
     enableDeposit,
+    isCustomToken,
     successCallbackDeposit,
   );
 

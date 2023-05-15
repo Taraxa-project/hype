@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 
 export const HypeIconSmall = () => (
-  <svg
-    width="106"
-    height="48"
-    viewBox="0 0 106 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="106" height="48" viewBox="0 0 106 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_169_1277)">
       <path
         d="M36.1076 0H11.8924C5.32439 0 0 5.32439 0 11.8924V36.1076C0 42.6756 5.32439 48 11.8924 48H36.1076C42.6756 48 48 42.6756 48 36.1076V11.8924C48 5.32439 42.6756 0 36.1076 0Z"
@@ -57,13 +51,7 @@ export const HypeIconSmall = () => (
 );
 
 export const HypeIconBig = () => (
-  <svg
-    width="181"
-    height="82"
-    viewBox="0 0 181 82"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="181" height="82" viewBox="0 0 181 82" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_169_1267)">
       <path
         d="M61.6839 0H20.3161C9.09584 0 0 9.09584 0 20.3161V61.6839C0 72.9042 9.09584 82 20.3161 82H61.6839C72.9042 82 82 72.9042 82 61.6839V20.3161C82 9.09584 72.9042 0 61.6839 0Z"

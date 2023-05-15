@@ -3,7 +3,7 @@ export interface HypeUser {
   address: string;
   username: string;
   auth_date: number;
-  telegramId: number;
+  telegramId: string;
 }
 
 // Telegram User model

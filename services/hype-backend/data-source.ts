@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { HypeClaim, HypeReward, HypeUser } from './src/entities';
-import { Schema1678191755364 } from './src/migrations/1678191755364-Schema';
+import { HypeClaim, HypeReward, HypeUser, Group } from './src/entities';
+import { Schema1683716654047 } from './src/migrations/1683716654047-Schema';
+import { Schema1683825323705 } from './src/migrations/1683825323705-Group';
 dotenv.config();
 
 const getDataSourceOptions = (): DataSourceOptions => {
@@ -41,9 +42,9 @@ const DataSourceConfig = new DataSource({
   migrationsRun: true,
   logging: process.env.NODE_ENV !== 'production',
   // entities: [`${__dirname}/src/entities/*.entity{.ts,.js}`],
-  entities: [HypeUser, HypeReward, HypeClaim],
+  entities: [HypeUser, HypeReward, HypeClaim, Group],
   // migrations: [`${__dirname}/src/migrations/*{.ts,.js}`],
-  migrations: [Schema1678191755364],
+  migrations: [Schema1683716654047, Schema1683825323705],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);
 

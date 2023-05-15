@@ -51,9 +51,23 @@ const config: HardhatUserConfig = {
       url: "http://127.0.0.1:8545/",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    ethereum: {
+      url: process.env.ETH_MAINNET_URL || "",
+      chainId: 1,
+      accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
+      gasPrice: 8000000000,
+      gasMultiplier: 1.5,
+      gas: 2100000,
+      allowUnlimitedContractSize: true,
+    },
+    goerli: {
+      url: process.env.GOERLI_URL || "",
+      chainId: 5,
+      accounts: process.env.MAINNET_PRIV_KEY !== undefined ? [process.env.MAINNET_PRIV_KEY] : [],
+      gasPrice: 8000000000,
+      gasMultiplier: 1.5,
+      gas: 2100000,
+      allowUnlimitedContractSize: true,
     },
     mainnet: {
       chainId: 841,

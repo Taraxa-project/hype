@@ -19,11 +19,12 @@ export const LoadingModal = () => {
       closeModal={closeModal}
     >
       <Box display="flex" flexDirection="column" height="100%">
-        {text && text.map((value: string) => (
-          <Text key={value} fontWeight="600" fontSize="14px" color="greys.11">
-            {value}
-          </Text>
-        ))}
+        {text &&
+          text.map((value: string) => (
+            <Text key={value} fontWeight="600" fontSize="14px" color="greys.11">
+              {value}
+            </Text>
+          ))}
         <Box display="flex" flex="1  1 auto" alignItems="center" justifyContent="center">
           <LoadingSpinner />
         </Box>

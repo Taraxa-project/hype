@@ -22,8 +22,11 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   amount: string;
 
-  @Column({ nullable: false })
-  @IsNotEmpty()
+  @Column({ nullable: true })
+  @IsString()
+  telegramId: string;
+
+  @Column({ nullable: true })
   @IsString()
   rewardee: string;
 

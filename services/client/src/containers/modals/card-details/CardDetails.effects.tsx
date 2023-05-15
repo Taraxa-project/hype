@@ -46,7 +46,7 @@ export const useCardDetailsEffects = () => {
   const onParticipate = () => {
     navigate(`/participate`);
     closeModal();
-  }
+  };
 
   return {
     open,

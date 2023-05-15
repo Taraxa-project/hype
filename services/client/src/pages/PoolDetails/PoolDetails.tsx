@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import { transformFromWei, formatDate } from '../../utils';
+import { transformFromWei, formatDate, networks } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
   PoolContainer,
@@ -68,14 +68,14 @@ export const PoolDetails = () => {
       )}
       {word && (
         <InfoContainer>
-          <InfoHeader>Word:</InfoHeader>
+          <InfoHeader>Campaign keyword:</InfoHeader>
           <InfoValue>{word}</InfoValue>
         </InfoContainer>
       )}
       {network && (
         <InfoContainer>
           <InfoHeader>Network:</InfoHeader>
-          <InfoValue>{network}</InfoValue>
+          <InfoValue>{networks[network].chainName}</InfoValue>
         </InfoContainer>
       )}
       {tokenName && (
@@ -84,7 +84,7 @@ export const PoolDetails = () => {
           <InfoValue>{tokenName}</InfoValue>
         </InfoContainer>
       )}
-      {tokenAddress && (
+      {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
         <>
           <InfoHeader>Token contract address:</InfoHeader>
           <BlockiesContainer>

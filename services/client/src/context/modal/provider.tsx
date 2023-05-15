@@ -9,9 +9,7 @@ type ModalsProviderProps = {
   children: React.ReactNode;
 };
 
-export const ModalsProvider: FC<ModalsProviderProps> = ({
-  children,
-}: ModalsProviderProps) => {
+export const ModalsProvider: FC<ModalsProviderProps> = ({ children }: ModalsProviderProps) => {
   const [state, dispatch] = useReducer(hypeModalsReducer, modalsInitialState);
 
   return (
