@@ -19,7 +19,7 @@ export const HowItWorks = ({ step }: HowItWorksProps) => {
             <HowItWorksTitle>How to describe what you're hyping:</HowItWorksTitle>
             <HowItWorksDescription>
               <p>
-                Tell the app what you`re hyping, and it'll do the rest, automatically and
+                Tell the app what you’re hyping, and it'll do the rest, automatically and
                 transparently.
               </p>
               <p>

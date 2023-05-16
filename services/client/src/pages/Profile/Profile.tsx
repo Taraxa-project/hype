@@ -39,7 +39,7 @@ export const Profile = () => {
       <CardContainer
         title={`Created Pools (${createdPools.length})`}
         cards={createdPools}
-        emptyMessage="Looks like you haven`t created any pools yet..."
+        emptyMessage="Looks like you haven’t created any pools yet..."
         target="/createdPools"
         poolModalAction={null}
         isPrivate={true}
@@ -47,7 +47,7 @@ export const Profile = () => {
       <CardContainer
         title={`Joined Pools (${joinedPools.length})`}
         cards={joinedPools}
-        emptyMessage="Looks like you haven`t joined any pools yet..."
+        emptyMessage="Looks like you haven’t joined any pools yet..."
         target="/joinedPools"
         poolModalAction={null}
         isPrivate={true}

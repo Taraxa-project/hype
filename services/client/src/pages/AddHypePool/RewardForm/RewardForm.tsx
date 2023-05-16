@@ -216,7 +216,7 @@ export const RewardForm = ({
           </Box>
           <Example>
             Defines how long the Hype Pool will last. At the end of the Hype Pool if rewards have
-            not been fully doled out, they`ll be returned.
+            not been fully doled out, they’ll be returned.
           </Example>
           <FormInput
             disabled={!authenticated}
