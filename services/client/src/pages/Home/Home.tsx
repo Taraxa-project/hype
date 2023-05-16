@@ -59,11 +59,11 @@ export const Home = () => {
       </HeroContainer>
       <TelegramInfoContainer>
         <TelegramDetails>
-          <TitleText>Make sure Telegram groups you`re in are indexed!</TitleText>
+          <TitleText>Make sure Telegram groups you’re in are indexed!</TitleText>
           <DescriptionContainer>
-            To be rewarded, the groups where you`re hyping in must be indexed. Please check to see
-            if the crypto Telegram groups you frequent are indexed, if they`re not, submit them to
-            us and we`ll add them to the list.
+            To be rewarded, the groups where you’re hyping in must be indexed. Please check to see
+            if the crypto Telegram groups you frequent are indexed, if they’re not, submit them to
+            us and we’ll add them to the list.
           </DescriptionContainer>
         </TelegramDetails>
         <TelegramButtonsContainer>

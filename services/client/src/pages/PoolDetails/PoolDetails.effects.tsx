@@ -97,7 +97,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
       if (balance?.value.lt(BigNumber.from(pool?.cap))) {
         showNotificationModal(
           NotificationType.ERROR,
-          'You don`t have enough balance in your account! Please add funds into your account in order to fund the pool!',
+          'You don’t have enough balance in your account! Please add funds into your account in order to fund the pool!',
         );
       } else {
         if (isCustomToken) {

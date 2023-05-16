@@ -85,7 +85,7 @@ export const useSummaryEffects = (
       if (balance?.value.lt(amount)) {
         showNotificationModal(
           NotificationType.ERROR,
-          'You don`t have enough balance in your account! Please add funds into your account in order to fund the pool!',
+          'You don’t have enough balance in your account! Please add funds into your account in order to fund the pool!',
         );
       } else {
         if (isCustomToken) {
