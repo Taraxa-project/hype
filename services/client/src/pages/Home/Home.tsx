@@ -27,16 +27,12 @@ import Box from '../../components/styles/Box';
 import { HypePool } from '../../models';
 import Button from '../../components/button/Button';
 import walkthrough from '../../assets/images/walkthrough.png';
+import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
+import { TelegramListButton } from '../../components/button/TelegramListButton';
 
 export const Home = () => {
-  const {
-    debouncedResults,
-    hypePools,
-    onClick,
-    isFetchingNextPage,
-    onlistTelegram,
-    onSubmitTelegram,
-  } = useHomeEffects();
+  const { debouncedResults, hypePools, onClick, isFetchingNextPage } =
+    useHomeEffects();
 
   return (
     <>
@@ -53,7 +49,7 @@ export const Home = () => {
             open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
-        <GuideContainer href="https://docs.taraxa.io/social-listening/hype-app" target="_blank" >
+        <GuideContainer href="https://docs.taraxa.io/social-listening/hype-app" target="_blank">
           <Guide src={walkthrough} alt="Hype! app Guide" />
         </GuideContainer>
       </HeroContainer>
@@ -67,10 +63,8 @@ export const Home = () => {
           </DescriptionContainer>
         </TelegramDetails>
         <TelegramButtonsContainer>
-          <Button variant="secondary" onClick={onlistTelegram}>
-            📋 List of Indexed Telegram Groups
-          </Button>
-          <Button onClick={onSubmitTelegram}>⬆ Submit a New Telegram Group</Button>
+          <TelegramListButton />
+          <TelegramSubmitButton />
         </TelegramButtonsContainer>
       </TelegramInfoContainer>
       <PoolContainer>

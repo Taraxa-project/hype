@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
 import {
@@ -9,15 +8,10 @@ import {
   TitleText,
   Text,
 } from './Participate.styled';
+import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
+import { TelegramListButton } from '../../components/button/TelegramListButton';
 
 export const Participate = () => {
-  let navigate = useNavigate();
-  const onlistTelegram = () => {
-    navigate('/group');
-  };
-  const onSubmitTelegram = () => {
-    window.open('https://forms.gle/fuSNPsuVaUwaB8wbA', '_blank');
-  };
   const onHypeAnalytics = () => {
     window.open(
       'https://medium.com/taraxa-project/taraxa-echo-analytics-pipeline-walkthrough-e54d0531d1ab',
@@ -77,12 +71,8 @@ export const Participate = () => {
             cycle.
           </Text>
           <ButtonsContainer>
-            <Button variant="secondary" onClick={onlistTelegram}>
-              📋 List of Indexed Telegram Groups
-            </Button>
-            <Button onClick={onSubmitTelegram}>
-              ⬆ Submit a New Telegram Group
-            </Button>
+            <TelegramListButton />
+            <TelegramSubmitButton />
           </ButtonsContainer>
         </Box>
         <Box display="flex" flexDirection="column">
