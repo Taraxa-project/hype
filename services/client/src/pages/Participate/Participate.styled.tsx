@@ -58,5 +58,8 @@ export const ButtonsContainer = styled.div`
   margin-top: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
+    > * {
+      width: 100%;
+    }
   }
 `;

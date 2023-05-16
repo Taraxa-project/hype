@@ -13,7 +13,7 @@ const TGroup = ({ group }: TGroupProps) => {
         <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
           Username:
         </Text>
-        <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+        <Text fontSize="0.875rem" color="greys.7" m={0.5}>
           {group.groupUsername}
         </Text>
       </Box>
@@ -21,7 +21,7 @@ const TGroup = ({ group }: TGroupProps) => {
         <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
           Title:
         </Text>
-        <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+        <Text fontSize="0.875rem" color="greys.7" m={0.5}>
           {group.groupTitle}
         </Text>
       </Box>
@@ -29,7 +29,7 @@ const TGroup = ({ group }: TGroupProps) => {
         <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
           Created at:
         </Text>
-        <Text fontWeight="bold" fontSize="0.875rem" color="greys.7" m={0.5}>
+        <Text fontSize="0.875rem" color="greys.7" m={0.5}>
           {group.createdAt ? new Date(group.createdAt).toDateString() : 'NA'}
         </Text>
       </Box>
