@@ -11,7 +11,7 @@ export const useGroupEffects = () => {
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
 
-      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
+      if (!fetching && scrollHeight - scrollTop <= clientHeight) {
         fetching = true;
         await fetchNextPage();
         fetching = false;

@@ -28,8 +28,8 @@ export const Group = () => {
       </GroupSearch>
       <GroupContainer>
         {data?.pages.map(
-          (data: TelegramGroup) =>
-            data && <TGroup key={`${data.groupUsername}-${Date.now()}`} group={data} />,
+          (data: TelegramGroup, i: number) =>
+            data && <TGroup key={`${data.groupUsername}-${Date.now()}-${i}`} group={data} />,
         )}
       </GroupContainer>
       {isFetchingNextPage && (
