@@ -12,8 +12,8 @@ const getGroups = async (params: FetchGroupFilter) => {
 };
 
 const computePage = (page: number, search?: string): FetchGroupFilter => {
-  const take = page * groupsPerPage;
-  const skip = take - groupsPerPage;
+  const take = groupsPerPage;
+  const skip = page * groupsPerPage - groupsPerPage;
   return {
     take,
     skip,
