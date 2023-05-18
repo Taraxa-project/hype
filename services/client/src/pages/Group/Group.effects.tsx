@@ -1,10 +1,32 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useGetGroups } from '../../api/group/useGetGroups';
 import debounce from 'lodash.debounce';
+import { useGetGroups } from '../../api/group/useGetGroups';
+import { TelegramGroup } from '../../models';
 
 export const useGroupEffects = () => {
   const [searchString, setSearchString] = useState('');
   const { data, isFetchingNextPage, fetchNextPage } = useGetGroups(searchString);
+
+  const columns: { path: string; name: string }[] = [
+    { path: 'groupUsername', name: 'ID' },
+    { path: 'groupTitle', name: 'Group Name' },
+    { path: 'createdAt', name: 'Indexing started on' },
+  ];
+  const rows: {
+    data: any[];
+  }[] = [];
+
+  data?.pages.map((group: TelegramGroup) => {
+    return rows.push({
+      data: [
+        {
+          groupUsername: `@${group.groupUsername}`,
+          groupTitle: group.groupTitle,
+          createdAt: group.createdAt ? new Date(group.createdAt).toDateString() : 'NA',
+        },
+      ],
+    });
+  });
 
   useEffect(() => {
     let fetching = false;
@@ -22,7 +44,7 @@ export const useGroupEffects = () => {
     return () => {
       document.removeEventListener('scroll', onScroll);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e: any) => {
@@ -40,8 +62,9 @@ export const useGroupEffects = () => {
   });
 
   return {
+    columns,
+    rows,
     debouncedResults,
-    data,
     isFetchingNextPage,
   };
 };

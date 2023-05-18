@@ -86,7 +86,7 @@ const Header = React.memo(
         <StyledHeader>
           <div>
             <div className="header-left">
-              <Link to="/" style={{ textDecoration: 'none' }}>
+              <Link to="/" style={{ textDecoration: 'none', display: 'flex' }}>
                 <Logo>
                   <Image src={Megaphone} alt="Megaphone" width="50px" />
                   <Box display={{ _: 'none', xs: 'flex' }}>

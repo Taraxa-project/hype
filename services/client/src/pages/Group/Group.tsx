@@ -3,14 +3,13 @@ import LoadingSpinner from '../../assets/icons/Spinner';
 import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
 import Input from '../../components/input/Input';
 import Box from '../../components/styles/Box';
-import TGroup from '../../components/telegram-group/TGroup';
+import Table from '../../components/table/Table';
 import TitleText from '../../components/titletext/TitleText';
-import { TelegramGroup } from '../../models';
 import { useGroupEffects } from './Group.effects';
 import { GroupContainer, GroupSearch, TitleContainer } from './Group.styles';
 
 export const Group = () => {
-  const { debouncedResults, data, isFetchingNextPage } = useGroupEffects();
+  const { columns, rows, debouncedResults, isFetchingNextPage } = useGroupEffects();
   return (
     <>
       <GroupSearch>
@@ -27,10 +26,7 @@ export const Group = () => {
         />
       </GroupSearch>
       <GroupContainer>
-        {data?.pages.map(
-          (data: TelegramGroup, i: number) =>
-            data && <TGroup key={`${data.groupUsername}-${Date.now()}-${i}`} group={data} />,
-        )}
+        <Table columns={columns} rows={rows} />
       </GroupContainer>
       {isFetchingNextPage && (
         <Box display="flex" justifyContent="center" alignItems="center" my={3}>
