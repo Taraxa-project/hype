@@ -5,3 +5,5 @@ export * from './AddHypePool';
 export * from './Profile';
 export * from './PoolDetails';
 export * from './Participate';
+export * from './TermsAndConditions';
+export * from './PrivacyPolicy';
