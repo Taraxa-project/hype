@@ -25,7 +25,6 @@ import {
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
 import { HypePool } from '../../models';
-import Button from '../../components/button/Button';
 import walkthrough from '../../assets/images/walkthrough.png';
 import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
 import { TelegramListButton } from '../../components/button/TelegramListButton';

@@ -64,6 +64,8 @@ const Root = () => {
           <Route path="/redeem" element={<Redeem />} />
           <Route path="/group" element={<Group />} />
           <Route path="/profile" element={isConnected && authenticated ? <Profile /> : <Home />} />
+          <Route path="/terms-and-conditions" element={<></>} />
+          <Route path="/privacy-policy" element={<></>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <ModalsCenter />
