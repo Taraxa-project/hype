@@ -4,6 +4,7 @@ import { TelegramShareButton, TwitterShareButton } from 'react-share';
 import { FormInput, SocialButton } from './SharePool.styled';
 import Button from '../button/Button';
 import Box from '../styles/Box';
+import Text from '../styles/Text';
 import TitleText from '../titletext/TitleText';
 
 export interface SharePoolProps {
@@ -13,7 +14,7 @@ export interface SharePoolProps {
 }
 
 export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolName }) => {
-  const poolUrl = `${window.location.href}/${createdPoolIndex}`;
+  const poolUrl = `${window.location.href}`;
   const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
 
   const onCopy = () => {
@@ -42,7 +43,15 @@ export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolNam
           </Button>
         </CopyToClipboard>
       </Box>
-      <Box display="flex" gridGap="1rem" mt={4}>
+      <Box display="flex" gridGap="1rem" alignItems={'center'} mt={4}>
+        <Text
+          fontWeight="700"
+          fontSize="1.25rem"
+          color="greys.6"
+          lineHeight="26px"
+        >
+          Share on:
+        </Text>
         <TwitterShareButton
           title={`${poolName} is active!`}
           url={poolUrl}
