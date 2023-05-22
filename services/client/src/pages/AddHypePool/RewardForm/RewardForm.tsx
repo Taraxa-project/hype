@@ -243,11 +243,11 @@ export const RewardForm = ({
         {authenticated ? (
           <div>
             <FormAction>
-              <Button size="full-width" type="button" variant="secondary" onClick={onBack}>
-                ⬅️ Prev: What are you Hyping?
-              </Button>
               <Button size="full-width" type="submit" variant="primary">
                 Next: Fund and Activate the Pool ➡️
+              </Button>
+              <Button size="full-width" type="button" variant="secondary" onClick={onBack}>
+                ⬅️ Prev: What are you Hyping?
               </Button>
             </FormAction>
           </div>

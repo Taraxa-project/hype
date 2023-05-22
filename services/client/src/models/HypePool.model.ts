@@ -12,6 +12,7 @@ export interface AddHypePool {
   endDate: number;
   duration: number;
   tokenName?: string;
+  remainingFunds?: string;
 }
 
 export interface HypePool extends AddHypePool {
