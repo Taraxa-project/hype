@@ -30,7 +30,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const [enableApprove, setEnableApprove] = useState<boolean>(false);
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-  const [hasDeposited, setHasDeposited] = useState<boolean>(false);
+  const [hasDeposited, setHasDeposited] = useState<boolean>(true);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
   const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited, isCustomToken);
