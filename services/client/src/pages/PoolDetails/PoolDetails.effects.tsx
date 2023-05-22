@@ -14,6 +14,7 @@ import {
 } from '../../hooks';
 import { HypePool } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
@@ -25,6 +26,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
     variables: { id: poolId },
     pause: poolId === undefined || poolId === null,
   });
+  let navigate = useNavigate();
 
   const [enableActivate, setEnableActivate] = useState<boolean>(false);
   const [enableApprove, setEnableApprove] = useState<boolean>(false);
@@ -116,6 +118,10 @@ export const usePoolDetailsEffects = (poolId: string) => {
     }
   };
 
+  const onParticipate = () => {
+    navigate(`/participate`);
+  };
+
   return {
     ...pool,
     tokenDecimals,
@@ -124,5 +130,6 @@ export const usePoolDetailsEffects = (poolId: string) => {
     fund,
     activate,
     account,
+    onParticipate,
   };
 };
