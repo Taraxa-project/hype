@@ -41,6 +41,7 @@ export const PoolDetails = () => {
     fund,
     activate,
     account,
+    onParticipate,
   } = usePoolDetailsEffects(poolId);
   const startedAt =
     Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
@@ -48,7 +49,7 @@ export const PoolDetails = () => {
 
   return (
     <PoolContainer>
-      <SharePool title={title} createdPoolIndex={poolId} poolName={title}/>
+      <SharePool title={title} createdPoolIndex={poolId} poolName={title} />
       <Subheader>Pool creator:</Subheader>
       {creator && (
         <BlockiesContainer>
@@ -167,6 +168,11 @@ export const PoolDetails = () => {
           )}
         </Box>
       )}
+      <Box my={4}>
+        <Button size="full-width" onClick={onParticipate}>
+          📣 Participate Now!
+        </Button>
+      </Box>
     </PoolContainer>
   );
 };

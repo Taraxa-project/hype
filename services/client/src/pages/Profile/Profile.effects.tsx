@@ -123,6 +123,11 @@ export const useProfileEffects = () => {
     }
   }, [account, hypeUser]);
 
+  const onPoolDetails = (cardData: HypePool) => {
+    navigate(`/pool/${cardData.id}`);
+  };
+
+
   return {
     joinedPools,
     createdPools,
@@ -131,5 +136,6 @@ export const useProfileEffects = () => {
     telegramProfile,
     connect,
     disconnect,
+    onPoolDetails,
   };
 };

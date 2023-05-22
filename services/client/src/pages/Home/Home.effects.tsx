@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
-import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
+import { useNavigate } from 'react-router-dom';
 
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState<string>('');
   const [maxReached, setMaxReached] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
-  const dispatchModals = useModalsDispatch();
+  let navigate = useNavigate();
   const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, searchString);
 
   useEffect(() => {
@@ -71,13 +71,7 @@ export const useHomeEffects = () => {
   });
 
   const onClick = (cardData: HypePool) => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_CARD_DETAILS,
-      payload: {
-        open: true,
-        cardData,
-      },
-    });
+    navigate(`/pool/${cardData.id}`);
   };
 
   return {
