@@ -9,6 +9,7 @@ import Button from '../../../components/button/Button';
 import Box from '../../../components/styles/Box';
 import { FormColumn, Label, FormAction } from '../AddHypePool.styled';
 import TitleText from '../../../components/titletext/TitleText';
+import { networks } from '../../../utils';
 
 export interface SummaryProps {
   createdPoolIndex: string;
@@ -93,7 +94,7 @@ export const Summary: FC<SummaryProps> = ({
                 Network:
               </Text>
               <Text fontSize="0.875rem" color="greys.7">
-                {rewards.network}
+                {networks[rewards.network].chainName}
               </Text>
             </RewardContent>
             <RewardContent>
@@ -112,14 +113,17 @@ export const Summary: FC<SummaryProps> = ({
                 {rewards.tokenDecimals}
               </Text>
             </RewardContent>
-            <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-              Token contract address:
-            </Text>
-
-            <BlockiesContainer>
-              <Blockies seed={rewards.tokenAddress} />
-              <Account>{rewards.tokenAddress}</Account>
-            </BlockiesContainer>
+            {rewards.tokenAddress && rewards.tokenAddress !== '0x0000000000000000000000000000000000000000' && (
+              <>
+                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                  Token contract address:
+                </Text>
+                <BlockiesContainer>
+                  <Blockies seed={rewards.tokenAddress} />
+                  <Account>{rewards.tokenAddress}</Account>
+                </BlockiesContainer>
+              </>
+            )}
             <RewardContent>
               <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
                 Reward per 1,000 impressions:

@@ -93,6 +93,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   }, [pool]);
 
   const fund = () => {
+    setHasDeposited(false);
     if (balance && pool?.cap) {
       if (balance?.value.lt(BigNumber.from(pool?.cap))) {
         showNotificationModal(

@@ -81,7 +81,7 @@ export const CardDetails = () => {
             <Account>{creator}</Account>
           </BlockiesContainer>
         )}
-        <CardSubheader>Description:</CardSubheader>
+        <CardSubheader>Campaign Description:</CardSubheader>
         <CardDescription>{description}</CardDescription>
         <CardSubheader>Project description:</CardSubheader>
         <CardDescription>{projectDescription}</CardDescription>

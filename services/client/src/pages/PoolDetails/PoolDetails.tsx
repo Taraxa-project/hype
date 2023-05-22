@@ -13,10 +13,10 @@ import {
   Account,
   Description,
 } from './PoolDetails.styled';
-import TitleText from '../../components/titletext/TitleText';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
+import { SharePool } from '../../components/share-pool/SharePool';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -48,7 +48,7 @@ export const PoolDetails = () => {
 
   return (
     <PoolContainer>
-      <TitleText>{title}</TitleText>
+      <SharePool title={title} createdPoolIndex={poolId} poolName={title}/>
       <Subheader>Pool creator:</Subheader>
       {creator && (
         <BlockiesContainer>
@@ -56,7 +56,7 @@ export const PoolDetails = () => {
           <Account>{creator}</Account>
         </BlockiesContainer>
       )}
-      <Subheader>Description:</Subheader>
+      <Subheader>Campaign Description:</Subheader>
       <Description>{description}</Description>
       <Subheader>Project description:</Subheader>
       <Description>{projectDescription}</Description>

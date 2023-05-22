@@ -59,6 +59,7 @@ export const Description = styled.div`
 export const PoolContainer = styled.div`
   height: 100%;
   margin-top: 3rem;
+  margin-bottom: 3rem;
   padding-left: 3rem;
   padding-right: 3rem;
 `;
