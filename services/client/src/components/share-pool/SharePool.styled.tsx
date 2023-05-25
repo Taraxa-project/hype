@@ -1,6 +1,26 @@
 import styled from 'styled-components';
 import Input from '../input/Input';
 
+export const ShareUrl = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+  }
+`;
+
+export const ShareOnButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+  }
+`;
+
 export const SocialButton = styled.div`
   font-weight: 600;
   display: flex;

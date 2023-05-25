@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { TelegramShareButton, TwitterShareButton } from 'react-share';
-import { FormInput, SocialButton } from './SharePool.styled';
+import { FormInput, ShareOnButtonContainer, ShareUrl, SocialButton } from './SharePool.styled';
 import Button from '../button/Button';
 import Box from '../styles/Box';
 import Text from '../styles/Text';
@@ -27,12 +27,12 @@ export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolNam
   return (
     <Box my={4}>
       <TitleText>{title}</TitleText>
-      <Box display="flex" gridGap="1rem" mt={2}>
+      <ShareUrl>
         <FormInput
           disabled={true}
           placeholder="ERC20 Token address"
           name="tokenAddress"
-          style={{ color: '#595959', width: '500px' }}
+          style={{ color: '#595959', width: '100%' }}
           value={poolUrl}
         />
         <CopyToClipboard text={poolUrl} onCopy={onCopy}>
@@ -42,8 +42,8 @@ export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolNam
             </Box>
           </Button>
         </CopyToClipboard>
-      </Box>
-      <Box display="flex" gridGap="1rem" alignItems={'center'} mt={4}>
+      </ShareUrl>
+      <ShareOnButtonContainer>
         <Text
           fontWeight="700"
           fontSize="1.25rem"
@@ -62,7 +62,7 @@ export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolNam
         <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
           <SocialButton>Telegram</SocialButton>
         </TelegramShareButton>
-      </Box>
+      </ShareOnButtonContainer>
     </Box>
   );
 };
