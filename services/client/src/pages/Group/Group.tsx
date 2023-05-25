@@ -1,6 +1,7 @@
 import SearchIcon from '../../assets/icons/Search';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 import Input from '../../components/input/Input';
 import Box from '../../components/styles/Box';
 import Table from '../../components/table/Table';
@@ -11,7 +12,7 @@ import { GroupContainer, GroupSearch, TitleContainer } from './Group.styles';
 export const Group = () => {
   const { columns, rows, debouncedResults, isFetchingNextPage } = useGroupEffects();
   return (
-    <>
+    <RoundContainer>
       <GroupSearch>
         <TitleContainer>
           <TitleText>📋 List of Indexed Telegram Groups</TitleText>
@@ -33,6 +34,6 @@ export const Group = () => {
           <LoadingSpinner />
         </Box>
       )}
-    </>
+    </RoundContainer>
   );
 };
