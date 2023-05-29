@@ -9,6 +9,7 @@ import { HypeClaim, HypeReward } from '../../models/Redeem.model';
 import UpIcon from '../../assets/icons/Up';
 import DownIcon from '../../assets/icons/Down';
 import { TransactionStatus } from '../../utils';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 interface RewardProps {
   claims: HypeClaim[];
@@ -23,14 +24,7 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      backgroundColor="greys.1"
-      p="2rem"
-      borderRadius="10px"
-      width="unset"
-    >
+    <RoundContainer width="unset">
       <Heading
         fontSize="1.25rem"
         fontWeight="700"
@@ -47,7 +41,6 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
           alignItems="center"
           justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
           gridGap="1rem"
-          mt={{ xs: '2.4rem', sm: '2.4rem' }}
         >
           <Text color="greys.3" fontSize="1rem" fontWeight="400">
             {showHistory ? 'Hide' : 'Show'} redemption history
@@ -85,6 +78,6 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
           <NotAvailable mt={3} />
         </Box>
       )}
-    </Box>
+    </RoundContainer>
   );
 };

@@ -5,6 +5,7 @@ import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { HypePool } from '../../models';
 import Card from '../../components/card/Card';
 import styled from 'styled-components';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 const StyledCardContainer = styled.div`
   position: relative;
@@ -13,7 +14,6 @@ const StyledCardContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 25rem;
-  margin-top: 1rem;
   border-radius: 1rem;
 
   display: grid;
@@ -42,14 +42,7 @@ export const CardContainer = ({
   action: (data: HypePool) => void;
 }) => {
   return (
-    <Box
-      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="10px"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-evenly"
-      backgroundColor="greys.1"
-    >
+    <RoundContainer>
       <Heading
         fontSize="1.25rem"
         fontWeight="700"
@@ -79,6 +72,6 @@ export const CardContainer = ({
           <NotAvailable message={emptyMessage} />
         </Box>
       )}
-    </Box>
+    </RoundContainer>
   );
 };

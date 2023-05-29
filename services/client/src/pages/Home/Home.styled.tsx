@@ -14,9 +14,6 @@ export const CardContainer = styled.div`
   position: relative;
   z-index: 1;
   overflow: auto;
-  padding: 0 3rem 2rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
 
   display: grid;
   gap: 2rem;
@@ -24,34 +21,16 @@ export const CardContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(21rem, max-content));
   justify-content: start;
   align-items: start;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    padding: 0 1rem;
-  }
-`;
-
-export const PageContainer = styled.div`
-  background: #fafafa;
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const HeroContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 3rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
   gap: 4rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
-    margin-top: 2rem;
-    padding: 0 1.5rem;
     gap: 2rem;
   }
 `;
@@ -73,7 +52,6 @@ export const GuideContainer = styled.a`
 export const Guide = styled.img<CustomStyledProps>`
   border-radius: 10px;
   width: 400px;
-  border-radius: 10px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
   }
@@ -83,15 +61,14 @@ export const TelegramInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 3rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
   gap: 2rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
     margin-top: 2.5rem;
-    padding: 0 1.5rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-top: 0.7rem;
   }
 `;
 
@@ -130,21 +107,12 @@ export const TelegramButtonsContainer = styled.div<CustomStyledProps>`
 export const PoolContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2.5rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
-
-  @media (max-width: 768px) {
-    margin-top: 1rem;
-    padding: 0 1.5rem;
-  }
 `;
 
 export const NotFoundContainer = styled.div`
   min-height: 12rem;
-  margin: 2rem 3rem;
-  background: #f1f1f1;
-  border-radius: 1rem;
+  background: ${({ theme }) => theme.colors.greys[0]};
+  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
