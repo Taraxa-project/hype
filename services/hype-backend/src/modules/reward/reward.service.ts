@@ -243,10 +243,12 @@ export class RewardService {
     return savedClaim;
   }
 
-  async saveImpressions(impressions: ImpressionDto[]): Promise<any> {
+  async saveImpressions(impressions: ImpressionDto[]): Promise<void> {
     await Promise.all(
       impressions.map(async (impression: ImpressionDto) => {
-        const user = await this.getUserByTelegramId(impression.user_id);
+        const user = await this.getUserByTelegramId(
+          impression.user_id.toString(),
+        );
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
@@ -255,10 +257,10 @@ export class RewardService {
           Number(pool.impressionReward);
 
         const newReward = this.rewardRepository.create({
-          amount: rewardValue?.toString(),
+          amount: rewardValue.toString(),
           tokenAddress: pool.tokenAddress,
           rewardee: user ? user.address : null,
-          telegramId: impression.user_id,
+          telegramId: impression.user_id.toString(),
           poolId: impression.pool_id,
         });
         const saved = await this.rewardRepository.save(newReward);

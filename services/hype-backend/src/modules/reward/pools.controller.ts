@@ -16,7 +16,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import { WalletGuard, HmacMiddleware } from '../guards';
+import { WalletGuard, HMACGuard } from '../guards';
 import { ImpressionDto, RewardDto } from './dto';
 import { RewardService } from './reward.service';
 import { IPool } from '../../models';
@@ -40,7 +40,8 @@ export class PoolsController {
   }
 
   @Post('impressions')
-  @UseGuards(HmacMiddleware)
+  @UseGuards(HMACGuard)
+  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Returns 200 OK',
@@ -53,6 +54,7 @@ export class PoolsController {
     try {
       return await this.rewardService.saveImpressions(impressions);
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException(
         'Something went wrong. Please try again!',
       );
