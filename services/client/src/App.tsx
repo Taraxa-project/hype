@@ -12,24 +12,27 @@ import Footer from './components/footer/Footer';
 
 const StyledAppContainer = styled.div<{ theme: HypeThemeType }>`
   flex: 1 0 auto;
-  background: ${({ theme }) => theme.colors.greys[1]};
-  border-radius: 10px;
   margin: 1.5rem auto;
   margin-top: 6.5rem;
   width: ${({ theme }) => `calc(${theme.breakpoints.lg} - 30px)`};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin: 2rem auto;
+    margin: 0 auto;
     margin-top: 6.5rem;
     width: unset;
     width: calc(100% - 4rem);
-    margin-left: 2rem;
-    margin-right: 2rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    margin: 1rem auto;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 0 auto;
     margin-top: 5.5rem;
+    width: calc(100% - 2rem);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 0 auto;
+    margin-top: 5.5rem;
+    width: calc(100% - 1.5rem);
   }
 `;
 

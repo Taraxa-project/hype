@@ -19,6 +19,12 @@ export const Account = styled.div`
   padding: 0.5rem 1.5rem;
   margin-left: 2rem;
   word-break: break-word;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+    margin-left: 0;
+    margin-top: 1rem;
+  }
 `;
 
 export const BlockiesContainer = styled.div`
@@ -29,8 +35,8 @@ export const BlockiesContainer = styled.div`
   padding-left: 0.5rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-direction: row;
-    padding-right: unset;
+    flex-direction: column;
+    padding: 0;
   }
 
   & > canvas {
@@ -58,10 +64,6 @@ export const Description = styled.div`
 
 export const PoolContainer = styled.div`
   height: 100%;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
 `;
 
 export const InfoContainer = styled.div`
@@ -75,7 +77,7 @@ export const InfoContainer = styled.div`
 export const InfoHeader = styled.span`
   flex: 1 0 50%;
   display: flex;
-  text-align: right;
+  text-align: left;
   font-weight: 700;
   line-height: 1.25rem;
   font-size: 1rem;
@@ -85,6 +87,7 @@ export const InfoHeader = styled.span`
 export const InfoValue = styled.span<{ theme: HypeThemeType }>`
   flex: 1 0 50%;
   display: flex;
+  text-align: right;
   font-weight: 400;
   font-size: 1rem;
   justify-content: end;

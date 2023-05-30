@@ -3,17 +3,16 @@ import {
   ExecutionContext,
   UnauthorizedException,
   HttpStatus,
+  CanActivate,
 } from '@nestjs/common';
 import { catchError, lastValueFrom, map } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
-export class WalletGuard {
+export class WalletGuard implements CanActivate {
   constructor(private authService: AuthService) {}
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean | UnauthorizedException> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const authorization = request.headers.authorization;
     const responseStatus = await lastValueFrom(
@@ -29,9 +28,8 @@ export class WalletGuard {
 
     if (responseStatus === HttpStatus.UNAUTHORIZED) {
       throw new UnauthorizedException();
-    } else if (responseStatus === HttpStatus.OK) {
-      return true;
     }
-    return false;
+
+    return responseStatus === HttpStatus.OK;
   }
 }

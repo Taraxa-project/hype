@@ -14,6 +14,9 @@ export const StyledCard = styled.div<CustomStyledProps>`
   background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
   box-sizing: border-box;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 0.7rem;
+  }
 `;
 
 export const CardTitle = styled.h3`

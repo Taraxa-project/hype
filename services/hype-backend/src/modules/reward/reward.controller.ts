@@ -17,7 +17,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { HttpService } from '@nestjs/axios';
 import * as dotenv from 'dotenv';
 import { WalletGuard } from '../guards';
 import { ClaimResult, RewardService } from './reward.service';
@@ -28,10 +27,7 @@ dotenv.config();
 @ApiTags('rewards')
 @Controller('rewards')
 export class RewardController {
-  constructor(
-    private readonly rewardService: RewardService,
-    private httpService: HttpService,
-  ) {}
+  constructor(private readonly rewardService: RewardService) {}
 
   @Get()
   @UseGuards(WalletGuard)

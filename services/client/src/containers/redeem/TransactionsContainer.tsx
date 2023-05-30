@@ -6,6 +6,7 @@ import { HypeClaim, PoolRewards } from '../../models';
 import { TransactionStatus } from '../../utils';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import LoadingSpinner from '../../assets/icons/Spinner';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 interface TransactionsProps {
   totalPoolRewards: PoolRewards[];
@@ -25,14 +26,7 @@ export const TransactionsContainer = ({
   const { isConnected } = useWallet();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      backgroundColor="greys.1"
-      p="2rem"
-      borderRadius="10px"
-      minWidth={!isConnected ? { md: '340px', lg: '340px', xl: '340px' } : ''}
-    >
+    <RoundContainer minWidth={!isConnected ? { md: '340px', lg: '340px', xl: '340px' } : ''}>
       <Box
         display="flex"
         flexDirection={{ _: 'column', lg: 'column', xl: 'column' }}
@@ -129,6 +123,6 @@ export const TransactionsContainer = ({
           )}
         </Box>
       </Box>
-    </Box>
+    </RoundContainer>
   );
 };

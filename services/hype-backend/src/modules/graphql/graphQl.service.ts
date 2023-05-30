@@ -1,12 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectGraphQLClient } from '@golevelup/nestjs-graphql-request';
 import { gql, GraphQLClient } from 'graphql-request';
 import { IPool } from '../../models';
 
 @Injectable()
 export class GraphQlService {
-  private logger = new Logger(GraphQlService.name);
-
   constructor(
     @InjectGraphQLClient()
     private readonly graphQLClient: GraphQLClient,

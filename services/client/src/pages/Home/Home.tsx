@@ -28,13 +28,13 @@ import { HypePool } from '../../models';
 import walkthrough from '../../assets/images/walkthrough.png';
 import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
 import { TelegramListButton } from '../../components/button/TelegramListButton';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 export const Home = () => {
-  const { debouncedResults, hypePools, onClick, isFetchingNextPage } =
-    useHomeEffects();
+  const { debouncedResults, hypePools, onClick, isFetchingNextPage } = useHomeEffects();
 
   return (
-    <>
+    <RoundContainer>
       <HeroContainer>
         <IntroContainer>
           <Logo>
@@ -96,6 +96,6 @@ export const Home = () => {
           </NotFoundText>
         </NotFoundContainer>
       )}
-    </>
+    </RoundContainer>
   );
 };
