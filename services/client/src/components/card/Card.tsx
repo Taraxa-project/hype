@@ -51,7 +51,7 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
+              <DataHeader key={`min-${Date.now()}`}>Reward / impressions:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
                 {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
               </DataValue>

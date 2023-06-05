@@ -10,6 +10,7 @@ export const useContractActivatePool = (
   id: string,
   enabled: boolean,
   successCallbackActivatePool: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
@@ -37,6 +38,7 @@ export const useContractActivatePool = (
       console.log('On error: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
