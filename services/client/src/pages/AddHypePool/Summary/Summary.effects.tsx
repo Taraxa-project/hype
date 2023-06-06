@@ -39,7 +39,9 @@ export const useSummaryEffects = (
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
   };
-  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool);
+  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool, () => {
+    setEnableActivate(false);
+  });
   useContractERC20Approve(
     account,
     createdPoolIndex,
@@ -57,6 +59,9 @@ export const useSummaryEffects = (
     enableDeposit,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableDeposit(false);
+    },
   );
 
   useEffect(() => {

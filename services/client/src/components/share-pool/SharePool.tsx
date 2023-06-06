@@ -13,9 +13,18 @@ export interface SharePoolProps {
   poolName: string;
 }
 
+const createPoolUrl = (poolIndex: string) => {
+  const currentDomain = window.location.host;
+  let url = `https://${currentDomain}/pool/`;
+  if (poolIndex) {
+    url += poolIndex;
+  }
+  return url;
+};
+
 export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolName }) => {
-  const poolUrl = `${window.location.href}`;
   const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
+  const poolUrl = createPoolUrl(createdPoolIndex);
 
   const onCopy = () => {
     setCopyBtnText('✔️');
@@ -44,12 +53,7 @@ export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolNam
         </CopyToClipboard>
       </ShareUrl>
       <ShareOnButtonContainer>
-        <Text
-          fontWeight="700"
-          fontSize="1.25rem"
-          color="greys.6"
-          lineHeight="26px"
-        >
+        <Text fontWeight="700" fontSize="1.25rem" color="greys.6" lineHeight="26px">
           Share on:
         </Text>
         <TwitterShareButton

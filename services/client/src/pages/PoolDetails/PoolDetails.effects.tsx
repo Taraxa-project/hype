@@ -50,7 +50,9 @@ export const usePoolDetailsEffects = (poolId: string) => {
     });
   };
 
-  useContractActivatePool(poolId, enableActivate, successCallbackActivatePool);
+  useContractActivatePool(poolId, enableActivate, successCallbackActivatePool, () => {
+    setEnableActivate(false);
+  });
   useContractERC20Approve(
     account,
     poolId,
@@ -68,6 +70,9 @@ export const usePoolDetailsEffects = (poolId: string) => {
     enableDeposit,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableDeposit(false);
+    },
   );
 
   useEffect(() => {

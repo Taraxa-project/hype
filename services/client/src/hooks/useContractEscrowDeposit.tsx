@@ -14,6 +14,7 @@ export const useContractEscrowDeposit = (
   enabled: boolean,
   isCustomToken: boolean,
   successCallbackDeposit: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
@@ -41,6 +42,7 @@ export const useContractEscrowDeposit = (
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 

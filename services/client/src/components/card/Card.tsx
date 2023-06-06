@@ -1,5 +1,5 @@
 import { HypePool } from '../../models';
-import { getPoolDuration, shortenText, transformFromWei } from '../../utils';
+import { getPoolDuration, rewardImpressionsNo, shortenText, transformFromWei } from '../../utils';
 import Button from '../button/Button';
 import {
   StyledCard,
@@ -53,7 +53,8 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
-                {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
+                {transformFromWei(impressionReward / rewardImpressionsNo, tokenDecimals)}{' '}
+                {tokenName}
               </DataValue>
             </DataContainer>
           )}
