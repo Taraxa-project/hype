@@ -13,23 +13,19 @@ export interface SharePoolProps {
   poolName: string;
 }
 
-const createPoolUrl = (currentUrl: string, poolIndex: string) => {
-  if (currentUrl.includes(`/pool/${poolIndex}`)) {
-    return currentUrl;
-  } else {
-    const currentDomain = window.location.host;
-    let url = `https://${currentDomain}/pool/`;
-    if (poolIndex) {
-      url += poolIndex;
-    }
-    return url;
+const createPoolUrl = (poolIndex: string) => {
+  const currentDomain = window.location.host;
+  let url = `https://${currentDomain}/pool/`;
+  if (poolIndex) {
+    url += poolIndex;
   }
+  return url;
 };
 
 export const SharePool: FC<SharePoolProps> = ({ title, createdPoolIndex, poolName }) => {
   const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
-  const poolUrl = createPoolUrl(window.location.href, createdPoolIndex);
-  
+  const poolUrl = createPoolUrl(createdPoolIndex);
+
   const onCopy = () => {
     setCopyBtnText('✔️');
     setTimeout(() => {

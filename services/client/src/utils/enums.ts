@@ -31,3 +31,4 @@ export const AUTHENTICATION_TOKEN = 'AUTHENTICATION_TOKEN';
 export const zeroAddress = '0x0000000000000000000000000000000000000000';
 export const ethToken = 'ETH';
 export const taraToken = 'TARA';
+export const rewardImpressionsNo = 1000;
