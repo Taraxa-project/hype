@@ -253,8 +253,7 @@ export class RewardService {
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
         const rewardValue =
-          (impression.message_impressions / 1000) *
-          Number(pool.impressionReward);
+          impression.message_impressions * Number(pool.impressionReward);
 
         const newReward = this.rewardRepository.create({
           amount: rewardValue.toString(),

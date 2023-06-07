@@ -178,7 +178,7 @@ export const Summary: FC<SummaryProps> = ({
             You need to activate the pool for participating community members to be rewarded.
           </Text>
           <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
-            You may activate the pool at any time, but once you activate the pool cannot be
+            You may activate the pool at any time, but once you activate the pool it cannot be
             deactivated.
           </Text>
         </FormColumn>

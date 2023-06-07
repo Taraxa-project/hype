@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import { transformFromWei, formatDate, networks, rewardImpressionsNo } from '../../utils';
+import { transformFromWei, formatDate, networks } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
   PoolContainer,
@@ -108,7 +108,7 @@ export const PoolDetails = () => {
           <InfoContainer>
             <InfoHeader>Reward / impression:</InfoHeader>
             <InfoValue>
-              {transformFromWei(impressionReward / rewardImpressionsNo, tokenDecimals)} {tokenName}
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
             </InfoValue>
           </InfoContainer>
         )}
