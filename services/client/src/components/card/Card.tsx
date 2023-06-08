@@ -53,7 +53,8 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
-                {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
+                {transformFromWei(impressionReward, tokenDecimals)}{' '}
+                {tokenName}
               </DataValue>
             </DataContainer>
           )}

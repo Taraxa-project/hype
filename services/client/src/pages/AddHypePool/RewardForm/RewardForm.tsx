@@ -168,15 +168,15 @@ export const RewardForm = ({
         {/* Impression Reward */}
         <FormElement>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-            <Label>Reward per 1,000 impressions:</Label>
+            <Label>Reward per 1 impression:</Label>
           </Box>
           <Example>
-            How much reward to give for every 1,000 impressions (or views) of effective social
+            How much reward to give for every 1 impression (or view) of effective social
             mentions in support of your hype?
           </Example>
           <FormInput
             disabled={!authenticated}
-            placeholder="ex: 200,000"
+            placeholder="ex: 0.2"
             name="impressionReward"
             {...register('impressionReward')}
           />

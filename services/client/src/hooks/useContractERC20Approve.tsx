@@ -26,6 +26,9 @@ export const useContractERC20Approve = (
     enableDeposit,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableDeposit(false);
+    },
   );
 
   const { config } = usePrepareContractWrite({

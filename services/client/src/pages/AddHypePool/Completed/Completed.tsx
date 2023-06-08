@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { FormColumn } from '../AddHypePool.styled';
 import Text from '../../../components/styles/Text';
 import TitleText from '../../../components/titletext/TitleText';
 import Box from '../../../components/styles/Box';
@@ -23,7 +22,7 @@ export const Completed: FC<CompletedProps> = ({
   const { text, href } = getExplorerFromNetwork(Number(network), transaction);
 
   return (
-    <FormColumn>
+    <Box width={'100%'}>
       <TitleText>{poolName} is active!</TitleText>
       <Box pb={4}>
         {text && href && (
@@ -40,6 +39,6 @@ export const Completed: FC<CompletedProps> = ({
         createdPoolIndex={createdPoolIndex}
         poolName={poolName}
       />
-    </FormColumn>
+    </Box>
   );
 };
