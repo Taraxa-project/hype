@@ -17,11 +17,12 @@ export class UsersService {
   ) {}
 
   async getUserByAddress({ publicAddress }: GetByDTO): Promise<HypeUser> {
-    return await this.repository.findOne({
-      where: {
+    return await this.repository
+      .createQueryBuilder('hype_user')
+      .where('LOWER(hype_user.address) ILIKE LOWER(:address)', {
         address: publicAddress,
-      },
-    });
+      })
+      .getOne();
   }
 
   async updateAccount(userDTO: UserDTO): Promise<HypeUser> {
