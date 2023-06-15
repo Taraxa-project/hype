@@ -1,11 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean, IsDate } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
+import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 import { IReward } from '../models';
 
 @Entity('hype_reward')
@@ -45,30 +39,4 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsNotEmpty()
   @IsBoolean()
   claimed: boolean;
-
-  @Column({
-    name: 'date_from',
-    type: 'date',
-    nullable: false,
-  })
-  @IsNotEmpty()
-  @IsDate()
-  dateFrom: Date;
-
-  @Column({
-    name: 'date_to',
-    type: 'date',
-    nullable: false,
-  })
-  @IsNotEmpty()
-  @IsDate()
-  dateTo: Date;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timestamp with time zone',
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
 }
