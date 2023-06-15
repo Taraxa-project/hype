@@ -49,7 +49,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @Column({
     name: 'date_from',
     type: 'date',
-    nullable: false,
+    nullable: true,
   })
   @IsNotEmpty()
   @IsDate()
@@ -58,7 +58,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @Column({
     name: 'date_to',
     type: 'date',
-    nullable: false,
+    nullable: true,
   })
   @IsNotEmpty()
   @IsDate()
