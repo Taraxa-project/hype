@@ -16,4 +16,14 @@ export class ImpressionDto {
   @IsNotEmpty()
   @IsString()
   pool_id: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  from: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  to: string;
 }
