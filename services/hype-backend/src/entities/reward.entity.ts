@@ -4,9 +4,17 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsDate,
+  IsNumber,
+} from 'class-validator';
 import { IReward } from '../models';
+import { HypeClaim } from './claim.entity';
 
 @Entity('hype_reward')
 export class HypeReward extends BaseEntity implements IReward {
@@ -35,6 +43,14 @@ export class HypeReward extends BaseEntity implements IReward {
   @Column({ nullable: true })
   @IsString()
   rewardee: string;
+
+  @Column({ nullable: true })
+  @IsString()
+  telegramUsername: string;
+
+  @Column({ nullable: true })
+  @IsNumber()
+  impressions: number;
 
   @Column({ nullable: false })
   @IsNotEmpty()
@@ -71,4 +87,7 @@ export class HypeReward extends BaseEntity implements IReward {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
+
+  @ManyToOne(() => HypeClaim, (claim) => claim.rewards)
+  claim: HypeClaim;
 }

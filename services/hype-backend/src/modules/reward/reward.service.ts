@@ -197,9 +197,21 @@ export class RewardService {
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
     let tokenAddress = '';
+    const claim = this.claimRepository.create();
+    claim.amount = total.toString();
+    claim.claimed = false;
+    claim.poolId = poolId;
+    claim.rewardee = address;
+    claim.tokenAddress = tokenAddress;
+    claim.hash = hash;
+    claim.nonce = nonce;
+    const claimFinalized = await claim.save();
+
     if (nonce && hash && total) {
       for (const reward of rewardsOfAddress) {
         reward.claimed = true;
+        // Associate the claim to each reward
+        reward.claim = claimFinalized;
         tokenAddress = reward.tokenAddress;
         const updated = await this.rewardRepository.save(reward);
         if (updated) {
@@ -208,15 +220,7 @@ export class RewardService {
           );
         }
       }
-      const claim = this.claimRepository.create();
-      claim.amount = total.toString();
-      claim.claimed = false;
-      claim.poolId = poolId;
-      claim.rewardee = address;
-      claim.tokenAddress = tokenAddress;
-      claim.hash = hash;
-      claim.nonce = nonce;
-      const claimFinalized = await claim.save();
+
       return {
         nonce,
         hash,
