@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import { HypeClaim, HypeReward, HypeUser, Group } from './src/entities';
 import { Schema1683716654047 } from './src/migrations/1683716654047-Schema';
 import { Schema1683825323705 } from './src/migrations/1683825323705-Group';
+import { RewardDate1686837924459 } from './src/migrations/1686837924459-RewardDate';
 dotenv.config();
 
 const getDataSourceOptions = (): DataSourceOptions => {
@@ -44,7 +45,11 @@ const DataSourceConfig = new DataSource({
   // entities: [`${__dirname}/src/entities/*.entity{.ts,.js}`],
   entities: [HypeUser, HypeReward, HypeClaim, Group],
   // migrations: [`${__dirname}/src/migrations/*{.ts,.js}`],
-  migrations: [Schema1683716654047, Schema1683825323705],
+  migrations: [
+    Schema1683716654047,
+    Schema1683825323705,
+    RewardDate1686837924459,
+  ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);
 

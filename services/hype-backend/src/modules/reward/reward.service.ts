@@ -43,9 +43,9 @@ export class RewardService {
 
   constructor(
     @Inject(ethereum.KEY)
-    private readonly ethereumConfig: ConfigType<typeof ethereum>,
+    ethereumConfig: ConfigType<typeof ethereum>,
     @Inject(auth.KEY)
-    private readonly authConfig: ConfigType<typeof auth>,
+    authConfig: ConfigType<typeof auth>,
     @InjectRepository(HypeReward)
     private readonly rewardRepository: Repository<HypeReward>,
     @InjectRepository(HypeClaim)
@@ -54,7 +54,7 @@ export class RewardService {
     private readonly userRepository: Repository<HypeUser>,
     private graphQlService: GraphQlService,
   ) {
-    this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
+    this.privateKey = Buffer.from(ethereumConfig.privateSigningKey, 'hex');
     this.gsSecret = authConfig.gsSecret;
   }
 
@@ -261,6 +261,8 @@ export class RewardService {
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
           poolId: impression.pool_id,
+          dateFrom: new Date(impression.from),
+          dateTo: new Date(impression.to),
         });
         const saved = await this.rewardRepository.save(newReward);
         return saved;
