@@ -5,6 +5,8 @@ import { HypeClaim, HypeReward, HypeUser, Group } from './src/entities';
 import { Schema1683716654047 } from './src/migrations/1683716654047-Schema';
 import { Schema1683825323705 } from './src/migrations/1683825323705-Group';
 import { RewardDate1686837924459 } from './src/migrations/1686837924459-RewardDate';
+import { RewardClaimAssociation1687179992085 } from './src/migrations/1687179992085-RewardClaimAssociation';
+import { RewardImpressionsString1687180118398 } from './src/migrations/1687180118398-RewardImpressions-String';
 dotenv.config();
 
 const getDataSourceOptions = (): DataSourceOptions => {
@@ -49,6 +51,8 @@ const DataSourceConfig = new DataSource({
     Schema1683716654047,
     Schema1683825323705,
     RewardDate1686837924459,
+    RewardClaimAssociation1687179992085,
+    RewardImpressionsString1687180118398,
   ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);

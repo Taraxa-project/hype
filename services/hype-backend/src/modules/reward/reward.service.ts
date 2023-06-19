@@ -113,7 +113,9 @@ export class RewardService {
         }),
         claimed: false,
       },
-      relations: ['hype_reward'],
+      relations: {
+        rewards: true,
+      },
     });
     const rewardClaims = await this.claimRepository.find({
       where: {
@@ -122,7 +124,9 @@ export class RewardService {
         }),
         claimed: true,
       },
-      relations: ['hype_reward'],
+      relations: {
+        rewards: true,
+      },
     });
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
@@ -264,6 +268,9 @@ export class RewardService {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
+        if (!pool) {
+          throw new NotFoundException('Pool does not exist!');
+        }
         const rewardValue =
           impression.message_impressions * Number(pool.impressionReward);
 
@@ -273,7 +280,7 @@ export class RewardService {
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
           telegramUsername: impression.username,
-          impressions: impression.message_impressions,
+          impressions: impression.message_impressions.toString(),
           poolId: impression.pool_id,
           dateFrom: new Date(impression.from),
           dateTo: new Date(impression.to),

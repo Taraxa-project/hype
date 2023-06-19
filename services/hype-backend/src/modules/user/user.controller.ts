@@ -8,7 +8,12 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { WalletGuard } from '../guards/wallet.guard';
 import { UserDTO } from './dto';
 import { GetByDTO } from './dto/get-by.dto';
@@ -26,6 +31,7 @@ export class UserController {
     description: 'Returns user by address',
   })
   @Get()
+  @ApiBearerAuth('authorization')
   @UseGuards(WalletGuard)
   public getUserBy(
     @Query(ValidationPipe) filterDto: GetByDTO,
@@ -34,6 +40,7 @@ export class UserController {
   }
 
   @Post()
+  @ApiBearerAuth('authorization')
   @UseGuards(WalletGuard)
   @ApiResponse({
     status: HttpStatus.OK,
