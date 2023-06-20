@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags,
@@ -46,6 +47,7 @@ export class PoolsController {
     status: HttpStatus.OK,
     description: 'Returns 200 OK',
   })
+  @ApiBody({ type: [ImpressionDto] })
   @ApiNotFoundResponse({ description: 'Endpoint not found' })
   @ApiUnauthorizedResponse({ description: 'You need a valid key' })
   public async saveImpressions(

@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  Column,
+  OneToMany,
+} from 'typeorm';
 import { IsString, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
 import { IClaim } from '../models/IClaim';
+import { HypeReward } from './reward.entity';
 
 @Entity('hype_claim')
 export class HypeClaim extends BaseEntity implements IClaim {
@@ -46,4 +53,7 @@ export class HypeClaim extends BaseEntity implements IClaim {
   @IsNotEmpty()
   @IsNumber()
   nonce: number;
+
+  @OneToMany(() => HypeReward, (reward) => reward.claim)
+  rewards: HypeReward[];
 }

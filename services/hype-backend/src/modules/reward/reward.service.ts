@@ -98,23 +98,35 @@ export class RewardService {
   }
 
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
-    const rewardsOfAddress = await this.rewardRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: false,
+    const rewardsOfAddress = await this.rewardRepository.find({
+      where: {
+        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+          address,
+        }),
+        claimed: false,
+      },
     });
-    const fetchedClaims = await this.claimRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: false,
+    const fetchedClaims = await this.claimRepository.find({
+      where: {
+        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+          address,
+        }),
+        claimed: false,
+      },
+      relations: {
+        rewards: true,
+      },
     });
-    const rewardClaims = await this.claimRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: true,
+    const rewardClaims = await this.claimRepository.find({
+      where: {
+        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+          address,
+        }),
+        claimed: true,
+      },
+      relations: {
+        rewards: true,
+      },
     });
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
@@ -197,9 +209,21 @@ export class RewardService {
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
     let tokenAddress = '';
+    const claim = this.claimRepository.create();
+    claim.amount = total.toString();
+    claim.claimed = false;
+    claim.poolId = poolId;
+    claim.rewardee = address;
+    claim.tokenAddress = tokenAddress;
+    claim.hash = hash;
+    claim.nonce = nonce;
+    const claimFinalized = await claim.save();
+
     if (nonce && hash && total) {
       for (const reward of rewardsOfAddress) {
         reward.claimed = true;
+        // Associate the claim to each reward
+        reward.claim = claimFinalized;
         tokenAddress = reward.tokenAddress;
         const updated = await this.rewardRepository.save(reward);
         if (updated) {
@@ -208,15 +232,7 @@ export class RewardService {
           );
         }
       }
-      const claim = this.claimRepository.create();
-      claim.amount = total.toString();
-      claim.claimed = false;
-      claim.poolId = poolId;
-      claim.rewardee = address;
-      claim.tokenAddress = tokenAddress;
-      claim.hash = hash;
-      claim.nonce = nonce;
-      const claimFinalized = await claim.save();
+
       return {
         nonce,
         hash,
@@ -252,6 +268,9 @@ export class RewardService {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
+        if (!pool) {
+          throw new NotFoundException('Pool does not exist!');
+        }
         const rewardValue =
           impression.message_impressions * Number(pool.impressionReward);
 
@@ -260,6 +279,8 @@ export class RewardService {
           tokenAddress: pool.tokenAddress,
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
+          telegramUsername: impression.username,
+          impressions: impression.message_impressions.toString(),
           poolId: impression.pool_id,
           dateFrom: new Date(impression.from),
           dateTo: new Date(impression.to),
