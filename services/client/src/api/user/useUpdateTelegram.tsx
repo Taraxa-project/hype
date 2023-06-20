@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
-import { HypeUser } from '../../models';
+import { ApiError, HypeUser } from '../../models';
 import { API } from '../../constants';
 
 const updateUser = (user: HypeUser) => {
@@ -32,12 +32,16 @@ export const useUpdateTelegram = () => {
       },
       onError: (error: any) => {
         console.log('Error: ', error);
+        const errorData = error as AxiosError;
+        const errorMessage = errorData?.response?.data as ApiError;
+
+        console.error('Error message: ', errorMessage);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_NOTIFICATION,
           payload: {
             open: true,
             type: NotificationType.ERROR,
-            message: error || error?.message,
+            message: [errorMessage?.message || 'Something went wrong'],
           },
         });
       },
