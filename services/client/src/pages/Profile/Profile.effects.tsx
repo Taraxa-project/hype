@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetHypeUserBy } from '../../api/user/useGetUserBy';
+import { useGetHypeUser } from '../../api/user/useGetUser';
 import { useUpdateTelegram } from '../../api/user/useUpdateTelegram';
 import useWallet from '../../hooks/useWallet';
 import { useQuery } from 'urql';
@@ -21,15 +21,15 @@ export const useProfileEffects = () => {
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
   const [currentRewardsNo, setCurrentRewardsNo] = useState<number>(null);
-  const { data } = useGetMyRewards(account);
-  const { data: fetchedJoinedPolls } = useGetJoinedPools(account);
+  const { data } = useGetMyRewards();
+  const { data: fetchedJoinedPolls } = useGetJoinedPools();
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const [{ data: hypePoolsData }] = useQuery({
     query: HYPEPOOL_QUERIES.profilePoolsQuery,
     variables: { creator: account },
     pause: !account,
   });
-  const { data: hypeUser } = useGetHypeUserBy(account);
+  const { data: hypeUser } = useGetHypeUser();
   const submitHandler = useUpdateTelegram();
   const dispatchModals = useModalsDispatch();
   let navigate = useNavigate();
@@ -45,7 +45,7 @@ export const useProfileEffects = () => {
   };
 
   useEffect(() => {
-    if (account && data) {
+    if (account && data?.totalUnclaimed) {
       setCurrentRewardsNo(data.totalUnclaimed.length);
     }
   }, [account, data]);
@@ -126,7 +126,6 @@ export const useProfileEffects = () => {
   const onPoolDetails = (cardData: HypePool) => {
     navigate(`/pool/${cardData.id}`);
   };
-
 
   return {
     joinedPools,
