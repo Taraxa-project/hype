@@ -7,6 +7,7 @@ import { Schema1683825323705 } from './src/migrations/1683825323705-Group';
 import { RewardDate1686837924459 } from './src/migrations/1686837924459-RewardDate';
 import { RewardClaimAssociation1687179992085 } from './src/migrations/1687179992085-RewardClaimAssociation';
 import { RewardImpressionsString1687180118398 } from './src/migrations/1687180118398-RewardImpressions-String';
+import { RewardColumnNameUpdate1687273276705 } from './src/migrations/1687273276705-RewardColumnNameUpdate';
 dotenv.config();
 
 const getDataSourceOptions = (): DataSourceOptions => {
@@ -53,6 +54,7 @@ const DataSourceConfig = new DataSource({
     RewardDate1686837924459,
     RewardClaimAssociation1687179992085,
     RewardImpressionsString1687180118398,
+    RewardColumnNameUpdate1687273276705,
   ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);

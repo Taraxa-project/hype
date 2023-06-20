@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class RewardImpressionsString1687180118398
   implements MigrationInterface
@@ -6,20 +6,34 @@ export class RewardImpressionsString1687180118398
   name = 'RewardImpressionsString1687180118398';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "hype_reward" DROP COLUMN "impressions"`,
+    const table = await queryRunner.getTable('hype_reward');
+    const currentColumn = table.columns.find(
+      (column) => column.name === 'impressions',
     );
-    await queryRunner.query(
-      `ALTER TABLE "hype_reward" ADD "impressions" character varying`,
+    await queryRunner.changeColumn(
+      'hype_reward',
+      currentColumn,
+      new TableColumn({
+        name: 'impressions',
+        type: 'character varying',
+        isNullable: currentColumn.isNullable, // keep the same nullability
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "hype_reward" DROP COLUMN "impressions"`,
+    const table = await queryRunner.getTable('hype_reward');
+    const currentColumn = table.columns.find(
+      (column) => column.name === 'impressions',
     );
-    await queryRunner.query(
-      `ALTER TABLE "hype_reward" ADD "impressions" integer`,
+    await queryRunner.changeColumn(
+      'hype_reward',
+      currentColumn,
+      new TableColumn({
+        name: 'impressions',
+        type: 'integer',
+        isNullable: currentColumn.isNullable, // keep the same nullability
+      }),
     );
   }
 }
