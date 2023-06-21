@@ -96,6 +96,10 @@ export function handlePoolUriSet(event: PoolUriSet): void {
       if (projectDescription) {
         hypepool.projectDescription = projectDescription.toString();
       }
+      const imageUri = value.get('imageUri');
+      if (imageUri) {
+        hypepool.imageUri = imageUri.toString();
+      }
     }
   }
 

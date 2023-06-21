@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
@@ -6,6 +6,7 @@ import { HypePoolRewardForm } from './RewardForm';
 import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
+import { useIpfsImageUpload } from '../../api/ipfs/useUploadImage';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
@@ -27,12 +28,15 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
+  const { data: uploadedImageUrl, submitHandler: uploadImage } = useIpfsImageUpload();
+  const fileInput = useRef<HTMLInputElement | null>(null);
 
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
@@ -66,16 +70,30 @@ export const useAddHypePoolEffects = () => {
   );
 
   useEffect(() => {
+    if (uploadedImageUrl) {
+      setImageUrl(uploadedImageUrl.data.path);
+    }
+  }, [uploadedImageUrl]);
+
+  useEffect(() => {
     if (uploadedIpfsUrl) {
       setIpfsUrl(uploadedIpfsUrl.data.path);
       setCurrentStep(2);
     }
   }, [uploadedIpfsUrl]);
 
+  const onUploadImage = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (fileInput.current?.files?.length) {
+      uploadImage(fileInput.current.files[0]);
+    }
+  };
+
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const projectDetails: HypeProjectDetails = {
       description: data.description,
       projectDescription: data.projectDescription,
+      imageUri: imageUrl,
     };
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
@@ -143,5 +161,7 @@ export const useAddHypePoolEffects = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
+    onUploadImage,
+    fileInput,
   };
 };
