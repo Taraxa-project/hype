@@ -19,6 +19,7 @@ import {
   PoolClaim,
   RewardStateDto,
   TotalUnclaimed,
+  TopTelegramAccountDto,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -31,6 +32,13 @@ export interface ClaimResult {
   hash: string;
   claimedAmount: BigNumber;
   claim: HypeClaim;
+}
+
+export interface PoolStatsResult {
+  tokensAwarded: number;
+  tokensClaimed: number;
+  participants: number;
+  impressions: number;
 }
 
 @Injectable()
@@ -208,13 +216,12 @@ export class RewardService {
     );
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
-    let tokenAddress = '';
     const claim = this.claimRepository.create();
     claim.amount = total.toString();
     claim.claimed = false;
     claim.poolId = poolId;
     claim.rewardee = address;
-    claim.tokenAddress = tokenAddress;
+    claim.tokenAddress = rewardsOfAddress[0].tokenAddress;
     claim.hash = hash;
     claim.nonce = nonce;
     const claimFinalized = await claim.save();
@@ -224,7 +231,6 @@ export class RewardService {
         reward.claimed = true;
         // Associate the claim to each reward
         reward.claim = claimFinalized;
-        tokenAddress = reward.tokenAddress;
         const updated = await this.rewardRepository.save(reward);
         if (updated) {
           this.logger.log(
@@ -307,5 +313,56 @@ export class RewardService {
       }),
     );
     return pools;
+  }
+
+  async getPoolStats(poolId: string): Promise<PoolStatsResult> {
+    const claims = await this.claimRepository.find({ where: { poolId } });
+
+    let tokensAwarded = 0;
+    let tokensClaimed = 0;
+
+    for (const claim of claims) {
+      const amount = parseFloat(claim.amount);
+      if (claim.claimed) {
+        tokensAwarded += amount;
+      } else {
+        tokensClaimed += amount;
+      }
+    }
+
+    const rewards = await this.rewardRepository.find({ where: { poolId } });
+    const participants = new Set(rewards.map((reward) => reward.telegramId))
+      .size;
+    let impressions = 0;
+    for (const reward of rewards) {
+      impressions += parseFloat(reward.impressions);
+    }
+
+    return {
+      tokensAwarded,
+      tokensClaimed,
+      participants,
+      impressions,
+    };
+  }
+
+  async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
+    const qb = this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('reward.telegramId', 'telegramId')
+      .addSelect('reward.telegramUsername', 'telegramUsername')
+      .addSelect(
+        "SUM(CASE WHEN reward.impressions ~ '^[0-9]+$' THEN reward.impressions::integer ELSE CAST(reward.impressions AS decimal) END)",
+        'totalimpressions',
+      )
+      .addSelect(
+        "ROW_NUMBER() OVER (ORDER BY SUM(CASE WHEN reward.impressions ~ '^[0-9]+$' THEN reward.impressions::integer ELSE CAST(reward.impressions AS decimal) END) DESC)",
+        'rank',
+      )
+      .where('reward.poolId = :poolId', { poolId })
+      .groupBy('reward.telegramId, reward.telegramUsername')
+      .orderBy('totalimpressions', 'DESC');
+
+    return qb.getRawMany();
   }
 }
