@@ -4,9 +4,9 @@ import {
   Get,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   UseGuards,
-  Param,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -17,7 +17,6 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import { WalletGuard, HMACGuard } from '../guards';
 import {
   ImpressionDto,
   PoolStatsDto,
@@ -25,7 +24,10 @@ import {
   TopTelegramAccountDto,
 } from './dto';
 import { PoolStatsResult, RewardService } from './reward.service';
+import { HMACGuard } from '../guards';
 import { IPool } from '../../models';
+import { AuthGuard } from '@nestjs/passport';
+import { GetAddress } from '../auth/get-address.decorator';
 dotenv.config();
 
 @ApiTags('pools')
@@ -33,20 +35,20 @@ dotenv.config();
 export class PoolsController {
   constructor(private readonly rewardService: RewardService) {}
 
-  @Get('joined/:address')
-  @UseGuards(WalletGuard)
+  @Get('joined')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
     description: 'Returns joined pools for a given address',
   })
-  async getJoined(@Param('address') address: string): Promise<IPool[]> {
+  async getJoined(@GetAddress() address: string): Promise<IPool[]> {
     return this.rewardService.getJoinedPools(address);
   }
 
   @Get('stats/:poolId')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
@@ -58,7 +60,7 @@ export class PoolsController {
   }
 
   @Get('leaderboard/:poolId')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,

@@ -4,9 +4,7 @@ import {
   Get,
   HttpStatus,
   Post,
-  Query,
   UseGuards,
-  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -14,11 +12,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { WalletGuard } from '../guards/wallet.guard';
 import { UserDTO } from './dto';
-import { GetByDTO } from './dto/get-by.dto';
 import { HypeUser } from '../../entities/user.entity';
 import { UsersService } from './user.service';
+import { AuthGuard } from '@nestjs/passport';
+import { GetAddress } from '../auth/get-address.decorator';
 
 @ApiTags('users')
 @Controller('/users')
@@ -30,18 +28,16 @@ export class UserController {
     type: [HypeUser],
     description: 'Returns user by address',
   })
-  @Get()
+  @Get('me')
   @ApiBearerAuth('authorization')
-  @UseGuards(WalletGuard)
-  public getUserBy(
-    @Query(ValidationPipe) filterDto: GetByDTO,
-  ): Promise<HypeUser> {
-    return this.service.getUserByAddress(filterDto);
+  @UseGuards(AuthGuard('jwt'))
+  public getUserBy(@GetAddress() address: string): Promise<HypeUser> {
+    return this.service.getUserByAddress(address);
   }
 
   @Post()
   @ApiBearerAuth('authorization')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiResponse({
     status: HttpStatus.OK,
     type: UserDTO,
