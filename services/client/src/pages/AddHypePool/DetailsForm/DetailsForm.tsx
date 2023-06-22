@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
+import { Dispatch } from 'react';
+import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
 import TitleText from '../../../components/titletext/TitleText';
-// import { Link } from '../../../components/styles/Link';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
@@ -12,18 +14,27 @@ import {
   InfoCard,
   FormAction,
   FormElement,
+  PoolImage,
 } from '../AddHypePool.styled';
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
-import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
-import { Link } from 'react-router-dom';
+import { UploadControl } from '../../../components/upload/Upload';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
+  onUploadImage: () => void;
+  selectedImage: File;
+  setSelectedImage: Dispatch<any>;
 }
 
-export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
+export const DetailsForm = ({
+  defaultValues,
+  onSubmit,
+  onUploadImage,
+  selectedImage,
+  setSelectedImage,
+}: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
   return (
@@ -86,6 +97,44 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
             name="tokenName"
             {...register('tokenName')}
           />
+        </FormElement>
+
+        <FormElement>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Project's image: </Label>
+          </Box>
+          {selectedImage && (
+            <Box display="flex" flexDirection="column" gridGap="0.2rem" mb={3}>
+              <PoolImage alt="not found" width={'250px'} src={URL.createObjectURL(selectedImage)} />
+              <Button
+                size="full-width"
+                type="button"
+                variant="primary"
+                onClick={() => setSelectedImage(null)}
+              >
+                Remove
+              </Button>
+            </Box>
+          )}
+          {!selectedImage && (
+            <Button type="button" style={{ padding: 0 }} variant="primary">
+              <UploadControl
+                value={selectedImage}
+                onChange={(event) => {
+                  console.log(event.target.files[0]);
+                  setSelectedImage(event.target.files[0]);
+                }}
+                accept="image/*"
+              >
+                Upload image
+              </UploadControl>
+            </Button>
+          )}
+          {selectedImage && (
+            <Button type="button" variant="primary" onClick={() => onUploadImage()}>
+              Save image
+            </Button>
+          )}
         </FormElement>
 
         {/* Description */}

@@ -7,7 +7,7 @@ import { API } from '../../constants';
 const uploadImage = (file: File) => {
   const url = `${API}/ipfs/upload-image`;
   let formData = new FormData();
-  formData.append('image', file);
+  formData.append('file', file);
   return axios.post(url, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

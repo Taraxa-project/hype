@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
@@ -81,8 +81,7 @@ export const useAddHypePoolEffects = () => {
     }
   }, [uploadedIpfsUrl]);
 
-  const onUploadImage = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onUploadImage = async () => {
     if (selectedImage) {
       uploadImage(selectedImage);
     }
