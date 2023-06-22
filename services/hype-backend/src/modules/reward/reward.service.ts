@@ -286,7 +286,7 @@ export class RewardService {
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
           telegramUsername: impression.username,
-          impressions: impression.message_impressions.toString(),
+          impressions: impression.message_impressions,
           poolId: impression.pool_id,
           dateFrom: new Date(impression.from),
           dateTo: new Date(impression.to),
@@ -335,7 +335,7 @@ export class RewardService {
       .size;
     let impressions = 0;
     for (const reward of rewards) {
-      impressions += parseFloat(reward.impressions);
+      impressions += parseFloat(reward.impressions.toString());
     }
 
     return {
@@ -351,12 +351,9 @@ export class RewardService {
       .createQueryBuilder('reward')
       .select('reward.telegramId', 'telegramId')
       .addSelect('reward.telegramUsername', 'telegramUsername')
+      .addSelect('SUM(reward.impressions)', 'totalimpressions')
       .addSelect(
-        "SUM(CASE WHEN reward.impressions ~ '^[0-9]+$' THEN reward.impressions::integer ELSE CAST(reward.impressions AS decimal) END)",
-        'totalimpressions',
-      )
-      .addSelect(
-        "ROW_NUMBER() OVER (ORDER BY SUM(CASE WHEN reward.impressions ~ '^[0-9]+$' THEN reward.impressions::integer ELSE CAST(reward.impressions AS decimal) END) DESC)",
+        'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
         'rank',
       )
       .where('reward.poolId = :poolId', { poolId })
