@@ -3,26 +3,19 @@ import { useQuery } from 'react-query';
 import { API } from '../../constants';
 import { HypeUser } from '../../models';
 
-const getByAddress = (publicAddress: string) => {
-  if (!publicAddress) {
-    return;
-  }
-  const url = `${API}/users`;
-  const params = {
-    publicAddress,
-  };
-  return axios.get(url, { params });
+const getByAddress = () => {
+  const url = `${API}/users/me`;
+  return axios.get(url);
 };
 
-export const useGetHypeUserBy = (publicAddress: string) => {
+export const useGetHypeUser = () => {
   const { data, isError, error, isLoading, isFetching } = useQuery(
-    ['hype-user', publicAddress],
-    () => getByAddress(publicAddress),
+    ['hype-user'],
+    () => getByAddress(),
     {
       onError: (error) => {
         console.log('ERROR: ', error);
       },
-      enabled: !!publicAddress,
     },
   );
   return {

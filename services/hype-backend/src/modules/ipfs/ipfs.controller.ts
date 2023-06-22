@@ -8,8 +8,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { WalletGuard } from '../guards/wallet.guard';
 import { ProjectDetailsDTO } from './dto';
 import { IpfsAddResult, IpfsResult, IpfsService } from './ipfs.service';
 import { Express } from 'express';
@@ -22,7 +22,7 @@ export class IpfsController {
   constructor(private readonly service: IpfsService) {}
 
   @Post('upload-details')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiResponse({
     status: HttpStatus.OK,
     type: ProjectDetailsDTO,
@@ -35,7 +35,7 @@ export class IpfsController {
   }
 
   @Post('upload-image')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file'))
   @ApiResponse({
     status: HttpStatus.OK,
