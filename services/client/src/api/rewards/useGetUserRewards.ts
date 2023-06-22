@@ -4,16 +4,16 @@ import { API } from '../../constants';
 import { useAuth } from '../../hooks';
 import { HypeRewardSummary } from '../../models/Redeem.model';
 
-const getMyRewards = (address: string) => {
-  const url = `${API}/rewards/${address}`;
+const getMyRewards = () => {
+  const url = `${API}/rewards/address`;
   return axios.get(url);
 };
 
-export const useGetMyRewards = (address: string) => {
+export const useGetMyRewards = () => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['user-rewards', address],
-    () => getMyRewards(address),
+    ['user-rewards'],
+    () => getMyRewards(),
     {
       retry: false,
       enabled: authenticated,
