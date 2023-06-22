@@ -20,7 +20,6 @@ export const useProfileEffects = () => {
   const { account } = useWallet();
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
-  const [currentRewardsNo, setCurrentRewardsNo] = useState<number>(null);
   const { data } = useGetMyRewards();
   const { data: fetchedJoinedPolls } = useGetJoinedPools();
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
@@ -44,11 +43,7 @@ export const useProfileEffects = () => {
     navigate(`/redeem`);
   };
 
-  useEffect(() => {
-    if (account && data?.totalUnclaimed) {
-      setCurrentRewardsNo(data.totalUnclaimed.length);
-    }
-  }, [account, data]);
+  const currentRewardsNo = data.totalUnclaimed.length;
 
   useEffect(() => {
     if (fetchedJoinedPolls) {
