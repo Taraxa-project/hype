@@ -23,7 +23,7 @@ import {
   RewardDto,
   TopTelegramAccountDto,
 } from './dto';
-import { PoolStatsResult, RewardService } from './reward.service';
+import { RewardService } from './reward.service';
 import { HMACGuard } from '../guards';
 import { IPool } from '../../models';
 import { AuthGuard } from '@nestjs/passport';
@@ -48,20 +48,16 @@ export class PoolsController {
   }
 
   @Get('stats/:poolId')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: PoolStatsDto,
     description: 'Returns pool stats for a given address',
   })
-  async getStats(@Param('poolId') poolId: string): Promise<PoolStatsResult> {
+  async getStats(@Param('poolId') poolId: string): Promise<PoolStatsDto> {
     return this.rewardService.getPoolStats(poolId);
   }
 
   @Get('leaderboard/:poolId')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: [TopTelegramAccountDto],

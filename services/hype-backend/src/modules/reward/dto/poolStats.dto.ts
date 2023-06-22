@@ -1,21 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
-import { PoolStatsResult } from '../reward.service';
+import { IsString } from 'class-validator';
 
-export class PoolStatsDto implements PoolStatsResult {
+export class PoolStatsDto {
   @ApiProperty()
-  @IsNumber()
-  tokensAwarded: number;
-
-  @ApiProperty()
-  @IsNumber()
-  tokensClaimed: number;
+  @IsString()
+  tokensAwarded: string;
 
   @ApiProperty()
-  @IsNumber()
-  participants: number;
+  @IsString()
+  tokensClaimed: string;
 
   @ApiProperty()
-  @IsNumber()
-  impressions: number;
+  @IsString()
+  participants: string;
+
+  @ApiProperty()
+  @IsString()
+  impressions: string;
 }

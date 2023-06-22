@@ -20,6 +20,7 @@ import {
   RewardStateDto,
   TotalUnclaimed,
   TopTelegramAccountDto,
+  PoolStatsDto,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -32,13 +33,6 @@ export interface ClaimResult {
   hash: string;
   claimedAmount: BigNumber;
   claim: HypeClaim;
-}
-
-export interface PoolStatsResult {
-  tokensAwarded: number;
-  tokensClaimed: number;
-  participants: number;
-  impressions: number;
 }
 
 @Injectable()
@@ -315,28 +309,32 @@ export class RewardService {
     return pools;
   }
 
-  async getPoolStats(poolId: string): Promise<PoolStatsResult> {
-    const claims = await this.claimRepository.find({ where: { poolId } });
+  async getPoolStats(poolId: string): Promise<PoolStatsDto> {
+    const { total: tokensAwarded } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
+      .where('reward.claimed = :claimed', { claimed: false })
+      .andWhere('reward.poolId = :poolId', { poolId })
+      .getRawOne();
 
-    let tokensAwarded = 0;
-    let tokensClaimed = 0;
+    const { total: tokensClaimed } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
+      .where('reward.claimed = :claimed', { claimed: true })
+      .andWhere('reward.poolId = :poolId', { poolId })
+      .getRawOne();
 
-    for (const claim of claims) {
-      const amount = parseFloat(claim.amount);
-      if (claim.claimed) {
-        tokensAwarded += amount;
-      } else {
-        tokensClaimed += amount;
-      }
-    }
+    const { total: participants } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('COUNT(DISTINCT reward.telegramId)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
 
-    const rewards = await this.rewardRepository.find({ where: { poolId } });
-    const participants = new Set(rewards.map((reward) => reward.telegramId))
-      .size;
-    let impressions = 0;
-    for (const reward of rewards) {
-      impressions += parseFloat(reward.impressions.toString());
-    }
+    const { total: impressions } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(reward.impressions)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
 
     return {
       tokensAwarded,
