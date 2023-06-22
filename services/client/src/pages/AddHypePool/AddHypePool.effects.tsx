@@ -29,8 +29,7 @@ export const useAddHypePoolEffects = () => {
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
   const { data: uploadedImageUrl, submitHandler: uploadImage } = useIpfsImageUpload();
-  const fileInput = useRef<HTMLInputElement | null>(null);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
@@ -84,8 +83,8 @@ export const useAddHypePoolEffects = () => {
 
   const onUploadImage = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (fileInput.current?.files?.length) {
-      uploadImage(fileInput.current.files[0]);
+    if (selectedImage) {
+      uploadImage(selectedImage);
     }
   };
 
@@ -162,6 +161,7 @@ export const useAddHypePoolEffects = () => {
     setIsCustomToken,
     poolTransaction,
     onUploadImage,
-    fileInput,
+    setSelectedImage,
+    selectedImage,
   };
 };
