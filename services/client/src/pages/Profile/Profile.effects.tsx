@@ -43,7 +43,7 @@ export const useProfileEffects = () => {
     navigate(`/redeem`);
   };
 
-  const currentRewardsNo = data.totalUnclaimed.length;
+  const currentRewardsNo = data?.totalUnclaimed.length;
 
   useEffect(() => {
     if (fetchedJoinedPolls) {

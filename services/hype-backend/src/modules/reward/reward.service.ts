@@ -292,18 +292,20 @@ export class RewardService {
   }
 
   async getJoinedPools(address: string): Promise<IPool[]> {
-    const rewards: Partial<HypeReward[]> = await this.rewardRepository
-      .createQueryBuilder()
-      .select('DISTINCT "poolId"')
-      .where('rewardee = :address', { address })
+    const rewards = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('DISTINCT reward.poolId')
+      .where('reward.rewardee = :address', { address })
       .getRawMany();
 
     const pools: IPool[] = [];
     await Promise.all(
       rewards.map(async (reward) => {
         const result: { hypePool: IPool } =
-          await this.graphQlService.getPoolById(reward.poolId);
-        pools.push(result.hypePool);
+          await this.graphQlService.getPoolById(reward.pool_id);
+        if (result?.hypePool) {
+          pools.push(result.hypePool);
+        }
       }),
     );
     return pools;
