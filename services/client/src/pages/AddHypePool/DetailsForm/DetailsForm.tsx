@@ -126,13 +126,13 @@ export const DetailsForm = ({
                 }}
                 accept="image/*"
               >
-                Upload image
+                Select image
               </UploadControl>
             </Button>
           )}
           {selectedImage && (
             <Button type="button" variant="primary" onClick={() => onUploadImage()}>
-              Save image
+              Upload image
             </Button>
           )}
         </FormElement>

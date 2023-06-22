@@ -70,7 +70,8 @@ export const useAddHypePoolEffects = () => {
 
   useEffect(() => {
     if (uploadedImageUrl) {
-      setImageUrl(uploadedImageUrl.data.path);
+      console.log('uploadedImageUrl: ', uploadedImageUrl.data.cid.toString());
+      setImageUrl(uploadedImageUrl.data.cid.toString());
     }
   }, [uploadedImageUrl]);
 

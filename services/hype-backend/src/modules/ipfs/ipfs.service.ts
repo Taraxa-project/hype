@@ -16,7 +16,7 @@ export interface IpfsResult {
 }
 
 export interface IpfsAddResult {
-  cid: CID;
+  cid: CID | string;
   size: number;
   path: string;
   mode?: number;
@@ -128,7 +128,11 @@ export class IpfsService {
         content,
       });
       console.log('Image uploaded: ', uploaded);
-      return uploaded;
+      return {
+        path: uploaded.path,
+        size: uploaded.size,
+        cid: uploaded.cid.toString(), // convert cid to string
+      };
     } catch (error) {
       console.log('Error uploading image to IPFS: ', error);
       throw new InternalServerErrorException(
