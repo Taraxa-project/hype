@@ -21,6 +21,7 @@ import {
   TotalUnclaimed,
   TopTelegramAccountDto,
   PoolStatsDto,
+  RewardsDetails,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -159,6 +160,15 @@ export class RewardService {
         const rewardsOfPool = rewardsOfAddress.filter(
           (r) => r.poolId === poolId,
         );
+        const rewardsDetails: RewardsDetails[] = rewardsOfPool.map(
+          (rewardOfPool) => {
+            return {
+              telegramGroup: rewardOfPool.telegramUsername,
+              impressions: rewardOfPool.impressions,
+              rewards: rewardOfPool.amount,
+            };
+          },
+        );
         const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
         const unclaimed = rewardsOfPool.reduce(
           (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
@@ -171,6 +181,7 @@ export class RewardService {
           poolId,
           pool: result.hypePool,
           tokenAddress: token,
+          impressions: rewardsDetails,
         });
       }),
     );

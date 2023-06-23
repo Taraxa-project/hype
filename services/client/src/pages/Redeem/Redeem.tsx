@@ -6,7 +6,6 @@ import { ClaimHistoryContainer, TransactionsContainer } from '../../containers/r
 export const Redeem = () => {
   const { claims, claimHistory, poolRewards, onRedeem, onClaim, isLoadingRewards } =
     useRedeemEffects();
-
   return (
     <Box backgroundColor="background" minHeight="100vh" height="100%">
       <Box
