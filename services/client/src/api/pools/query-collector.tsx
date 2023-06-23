@@ -1,7 +1,7 @@
 export const HYPEPOOL_QUERIES = {
   poolsSearchQuery: `
-    query HypePoolsSearch($first: Int!, $skip: Int!, $text: String) {
-      poolSearch(first: $first, skip: $skip, text: $text) {
+    query HypePoolsSearch($first: Int!, $skip: Int!, $orderBy: String, $orderDirection: String, $text: String) {
+      poolSearch(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, text: $text) {
         id
         title
         tokenName
@@ -25,8 +25,8 @@ export const HYPEPOOL_QUERIES = {
     }
   `,
   poolsQuery: `
-    query HypePools($first: Int!, $skip: Int!, $text: String) {
-      hypePools(first: $first, skip: $skip, text: $text) {
+    query HypePools($first: Int!, $skip: Int!, $orderBy: String, $orderDirection: String, $text: String) {
+      hypePools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, text: $text) {
         id
         title
         tokenName
@@ -50,9 +50,11 @@ export const HYPEPOOL_QUERIES = {
     }
   `,
   profilePoolsQuery: `
-    query HypePoolsByCreator($creator: String) {
+    query HypePoolsByCreator($creator: String, $orderBy: String, $orderDirection: String) {
       hypePools(
-        where: { creator: $creator }
+        where: { creator: $creator },
+        orderBy: $orderBy,
+        orderDirection: $orderDirection
       ) {
         id
         title
