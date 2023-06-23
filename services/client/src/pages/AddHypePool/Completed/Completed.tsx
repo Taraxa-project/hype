@@ -23,7 +23,9 @@ export const Completed: FC<CompletedProps> = ({
 
   return (
     <Box width={'100%'}>
-      <TitleText>{poolName} is active!</TitleText>
+      <Text fontWeight="700" fontSize="2rem" lineHeight="26px">
+        {poolName} is active!
+      </Text>
       <Box pb={4}>
         {text && href && (
           <Box display="flex">
@@ -34,11 +36,10 @@ export const Completed: FC<CompletedProps> = ({
           </Box>
         )}
       </Box>
-      <SharePool
-        title={'Hype your Hype Pool!'}
-        createdPoolIndex={createdPoolIndex}
-        poolName={poolName}
-      />
+      <Text fontWeight="700" fontSize="2rem" lineHeight="26px">
+        Hype your Hype Pool!
+      </Text>
+      <SharePool createdPoolIndex={createdPoolIndex} poolName={poolName} />
     </Box>
   );
 };

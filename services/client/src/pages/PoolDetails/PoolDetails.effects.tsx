@@ -15,6 +15,8 @@ import {
 import { HypePool } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
 import { useNavigate } from 'react-router-dom';
+import { useGetPoolStats } from '../../api/pools/useGetPoolStats';
+import { useGetPoolLeaderboard } from '../../api/pools/useGetPoolLeaderboard';
 
 export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
@@ -38,6 +40,8 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited, isCustomToken);
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
+  const { data: poolStats } = useGetPoolStats(poolId);
+  const { data: leaderboard } = useGetPoolLeaderboard(poolId);
 
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
@@ -136,5 +140,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
     activate,
     account,
     onParticipate,
+    poolStats,
+    leaderboard,
   };
 };

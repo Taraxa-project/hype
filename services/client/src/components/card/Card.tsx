@@ -45,7 +45,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
               <DataValue key={`${cap}-${Date.now()}`}>
-                {transformFromWei(cap, tokenDecimals)} {tokenName}
+                {transformFromWei(cap, tokenDecimals)} {tokenName || 'TARA'}
               </DataValue>
             </DataContainer>
           )}
@@ -54,7 +54,7 @@ const Card = ({ children, ...props }: CardProps) => {
               <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
                 {transformFromWei(impressionReward, tokenDecimals)}{' '}
-                {tokenName}
+                {tokenName || 'TARA'}
               </DataValue>
             </DataContainer>
           )}

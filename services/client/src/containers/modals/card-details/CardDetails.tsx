@@ -103,12 +103,10 @@ export const CardDetails = () => {
             <DataValue>{networks[network].chainName}</DataValue>
           </DataContainer>
         )}
-        {tokenName && (
           <DataContainer>
             <DataHeader>Token name:</DataHeader>
-            <DataValue>{tokenName}</DataValue>
+            <DataValue>{tokenName || 'TARA'}</DataValue>
           </DataContainer>
-        )}
         {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
           <>
             <DataHeader>Token contract address:</DataHeader>
@@ -122,7 +120,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
             <DataValue key={`${cap}-${Date.now()}`}>
-              {transformFromWei(cap, tokenDecimals)} {tokenName}
+              {transformFromWei(cap, tokenDecimals)} {tokenName || 'TARA'}
             </DataValue>
           </DataContainer>
         )}
@@ -130,7 +128,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
-              {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenName || 'TARA'}
             </DataValue>
           </DataContainer>
         )}
