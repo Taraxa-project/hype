@@ -6,7 +6,13 @@ import {
   CreateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsDate,
+  IsNumber,
+} from 'class-validator';
 import { IReward } from '../models';
 import { HypeClaim } from './claim.entity';
 
@@ -42,9 +48,9 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   telegramUsername: string;
 
-  @Column({ nullable: true })
-  @IsString()
-  impressions: string;
+  @Column({ type: 'decimal', nullable: true })
+  @IsNumber()
+  impressions: number;
 
   @Column({ name: 'token_address', nullable: false })
   @IsNotEmpty()

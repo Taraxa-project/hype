@@ -19,6 +19,8 @@ import {
   PoolClaim,
   RewardStateDto,
   TotalUnclaimed,
+  TopTelegramAccountDto,
+  PoolStatsDto,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -208,13 +210,12 @@ export class RewardService {
     );
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
-    let tokenAddress = '';
     const claim = this.claimRepository.create();
     claim.amount = total.toString();
     claim.claimed = false;
     claim.poolId = poolId;
     claim.rewardee = address;
-    claim.tokenAddress = tokenAddress;
+    claim.tokenAddress = rewardsOfAddress[0].tokenAddress;
     claim.hash = hash;
     claim.nonce = nonce;
     const claimFinalized = await claim.save();
@@ -224,7 +225,6 @@ export class RewardService {
         reward.claimed = true;
         // Associate the claim to each reward
         reward.claim = claimFinalized;
-        tokenAddress = reward.tokenAddress;
         const updated = await this.rewardRepository.save(reward);
         if (updated) {
           this.logger.log(
@@ -280,7 +280,7 @@ export class RewardService {
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
           telegramUsername: impression.username,
-          impressions: impression.message_impressions.toString(),
+          impressions: impression.message_impressions,
           poolId: impression.pool_id,
           dateFrom: new Date(impression.from),
           dateTo: new Date(impression.to),
@@ -309,5 +309,57 @@ export class RewardService {
       }),
     );
     return pools;
+  }
+
+  async getPoolStats(poolId: string): Promise<PoolStatsDto> {
+    const { total: tokensAwarded } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
+      .where('reward.claimed = :claimed', { claimed: false })
+      .andWhere('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: tokensClaimed } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
+      .where('reward.claimed = :claimed', { claimed: true })
+      .andWhere('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: participants } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('COUNT(DISTINCT reward.telegramId)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: impressions } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(reward.impressions)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    return {
+      tokensAwarded,
+      tokensClaimed,
+      participants,
+      impressions,
+    };
+  }
+
+  async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
+    const qb = this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('reward.telegramId', 'telegramId')
+      .addSelect('reward.telegramUsername', 'telegramUsername')
+      .addSelect('SUM(reward.impressions)', 'totalimpressions')
+      .addSelect(
+        'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
+        'rank',
+      )
+      .where('reward.poolId = :poolId', { poolId })
+      .groupBy('reward.telegramId, reward.telegramUsername')
+      .orderBy('totalimpressions', 'DESC');
+
+    return qb.getRawMany();
   }
 }

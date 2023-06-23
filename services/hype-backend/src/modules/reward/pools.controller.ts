@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -16,9 +17,14 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import { HMACGuard } from '../guards';
-import { ImpressionDto, RewardDto } from './dto';
+import {
+  ImpressionDto,
+  PoolStatsDto,
+  RewardDto,
+  TopTelegramAccountDto,
+} from './dto';
 import { RewardService } from './reward.service';
+import { HMACGuard } from '../guards';
 import { IPool } from '../../models';
 import { AuthGuard } from '@nestjs/passport';
 import { GetAddress } from '../auth/get-address.decorator';
@@ -35,10 +41,32 @@ export class PoolsController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
-    description: 'Returns joined pools for a givven address',
+    description: 'Returns joined pools for a given address',
   })
   async getJoined(@GetAddress() address: string): Promise<IPool[]> {
     return this.rewardService.getJoinedPools(address);
+  }
+
+  @Get('stats/:poolId')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PoolStatsDto,
+    description: 'Returns pool stats for a given address',
+  })
+  async getStats(@Param('poolId') poolId: string): Promise<PoolStatsDto> {
+    return this.rewardService.getPoolStats(poolId);
+  }
+
+  @Get('leaderboard/:poolId')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [TopTelegramAccountDto],
+    description: 'Returns pool stats for a given address',
+  })
+  async getLeaderboard(
+    @Param('poolId') poolId: string,
+  ): Promise<TopTelegramAccountDto[]> {
+    return this.rewardService.getLeaderboard(poolId);
   }
 
   @Post('impressions')
