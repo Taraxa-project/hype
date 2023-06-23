@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Blockies from 'react-blockies';
 import { usePoolDetailsEffects } from './PoolDetails.effects';
-import { transformFromWei, formatDate, networks } from '../../utils';
+import { transformFromWei, formatDate, networks, fullIpfsUrl } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
   PoolContainer,
@@ -12,6 +12,7 @@ import {
   InfoValue,
   Account,
   Description,
+  PoolImage,
 } from './PoolDetails.styled';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
@@ -39,6 +40,7 @@ export const PoolDetails = () => {
     tokenDecimals,
     isDeposited,
     authenticated,
+    imageUri,
     fund,
     activate,
     account,
@@ -52,6 +54,7 @@ export const PoolDetails = () => {
     <RoundContainer>
       <PoolContainer>
         <SharePool title={title} createdPoolIndex={poolId} poolName={title} />
+        {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
         <Subheader>Pool creator:</Subheader>
         {creator && (
           <BlockiesContainer>

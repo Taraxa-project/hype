@@ -19,21 +19,29 @@ import {
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
 import { UploadControl } from '../../../components/upload/Upload';
+import LoadingSpinner from '../../../assets/icons/Spinner';
+import SuccessIcon from '../../../assets/icons/Success';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
   onUploadImage: () => void;
+  removeImage: () => void;
   selectedImage: File;
   setSelectedImage: Dispatch<any>;
+  isUploadingImage: boolean;
+  imageUrl: string;
 }
 
 export const DetailsForm = ({
   defaultValues,
   onSubmit,
   onUploadImage,
+  removeImage,
   selectedImage,
   setSelectedImage,
+  isUploadingImage,
+  imageUrl,
 }: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
@@ -103,14 +111,19 @@ export const DetailsForm = ({
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project's image: </Label>
           </Box>
+          <Example>
+            This is not mandatory but we recommend uploading an image to represent your project
+          </Example>
+
           {selectedImage && (
             <Box display="flex" flexDirection="column" gridGap="0.2rem" mb={3}>
               <PoolImage alt="not found" width={'250px'} src={URL.createObjectURL(selectedImage)} />
               <Button
                 size="full-width"
+                disabled={isUploadingImage}
                 type="button"
                 variant="primary"
-                onClick={() => setSelectedImage(null)}
+                onClick={removeImage}
               >
                 Remove
               </Button>
@@ -130,11 +143,29 @@ export const DetailsForm = ({
               </UploadControl>
             </Button>
           )}
-          {selectedImage && (
-            <Button type="button" variant="primary" onClick={() => onUploadImage()}>
-              Upload image
-            </Button>
-          )}
+          {selectedImage &&
+            (!isUploadingImage ? (
+              <>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => onUploadImage()}
+                  disabled={!!imageUrl}
+                >
+                  {!imageUrl ? (
+                    'Upload image'
+                  ) : (
+                    <Box display="flex" alignItems="center">
+                      <Text pr={3}>Image uploaded</Text> <SuccessIcon />
+                    </Box>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <Box p={3}>
+                <LoadingSpinner />
+              </Box>
+            ))}
         </FormElement>
 
         {/* Description */}

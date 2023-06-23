@@ -13,6 +13,7 @@ export interface AddHypePool {
   duration: number;
   tokenName?: string;
   remainingFunds?: string;
+  imageUri?: string;
 }
 
 export interface HypePool extends AddHypePool {

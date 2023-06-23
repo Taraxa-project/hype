@@ -28,7 +28,11 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
-  const { data: uploadedImageUrl, submitHandler: uploadImage } = useIpfsImageUpload();
+  const {
+    data: uploadedImageUrl,
+    submitHandler: uploadImage,
+    isLoading: isUploadingImage,
+  } = useIpfsImageUpload();
   const [selectedImage, setSelectedImage] = useState(null);
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
@@ -70,7 +74,7 @@ export const useAddHypePoolEffects = () => {
 
   useEffect(() => {
     if (uploadedImageUrl) {
-      console.log('uploadedImageUrl: ', uploadedImageUrl.data.cid.toString());
+      // console.log('uploadedImageUrl: ', uploadedImageUrl.data.cid.toString());
       setImageUrl(uploadedImageUrl.data.cid.toString());
     }
   }, [uploadedImageUrl]);
@@ -86,6 +90,12 @@ export const useAddHypePoolEffects = () => {
     if (selectedImage) {
       uploadImage(selectedImage);
     }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImageUrl(null);
+    console.log('image url: ', imageUrl);
   };
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
@@ -163,5 +173,8 @@ export const useAddHypePoolEffects = () => {
     onUploadImage,
     setSelectedImage,
     selectedImage,
+    isUploadingImage,
+    imageUrl,
+    removeImage,
   };
 };

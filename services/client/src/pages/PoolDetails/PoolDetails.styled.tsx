@@ -93,3 +93,10 @@ export const InfoValue = styled.span<{ theme: HypeThemeType }>`
   justify-content: end;
   color: ${({ theme }) => theme.colors.greys[7]};
 `;
+
+
+export const PoolImage = styled.img`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+`;

@@ -25,6 +25,9 @@ export const AddHypePool = () => {
     onUploadImage,
     setSelectedImage,
     selectedImage,
+    isUploadingImage,
+    imageUrl,
+    removeImage,
   } = useAddHypePoolEffects();
 
   return (
@@ -53,6 +56,9 @@ export const AddHypePool = () => {
               onUploadImage={onUploadImage}
               selectedImage={selectedImage}
               setSelectedImage={setSelectedImage}
+              isUploadingImage={isUploadingImage}
+              imageUrl={imageUrl}
+              removeImage={removeImage}
             />
             <HowItWorks step={currentStep} />
           </StepContent>

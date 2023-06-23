@@ -20,6 +20,7 @@ export const HYPEPOOL_QUERIES = {
         impressionReward
         word
         remainingFunds
+        imageUri
       }
     }
   `,
@@ -44,6 +45,7 @@ export const HYPEPOOL_QUERIES = {
         impressionReward
         word
         remainingFunds
+        imageUri
       }
     }
   `,
@@ -70,6 +72,7 @@ export const HYPEPOOL_QUERIES = {
         impressionReward
         word
         remainingFunds
+        imageUri
       }
     }
   `,
@@ -97,6 +100,7 @@ export const HYPEPOOL_QUERIES = {
         impressionReward
         word
         remainingFunds
+        imageUri
       }
     }
   `,
