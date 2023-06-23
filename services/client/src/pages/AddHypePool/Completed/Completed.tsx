@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Text from '../../../components/styles/Text';
-import TitleText from '../../../components/titletext/TitleText';
 import Box from '../../../components/styles/Box';
 import { Link } from '../../../components/styles/Link';
 import { getExplorerFromNetwork } from '../../../utils';
