@@ -43,6 +43,7 @@ export const PoolDetails = () => {
     description,
     projectDescription,
     tokenName,
+    tokenSymbol,
     word,
     network,
     tokenAddress,
@@ -67,7 +68,6 @@ export const PoolDetails = () => {
   const startedAt =
     Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
   const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
-  const poolTokenName = tokenName || 'TARA';
   const tokensAwarded = poolStats?.tokensAwarded
     ? Number(transformFromWei(Number(poolStats.tokensAwarded), tokenDecimals))
     : null;
@@ -82,10 +82,10 @@ export const PoolDetails = () => {
           <PoolTitle>{title}</PoolTitle>
           <List>
             <ListItem>
-              {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {poolTokenName}
+              {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {tokenSymbol}
             </ListItem>
             <ListItem>
-              {transformFromWei(impressionReward, tokenDecimals)} {poolTokenName} / Impression
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
             </ListItem>
             <ListItem>{active ? 'Active' : 'Inactive'}</ListItem>
             <ListItem>ends {endsAt}</ListItem>
@@ -94,8 +94,8 @@ export const PoolDetails = () => {
             <Text fontWeight="500" fontSize="1.25rem">
               Required keywords:
             </Text>
-            <Keyword>{word}</Keyword>
-            <Keyword>{poolTokenName}</Keyword>
+            {word && <Keyword>{word}</Keyword>}
+            {tokenName && <Keyword>{tokenName}</Keyword>}
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
           {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
@@ -114,12 +114,12 @@ export const PoolDetails = () => {
                   <StatsCard
                     title={splitPrettifyNumber(tokensAwarded)[0]}
                     titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
-                    subtitle={`${poolTokenName} awarded`}
+                    subtitle={`${tokenSymbol} awarded`}
                   />
                   <StatsCard
                     title={splitPrettifyNumber(tokensClaimed)[0]}
                     titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
-                    subtitle={`${poolTokenName} claimed`}
+                    subtitle={`${tokenSymbol} claimed`}
                   />
                   <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
                   <StatsCard
@@ -134,7 +134,7 @@ export const PoolDetails = () => {
               <CategoryTitle>
                 <CrownIcon />
                 <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                  Weekly Leaderbord
+                  Weekly Leaderboard
                 </Text>
               </CategoryTitle>
               <Leaderboard topAccounts={leaderboard} />
@@ -175,7 +175,7 @@ export const PoolDetails = () => {
           )}
           <InfoContainer>
             <InfoHeader>Token name:</InfoHeader>
-            <InfoValue>{poolTokenName}</InfoValue>
+            <InfoValue>{tokenSymbol}</InfoValue>
           </InfoContainer>
           {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
             <InfoContainer>
@@ -187,7 +187,7 @@ export const PoolDetails = () => {
             <InfoContainer>
               <InfoHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</InfoHeader>
               <InfoValue key={`${cap}-${Date.now()}`}>
-                {transformFromWei(cap, tokenDecimals)} {poolTokenName}
+                {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
               </InfoValue>
             </InfoContainer>
           )}
@@ -195,7 +195,7 @@ export const PoolDetails = () => {
             <InfoContainer>
               <InfoHeader>Reward / impression:</InfoHeader>
               <InfoValue>
-                {transformFromWei(impressionReward, tokenDecimals)} {poolTokenName}
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
               </InfoValue>
             </InfoContainer>
           )}

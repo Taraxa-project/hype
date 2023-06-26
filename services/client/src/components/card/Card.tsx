@@ -21,9 +21,9 @@ export interface CardProps {
 
 const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
-  const { title, projectName, description, tokenName, cap, active, impressionReward, endDate } =
+  const { title, projectName, description, cap, active, impressionReward, endDate } =
     pool;
-  const { tokenDecimals } = useTokenDecimals(pool);
+  const { tokenDecimals, tokenSymbol } = useTokenDecimals(pool);
 
   return (
     <StyledCard>
@@ -45,7 +45,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
               <DataValue key={`${cap}-${Date.now()}`}>
-                {transformFromWei(cap, tokenDecimals)} {tokenName || 'TARA'}
+                {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}
@@ -53,8 +53,7 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataContainer>
               <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
               <DataValue key={`${impressionReward}-${Date.now()}`}>
-                {transformFromWei(impressionReward, tokenDecimals)}{' '}
-                {tokenName || 'TARA'}
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}

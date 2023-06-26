@@ -23,6 +23,7 @@ export const CardDetails = () => {
     description,
     projectDescription,
     tokenName,
+    tokenSymbol,
     word,
     network,
     tokenAddress,
@@ -71,7 +72,7 @@ export const CardDetails = () => {
       open={open}
       closeModal={closeModal}
       modalActions={modalActions}
-      // height='42rem' // This is usefull when adding two buttons
+      // height='42rem' // This is useful when adding two buttons
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -103,10 +104,12 @@ export const CardDetails = () => {
             <DataValue>{networks[network].chainName}</DataValue>
           </DataContainer>
         )}
+        {tokenName && (
           <DataContainer>
-            <DataHeader>Token name:</DataHeader>
-            <DataValue>{tokenName || 'TARA'}</DataValue>
+            <DataHeader>Project Token name:</DataHeader>
+            <DataValue>{tokenName}</DataValue>
           </DataContainer>
+        )}
         {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
           <>
             <DataHeader>Token contract address:</DataHeader>
@@ -120,7 +123,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
             <DataValue key={`${cap}-${Date.now()}`}>
-              {transformFromWei(cap, tokenDecimals)} {tokenName || 'TARA'}
+              {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}
@@ -128,7 +131,7 @@ export const CardDetails = () => {
           <DataContainer>
             <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
             <DataValue key={`${impressionReward}-${Date.now()}`}>
-              {transformFromWei(impressionReward, tokenDecimals)} {tokenName || 'TARA'}
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}

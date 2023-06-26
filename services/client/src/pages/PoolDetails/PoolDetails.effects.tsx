@@ -22,7 +22,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();
-  const { isCustomToken, tokenDecimals } = useTokenDecimals(pool);
+  const { isCustomToken, tokenDecimals, tokenSymbol } = useTokenDecimals(pool);
   const [{ data: hypePoolData }] = useQuery({
     query: HYPEPOOL_QUERIES.poolQuery,
     variables: { id: poolId },
@@ -134,6 +134,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   return {
     ...pool,
     tokenDecimals,
+    tokenSymbol,
     isDeposited,
     authenticated,
     fund,
