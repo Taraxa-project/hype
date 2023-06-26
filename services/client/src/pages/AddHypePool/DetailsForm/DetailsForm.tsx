@@ -112,7 +112,7 @@ export const DetailsForm = ({
             <Label>Project's image: </Label>
           </Box>
           <Example>
-            This is not mandatory but we recommend uploading an image to represent your project
+            This is not mandatory but we recommend uploading an image that represents your project
           </Example>
 
           {selectedImage && (
@@ -134,7 +134,6 @@ export const DetailsForm = ({
               <UploadControl
                 value={selectedImage}
                 onChange={(event) => {
-                  console.log(event.target.files[0]);
                   setSelectedImage(event.target.files[0]);
                 }}
                 accept="image/*"

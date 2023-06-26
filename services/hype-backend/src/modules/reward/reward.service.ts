@@ -362,14 +362,14 @@ export class RewardService {
       .createQueryBuilder('reward')
       .select('reward.telegramId', 'telegramId')
       .addSelect('reward.telegramUsername', 'telegramUsername')
-      .addSelect('SUM(reward.impressions)', 'totalimpressions')
+      .addSelect('SUM(reward.impressions)', 'totalImpressions')
       .addSelect(
         'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
         'rank',
       )
       .where('reward.poolId = :poolId', { poolId })
       .groupBy('reward.telegramId, reward.telegramUsername')
-      .orderBy('totalimpressions', 'DESC');
+      .orderBy('"totalImpressions"', 'DESC');
 
     return qb.getRawMany();
   }

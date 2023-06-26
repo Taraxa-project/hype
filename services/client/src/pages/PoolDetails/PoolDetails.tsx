@@ -79,9 +79,7 @@ export const PoolDetails = () => {
     <PoolContainer>
       <RoundContainer>
         <Box>
-          <PoolTitle>
-            {title}
-          </PoolTitle>
+          <PoolTitle>{title}</PoolTitle>
           <List>
             <ListItem>
               {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {poolTokenName}
@@ -233,9 +231,9 @@ export const PoolDetails = () => {
         </PoolDetailsWrapper>
       </RoundContainer>
 
-      <RoundContainer>
-        <Box>
-          {!active && authenticated && account?.toLowerCase() === creator?.toLowerCase() && (
+      {!active && authenticated && account?.toLowerCase() === creator?.toLowerCase() && (
+        <RoundContainer>
+          <Box>
             <Box mb={4}>
               {!isDeposited ? (
                 <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
@@ -263,12 +261,15 @@ export const PoolDetails = () => {
                 </Box>
               )}
             </Box>
-          )}
-          <Button size="full-width" onClick={onParticipate}>
-            📣 Participate Now!
-          </Button>
-        </Box>
-      </RoundContainer>
+          </Box>
+        </RoundContainer>
+      )}
+
+      <Box>
+        <Button size="full-width" onClick={onParticipate}>
+          📣 Participate Now!
+        </Button>
+      </Box>
     </PoolContainer>
   );
 };

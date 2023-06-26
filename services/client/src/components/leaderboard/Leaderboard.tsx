@@ -44,7 +44,7 @@ export const Leaderboard: FC<LeaderboardProps> = ({ topAccounts }) => {
             </StyledCell>
             <StyledCell width="25%">
               <Text fontWeight="500" fontSize="1rem">
-                {Number(item.totalimpressions).toFixed(1)}
+                {Number(item.totalImpressions).toFixed(1)}
               </Text>
             </StyledCell>
           </StyledRow>

@@ -97,6 +97,7 @@ export const TransactionsContainer = ({
                           <ImpressionsList
                             symbol={reward.symbol}
                             impressions={reward.impressions}
+                            pool={reward.pool}
                           />
                         )}
                       </Box>

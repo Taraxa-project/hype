@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { BigNumber, utils } from 'ethers';
 import Text from '../../components/styles/Text';
-import { RewardsDetails } from '../../models';
+import { HypePool, RewardsDetails } from '../../models';
 import CrownIcon from '../../assets/icons/Crown';
 import Box from '../../components/styles/Box';
+import { useTokenDecimals } from '../../hooks';
+import { transformFromWei } from '../../utils';
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -20,9 +21,11 @@ const StyledCell = styled.td`
 interface ImpressionsListProps {
   impressions: RewardsDetails[];
   symbol: string;
+  pool: HypePool;
 }
 
-export const ImpressionsList = ({ impressions, symbol }: ImpressionsListProps) => {
+export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListProps) => {
+  const { tokenDecimals } = useTokenDecimals(pool);
   return (
     <StyledTable>
       <thead>
@@ -45,7 +48,7 @@ export const ImpressionsList = ({ impressions, symbol }: ImpressionsListProps) =
         </StyledRow>
       </thead>
       <tbody>
-        <StyledRow>
+        {/* <StyledRow>
           <StyledCell>
             <Box display="flex" alignItems="center">
               <CrownIcon />{' '}
@@ -56,7 +59,7 @@ export const ImpressionsList = ({ impressions, symbol }: ImpressionsListProps) =
           </StyledCell>
           <StyledCell></StyledCell>
           <StyledCell>2000 TARA</StyledCell>
-        </StyledRow>
+        </StyledRow> */}
         {impressions?.map((item) => (
           <StyledRow key={`${item.telegramGroup}-${item.rewards}`}>
             <StyledCell>
@@ -71,7 +74,7 @@ export const ImpressionsList = ({ impressions, symbol }: ImpressionsListProps) =
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {utils.formatEther(item.rewards || BigNumber.from('0'))} {symbol}
+                {transformFromWei(Number(item.rewards), tokenDecimals)} {symbol}
               </Text>
             </StyledCell>
           </StyledRow>
