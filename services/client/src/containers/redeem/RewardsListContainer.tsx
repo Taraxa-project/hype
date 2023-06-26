@@ -53,11 +53,11 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
           <Box>
             {claims.length > 0 ? (
               <Box display="flex" flexDirection="column" pt="2.4rem" gridGap="1rem">
-                {claims.map((transactionItem: HypeReward) => (
+                {claims.map((transactionItem: HypeReward, i: number) => (
                   <Transaction
-                    key={`history-${transactionItem.amount.toString()}-${
-                      transactionItem.id
-                    }-${Date.now()}`}
+                    key={`history-${transactionItem.amount.toString()}-${transactionItem.id}-${
+                      transactionItem.symbol
+                    }-${i}`}
                     value={transactionItem.amount}
                     symbol={transactionItem.symbol}
                     pool={transactionItem.pool?.title}

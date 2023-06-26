@@ -121,36 +121,36 @@ export const CardDetails = () => {
         )}
         {cap && (
           <DataContainer>
-            <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
-            <DataValue key={`${cap}-${Date.now()}`}>
+            <DataHeader>Total rewards for the pool:</DataHeader>
+            <DataValue>
               {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}
         {impressionReward && (
           <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
-            <DataValue key={`${impressionReward}-${Date.now()}`}>
+            <DataHeader>Reward /impression:</DataHeader>
+            <DataValue>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}
         <DataContainer>
-          <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
-          <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
+          <DataHeader>Start Date:</DataHeader>
+          <DataValue>{startedAt}</DataValue>
         </DataContainer>
         <DataContainer>
-          <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
-          <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
+          <DataHeader>End Date:</DataHeader>
+          <DataValue>{endsAt}</DataValue>
         </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
           {active ? (
-            <DataValue key={`active-${Date.now()}`}>
+            <DataValue>
               <DotIcon color="#15AC5B" /> Active
             </DataValue>
           ) : (
-            <DataValue key={`active-${Date.now()}`}>
+            <DataValue>
               <DotIcon color="#C2C2C2" /> (not yet active)
             </DataValue>
           )}

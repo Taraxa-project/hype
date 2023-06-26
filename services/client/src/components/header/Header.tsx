@@ -71,7 +71,7 @@ const Header = React.memo(
                 (e: HeaderLink) =>
                   e.display && (
                     <SidebarMenuLink
-                      key={`menu-link-${e.name}-${Date.now()}`}
+                      key={`menu-link-${e.name}-${e.route}`}
                       selected={e.name === selected}
                       onClick={() => onSelect(e)}
                     >
@@ -144,7 +144,7 @@ const Header = React.memo(
                 {headerEntries.map(
                   (e: HeaderLink) =>
                     e.display && (
-                      <Box key={`menu-link-${e.name}-${Date.now()}`}>
+                      <Box key={`menu-link-${e.name}-${e.route}`}>
                         {e.name === selected ? (
                           <span className="selected">
                             {e.name}

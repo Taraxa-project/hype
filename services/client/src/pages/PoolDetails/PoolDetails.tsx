@@ -69,10 +69,10 @@ export const PoolDetails = () => {
     Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
   const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
   const tokensAwarded = poolStats?.tokensAwarded
-    ? Number(transformFromWei(Number(poolStats.tokensAwarded), tokenDecimals))
+    ? Number(transformFromWei(poolStats.tokensAwarded, tokenDecimals))
     : null;
   const tokensClaimed = poolStats?.tokensClaimed
-    ? Number(transformFromWei(Number(poolStats.tokensClaimed), tokenDecimals))
+    ? Number(transformFromWei(poolStats.tokensClaimed, tokenDecimals))
     : null;
 
   return (
@@ -187,8 +187,8 @@ export const PoolDetails = () => {
           )}
           {cap && (
             <InfoContainer>
-              <InfoHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</InfoHeader>
-              <InfoValue key={`${cap}-${Date.now()}`}>
+              <InfoHeader>Total rewards for the pool:</InfoHeader>
+              <InfoValue>
                 {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
               </InfoValue>
             </InfoContainer>
@@ -203,23 +203,23 @@ export const PoolDetails = () => {
           )}
 
           <InfoContainer>
-            <InfoHeader key={`startDate-${Date.now()}`}>Start Date:</InfoHeader>
-            <InfoValue key={`${startDate}-${Date.now()}`}>{startedAt}</InfoValue>
+            <InfoHeader>Start Date:</InfoHeader>
+            <InfoValue>{startedAt}</InfoValue>
           </InfoContainer>
 
           <InfoContainer>
-            <InfoHeader key={`endDate-${Date.now()}`}>End Date:</InfoHeader>
-            <InfoValue key={`${endDate}-${Date.now()}`}>{endsAt}</InfoValue>
+            <InfoHeader>End Date:</InfoHeader>
+            <InfoValue>{endsAt}</InfoValue>
           </InfoContainer>
 
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>
             {active ? (
-              <InfoValue key={`active-${Date.now()}`}>
+              <InfoValue>
                 <DotIcon color="#15AC5B" /> Active
               </InfoValue>
             ) : (
-              <InfoValue key={`active-${Date.now()}`}>
+              <InfoValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)
               </InfoValue>
             )}

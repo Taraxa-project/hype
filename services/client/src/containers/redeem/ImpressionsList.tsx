@@ -74,7 +74,7 @@ export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListPr
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {transformFromWei(Number(item.rewards), tokenDecimals)} {symbol}
+                {Number(transformFromWei(item.rewards, tokenDecimals)).toFixed(2)} {symbol}
               </Text>
             </StyledCell>
           </StyledRow>

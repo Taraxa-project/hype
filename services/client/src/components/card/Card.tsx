@@ -30,7 +30,7 @@ const Card = ({ children, ...props }: CardProps) => {
       <Container>
         <div>
           <CardTitle>{title}</CardTitle>
-          <CardDescription key={`${description}-${Date.now()}`}>
+          <CardDescription>
             {shortenText(description)}
           </CardDescription>
         </div>
@@ -43,24 +43,24 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {cap && (
             <DataContainer>
-              <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-              <DataValue key={`${cap}-${Date.now()}`}>
+              <DataHeader>Pool:</DataHeader>
+              <DataValue>
                 {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}
           {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
-              <DataValue key={`${impressionReward}-${Date.now()}`}>
+              <DataHeader>Reward / impression:</DataHeader>
+              <DataValue>
                 {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}
           {endDate && (
             <DataContainer>
-              <DataHeader key={`endDate-${Date.now()}`}>Duration:</DataHeader>
-              <DataValue key={`${endDate}-${Date.now()}`}>
+              <DataHeader>Duration:</DataHeader>
+              <DataValue>
                 {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
               </DataValue>
             </DataContainer>
@@ -68,11 +68,11 @@ const Card = ({ children, ...props }: CardProps) => {
           <DataContainer>
             <DataHeader>Status:</DataHeader>
             {active ? (
-              <DataValue key={`active-${Date.now()}`}>
+              <DataValue>
                 <DotIcon color="#15AC5B" /> Active
               </DataValue>
             ) : (
-              <DataValue key={`active-${Date.now()}`}>
+              <DataValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)
               </DataValue>
             )}
