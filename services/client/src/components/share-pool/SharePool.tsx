@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { TelegramShareButton, TwitterShareButton } from 'react-share';
+import Tippy from '@tippyjs/react';
 import { ShareOnButtonContainer } from './SharePool.styled';
 import Text from '../styles/Text';
 import LinkIcon from '../../assets/icons/Link';
@@ -29,20 +30,26 @@ export const SharePool: FC<SharePoolProps> = ({ createdPoolIndex, poolName }) =>
       <Text fontWeight="500" fontSize="1.25rem" color="greys.6" lineHeight="26px">
         Share:
       </Text>
-      <TwitterShareButton
-        title={`${poolName} is active!`}
-        url={poolUrl}
-        hashtags={['Hype App', `${poolName}`]}
-      >
-        <TwitterIcon />
-      </TwitterShareButton>
-      <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
-        <TelegramIcon />
-      </TelegramShareButton>
+      <Tippy content={'Twitter'}>
+        <TwitterShareButton
+          title={`${poolName} is active!`}
+          url={poolUrl}
+          hashtags={['Hype App', `${poolName}`]}
+        >
+          <TwitterIcon />
+        </TwitterShareButton>
+      </Tippy>
+      <Tippy content={'Telegram'}>
+        <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
+          <TelegramIcon />
+        </TelegramShareButton>
+      </Tippy>
       <CopyToClipboard text={poolUrl}>
-        <div style={{ cursor: 'pointer' }}>
-          <LinkIcon />
-        </div>
+        <Tippy content={'Copy link'}>
+          <div style={{ cursor: 'pointer' }}>
+            <LinkIcon />
+          </div>
+        </Tippy>
       </CopyToClipboard>
     </ShareOnButtonContainer>
   );
