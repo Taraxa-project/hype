@@ -6,7 +6,6 @@ import { HypePoolRewardForm } from './RewardForm';
 import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
-import { useIpfsImageUpload } from '../../api/ipfs/useUploadImage';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
@@ -28,12 +27,6 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
-  const {
-    data: uploadedImageUrl,
-    submitHandler: uploadImage,
-    isLoading: isUploadingImage,
-  } = useIpfsImageUpload();
-  const [selectedImage, setSelectedImage] = useState(null);
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
@@ -73,29 +66,12 @@ export const useAddHypePoolEffects = () => {
   );
 
   useEffect(() => {
-    if (uploadedImageUrl) {
-      // console.log('uploadedImageUrl: ', uploadedImageUrl.data.cid.toString());
-      setImageUrl(uploadedImageUrl.data.cid.toString());
-    }
-  }, [uploadedImageUrl]);
-
-  useEffect(() => {
     if (uploadedIpfsUrl) {
       setIpfsUrl(uploadedIpfsUrl.data.path);
       setCurrentStep(2);
     }
   }, [uploadedIpfsUrl]);
 
-  const onUploadImage = async () => {
-    if (selectedImage) {
-      uploadImage(selectedImage);
-    }
-  };
-
-  const removeImage = () => {
-    setSelectedImage(null);
-    setImageUrl(null);
-  };
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const projectDetails: HypeProjectDetails = {
@@ -169,11 +145,7 @@ export const useAddHypePoolEffects = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
-    onUploadImage,
-    setSelectedImage,
-    selectedImage,
-    isUploadingImage,
     imageUrl,
-    removeImage,
+    setImageUrl,
   };
 };

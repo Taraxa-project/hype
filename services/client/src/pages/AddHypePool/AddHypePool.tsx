@@ -22,12 +22,8 @@ export const AddHypePool = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
-    onUploadImage,
-    setSelectedImage,
-    selectedImage,
-    isUploadingImage,
     imageUrl,
-    removeImage,
+    setImageUrl,
   } = useAddHypePoolEffects();
 
   return (
@@ -53,12 +49,8 @@ export const AddHypePool = () => {
             <DetailsForm
               defaultValues={poolDetails}
               onSubmit={onSubmitDetails}
-              onUploadImage={onUploadImage}
-              selectedImage={selectedImage}
-              setSelectedImage={setSelectedImage}
-              isUploadingImage={isUploadingImage}
               imageUrl={imageUrl}
-              removeImage={removeImage}
+              setImageUrl={setImageUrl}
             />
             <HowItWorks step={currentStep} />
           </StepContent>

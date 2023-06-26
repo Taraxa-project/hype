@@ -173,10 +173,12 @@ export const PoolDetails = () => {
               <InfoValue>{networks[network].chainName}</InfoValue>
             </InfoContainer>
           )}
-          <InfoContainer>
-            <InfoHeader>Token name:</InfoHeader>
-            <InfoValue>{tokenSymbol}</InfoValue>
-          </InfoContainer>
+          {tokenName && (
+            <InfoContainer>
+              <InfoHeader>Token name:</InfoHeader>
+              <InfoValue>{tokenName}</InfoValue>
+            </InfoContainer>
+          )}
           {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
             <InfoContainer>
               <InfoHeader>Token contract address:</InfoHeader>
