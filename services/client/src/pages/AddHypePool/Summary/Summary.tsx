@@ -102,7 +102,7 @@ export const Summary: FC<SummaryProps> = ({
                 Token:
               </Text>
               <Text fontSize="0.875rem" color="greys.7">
-                {rewards.tokenName}
+                {rewards.tokenSymbol}
               </Text>
             </RewardContent>
             <RewardContent>
@@ -154,7 +154,7 @@ export const Summary: FC<SummaryProps> = ({
 
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>
-              Fund {rewards.cap} {rewards.tokenName} into the pool.
+              Fund {rewards.cap} {rewards.tokenSymbol} into the pool.
             </Label>
           </Box>
           <FormAction>

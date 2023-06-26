@@ -54,7 +54,7 @@ export const useAddHypePoolEffects = () => {
     network: 841,
     token: null,
     tokenAddress: '',
-    tokenName: '',
+    tokenSymbol: '',
     tokenDecimals: 18,
     impressionReward: null,
     cap: null,
@@ -134,7 +134,7 @@ export const useAddHypePoolEffects = () => {
         cap,
         impressionReward,
         tokenAddress:
-          rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+          rewards.tokenSymbol && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
         endDate: 0,
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
