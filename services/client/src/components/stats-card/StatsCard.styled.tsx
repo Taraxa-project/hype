@@ -5,8 +5,9 @@ export const Card = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-  background-color: ${({ theme }) => theme.colors.greys[2]};
+  background-color: ${({ theme }) => theme.colors.primary};
   padding: 1.5rem;
+  color: white;
   border-radius: 10px;
   width: 180px;
 `;

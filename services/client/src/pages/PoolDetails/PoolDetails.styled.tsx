@@ -74,9 +74,9 @@ export const KeywordWrapper = styled.div`
 `;
 
 export const Keyword = styled.div`
-  background-color: ${({ theme }) => theme.colors.greys[2]};
+  background-color: ${({ theme }) => theme.colors.primary};
   padding: 0.5rem 1rem;
-  color: black;
+  color: white;
   border-radius: 9999px;
 `;
 
