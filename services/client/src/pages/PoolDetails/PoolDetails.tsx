@@ -24,6 +24,7 @@ import {
   ListItem,
   CategoryTitle,
   Stats,
+  PoolTitle,
 } from './PoolDetails.styled';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
@@ -78,9 +79,9 @@ export const PoolDetails = () => {
     <PoolContainer>
       <RoundContainer>
         <Box>
-          <Text fontWeight="700" fontSize="3rem" lineHeight="26px" pb={3}>
+          <PoolTitle>
             {title}
-          </Text>
+          </PoolTitle>
           <List>
             <ListItem>
               {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {poolTokenName}

@@ -50,6 +50,15 @@ export const PoolContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 2rem;
+  }
+`;
+
+export const PoolTitle = styled.h1`
+  font-weight: 700;
+  font-size: 3rem;
+  margin-top: 1rem;
 `;
 
 export const PoolDetailsWrapper = styled.div`
