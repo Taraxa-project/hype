@@ -115,12 +115,12 @@ export const PoolDetails = () => {
                   <StatsCard
                     title={splitPrettifyNumber(tokensAwarded)[0]}
                     titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
-                    subtitle="TARA awarded"
+                    subtitle={`${poolTokenName} awarded`}
                   />
                   <StatsCard
                     title={splitPrettifyNumber(tokensClaimed)[0]}
                     titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
-                    subtitle="TARA claimed"
+                    subtitle={`${poolTokenName} claimed`}
                   />
                   <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
                   <StatsCard

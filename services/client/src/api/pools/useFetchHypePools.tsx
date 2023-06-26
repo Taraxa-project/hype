@@ -7,8 +7,8 @@ const hypePoolsPerPage = 6;
 interface FetchHypesFilter {
   first: number;
   skip: number;
-  orderBy: string;
-  orderDirection: string;
+  orderBy: 'endDate' | 'startDate' | 'creator' | 'remainingFunds' | 'cap';
+  orderDirection: 'desc' | 'asc';
   text?: string;
 }
 

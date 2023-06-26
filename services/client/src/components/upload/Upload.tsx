@@ -11,8 +11,8 @@ export interface UploadControlProps extends PropsWithChildren {
 export const UploadControl = ({
   children,
   onChange,
-  disabled = false,
   accept,
+  disabled = false,
 }: UploadControlProps) => {
   return (
     <UploadInput htmlFor="contained-button-file">

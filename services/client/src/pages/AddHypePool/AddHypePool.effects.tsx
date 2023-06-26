@@ -95,7 +95,6 @@ export const useAddHypePoolEffects = () => {
   const removeImage = () => {
     setSelectedImage(null);
     setImageUrl(null);
-    console.log('image url: ', imageUrl);
   };
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {

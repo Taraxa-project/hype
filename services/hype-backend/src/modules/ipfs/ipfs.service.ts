@@ -107,10 +107,10 @@ export class IpfsService {
       const uploaded = await ipfsClient.add(
         JSON.stringify({ description, projectDescription, imageUri }),
       );
-      console.log('uploaded: ', uploaded);
+      this.logger.log(`uploaded: ${JSON.stringify(uploaded)}`);
       return uploaded;
     } catch (error) {
-      console.log('Error uploading to IPFS: ', error);
+      this.logger.error(`Error uploading to ipfs: ${JSON.stringify(error)}`);
       throw new InternalServerErrorException(
         `Error uploading to IPFS: ${error}`,
       );
