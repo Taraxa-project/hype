@@ -3,7 +3,7 @@ import Text from '../../components/styles/Text';
 import { HypePool, RewardsDetails } from '../../models';
 import CrownIcon from '../../assets/icons/Crown';
 import Box from '../../components/styles/Box';
-import { useTokenDecimals } from '../../hooks';
+import { useTokenDetails } from '../../hooks';
 import { transformFromWei } from '../../utils';
 
 const StyledTable = styled.table`
@@ -25,7 +25,7 @@ interface ImpressionsListProps {
 }
 
 export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListProps) => {
-  const { tokenDecimals } = useTokenDecimals(pool);
+  const { tokenDecimals } = useTokenDetails(pool);
   return (
     <StyledTable>
       <thead>

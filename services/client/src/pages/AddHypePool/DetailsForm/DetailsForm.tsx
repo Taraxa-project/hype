@@ -22,18 +22,10 @@ import { HypeImageUpload, HypeImageUploadRef } from './HypeImageUpload';
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
-  setImageUrl: Dispatch<any>;
-  imageUrl: string;
   imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
-export const DetailsForm = ({
-  defaultValues,
-  onSubmit,
-  imageUrl,
-  setImageUrl,
-  imageUploadRef,
-}: DetailsFormProps) => {
+export const DetailsForm = ({ defaultValues, onSubmit, imageUploadRef }: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
   return (
@@ -97,11 +89,7 @@ export const DetailsForm = ({
           />
         </FormElement>
 
-        <HypeImageUpload
-          imageUrl={imageUrl}
-          setImageUrl={setImageUrl}
-          imageUploadRef={imageUploadRef}
-        />
+        <HypeImageUpload imageUploadRef={imageUploadRef} />
 
         {/* Description */}
         <FormElement>

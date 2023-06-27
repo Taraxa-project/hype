@@ -35,7 +35,6 @@ export const useAddHypePoolEffects = () => {
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
-  const [imageUrl, setImageUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
@@ -76,7 +75,12 @@ export const useAddHypePoolEffects = () => {
   }, [uploadedIpfsUrl]);
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
-    if (imageUploadRef.current && imageUploadRef.current.hasSelectedImage() && !imageUrl) {
+    let imageUri = imageUploadRef.current?.imageUrl;
+    if (
+      imageUploadRef.current &&
+      imageUploadRef.current.hasSelectedImage() &&
+      !imageUploadRef.current.imageUrl
+    ) {
       dispatchModals({
         type: ModalsActionsEnum.SHOW_NOTIFICATION,
         payload: {
@@ -92,7 +96,7 @@ export const useAddHypePoolEffects = () => {
     const projectDetails: HypeProjectDetails = {
       description: data.description,
       projectDescription: data.projectDescription,
-      imageUri: imageUrl,
+      imageUri,
     };
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
@@ -160,8 +164,6 @@ export const useAddHypePoolEffects = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
-    imageUrl,
-    setImageUrl,
     imageUploadRef,
   };
 };

@@ -11,7 +11,7 @@ import {
   Container,
 } from './Card.styled';
 import DotIcon from '../../assets/icons/Dot';
-import { useTokenDecimals } from '../../hooks';
+import { useTokenDetails } from '../../hooks';
 
 export interface CardProps {
   pool: HypePool;
@@ -23,7 +23,7 @@ const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
   const { title, projectName, description, cap, active, impressionReward, endDate } =
     pool;
-  const { tokenDecimals, tokenSymbol } = useTokenDecimals(pool);
+  const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
 
   return (
     <StyledCard>

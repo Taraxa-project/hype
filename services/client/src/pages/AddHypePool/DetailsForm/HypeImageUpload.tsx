@@ -1,4 +1,4 @@
-import { Dispatch, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Text from '../../../components/styles/Text';
 import Box from '../../../components/styles/Box';
 import { UploadControl } from '../../../components/upload/Upload';
@@ -9,33 +9,28 @@ import { useIpfsImageUpload } from '../../../api/ipfs/useUploadImage';
 import { Example, Label, FormElement, PoolImage } from '../AddHypePool.styled';
 import { ModalsActionsEnum, useModalsDispatch } from '../../../context';
 import { NotificationType } from '../../../utils';
-import { AxiosResponse } from 'axios';
 
 export interface HypeImageUploadRef {
   hasSelectedImage: () => boolean;
   onUploadImage: () => Promise<void>;
-  uploadedImageUrl: AxiosResponse<any>;
+  imageUrl: string;
 }
 
 export interface HypeImageProps {
-  imageUrl: string;
-  setImageUrl: Dispatch<any>;
   imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
-export const HypeImageUpload = ({ imageUrl, setImageUrl, imageUploadRef }: HypeImageProps) => {
+export const HypeImageUpload = ({ imageUploadRef }: HypeImageProps) => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState<string>();
   const dispatchModals = useModalsDispatch();
 
-  const {
-    data: uploadedImageUrl,
-    submitHandler: uploadImage,
-    isLoading: isUploadingImage,
-  } = useIpfsImageUpload();
+  const { submitHandler: uploadImage, isLoading: isUploadingImage } = useIpfsImageUpload();
 
   const onUploadImage = useCallback(async () => {
     if (selectedImage) {
-      uploadImage(selectedImage);
+      const uploadedImageUrl = await uploadImage(selectedImage);
+      setImageUrl(uploadedImageUrl?.cid);
     }
   }, [selectedImage, uploadImage]);
 
@@ -84,17 +79,14 @@ export const HypeImageUpload = ({ imageUrl, setImageUrl, imageUploadRef }: HypeI
     setImageUrl(null);
   };
 
-  if (uploadedImageUrl) {
-    setImageUrl(uploadedImageUrl.data.cid.toString());
-  }
-
   useEffect(() => {
     imageUploadRef.current = {
       hasSelectedImage,
       onUploadImage,
-      uploadedImageUrl,
+      imageUrl,
     };
-  }, [imageUploadRef, hasSelectedImage, onUploadImage, uploadedImageUrl]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasSelectedImage, onUploadImage, imageUrl]);
 
   return (
     <FormElement>
@@ -130,12 +122,7 @@ export const HypeImageUpload = ({ imageUrl, setImageUrl, imageUploadRef }: HypeI
       {selectedImage &&
         (!isUploadingImage ? (
           <>
-            <Button
-              type="button"
-              variant="primary"
-              onClick={() => onUploadImage()}
-              disabled={!!imageUrl}
-            >
+            <Button type="button" variant="primary" onClick={onUploadImage} disabled={!!imageUrl}>
               {!imageUrl ? (
                 'Upload image'
               ) : (
