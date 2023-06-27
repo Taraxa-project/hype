@@ -8,9 +8,8 @@ export const useTokenDetails = (pool: HypePool) => {
   const [tokenDecimals, setTokenDecimals] = useState<number>(18);
   const [tokenSymbol, setTokenSymbol] = useState<string>(taraToken);
   const { data: ERC20tokenInfo } = useToken({
-    address: pool?.tokenAddress as AddressType,
-    chainId: pool?.network,
-    enabled: !!pool && isCustomToken,
+    address: pool?.tokenAddress?.toString() as AddressType,
+    enabled: !!pool,
   });
 
   useEffect(() => {

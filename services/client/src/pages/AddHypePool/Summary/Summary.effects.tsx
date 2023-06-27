@@ -50,6 +50,9 @@ export const useSummaryEffects = (
     enableApprove,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableApprove(false);
+    },
   );
   useContractEscrowDeposit(
     account,

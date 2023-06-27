@@ -65,6 +65,9 @@ export const usePoolDetailsEffects = (poolId: string) => {
     enableApprove,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableApprove(false);
+    },
   );
   useContractEscrowDeposit(
     account,

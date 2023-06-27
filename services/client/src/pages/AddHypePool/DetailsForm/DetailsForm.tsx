@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Dispatch } from 'react';
 import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
 import TitleText from '../../../components/titletext/TitleText';
 import Button from '../../../components/button/Button';
