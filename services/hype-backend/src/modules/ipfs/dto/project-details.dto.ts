@@ -11,4 +11,8 @@ export class ProjectDetailsDTO {
   @IsNotEmpty()
   @IsString()
   projectDescription: string;
+
+  @ApiProperty()
+  @IsString()
+  imageUri: string;
 }

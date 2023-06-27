@@ -21,6 +21,7 @@ import {
   TotalUnclaimed,
   TopTelegramAccountDto,
   PoolStatsDto,
+  RewardsDetails,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -159,6 +160,15 @@ export class RewardService {
         const rewardsOfPool = rewardsOfAddress.filter(
           (r) => r.poolId === poolId,
         );
+        const rewardsDetails: RewardsDetails[] = rewardsOfPool.map(
+          (rewardOfPool) => {
+            return {
+              telegramGroup: rewardOfPool.telegramUsername,
+              impressions: rewardOfPool.impressions,
+              rewards: rewardOfPool.amount,
+            };
+          },
+        );
         const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
         const unclaimed = rewardsOfPool.reduce(
           (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
@@ -171,6 +181,7 @@ export class RewardService {
           poolId,
           pool: result.hypePool,
           tokenAddress: token,
+          impressions: rewardsDetails,
         });
       }),
     );
@@ -292,18 +303,20 @@ export class RewardService {
   }
 
   async getJoinedPools(address: string): Promise<IPool[]> {
-    const rewards: Partial<HypeReward[]> = await this.rewardRepository
-      .createQueryBuilder()
-      .select('DISTINCT "poolId"')
-      .where('rewardee = :address', { address })
+    const rewards = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('DISTINCT reward.poolId')
+      .where('reward.rewardee = :address', { address })
       .getRawMany();
 
     const pools: IPool[] = [];
     await Promise.all(
       rewards.map(async (reward) => {
         const result: { hypePool: IPool } =
-          await this.graphQlService.getPoolById(reward.poolId);
-        pools.push(result.hypePool);
+          await this.graphQlService.getPoolById(reward.pool_id);
+        if (result?.hypePool) {
+          pools.push(result.hypePool);
+        }
       }),
     );
     return pools;
@@ -349,14 +362,14 @@ export class RewardService {
       .createQueryBuilder('reward')
       .select('reward.telegramId', 'telegramId')
       .addSelect('reward.telegramUsername', 'telegramUsername')
-      .addSelect('SUM(reward.impressions)', 'totalimpressions')
+      .addSelect('SUM(reward.impressions)', 'totalImpressions')
       .addSelect(
         'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
         'rank',
       )
       .where('reward.poolId = :poolId', { poolId })
       .groupBy('reward.telegramId, reward.telegramUsername')
-      .orderBy('totalimpressions', 'DESC');
+      .orderBy('"totalImpressions"', 'DESC');
 
     return qb.getRawMany();
   }

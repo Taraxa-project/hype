@@ -8,6 +8,13 @@ export interface TotalUnclaimed {
   poolId: string;
   pool: IPool;
   tokenAddress: string | undefined;
+  impressions: RewardsDetails[];
+}
+
+export interface RewardsDetails {
+  telegramGroup: string;
+  impressions: number;
+  rewards: string;
 }
 
 export interface PoolClaim extends IClaim {

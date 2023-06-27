@@ -159,3 +159,9 @@ export const InfoCard = styled.div`
   margin-top: 1rem;
   margin-bottom: 1rem;
 `;
+
+export const PoolImage = styled.img`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+`;

@@ -25,7 +25,7 @@ export const useProfileEffects = () => {
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const [{ data: hypePoolsData }] = useQuery({
     query: HYPEPOOL_QUERIES.profilePoolsQuery,
-    variables: { creator: account },
+    variables: { creator: account, orderBy: 'endDate', orderDirection: 'desc' },
     pause: !account,
   });
   const { data: hypeUser } = useGetHypeUser();
@@ -43,7 +43,7 @@ export const useProfileEffects = () => {
     navigate(`/redeem`);
   };
 
-  const currentRewardsNo = data.totalUnclaimed.length;
+  const currentRewardsNo = data?.totalUnclaimed.length;
 
   useEffect(() => {
     if (fetchedJoinedPolls) {
