@@ -17,13 +17,14 @@ import {
 } from '../AddHypePool.styled';
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
-import { HypeImageUpload } from './HypeImageUpload';
+import { HypeImageUpload, HypeImageUploadRef } from './HypeImageUpload';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
   setImageUrl: Dispatch<any>;
   imageUrl: string;
+  imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
 export const DetailsForm = ({
@@ -31,6 +32,7 @@ export const DetailsForm = ({
   onSubmit,
   imageUrl,
   setImageUrl,
+  imageUploadRef,
 }: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
@@ -61,7 +63,6 @@ export const DetailsForm = ({
           <TitleText>Tell us about your project</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project's name & potential variations separated by commas</Label>
-            {/* <SpacedStyledTooltip message="Project name" /> */}
           </Box>
           <Example>
             <b>Example 1:</b> Taraxa <br />
@@ -96,7 +97,11 @@ export const DetailsForm = ({
           />
         </FormElement>
 
-        <HypeImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        <HypeImageUpload
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+          imageUploadRef={imageUploadRef}
+        />
 
         {/* Description */}
         <FormElement>

@@ -24,6 +24,7 @@ export const AddHypePool = () => {
     poolTransaction,
     imageUrl,
     setImageUrl,
+    imageUploadRef,
   } = useAddHypePoolEffects();
 
   return (
@@ -51,6 +52,7 @@ export const AddHypePool = () => {
               onSubmit={onSubmitDetails}
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
+              imageUploadRef={imageUploadRef}
             />
             <HowItWorks step={currentStep} />
           </StepContent>

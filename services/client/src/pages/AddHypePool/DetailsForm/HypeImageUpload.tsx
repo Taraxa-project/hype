@@ -1,4 +1,4 @@
-import { Dispatch, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useState } from 'react';
 import Text from '../../../components/styles/Text';
 import Box from '../../../components/styles/Box';
 import { UploadControl } from '../../../components/upload/Upload';
@@ -7,24 +7,76 @@ import SuccessIcon from '../../../assets/icons/Success';
 import Button from '../../../components/button/Button';
 import { useIpfsImageUpload } from '../../../api/ipfs/useUploadImage';
 import { Example, Label, FormElement, PoolImage } from '../AddHypePool.styled';
+import { ModalsActionsEnum, useModalsDispatch } from '../../../context';
+import { NotificationType } from '../../../utils';
+import { AxiosResponse } from 'axios';
+
+export interface HypeImageUploadRef {
+  hasSelectedImage: () => boolean;
+  onUploadImage: () => Promise<void>;
+  uploadedImageUrl: AxiosResponse<any>;
+}
 
 export interface HypeImageProps {
   imageUrl: string;
   setImageUrl: Dispatch<any>;
+  imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
-export const HypeImageUpload = ({ imageUrl, setImageUrl }: HypeImageProps) => {
+export const HypeImageUpload = ({ imageUrl, setImageUrl, imageUploadRef }: HypeImageProps) => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const dispatchModals = useModalsDispatch();
+
   const {
     data: uploadedImageUrl,
     submitHandler: uploadImage,
     isLoading: isUploadingImage,
   } = useIpfsImageUpload();
 
-  const onUploadImage = async () => {
+  const onUploadImage = useCallback(async () => {
     if (selectedImage) {
       uploadImage(selectedImage);
     }
+  }, [selectedImage, uploadImage]);
+
+  const hasSelectedImage = useCallback((): boolean => {
+    return !!selectedImage;
+  }, [selectedImage]);
+
+  const onUploadTriggered = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+    // Check the file type
+    const fileType = file.type;
+    if (!/^image\/(jpeg|jpg|png)$/.test(fileType)) {
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_NOTIFICATION,
+        payload: {
+          open: true,
+          type: NotificationType.ERROR,
+          message: ['Please select a valid image file (JPEG, JPG, or PNG).'],
+        },
+      });
+      return;
+    }
+    // Check the file size
+    const fileSize = file.size; // in bytes
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (fileSize > maxSize) {
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_NOTIFICATION,
+        payload: {
+          open: true,
+          type: NotificationType.ERROR,
+          message: ['Please select an image file smaller than 2MB.'],
+        },
+      });
+      return;
+    }
+
+    setSelectedImage(file);
   };
 
   const removeImage = () => {
@@ -35,6 +87,14 @@ export const HypeImageUpload = ({ imageUrl, setImageUrl }: HypeImageProps) => {
   if (uploadedImageUrl) {
     setImageUrl(uploadedImageUrl.data.cid.toString());
   }
+
+  useEffect(() => {
+    imageUploadRef.current = {
+      hasSelectedImage,
+      onUploadImage,
+      uploadedImageUrl,
+    };
+  }, [imageUploadRef, hasSelectedImage, onUploadImage, uploadedImageUrl]);
 
   return (
     <FormElement>
@@ -61,13 +121,7 @@ export const HypeImageUpload = ({ imageUrl, setImageUrl }: HypeImageProps) => {
       )}
       {!selectedImage && (
         <Button type="button" style={{ padding: 0 }} variant="primary">
-          <UploadControl
-            value={selectedImage}
-            onChange={(event) => {
-              setSelectedImage(event.target.files[0]);
-            }}
-            accept="image/*"
-          >
+          <UploadControl value={selectedImage} onChange={onUploadTriggered} accept="image/*">
             Select image
           </UploadControl>
         </Button>
