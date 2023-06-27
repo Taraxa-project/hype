@@ -102,7 +102,8 @@ export const HypeImageUpload = ({ imageUrl, setImageUrl, imageUploadRef }: HypeI
         <Label>Project's image: </Label>
       </Box>
       <Example>
-        This is not mandatory but we recommend uploading an image that represents your project
+        This is not mandatory but we recommend uploading an image that represents your project. The
+        image size should not exceed 2MB
       </Example>
 
       {selectedImage && (
