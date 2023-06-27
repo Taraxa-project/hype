@@ -81,17 +81,18 @@ export const useAddHypePoolEffects = () => {
       imageUploadRef.current.hasSelectedImage() &&
       !imageUploadRef.current.imageUrl
     ) {
-      dispatchModals({
-        type: ModalsActionsEnum.SHOW_NOTIFICATION,
-        payload: {
-          open: true,
-          type: NotificationType.INFO,
-          message: [
-            'It seems you have selected an image but forgot to upload it. You can upload the image or remove it.',
-          ],
-        },
-      });
-      return;
+      imageUri = await imageUploadRef.current.onUploadImage();
+      // dispatchModals({
+      //   type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      //   payload: {
+      //     open: true,
+      //     type: NotificationType.INFO,
+      //     message: [
+      //       'It seems you have selected an image but forgot to upload it. You can upload the image or remove it.',
+      //     ],
+      //   },
+      // });
+      // return;
     }
     const projectDetails: HypeProjectDetails = {
       description: data.description,

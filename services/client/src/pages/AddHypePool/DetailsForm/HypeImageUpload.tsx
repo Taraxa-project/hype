@@ -12,7 +12,7 @@ import { NotificationType } from '../../../utils';
 
 export interface HypeImageUploadRef {
   hasSelectedImage: () => boolean;
-  onUploadImage: () => Promise<void>;
+  onUploadImage: () => Promise<string>;
   imageUrl: string;
 }
 
@@ -31,6 +31,7 @@ export const HypeImageUpload = ({ imageUploadRef }: HypeImageProps) => {
     if (selectedImage) {
       const uploadedImageUrl = await uploadImage(selectedImage);
       setImageUrl(uploadedImageUrl?.cid);
+      return uploadedImageUrl?.cid;
     }
   }, [selectedImage, uploadImage]);
 
