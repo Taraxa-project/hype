@@ -7,16 +7,22 @@ const hypePoolsPerPage = 6;
 interface FetchHypesFilter {
   first: number;
   skip: number;
+  orderBy: 'endDate' | 'startDate' | 'creator' | 'remainingFunds' | 'cap';
+  orderDirection: 'desc' | 'asc';
   text?: string;
 }
 
 const computeFilters = (page: number, search?: string): FetchHypesFilter => {
   const first = hypePoolsPerPage;
   const skip = (page - 1) * hypePoolsPerPage;
+  const orderBy = 'endDate';
+  const orderDirection = 'desc';
 
   const filters: FetchHypesFilter = {
     first,
     skip,
+    orderBy,
+    orderDirection
   };
 
   if (search) {

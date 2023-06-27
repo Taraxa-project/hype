@@ -4,16 +4,16 @@ import { API } from '../../constants';
 import { useAuth } from '../../hooks';
 import { HypePool } from '../../models';
 
-const getJoinedPools = (address: string) => {
-  const url = `${API}/pools/joined/${address}`;
+const getJoinedPools = () => {
+  const url = `${API}/pools/joined`;
   return axios.get(url);
 };
 
-export const useGetJoinedPools = (address: string) => {
+export const useGetJoinedPools = () => {
   const { authenticated } = useAuth();
   const { data, refetch, isError, error, isLoading } = useQuery(
-    ['user-joined-pools', address],
-    () => getJoinedPools(address),
+    ['user-joined-pools'],
+    () => getJoinedPools(),
     {
       retry: false,
       enabled: authenticated,

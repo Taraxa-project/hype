@@ -27,12 +27,12 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
-
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
   const [poolDetails, setPoolDetails] = useState<HypePoolDetailsForm>({
@@ -47,7 +47,7 @@ export const useAddHypePoolEffects = () => {
     network: 841,
     token: null,
     tokenAddress: '',
-    tokenName: '',
+    tokenSymbol: '',
     tokenDecimals: 18,
     impressionReward: null,
     cap: null,
@@ -72,10 +72,12 @@ export const useAddHypePoolEffects = () => {
     }
   }, [uploadedIpfsUrl]);
 
+
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
     const projectDetails: HypeProjectDetails = {
       description: data.description,
       projectDescription: data.projectDescription,
+      imageUri: imageUrl,
     };
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
@@ -108,7 +110,7 @@ export const useAddHypePoolEffects = () => {
         cap,
         impressionReward,
         tokenAddress:
-          rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+          rewards.tokenSymbol && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
         endDate: 0,
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
@@ -143,5 +145,7 @@ export const useAddHypePoolEffects = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
+    imageUrl,
+    setImageUrl,
   };
 };

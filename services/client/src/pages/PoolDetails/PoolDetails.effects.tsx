@@ -15,12 +15,14 @@ import {
 import { HypePool } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
 import { useNavigate } from 'react-router-dom';
+import { useGetPoolStats } from '../../api/pools/useGetPoolStats';
+import { useGetPoolLeaderboard } from '../../api/pools/useGetPoolLeaderboard';
 
 export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();
-  const { isCustomToken, tokenDecimals } = useTokenDecimals(pool);
+  const { isCustomToken, tokenDecimals, tokenSymbol } = useTokenDecimals(pool);
   const [{ data: hypePoolData }] = useQuery({
     query: HYPEPOOL_QUERIES.poolQuery,
     variables: { id: poolId },
@@ -38,6 +40,8 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited, isCustomToken);
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
+  const { data: poolStats } = useGetPoolStats(poolId);
+  const { data: leaderboard } = useGetPoolLeaderboard(poolId);
 
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
@@ -130,11 +134,14 @@ export const usePoolDetailsEffects = (poolId: string) => {
   return {
     ...pool,
     tokenDecimals,
+    tokenSymbol,
     isDeposited,
     authenticated,
     fund,
     activate,
     account,
     onParticipate,
+    poolStats,
+    leaderboard,
   };
 };

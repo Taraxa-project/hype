@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
+import { Dispatch } from 'react';
+import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
 import TitleText from '../../../components/titletext/TitleText';
-// import { Link } from '../../../components/styles/Link';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
@@ -15,15 +17,21 @@ import {
 } from '../AddHypePool.styled';
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
-import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
-import { Link } from 'react-router-dom';
+import { HypeImageUpload } from './HypeImageUpload';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
+  setImageUrl: Dispatch<any>;
+  imageUrl: string;
 }
 
-export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
+export const DetailsForm = ({
+  defaultValues,
+  onSubmit,
+  imageUrl,
+  setImageUrl,
+}: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
   return (
@@ -87,6 +95,8 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
             {...register('tokenName')}
           />
         </FormElement>
+
+        <HypeImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
 
         {/* Description */}
         <FormElement>

@@ -7,6 +7,7 @@ import {
   fontWeight,
   lineHeight,
   letterSpacing,
+  typography,
   FontSizeProps,
   FontWeightProps,
   LineHeightProps,
@@ -14,6 +15,7 @@ import {
   SpaceProps,
   WidthProps,
   LetterSpacingProps,
+  TypographyProps,
 } from 'styled-system';
 
 export type TextProps = SpaceProps &
@@ -22,7 +24,8 @@ export type TextProps = SpaceProps &
   LineHeightProps &
   ColorProps &
   LetterSpacingProps &
-  WidthProps;
+  WidthProps &
+  TypographyProps;
 
 const Text = styled.p<TextProps>`
   ${space}
@@ -32,6 +35,7 @@ const Text = styled.p<TextProps>`
   ${lineHeight}
   ${color}
   ${letterSpacing}
+  ${typography}
 `;
 
 Text.defaultProps = {

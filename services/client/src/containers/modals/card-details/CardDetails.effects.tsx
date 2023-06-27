@@ -8,7 +8,7 @@ export const useCardDetailsEffects = () => {
   } = useModalsStore();
   const dispatchModals = useModalsDispatch();
   let navigate = useNavigate();
-  const { tokenDecimals } = useTokenDecimals(cardData);
+  const { tokenDecimals, tokenSymbol } = useTokenDecimals(cardData);
 
   const closeModal = () => {
     dispatchModals({
@@ -56,5 +56,6 @@ export const useCardDetailsEffects = () => {
     isPrivate,
     tokenDecimals,
     onParticipate,
+    tokenSymbol,
   };
 };

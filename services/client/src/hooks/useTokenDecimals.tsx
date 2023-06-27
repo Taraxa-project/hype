@@ -6,8 +6,10 @@ import { AddressType, networkOptions, zeroAddress } from '../utils';
 export const useTokenDecimals = (pool: HypePool) => {
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [tokenDecimals, setTokenDecimals] = useState<number>(18);
+  const [tokenSymbol, setTokenSymbol] = useState<string>('TARA');
   const { data: ERC20tokenInfo } = useToken({
     address: pool?.tokenAddress as AddressType,
+    chainId: pool?.network,
     enabled: !!pool && isCustomToken,
   });
 
@@ -20,8 +22,9 @@ export const useTokenDecimals = (pool: HypePool) => {
   useEffect(() => {
     if (ERC20tokenInfo) {
       setTokenDecimals(ERC20tokenInfo.decimals || 18);
+      setTokenSymbol(ERC20tokenInfo.symbol || 'TARA');
     }
   }, [ERC20tokenInfo]);
 
-  return { isCustomToken, tokenDecimals };
+  return { isCustomToken, tokenDecimals, tokenSymbol };
 };

@@ -28,7 +28,13 @@ async function bootstrap() {
     .setDescription('Swagger documentation for Taraxa Hype Pool API')
     .setVersion('0.1')
     .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      {
+        name: 'Authorization',
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Bearer',
+        in: 'Header',
+      },
       'authorization',
     )
     .build();

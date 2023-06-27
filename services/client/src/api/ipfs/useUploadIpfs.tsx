@@ -6,7 +6,7 @@ import { NotificationType } from '../../utils';
 import { API } from '../../constants';
 
 const upload = (details: HypeProjectDetails) => {
-  const url = `${API}/ipfs/upload`;
+  const url = `${API}/ipfs/upload-details`;
   return axios.post(url, details);
 };
 
