@@ -5,6 +5,15 @@ export class RewardClaimAssociation1687179992085 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+      `SELECT setval(
+        pg_get_serial_sequence('public.hype_reward', 'id'),
+        (
+            SELECT MAX("id")
+            FROM public.hype_reward
+        ) + 1
+    );`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "hype_reward" ADD "telegramUsername" character varying`,
     );
     await queryRunner.query(

@@ -19,6 +19,7 @@ export class RewardColumnNameUpdate1687273276705 implements MigrationInterface {
       new TableColumn({
         name: 'telegram_id',
         type: 'character varying',
+        isNullable: true,
       }),
     );
     await queryRunner.renameColumn(
@@ -27,6 +28,7 @@ export class RewardColumnNameUpdate1687273276705 implements MigrationInterface {
       new TableColumn({
         name: 'telegram_username',
         type: 'character varying',
+        isNullable: true,
       }),
     );
     await queryRunner.renameColumn(
