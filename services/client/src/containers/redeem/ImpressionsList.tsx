@@ -5,6 +5,7 @@ import CrownIcon from '../../assets/icons/Crown';
 import Box from '../../components/styles/Box';
 import { useTokenDetails } from '../../hooks';
 import { transformFromWei } from '../../utils';
+import { BigNumber } from 'ethers';
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -20,12 +21,38 @@ const StyledCell = styled.td`
 
 interface ImpressionsListProps {
   impressions: RewardsDetails[];
-  symbol: string;
   pool: HypePool;
 }
 
-export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListProps) => {
-  const { tokenDecimals } = useTokenDetails(pool);
+interface GroupedImpressions {
+  telegramGroup: string;
+  totalImpressions: number;
+  totalRewards: BigNumber;
+}
+
+export const ImpressionsList = ({ impressions, pool }: ImpressionsListProps) => {
+  const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
+
+  const groupedImpressions: GroupedImpressions[] = Object.values(
+    impressions.reduce((result: { [group: string]: GroupedImpressions }, item: RewardsDetails) => {
+      const { telegramGroup, impressions, rewards } = item;
+      const impressionsNumber = parseFloat(impressions);
+      const rewardsBigNumber = BigNumber.from(rewards);
+      if (result.hasOwnProperty(telegramGroup)) {
+        result[telegramGroup].totalImpressions += impressionsNumber;
+        result[telegramGroup].totalRewards =
+          result[telegramGroup].totalRewards.add(rewardsBigNumber);
+      } else {
+        result[telegramGroup] = {
+          telegramGroup,
+          totalImpressions: impressionsNumber,
+          totalRewards: rewardsBigNumber,
+        };
+      }
+      return result;
+    }, {}),
+  );
+
   return (
     <StyledTable>
       <thead>
@@ -60,8 +87,8 @@ export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListPr
           <StyledCell></StyledCell>
           <StyledCell>2000 TARA</StyledCell>
         </StyledRow> */}
-        {impressions?.map((item) => (
-          <StyledRow key={`${item.telegramGroup}-${item.rewards}`}>
+        {groupedImpressions?.map((item) => (
+          <StyledRow key={`${item.telegramGroup}-${item.totalImpressions}`}>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
                 @{item.telegramGroup}
@@ -69,12 +96,13 @@ export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListPr
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {item.impressions}
+                {item.totalImpressions?.toFixed(2)}
               </Text>
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {Number(transformFromWei(item.rewards, tokenDecimals)).toFixed(2)} {symbol}
+                {Number(transformFromWei(item.totalRewards.toString(), tokenDecimals)).toFixed(2)}{' '}
+                {tokenSymbol}
               </Text>
             </StyledCell>
           </StyledRow>

@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import Box from '../../components/styles/Box';
-import Text from '../../components/styles/Text';
 import Heading from '../../components/styles/Heading';
 import useWallet from '../../hooks/useWallet';
 import Transaction from '../../components/transaction/Transaction';
@@ -9,9 +7,7 @@ import { TransactionStatus } from '../../utils';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
-import { ImpressionsList } from './ImpressionsList';
-import UpIcon from '../../assets/icons/Up';
-import DownIcon from '../../assets/icons/Down';
+
 
 interface TransactionsProps {
   totalPoolRewards: PoolRewards[];
@@ -29,7 +25,6 @@ export const TransactionsContainer = ({
   isLoadingRewards,
 }: TransactionsProps) => {
   const { isConnected } = useWallet();
-  const [showImpressions, setShowImpression] = useState<boolean>(true);
 
   return (
     <RoundContainer minWidth={!isConnected ? { md: '340px', lg: '340px', xl: '340px' } : ''}>
@@ -69,38 +64,14 @@ export const TransactionsContainer = ({
                     >
                       <Transaction
                         value={reward.unclaimed}
-                        symbol={reward.symbol}
-                        pool={reward.pool?.title}
+                        pool={reward.pool}
+                        impressions={reward.impressions}
                         date={new Date()}
                         status={TransactionStatus.PENDING}
                         buttonAction={() => onRedeem(reward)}
                         buttonName="Redeem"
                       />
-                      <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
-                        <Box
-                          display="flex"
-                          flexDirection="row"
-                          alignItems="center"
-                          justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
-                          gridGap="1rem"
-                        >
-                          <Text color="greys.3" fontSize="1rem" fontWeight="400">
-                            Details (cumulative)
-                          </Text>
-                          {showImpressions ? (
-                            <UpIcon click={() => setShowImpression(!showImpressions)} />
-                          ) : (
-                            <DownIcon click={() => setShowImpression(!showImpressions)} />
-                          )}
-                        </Box>
-                        {showImpressions && (
-                          <ImpressionsList
-                            symbol={reward.symbol}
-                            impressions={reward.impressions}
-                            pool={reward.pool}
-                          />
-                        )}
-                      </Box>
+                  
                     </Box>
                   ))}
                 </Box>
@@ -139,8 +110,7 @@ export const TransactionsContainer = ({
                     <Transaction
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
-                      symbol={claim.symbol || 'TARA'}
-                      pool={claim.pool?.title || 'APE Hype 12'}
+                      pool={claim.pool}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}
