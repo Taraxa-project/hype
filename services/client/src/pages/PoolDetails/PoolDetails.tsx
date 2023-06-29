@@ -55,6 +55,7 @@ export const PoolDetails = () => {
     endDate,
     startDate,
     tokenDecimals,
+    duration,
     isDeposited,
     authenticated,
     imageUri,
@@ -66,8 +67,8 @@ export const PoolDetails = () => {
     leaderboard,
   } = usePoolDetailsEffects(poolId);
   const startedAt =
-    Number(startDate) !== 0 ? formatDate(new Date(+startDate * 1000)) : '(not yet active)';
-  const endsAt = Number(endDate) !== 0 ? formatDate(new Date(+endDate * 1000)) : '(not yet active)';
+    Number(startDate) !== 0 && !!startDate ? formatDate(new Date(+startDate * 1000)) : null;
+  const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
   const tokensAwarded = poolStats?.tokensAwarded
     ? Number(transformFromWei(poolStats.tokensAwarded, tokenDecimals))
     : null;
@@ -88,7 +89,7 @@ export const PoolDetails = () => {
               {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
             </ListItem>
             <ListItem>{active ? 'Active' : 'Inactive'}</ListItem>
-            <ListItem>ends {endsAt}</ListItem>
+            {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
             <Text fontWeight="500" fontSize="1.25rem">
@@ -202,15 +203,26 @@ export const PoolDetails = () => {
             </InfoContainer>
           )}
 
-          <InfoContainer>
-            <InfoHeader>Start Date:</InfoHeader>
-            <InfoValue>{startedAt}</InfoValue>
-          </InfoContainer>
+          {startedAt && (
+            <InfoContainer>
+              <InfoHeader>Start Date:</InfoHeader>
+              <InfoValue>{startedAt}</InfoValue>
+            </InfoContainer>
+          )}
 
-          <InfoContainer>
-            <InfoHeader>End Date:</InfoHeader>
-            <InfoValue>{endsAt}</InfoValue>
-          </InfoContainer>
+          {endsAt && (
+            <InfoContainer>
+              <InfoHeader>End Date:</InfoHeader>
+              <InfoValue>{endsAt}</InfoValue>
+            </InfoContainer>
+          )}
+
+          {duration && (
+            <InfoContainer>
+              <InfoHeader>Duration:</InfoHeader>
+              <InfoValue>{duration / (24 * 60 * 60)} days</InfoValue>
+            </InfoContainer>
+          )}
 
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Dispatch } from 'react';
 import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
 import TitleText from '../../../components/titletext/TitleText';
 import Button from '../../../components/button/Button';
@@ -17,21 +16,15 @@ import {
 } from '../AddHypePool.styled';
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
-import { HypeImageUpload } from './HypeImageUpload';
+import { HypeImageUpload, HypeImageUploadRef } from './HypeImageUpload';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
-  setImageUrl: Dispatch<any>;
-  imageUrl: string;
+  imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
-export const DetailsForm = ({
-  defaultValues,
-  onSubmit,
-  imageUrl,
-  setImageUrl,
-}: DetailsFormProps) => {
+export const DetailsForm = ({ defaultValues, onSubmit, imageUploadRef }: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
   return (
@@ -61,7 +54,6 @@ export const DetailsForm = ({
           <TitleText>Tell us about your project</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project's name & potential variations separated by commas</Label>
-            {/* <SpacedStyledTooltip message="Project name" /> */}
           </Box>
           <Example>
             <b>Example 1:</b> Taraxa <br />
@@ -96,7 +88,7 @@ export const DetailsForm = ({
           />
         </FormElement>
 
-        <HypeImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        <HypeImageUpload imageUploadRef={imageUploadRef} />
 
         {/* Description */}
         <FormElement>

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProjectDetailsDTO {
@@ -13,6 +13,7 @@ export class ProjectDetailsDTO {
   projectDescription: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   imageUri: string;
 }

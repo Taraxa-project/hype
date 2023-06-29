@@ -3,7 +3,7 @@ import Text from '../../components/styles/Text';
 import { HypePool, RewardsDetails } from '../../models';
 import CrownIcon from '../../assets/icons/Crown';
 import Box from '../../components/styles/Box';
-import { useTokenDecimals } from '../../hooks';
+import { useTokenDetails } from '../../hooks';
 import { transformFromWei } from '../../utils';
 
 const StyledTable = styled.table`
@@ -20,12 +20,12 @@ const StyledCell = styled.td`
 
 interface ImpressionsListProps {
   impressions: RewardsDetails[];
-  symbol: string;
   pool: HypePool;
 }
 
-export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListProps) => {
-  const { tokenDecimals } = useTokenDecimals(pool);
+export const ImpressionsList = ({ impressions, pool }: ImpressionsListProps) => {
+  const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
+
   return (
     <StyledTable>
       <thead>
@@ -61,7 +61,7 @@ export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListPr
           <StyledCell>2000 TARA</StyledCell>
         </StyledRow> */}
         {impressions?.map((item) => (
-          <StyledRow key={`${item.telegramGroup}-${item.rewards}`}>
+          <StyledRow key={`${item.telegramGroup}-${item.impressions}`}>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
                 @{item.telegramGroup}
@@ -69,12 +69,13 @@ export const ImpressionsList = ({ impressions, symbol, pool }: ImpressionsListPr
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {item.impressions}
+                {Number(item.impressions)?.toFixed(2)}
               </Text>
             </StyledCell>
             <StyledCell>
               <Text fontWeight="400" fontSize="1rem">
-                {Number(transformFromWei(item.rewards, tokenDecimals)).toFixed(2)} {symbol}
+                {Number(transformFromWei(item.rewards.toString(), tokenDecimals)).toFixed(2)}{' '}
+                {tokenSymbol}
               </Text>
             </StyledCell>
           </StyledRow>

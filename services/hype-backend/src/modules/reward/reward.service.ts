@@ -12,6 +12,7 @@ import { BigNumber } from 'ethers';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { Raw, Repository } from 'typeorm';
+import { DateTime } from 'luxon';
 import { HypeReward } from '../../entities/reward.entity';
 import {
   ImpressionDto,
@@ -101,14 +102,16 @@ export class RewardService {
   }
 
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
-    const rewardsOfAddress = await this.rewardRepository.find({
-      where: {
-        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-          address,
-        }),
-        claimed: false,
-      },
-    });
+    const rewardsOfAddress = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('reward.telegramGroup, reward.poolId')
+      .addSelect('SUM(reward.impressions)', 'totalImpressions')
+      .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'totalRewards')
+      .where('LOWER(reward.rewardee) = LOWER(:address)', { address })
+      .andWhere('reward.claimed = :claimed', { claimed: false })
+      .groupBy('reward.telegramGroup, reward.poolId')
+      .getRawMany();
+
     const fetchedClaims = await this.claimRepository.find({
       where: {
         rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
@@ -152,26 +155,27 @@ export class RewardService {
         };
       }),
     );
-    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
+    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.pool_id)));
     const totalUnclaimed: TotalUnclaimed[] = [];
 
     await Promise.all(
       poolIds.map(async (poolId) => {
         const rewardsOfPool = rewardsOfAddress.filter(
-          (r) => r.poolId === poolId,
+          (r) => r.pool_id === poolId,
         );
         const rewardsDetails: RewardsDetails[] = rewardsOfPool.map(
           (rewardOfPool) => {
             return {
-              telegramGroup: rewardOfPool.telegramUsername,
-              impressions: rewardOfPool.impressions,
-              rewards: rewardOfPool.amount,
+              telegramGroup: rewardOfPool.telegram_group,
+              impressions: rewardOfPool.totalImpressions,
+              rewards: rewardOfPool.totalRewards,
             };
           },
         );
         const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
         const unclaimed = rewardsOfPool.reduce(
-          (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
+          (total, unc) =>
+            BigNumber.from(total).add(BigNumber.from(unc.totalRewards)),
           BigNumber.from('0'),
         );
         const result: { hypePool: IPool } =
@@ -291,6 +295,7 @@ export class RewardService {
           rewardee: user ? user.address : null,
           telegramId: impression.user_id.toString(),
           telegramUsername: impression.username,
+          telegramGroup: impression.telegram_group,
           impressions: impression.message_impressions,
           poolId: impression.pool_id,
           dateFrom: new Date(impression.from),
@@ -326,8 +331,7 @@ export class RewardService {
     const { total: tokensAwarded } = await this.rewardRepository
       .createQueryBuilder('reward')
       .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
-      .where('reward.claimed = :claimed', { claimed: false })
-      .andWhere('reward.poolId = :poolId', { poolId })
+      .where('reward.poolId = :poolId', { poolId })
       .getRawOne();
 
     const { total: tokensClaimed } = await this.rewardRepository
@@ -358,6 +362,18 @@ export class RewardService {
   }
 
   async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
+    const currentDate = DateTime.local();
+    const startDate = currentDate
+      .startOf('week')
+      .minus({ days: 1 })
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      .toJSDate();
+    const endDate = currentDate
+      .endOf('week')
+      .minus({ days: 1 })
+      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+      .toJSDate();
+
     const qb = this.rewardRepository
       .createQueryBuilder('reward')
       .select('reward.telegramId', 'telegramId')
@@ -368,6 +384,14 @@ export class RewardService {
         'rank',
       )
       .where('reward.poolId = :poolId', { poolId })
+      .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      })
+      .orWhere('reward.date_to BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      })
       .groupBy('reward.telegramId, reward.telegramUsername')
       .orderBy('"totalImpressions"', 'DESC');
 
