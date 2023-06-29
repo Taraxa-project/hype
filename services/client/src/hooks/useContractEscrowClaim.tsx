@@ -19,6 +19,7 @@ export const useContractEscrowClaim = (
   args: ClaimArgs,
   enabled: boolean,
   successCallback: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const [isWrite, setIsWrite] = useState<boolean>(false);
@@ -40,12 +41,13 @@ export const useContractEscrowClaim = (
       showLoading(['Please, sign the message...', 'Claiming rewards...']);
     },
     onSuccess(data: any) {
-      // console.log('Successfully called', data);
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
@@ -54,11 +56,13 @@ export const useContractEscrowClaim = (
     onSuccess() {
       hideLoadingModal();
       successCallback();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled(data, error) {
       hideLoadingModal();

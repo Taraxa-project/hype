@@ -26,4 +26,14 @@ export class ImpressionDto {
   @IsNotEmpty()
   @IsString()
   to: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  telegram_group: string;
 }

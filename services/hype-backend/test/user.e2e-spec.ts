@@ -2,7 +2,7 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { ConfigService } from '@nestjs/config';
 import { bootstrapTestInstance } from './api';
-import { GetByDTO, UserDTO } from '../src/modules/user/dto';
+import { UserDTO } from '../src/modules/user/dto';
 import { UsersService } from '../src/modules/user/user.service';
 
 describe('User tests', () => {
@@ -44,21 +44,12 @@ describe('User tests', () => {
     expect(updatedUser.address).toBe(existingUser.address);
 
     const publicAddress = '0xA2222D333C33333339999999911111111111eee1';
-    const filter: GetByDTO = {
-      publicAddress,
-    };
-    const { body: user } = await requestUserBy(HttpStatus.OK, filter);
+    const { body: user } = await requestUserBy(HttpStatus.OK);
     expect(user.address).toBe(publicAddress);
   });
 
-  const requestUserBy = async (
-    status: HttpStatus,
-    filterDTO: GetByDTO,
-  ): Promise<any> =>
-    await request(app.getHttpServer())
-      .get(`/users`)
-      .query(filterDTO)
-      .expect(status);
+  const requestUserBy = async (status: HttpStatus): Promise<any> =>
+    await request(app.getHttpServer()).get(`/users/me`).expect(status);
 
   const postUser = async (status: HttpStatus, body: UserDTO): Promise<any> =>
     await request(app.getHttpServer())

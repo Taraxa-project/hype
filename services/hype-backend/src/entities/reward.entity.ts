@@ -4,9 +4,17 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsDate,
+  IsNumber,
+} from 'class-validator';
 import { IReward } from '../models';
+import { HypeClaim } from './claim.entity';
 
 @Entity('hype_reward')
 export class HypeReward extends BaseEntity implements IReward {
@@ -18,7 +26,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ nullable: false })
+  @Column({ name: 'pool_id', nullable: false })
   @IsNotEmpty()
   @IsString()
   poolId: string;
@@ -28,7 +36,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   amount: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'telegram_id', nullable: true })
   @IsString()
   telegramId: string;
 
@@ -36,10 +44,22 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   rewardee: string;
 
-  @Column({ nullable: false })
+  @Column({ name: 'telegram_username', nullable: true })
+  @IsString()
+  telegramUsername: string;
+
+  @Column({ type: 'decimal', nullable: true })
+  @IsNumber()
+  impressions: number;
+
+  @Column({ name: 'token_address', nullable: false })
   @IsNotEmpty()
   @IsString()
   tokenAddress: string;
+
+  @Column({ name: 'telegram_group', nullable: true })
+  @IsString()
+  telegramGroup: string;
 
   @Column({ nullable: false, default: false })
   @IsNotEmpty()
@@ -71,4 +91,7 @@ export class HypeReward extends BaseEntity implements IReward {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
+
+  @ManyToOne(() => HypeClaim, (claim) => claim.rewards)
+  claim: HypeClaim;
 }

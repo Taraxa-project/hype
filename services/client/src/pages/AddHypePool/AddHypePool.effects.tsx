@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
@@ -6,9 +6,12 @@ import { HypePoolRewardForm } from './RewardForm';
 import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
+import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
+import { NotificationType } from '../../utils';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
+  const imageUploadRef = useRef<HypeImageUploadRef>(null);
 
   const defaultContractArgs: WritePoolArgs = {
     uri: null,
@@ -27,7 +30,6 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
-
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
@@ -47,7 +49,7 @@ export const useAddHypePoolEffects = () => {
     network: 841,
     token: null,
     tokenAddress: '',
-    tokenName: '',
+    tokenSymbol: '',
     tokenDecimals: 18,
     impressionReward: null,
     cap: null,
@@ -73,9 +75,29 @@ export const useAddHypePoolEffects = () => {
   }, [uploadedIpfsUrl]);
 
   const onUploadToIpfs = async (data: HypePoolDetailsForm) => {
+    let imageUri = imageUploadRef.current?.imageUrl;
+    if (
+      imageUploadRef.current &&
+      imageUploadRef.current.hasSelectedImage() &&
+      !imageUploadRef.current.imageUrl
+    ) {
+      imageUri = await imageUploadRef.current.onUploadImage();
+      // dispatchModals({
+      //   type: ModalsActionsEnum.SHOW_NOTIFICATION,
+      //   payload: {
+      //     open: true,
+      //     type: NotificationType.INFO,
+      //     message: [
+      //       'It seems you have selected an image but forgot to upload it. You can upload the image or remove it.',
+      //     ],
+      //   },
+      // });
+      // return;
+    }
     const projectDetails: HypeProjectDetails = {
       description: data.description,
       projectDescription: data.projectDescription,
+      imageUri,
     };
     dispatchModals({
       type: ModalsActionsEnum.SHOW_LOADING,
@@ -108,7 +130,7 @@ export const useAddHypePoolEffects = () => {
         cap,
         impressionReward,
         tokenAddress:
-          rewards.tokenName && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+          rewards.tokenSymbol && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
         endDate: 0,
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
@@ -143,5 +165,6 @@ export const useAddHypePoolEffects = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
+    imageUploadRef,
   };
 };

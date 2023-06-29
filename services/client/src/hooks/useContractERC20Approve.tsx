@@ -14,6 +14,7 @@ export const useContractERC20Approve = (
   enabled: boolean,
   isCustomToken: boolean,
   successCallbackDeposit: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypeToken;
   const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
@@ -59,6 +60,7 @@ export const useContractERC20Approve = (
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
@@ -66,11 +68,13 @@ export const useContractERC20Approve = (
     hash: data?.hash,
     onSuccess(transactionData) {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled() {
       hideLoadingModal();

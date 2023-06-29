@@ -45,6 +45,7 @@ type HypePool @entity(immutable: false) {
   startDate: BigInt
   duration: BigInt
   endDate: BigInt
+  imageUri: String
 }
 
 type HypeUri @entity(immutable: true) {

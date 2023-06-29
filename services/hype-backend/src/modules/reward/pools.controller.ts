@@ -4,22 +4,30 @@ import {
   Get,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   UseGuards,
-  Param,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import { WalletGuard, HMACGuard } from '../guards';
-import { ImpressionDto, RewardDto } from './dto';
+import {
+  ImpressionDto,
+  PoolStatsDto,
+  RewardDto,
+  TopTelegramAccountDto,
+} from './dto';
 import { RewardService } from './reward.service';
+import { HMACGuard } from '../guards';
 import { IPool } from '../../models';
+import { AuthGuard } from '@nestjs/passport';
+import { GetAddress } from '../auth/get-address.decorator';
 dotenv.config();
 
 @ApiTags('pools')
@@ -27,16 +35,38 @@ dotenv.config();
 export class PoolsController {
   constructor(private readonly rewardService: RewardService) {}
 
-  @Get('joined/:address')
-  @UseGuards(WalletGuard)
+  @Get('joined')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
     type: [RewardDto],
-    description: 'Returns joined pools for a givven address',
+    description: 'Returns joined pools for a given address',
   })
-  async getJoined(@Param('address') address: string): Promise<IPool[]> {
+  async getJoined(@GetAddress() address: string): Promise<IPool[]> {
     return this.rewardService.getJoinedPools(address);
+  }
+
+  @Get('stats/:poolId')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PoolStatsDto,
+    description: 'Returns pool stats for a given address',
+  })
+  async getStats(@Param('poolId') poolId: string): Promise<PoolStatsDto> {
+    return this.rewardService.getPoolStats(poolId);
+  }
+
+  @Get('leaderboard/:poolId')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [TopTelegramAccountDto],
+    description: 'Returns pool stats for a given address',
+  })
+  async getLeaderboard(
+    @Param('poolId') poolId: string,
+  ): Promise<TopTelegramAccountDto[]> {
+    return this.rewardService.getLeaderboard(poolId);
   }
 
   @Post('impressions')
@@ -46,6 +76,7 @@ export class PoolsController {
     status: HttpStatus.OK,
     description: 'Returns 200 OK',
   })
+  @ApiBody({ type: [ImpressionDto] })
   @ApiNotFoundResponse({ description: 'Endpoint not found' })
   @ApiUnauthorizedResponse({ description: 'You need a valid key' })
   public async saveImpressions(

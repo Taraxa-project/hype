@@ -144,7 +144,7 @@ export const RewardForm = ({
           </FormElement>
         )}
 
-        {/* Custom token name */}
+        {/* Custom token symbol */}
         {showToken && (
           <FormElement>
             <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
@@ -153,13 +153,13 @@ export const RewardForm = ({
             <FormInput
               disabled
               placeholder="ERC20 Token name"
-              name="tokenName"
+              name="tokenSymbol"
               style={{ color: '#595959' }}
-              {...register('tokenName')}
+              {...register('tokenSymbol')}
             />
-            {errors.tokenName && (
+            {errors.tokenSymbol && (
               <Text color="danger" fontSize="0.8rem">
-                {errors.tokenName.message}
+                {errors.tokenSymbol.message}
               </Text>
             )}
           </FormElement>

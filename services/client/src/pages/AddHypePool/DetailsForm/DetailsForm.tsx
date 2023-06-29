@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom';
+import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
 import TitleText from '../../../components/titletext/TitleText';
-// import { Link } from '../../../components/styles/Link';
 import Button from '../../../components/button/Button';
 import { ConnectWalletBtn } from '../../../components/connect-wallet-btn/ConnectWalletBtn';
 import Text from '../../../components/styles/Text';
@@ -15,15 +16,15 @@ import {
 } from '../AddHypePool.styled';
 import TextArea from '../../../components/textarea/TextArea';
 import Box from '../../../components/styles/Box';
-import { HypePoolDetailsForm, useDetailsFormEffects } from './DetailsForm.effects';
-import { Link } from 'react-router-dom';
+import { HypeImageUpload, HypeImageUploadRef } from './HypeImageUpload';
 
 export interface DetailsFormProps {
   defaultValues: HypePoolDetailsForm;
   onSubmit: (data: HypePoolDetailsForm) => void;
+  imageUploadRef: React.MutableRefObject<HypeImageUploadRef | null>;
 }
 
-export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
+export const DetailsForm = ({ defaultValues, onSubmit, imageUploadRef }: DetailsFormProps) => {
   const { register, handleSubmit, errors, authenticated } = useDetailsFormEffects(defaultValues);
 
   return (
@@ -53,7 +54,6 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
           <TitleText>Tell us about your project</TitleText>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>Project's name & potential variations separated by commas</Label>
-            {/* <SpacedStyledTooltip message="Project name" /> */}
           </Box>
           <Example>
             <b>Example 1:</b> Taraxa <br />
@@ -87,6 +87,8 @@ export const DetailsForm = ({ defaultValues, onSubmit }: DetailsFormProps) => {
             {...register('tokenName')}
           />
         </FormElement>
+
+        <HypeImageUpload imageUploadRef={imageUploadRef} />
 
         {/* Description */}
         <FormElement>

@@ -32,7 +32,7 @@ export const useContractActivatePool = (
       showLoading(['Please, sign the message...', 'Activating pool...']);
     },
     onSuccess(data: any) {
-      // console.log('Successfully called', data);
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('On error: ', error);
@@ -46,11 +46,13 @@ export const useContractActivatePool = (
     hash: data?.hash,
     onSuccess() {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled(data, error) {
       hideLoadingModal();

@@ -8,6 +8,7 @@ import { NotAvailable } from '../../components/not-available/NotAvailable';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
+
 interface TransactionsProps {
   totalPoolRewards: PoolRewards[];
   claims: HypeClaim[];
@@ -54,16 +55,24 @@ export const TransactionsContainer = ({
               {totalPoolRewards.length > 0 ? (
                 <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
                   {totalPoolRewards.map((reward) => (
-                    <Transaction
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      py="1rem"
+                      gridGap="1rem"
                       key={`redeem-${reward.unclaimed}-${reward.poolId}-${reward.pool?.title}`}
-                      value={reward.unclaimed}
-                      symbol={reward.symbol}
-                      pool={reward.pool?.title}
-                      date={new Date()}
-                      status={TransactionStatus.PENDING}
-                      buttonAction={() => onRedeem(reward)}
-                      buttonName="Redeem"
-                    />
+                    >
+                      <Transaction
+                        value={reward.unclaimed}
+                        pool={reward.pool}
+                        impressions={reward.impressions}
+                        date={new Date()}
+                        status={TransactionStatus.PENDING}
+                        buttonAction={() => onRedeem(reward)}
+                        buttonName="Redeem"
+                      />
+                  
+                    </Box>
                   ))}
                 </Box>
               ) : (
@@ -101,8 +110,7 @@ export const TransactionsContainer = ({
                     <Transaction
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
-                      symbol={claim.symbol || 'TARA'}
-                      pool={claim.pool?.title || 'APE Hype 12'}
+                      pool={claim.pool}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}
