@@ -40,7 +40,9 @@ export const useRedeemEffects = () => {
       });
     }
   };
-  useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess);
+  useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess, () => {
+    setEnableClaim(false);
+  });
 
   useEffect(() => {
     const setData = async () => {

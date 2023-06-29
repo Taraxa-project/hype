@@ -19,6 +19,7 @@ export const useContractEscrowClaim = (
   args: ClaimArgs,
   enabled: boolean,
   successCallback: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const [isWrite, setIsWrite] = useState<boolean>(false);
@@ -46,6 +47,7 @@ export const useContractEscrowClaim = (
       console.log('On error: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
