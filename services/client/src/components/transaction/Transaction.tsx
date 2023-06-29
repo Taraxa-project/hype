@@ -23,7 +23,15 @@ export interface TransactionProps {
   impressions?: RewardsDetails[];
 }
 
-const Transaction = ({ value, pool, status, date, buttonName, buttonAction, impressions }: TransactionProps) => {
+const Transaction = ({
+  value,
+  pool,
+  status,
+  date,
+  buttonName,
+  buttonAction,
+  impressions,
+}: TransactionProps) => {
   const { tokenSymbol } = useTokenDetails(pool);
   const [showImpressions, setShowImpression] = useState<boolean>(false);
 
@@ -99,26 +107,28 @@ const Transaction = ({ value, pool, status, date, buttonName, buttonAction, impr
           </Box>
         )}
       </Box>
-      <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
-          gridGap="1rem"
-          mt={4}
-        >
-          <Text color="greys.3" fontSize="1rem" fontWeight="400">
-            Details (cumulative)
-          </Text>
-          {showImpressions ? (
-            <UpIcon click={() => setShowImpression(!showImpressions)} />
-          ) : (
-            <DownIcon click={() => setShowImpression(!showImpressions)} />
-          )}
+      {impressions && impressions.length > 0 && (
+        <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent={{ xs: 'center', sm: 'center', md: 'start' }}
+            gridGap="1rem"
+            mt={4}
+          >
+            <Text color="greys.3" fontSize="1rem" fontWeight="400">
+              Details (cumulative)
+            </Text>
+            {showImpressions ? (
+              <UpIcon click={() => setShowImpression(!showImpressions)} />
+            ) : (
+              <DownIcon click={() => setShowImpression(!showImpressions)} />
+            )}
+          </Box>
+          {showImpressions && <ImpressionsList impressions={impressions} pool={pool} />}
         </Box>
-        {impressions && showImpressions && <ImpressionsList impressions={impressions} pool={pool} />}
-      </Box>
+      )}
     </Box>
   );
 };
