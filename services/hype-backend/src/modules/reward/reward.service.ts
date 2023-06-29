@@ -104,12 +104,12 @@ export class RewardService {
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
     const rewardsOfAddress = await this.rewardRepository
       .createQueryBuilder('reward')
-      .select('reward.*')
+      .select('reward.telegramGroup, reward.poolId')
       .addSelect('SUM(reward.impressions)', 'totalImpressions')
       .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'totalRewards')
       .where('LOWER(reward.rewardee) = LOWER(:address)', { address })
       .andWhere('reward.claimed = :claimed', { claimed: false })
-      .groupBy('reward.telegramGroup, reward.id')
+      .groupBy('reward.telegramGroup, reward.poolId')
       .getRawMany();
 
     const fetchedClaims = await this.claimRepository.find({
