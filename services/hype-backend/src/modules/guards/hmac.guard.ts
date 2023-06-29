@@ -19,7 +19,7 @@ export class HMACGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     const hmac = crypto.createHmac('sha256', this.secretKey);
-    hmac.update(JSON.stringify(req.body));
+    hmac.update(req.rawBody);
     const calculatedDigest = hmac.digest('hex');
 
     const authHeader = req.headers.authorization;
