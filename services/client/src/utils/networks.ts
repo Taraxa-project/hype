@@ -128,23 +128,23 @@ export const getExplorerFromNetwork = (
     case networkOptions[1].value:
       return {
         text: `  Taraxa Network Explorer 🌐.`,
-        href: `https://mainnet.explorer.taraxa.io/tx/${hash}`,
+        href: `https://mainnet.qa.explorer.taraxa.io/tx/${hash}`,
       };
 
     case networkOptions[2].value:
       return {
         text: `  Taraxa Network Explorer 🌐.`,
-        href: `https://devnet.explorer.taraxa.io/tx/${hash}`,
+        href: `https://devnet.qa.explorer.taraxa.io/tx/${hash}`,
       };
     case networkOptions[3].value:
       return {
         text: `  Taraxa Network Explorer 🌐.`,
-        href: `https://testnet.explorer.taraxa.io/tx/${hash}`,
+        href: `https://testnet.qa.explorer.taraxa.io/tx/${hash}`,
       };
     default:
       return {
         text: `  Taraxa Network Explorer 🌐.`,
-        href: `https://mainnet.explorer.taraxa.io/tx/${hash}`,
+        href: `https://mainnet.qa.explorer.taraxa.io/tx/${hash}`,
       };
   }
 };

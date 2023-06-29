@@ -388,7 +388,7 @@ export class RewardService {
         startDate,
         endDate,
       })
-      .andWhere('reward.date_to BETWEEN :startDate AND :endDate', {
+      .orWhere('reward.date_to BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
       })
