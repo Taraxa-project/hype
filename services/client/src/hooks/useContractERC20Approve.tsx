@@ -60,6 +60,7 @@ export const useContractERC20Approve = (
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
@@ -67,6 +68,7 @@ export const useContractERC20Approve = (
     hash: data?.hash,
     onSuccess(transactionData) {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('onError', error);
