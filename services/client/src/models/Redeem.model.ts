@@ -3,7 +3,7 @@ import { HypePool } from './HypePool.model';
 
 export interface RewardsDetails {
   telegramGroup: string;
-  impressions: number;
+  impressions: string;
   rewards: string;
 }
 
@@ -18,7 +18,6 @@ export interface PoolRewards {
   poolId: string;
   tokenAddress: string;
   impressions: RewardsDetails[];
-  symbol?: string;
   pool: HypePool;
 }
 

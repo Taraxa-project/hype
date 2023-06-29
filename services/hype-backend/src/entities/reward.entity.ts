@@ -57,6 +57,10 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   tokenAddress: string;
 
+  @Column({ name: 'telegram_group', nullable: true })
+  @IsString()
+  telegramGroup: string;
+
   @Column({ nullable: false, default: false })
   @IsNotEmpty()
   @IsBoolean()

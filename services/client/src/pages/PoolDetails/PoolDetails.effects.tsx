@@ -10,7 +10,7 @@ import {
   useContractEscrowDeposit,
   useContractEscrowGetDepositsOf,
   useLoadingModals,
-  useTokenDecimals,
+  useTokenDetails,
 } from '../../hooks';
 import { HypePool } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
@@ -22,7 +22,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { authenticated } = useAuth();
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();
-  const { isCustomToken, tokenDecimals, tokenSymbol } = useTokenDecimals(pool);
+  const { isCustomToken, tokenDecimals, tokenSymbol } = useTokenDetails(pool);
   const [{ data: hypePoolData }] = useQuery({
     query: HYPEPOOL_QUERIES.poolQuery,
     variables: { id: poolId },
@@ -65,6 +65,9 @@ export const usePoolDetailsEffects = (poolId: string) => {
     enableApprove,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableApprove(false);
+    },
   );
   useContractEscrowDeposit(
     account,

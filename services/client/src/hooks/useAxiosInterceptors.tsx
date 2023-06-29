@@ -29,6 +29,8 @@ export const useAxiosInterceptors = (logout: () => void) => {
           },
         });
         logout();
+      } else {
+        return Promise.reject(error);
       }
     },
   );

@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { HypeProjectDetails } from '../../models';
+import { ApiError, HypeProjectDetails } from '../../models';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
 import { API } from '../../constants';
@@ -32,6 +32,10 @@ export const useIpfsUpload = () => {
         });
       },
       onError: (error: any) => {
+        console.log('Error: ', error);
+        const errorData = error as AxiosError;
+        const errorMessage = errorData?.response?.data as ApiError;
+        console.error('Error message: ', errorMessage);
         dispatchModals({
           type: ModalsActionsEnum.SHOW_LOADING,
           payload: {
@@ -45,7 +49,7 @@ export const useIpfsUpload = () => {
           payload: {
             open: true,
             type: NotificationType.ERROR,
-            message: error || error?.message,
+            message: [errorMessage?.message || 'Something went wrong'],
           },
         });
       },

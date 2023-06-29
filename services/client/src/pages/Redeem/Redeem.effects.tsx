@@ -45,12 +45,9 @@ export const useRedeemEffects = () => {
   useEffect(() => {
     const setData = async () => {
       if (data) {
-        const claims: HypeClaim[] = await getClaimSymbols(data.claims);
-        setClaims(claims);
-        const rewards: PoolRewards[] = await getRewardSymbols(data.totalUnclaimed);
-        setPoolRewards(rewards);
-        const releasedRewards: HypeClaim[] = await getClaimSymbols(data.rewardsReceived);
-        setClaimHistory(releasedRewards);
+        setClaims(data.claims);
+        setPoolRewards(data.totalUnclaimed);
+        setClaimHistory(data.rewardsReceived);
       }
     };
     setData();
@@ -73,46 +70,6 @@ export const useRedeemEffects = () => {
       });
       setEnableClaim(true);
     }
-  };
-
-  const getClaimSymbols = async (claims: HypeClaim[]) => {
-    let targetArray: HypeClaim[] = [];
-    await Promise.all(
-      claims.map(async (claim) => {
-        let symbol;
-        try {
-          symbol = await getERC20TokenName(claim.tokenAddress);
-        } catch (error) {
-          console.error(error);
-        }
-        targetArray.push({
-          ...claim,
-          symbol: symbol,
-        });
-        return targetArray;
-      }),
-    );
-    return targetArray;
-  };
-
-  const getRewardSymbols = async (rewards: PoolRewards[]) => {
-    let targetArray: PoolRewards[] = [];
-    await Promise.all(
-      rewards.map(async (reward) => {
-        let symbol;
-        try {
-          symbol = await getERC20TokenName(reward.tokenAddress);
-        } catch (error) {
-          console.error(error);
-        }
-        targetArray.push({
-          ...reward,
-          symbol: symbol,
-        });
-        return targetArray;
-      }),
-    );
-    return targetArray;
   };
 
   return {

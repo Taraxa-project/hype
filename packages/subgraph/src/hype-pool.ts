@@ -59,8 +59,6 @@ export function handlePoolRewards(event: PoolRewardsCreated): void {
   hypepool.impressionReward = event.params.impressionReward;
   hypepool.startDate = event.params.startDate;
   hypepool.duration = event.params.duration;
-  hypepool.startDate = event.params.startDate;
-  hypepool.duration = event.params.duration;
   hypepool.endDate = event.params.endDate;
   hypepool.save();
 }

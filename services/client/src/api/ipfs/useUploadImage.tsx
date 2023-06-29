@@ -1,60 +1,66 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotificationType } from '../../utils';
 import { API } from '../../constants';
+import { ApiError } from '../../models';
 
-const uploadImage = (file: File) => {
+const uploadImage = async (file: File) => {
   const url = `${API}/ipfs/upload-image`;
   let formData = new FormData();
   formData.append('file', file);
-  return axios.post(url, formData, {
+  const response = await axios.post(url, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response.data;
 };
 
 export const useIpfsImageUpload = () => {
   const queryClient = useQueryClient();
   const dispatchModals = useModalsDispatch();
 
-  const { data, error, isError, isIdle, isLoading, isPaused, isSuccess, mutate } = useMutation(
-    (file: File) => uploadImage(file),
-  );
+  const { mutateAsync, isLoading } = useMutation(uploadImage);
 
-  const submitHandler = (file: File) => {
-    mutate(file, {
-      onSuccess: () => {
-        queryClient.resetQueries();
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_LOADING,
-          payload: {
-            open: false,
-            title: null,
-            text: null,
-          },
-        });
-      },
-      onError: (error: any) => {
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_LOADING,
-          payload: {
-            open: false,
-            title: null,
-            text: null,
-          },
-        });
-        dispatchModals({
-          type: ModalsActionsEnum.SHOW_NOTIFICATION,
-          payload: {
-            open: true,
-            type: NotificationType.ERROR,
-            message: error || error?.message,
-          },
-        });
-      },
-    });
+  const submitHandler = async (file: File) => {
+    try {
+      const uploadedImageData = await mutateAsync(file);
+      queryClient.resetQueries();
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: false,
+          title: null,
+          text: null,
+        },
+      });
+      return uploadedImageData;
+    } catch (error) {
+      const errorData = error as AxiosError;
+      const errorMessage = errorData?.response?.data as ApiError;
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_LOADING,
+        payload: {
+          open: false,
+          title: null,
+          text: null,
+        },
+      });
+      dispatchModals({
+        type: ModalsActionsEnum.SHOW_NOTIFICATION,
+        payload: {
+          open: true,
+          type: NotificationType.ERROR,
+          message: [errorMessage?.message || 'Something went wrong'],
+        },
+      });
+      throw error;
+    }
   };
-  return { data, error, isError, isIdle, isLoading, isPaused, isSuccess, submitHandler };
+
+  return {
+    submitHandler,
+    isLoading,
+  };
 };
