@@ -19,7 +19,7 @@ export const Leaderboard: FC<LeaderboardProps> = ({ topAccounts }) => {
           </StyledCell>
           <StyledCell>
             <Text fontWeight="700" fontSize="1.25rem">
-              Hyper TG Name
+              Hyper TG Name / ID
             </Text>
           </StyledCell>
           <StyledCell>
@@ -39,7 +39,7 @@ export const Leaderboard: FC<LeaderboardProps> = ({ topAccounts }) => {
             </StyledCell>
             <StyledCell width="50%">
               <Text fontWeight="500" fontSize="1rem">
-                @{item.telegramUsername}
+                {item.telegramUsername}
               </Text>
             </StyledCell>
             <StyledCell width="25%">

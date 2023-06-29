@@ -378,7 +378,10 @@ export class RewardService {
     const qb = this.rewardRepository
       .createQueryBuilder('reward')
       .select('reward.telegramId', 'telegramId')
-      .addSelect('reward.telegramUsername', 'telegramUsername')
+      .addSelect(
+        "CASE WHEN reward.telegramUsername IS NULL THEN reward.telegramId ELSE CONCAT('@', reward.telegramUsername) END",
+        'telegramUsername',
+      )
       .addSelect('SUM(reward.impressions)', 'totalImpressions')
       .addSelect(
         'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
@@ -386,7 +389,9 @@ export class RewardService {
       )
       .where('reward.poolId = :poolId', { poolId })
       .andWhere('reward.impressions IS NOT NULL')
-      .andWhere('reward.telegramUsername IS NOT NULL')
+      .andWhere(
+        '(reward.telegramUsername IS NOT NULL OR reward.telegramId IS NOT NULL)',
+      )
       .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
