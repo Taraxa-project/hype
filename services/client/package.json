@@ -52,6 +52,7 @@
     "ethers": "^5.7.2",
     "graphql": "^16.5.0",
     "ipfs-http-client": "^60.0.0",
+    "jwt-decode": "^3.1.2",
     "lodash.debounce": "^4.0.8",
     "luxon": "^2.4.0",
     "postcss-syntax": "^0.36.2",

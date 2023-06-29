@@ -29,20 +29,29 @@ export const useHomeEffects = () => {
 
   useEffect(() => {
     if (data) {
-      if (data.length === 0 || data.length === 0) {
+      if (data.length === 0) {
         setMaxReached(true);
       }
       if (searchString) {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+        setHypePools((prevPools) => {
+          const newPools = filterInactiveAndExpiredPools(data);
+          const filteredNewPools = newPools.filter(
+            (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
+          );
+          return [...prevPools, ...filteredNewPools];
+        });
       } else {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
+        setHypePools((prevPools) => {
+          const newPools = filterInactiveAndExpiredPools(data);
+          const filteredNewPools = newPools.filter(
+            (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
+          );
+          return [...prevPools, ...filteredNewPools];
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
-
   const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
     // const now = Date.now(); // get current timestamp in milliseconds
     // return pools.filter((p: HypePool) => p.active === true && +p.endDate * 1000 > now);

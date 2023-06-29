@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
-import { getERC20TokenName } from '../../utils/tokens';
 import { useRequestRewards } from '../../api/rewards/useRequestRewards';
 import useWallet from '../../hooks/useWallet';
 import { HypeClaim, PoolRewards } from '../../models/Redeem.model';
