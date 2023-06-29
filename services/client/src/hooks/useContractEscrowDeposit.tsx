@@ -51,11 +51,13 @@ export const useContractEscrowDeposit = (
     // wait: data?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled() {
       hideLoadingModal();
