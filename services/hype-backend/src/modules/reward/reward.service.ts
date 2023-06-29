@@ -351,6 +351,7 @@ export class RewardService {
       .createQueryBuilder('reward')
       .select('SUM(reward.impressions)', 'total')
       .where('reward.poolId = :poolId', { poolId })
+      .andWhere('reward.impressions IS NOT NULL')
       .getRawOne();
 
     return {
@@ -384,6 +385,8 @@ export class RewardService {
         'rank',
       )
       .where('reward.poolId = :poolId', { poolId })
+      .andWhere('reward.impressions IS NOT NULL')
+      .andWhere('reward.telegramUsername IS NOT NULL')
       .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
