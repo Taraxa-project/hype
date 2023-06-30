@@ -40,9 +40,7 @@ export const useContractEscrowClaim = (
     onMutate() {
       showLoading(['Please, sign the message...', 'Claiming rewards...']);
     },
-    onSuccess(data: any) {
-      resetWriteContract();
-    },
+    // onSuccess(data: any) {},
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
@@ -56,7 +54,6 @@ export const useContractEscrowClaim = (
     onSuccess() {
       hideLoadingModal();
       successCallback();
-      resetWriteContract();
     },
     onError(error: any) {
       console.log('Error', error);
