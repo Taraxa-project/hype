@@ -401,7 +401,8 @@ export class RewardService {
         endDate,
       })
       .groupBy('reward.telegramId, reward.telegramUsername')
-      .orderBy('"totalImpressions"', 'DESC');
+      .orderBy('"totalImpressions"', 'DESC')
+      .take(10);
 
     return qb.getRawMany();
   }
