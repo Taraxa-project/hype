@@ -31,8 +31,6 @@ import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import { SharePool } from '../../components/share-pool/SharePool';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
-import FlagIcon from '../../assets/icons/Flag';
-import CrownIcon from '../../assets/icons/Crown';
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 
@@ -106,7 +104,7 @@ export const PoolDetails = () => {
             poolStats.impressions && (
               <Box>
                 <CategoryTitle>
-                  <FlagIcon />
+                  🚩
                   <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
                     Hype Pool Progress
                   </Text>
@@ -133,7 +131,7 @@ export const PoolDetails = () => {
           {leaderboard?.length > 0 && (
             <Box pt={4}>
               <CategoryTitle>
-                <CrownIcon />
+                👑
                 <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
                   Weekly Leaderboard
                 </Text>

@@ -12,11 +12,6 @@ export const StyledCell = styled.td<StyledCellProps>`
   width: ${(props) => props.width || 'auto'};
 `;
 
-export const RankWrapper = styled.span<StyledCellProps>`
-  ${(props) => props.rank && props.rank <= 3 && `border: 2px solid black;`}
-  padding: 5px;
-`;
-
 export const StyledTable = styled.table`
   width: 100%;
   max-width: 1000px;
