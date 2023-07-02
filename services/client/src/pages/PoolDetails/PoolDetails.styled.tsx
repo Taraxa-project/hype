@@ -85,12 +85,7 @@ export const KeywordWrapper = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: start;
-  }
+  flex-wrap: wrap;
 `;
 
 export const Keyword = styled.div`
@@ -107,13 +102,7 @@ export const List = styled.ul`
   align-items: center;
   font-size: 1.25rem;
   font-weight: 500;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: start;
-  }
+  flex-wrap: wrap;
 `;
 
 export const ListItem = styled.li`
