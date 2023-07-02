@@ -31,6 +31,9 @@ export const InfoHeader = styled.span`
   line-height: 1.25rem;
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.greys[7]};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: auto;
+  }
 `;
 
 export const InfoValue = styled.span<{ theme: HypeThemeType }>`
@@ -38,6 +41,20 @@ export const InfoValue = styled.span<{ theme: HypeThemeType }>`
   font-size: 1rem;
   justify-content: end;
   color: ${({ theme }) => theme.colors.greys[7]};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 10px;
+  }
+`;
+
+export const AddressValue = styled.p`
+  margin: 0;
+  word-break: break-all;
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 export const PoolImage = styled.img`
@@ -50,9 +67,6 @@ export const PoolContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 2rem;
-  }
 `;
 
 export const PoolTitle = styled.h1`
@@ -71,6 +85,12 @@ export const KeywordWrapper = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: start;
+  }
 `;
 
 export const Keyword = styled.div`
@@ -87,6 +107,13 @@ export const List = styled.ul`
   align-items: center;
   font-size: 1.25rem;
   font-weight: 500;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: start;
+  }
 `;
 
 export const ListItem = styled.li`

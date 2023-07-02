@@ -14,9 +14,15 @@ export const StyledCell = styled.td<StyledCellProps>`
 
 export const StyledTable = styled.table`
   width: 100%;
-  max-width: 1000px;
   margin: auto;
   border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 500px;
 `;
+
+export const TableContainer = styled.div`
+  overflow-x: auto;
+  width: 100%;
+`
 
 export const StyledRow = styled.tr``;

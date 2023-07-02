@@ -25,6 +25,7 @@ import {
   CategoryTitle,
   Stats,
   PoolTitle,
+  AddressValue,
 } from './PoolDetails.styled';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
@@ -237,7 +238,9 @@ export const PoolDetails = () => {
           {creator && (
             <InfoContainer>
               <InfoHeader>Pool creator:</InfoHeader>
-              <InfoValue>{creator}</InfoValue>
+              <InfoValue>
+                <AddressValue>{creator}</AddressValue>
+              </InfoValue>
             </InfoContainer>
           )}
         </PoolDetailsWrapper>
