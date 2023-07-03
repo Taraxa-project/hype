@@ -9,5 +9,5 @@ export const Card = styled.div`
   padding: 1.5rem;
   color: white;
   border-radius: 10px;
-  width: 180px;
+  min-width: 180px;
 `;
