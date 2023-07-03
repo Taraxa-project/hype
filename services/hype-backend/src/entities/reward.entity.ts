@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import {
   IsString,
@@ -17,6 +18,15 @@ import { IReward } from '../models';
 import { HypeClaim } from './claim.entity';
 
 @Entity('hype_reward')
+@Unique([
+  'dateFrom',
+  'dateTo',
+  'impressions',
+  'telegramId',
+  'telegramGroup',
+  'telegramUsername',
+  'poolId',
+])
 export class HypeReward extends BaseEntity implements IReward {
   constructor(reward?: Partial<HypeReward>) {
     super();

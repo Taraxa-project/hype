@@ -330,8 +330,13 @@ export class RewardService {
           dateFrom: new Date(impression.from),
           dateTo: new Date(impression.to),
         });
-        const saved = await this.rewardRepository.save(newReward);
-        return saved;
+
+        try {
+          const saved = await this.rewardRepository.save(newReward);
+          return saved;
+        } catch (error) {
+          this.logger.error(`Error saving reward: ${JSON.stringify(error)}`);
+        }
       }),
     );
   }

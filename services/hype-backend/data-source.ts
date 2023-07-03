@@ -9,6 +9,7 @@ import { RewardClaimAssociation1687179992085 } from './src/migrations/1687179992
 import { RewardColumnNameUpdate1687273276705 } from './src/migrations/1687273276705-RewardColumnNameUpdate';
 import { ImpressionDecimal1687435940615 } from './src/migrations/1687435940615-ImpressionDecimal';
 import { RewardsTelegramGroup1688031467409 } from './src/migrations/1688031467409-RewardsTelegramGroup';
+import { UniqueReward1688412946549 } from './src/migrations/1688412946549-UniqueReward';
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ const DataSourceConfig = new DataSource({
     RewardColumnNameUpdate1687273276705,
     ImpressionDecimal1687435940615,
     RewardsTelegramGroup1688031467409,
+    UniqueReward1688412946549,
   ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);
