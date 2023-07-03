@@ -130,7 +130,9 @@ export class RewardService {
       // First, group by telegramGroup
       const groupedRewards = rewards.reduce(
         (acc: { [key: string]: HypeReward[] }, reward) => {
-          const { telegramGroup } = reward;
+          const { telegramGroup, impressions } = reward;
+          // Ignore if telegramGroup or impressions is null
+          if (!telegramGroup || !impressions) return acc;
           if (!acc[telegramGroup]) {
             acc[telegramGroup] = [];
           }
@@ -145,8 +147,10 @@ export class RewardService {
         return group.reduce(
           (acc, reward) => {
             acc.telegramGroup = reward.telegramGroup;
-            acc.impressions += parseFloat(reward.impressions.toString());
-            acc.rewards += parseFloat(reward.amount);
+            // Add impressions and rewards if they are not null
+            if (reward.impressions)
+              acc.impressions += parseFloat(reward.impressions.toString());
+            if (reward.amount) acc.rewards += parseFloat(reward.amount);
             return acc;
           },
           {
