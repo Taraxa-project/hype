@@ -112,28 +112,51 @@ export class RewardService {
       .groupBy('reward.telegramGroup, reward.poolId')
       .getRawMany();
 
-    const fetchedClaims = await this.claimRepository.find({
-      where: {
-        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-          address,
-        }),
-        claimed: false,
-      },
-      relations: {
-        rewards: true,
-      },
-    });
-    const rewardClaims = await this.claimRepository.find({
-      where: {
-        rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-          address,
-        }),
-        claimed: true,
-      },
-      relations: {
-        rewards: true,
-      },
-    });
+    const fetchedClaims = await this.claimRepository
+      .createQueryBuilder('claim')
+      .leftJoinAndSelect('claim.rewards', 'reward')
+      .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
+      .andWhere('claim.claimed = :claimed', { claimed: false })
+      .getMany();
+
+    const rewardClaims = await this.claimRepository
+      .createQueryBuilder('claim')
+      .leftJoinAndSelect('claim.rewards', 'reward')
+      .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
+      .andWhere('claim.claimed = :claimed', { claimed: true })
+      .getMany();
+
+    const aggregateImpressionsAndRewards = (rewards: HypeReward[]) => {
+      // First, group by telegramGroup
+      const groupedRewards = rewards.reduce(
+        (acc: { [key: string]: HypeReward[] }, reward) => {
+          const { telegramGroup } = reward;
+          if (!acc[telegramGroup]) {
+            acc[telegramGroup] = [];
+          }
+          acc[telegramGroup].push(reward);
+          return acc;
+        },
+        {},
+      );
+
+      // Then, convert the groups to an array and sum the impressions and rewards
+      return Object.values(groupedRewards).map((group: HypeReward[]) => {
+        return group.reduce(
+          (acc, reward) => {
+            acc.telegramGroup = reward.telegramGroup;
+            acc.impressions += parseFloat(reward.impressions.toString());
+            acc.rewards += parseFloat(reward.amount);
+            return acc;
+          },
+          {
+            telegramGroup: '',
+            impressions: 0,
+            rewards: 0,
+          },
+        );
+      });
+    };
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
       rewardClaims.map(async (claim) => {
@@ -142,6 +165,7 @@ export class RewardService {
         return {
           ...claim,
           pool: result.hypePool,
+          impressions: aggregateImpressionsAndRewards(claim.rewards),
         };
       }),
     );
@@ -152,6 +176,7 @@ export class RewardService {
         return {
           ...claim,
           pool: result.hypePool,
+          impressions: aggregateImpressionsAndRewards(claim.rewards),
         };
       }),
     );

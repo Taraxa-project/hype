@@ -111,6 +111,7 @@ export const TransactionsContainer = ({
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
                       pool={claim.pool}
+                      impressions={claim.impressions}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}

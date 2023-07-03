@@ -31,6 +31,7 @@ export interface HypeReward {
   claimed: boolean;
   poolName?: string;
   pool: HypePool;
+  impressions?: RewardsDetails[];
 }
 
 export interface HypeClaim extends HypeReward {
