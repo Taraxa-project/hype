@@ -46,6 +46,7 @@ export const useContractEscrowClaim = (
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
+      setIsWrite(false);
     },
   });
 
@@ -54,12 +55,14 @@ export const useContractEscrowClaim = (
     onSuccess() {
       hideLoadingModal();
       successCallback();
+      setIsWrite(false);
     },
     onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
+      setIsWrite(false);
     },
     onSettled(data, error) {
       hideLoadingModal();
