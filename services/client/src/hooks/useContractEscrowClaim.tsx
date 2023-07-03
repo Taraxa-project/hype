@@ -23,6 +23,7 @@ export const useContractEscrowClaim = (
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const [isWrite, setIsWrite] = useState<boolean>(false);
+  const [shouldWrite, setShouldWrite] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { config } = usePrepareContractWrite({
     address: escrowAddress,
@@ -76,11 +77,19 @@ export const useContractEscrowClaim = (
   }, [write]);
 
   useEffect(() => {
-    if (enabled && args && isWrite === true) {
-      write();
+    if (enabled && args) {
+      setShouldWrite(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, isWrite]);
+  }, [enabled, args]);
+
+  useEffect(() => {
+    if (shouldWrite && isWrite) {
+      write();
+      setShouldWrite(false); // Reset shouldWrite to false after initiating the write operation
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldWrite, isWrite]);
+
 
   return {
     isError,
