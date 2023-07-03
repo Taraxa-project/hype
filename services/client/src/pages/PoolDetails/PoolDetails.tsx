@@ -129,17 +129,22 @@ export const PoolDetails = () => {
                 </Stats>
               </Box>
             )}
-          {leaderboard?.length > 0 && (
-            <Box pt={4}>
-              <CategoryTitle>
-                👑
-                <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                  Weekly Leaderboard
-                </Text>
-              </CategoryTitle>
+
+          <Box pt={4}>
+            <CategoryTitle>
+              👑
+              <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
+                Weekly Leaderboard
+              </Text>
+            </CategoryTitle>
+            {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
-            </Box>
-          )}
+            ) : (
+              <Text textAlign="center" fontSize="1.2rem" fontWeight="500">
+                A new week has begun, participate now to get ranked!
+              </Text>
+            )}
+          </Box>
         </Box>
       </RoundContainer>
 
