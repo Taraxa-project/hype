@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { TelegramShareButton, TwitterShareButton } from 'react-share';
 import Tippy from '@tippyjs/react';
-import { ShareOnButtonContainer } from './SharePool.styled';
+import { ShareOnButtonContainer, SocialIcons } from './SharePool.styled';
 import Text from '../styles/Text';
 import LinkIcon from '../../assets/icons/Link';
 import TelegramIcon from '../../assets/icons/TelegramIcon';
@@ -38,35 +38,37 @@ export const SharePool: FC<SharePoolProps> = ({ createdPoolIndex, poolName }) =>
       <Text fontWeight="500" fontSize="1.25rem" color="greys.6" lineHeight="26px">
         Share:
       </Text>
-      <Tippy content={'Twitter'}>
-        <TwitterShareButton
-          title={`${poolName} is active!`}
-          url={poolUrl}
-          hashtags={['Hype App', `${poolName}`]}
-        >
-          <TwitterIcon />
-        </TwitterShareButton>
-      </Tippy>
-      <Tippy content={'Telegram'}>
-        <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
-          <TelegramIcon />
-        </TelegramShareButton>
-      </Tippy>
-      <Tippy content={'Copy link'}>
-        <Box>
-          <CopyToClipboard text={poolUrl} onCopy={onCopy}>
-            <Box style={{ cursor: 'pointer' }}>
-              <LinkIcon />
-            </Box>
-          </CopyToClipboard>
-        </Box>
-      </Tippy>
+      <SocialIcons>
+        <Tippy content={'Twitter'}>
+          <TwitterShareButton
+            title={`${poolName} is active!`}
+            url={poolUrl}
+            hashtags={['Hype App', `${poolName}`]}
+          >
+            <TwitterIcon />
+          </TwitterShareButton>
+        </Tippy>
+        <Tippy content={'Telegram'}>
+          <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
+            <TelegramIcon />
+          </TelegramShareButton>
+        </Tippy>
+        <Tippy content={'Copy link'}>
+          <Box>
+            <CopyToClipboard text={poolUrl} onCopy={onCopy}>
+              <Box style={{ cursor: 'pointer' }}>
+                <LinkIcon />
+              </Box>
+            </CopyToClipboard>
+          </Box>
+        </Tippy>
 
-      {isCopied ? (
-        <CheckMarkIcon width="20" height="20" color="#3E7E5C" />
-      ) : (
-        <Box width="20px"></Box>
-      )}
+        {isCopied ? (
+          <CheckMarkIcon width="20" height="20" color="#3E7E5C" />
+        ) : (
+          <Box width="20px"></Box>
+        )}
+      </SocialIcons>
     </ShareOnButtonContainer>
   );
 };
