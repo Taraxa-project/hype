@@ -114,76 +114,59 @@ export class RewardService {
 
     const fetchedClaims = await this.claimRepository
       .createQueryBuilder('claim')
-      .leftJoinAndSelect('claim.rewards', 'reward')
       .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
       .andWhere('claim.claimed = :claimed', { claimed: false })
       .getMany();
 
     const rewardClaims = await this.claimRepository
       .createQueryBuilder('claim')
-      .leftJoinAndSelect('claim.rewards', 'reward')
       .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
       .andWhere('claim.claimed = :claimed', { claimed: true })
       .getMany();
 
-    const aggregateImpressionsAndRewards = (rewards: HypeReward[]) => {
-      // First, group by telegramGroup
-      const groupedRewards = rewards.reduce(
-        (acc: { [key: string]: HypeReward[] }, reward) => {
-          const { telegramGroup, impressions } = reward;
-          // Ignore if telegramGroup or impressions is null
-          if (!telegramGroup || !impressions) return acc;
-          if (!acc[telegramGroup]) {
-            acc[telegramGroup] = [];
-          }
-          acc[telegramGroup].push(reward);
-          return acc;
-        },
-        {},
-      );
+    const aggregateRewardsByClaimId = async (claimId: number) => {
+      const rewards = await this.rewardRepository
+        .createQueryBuilder('reward')
+        .select('reward.telegramGroup, reward.poolId')
+        .addSelect('SUM(reward.impressions)', 'totalImpressions')
+        .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'totalRewards')
+        .where('reward.claimId = :claimId', { claimId })
+        .groupBy('reward.telegramGroup, reward.poolId')
+        .getRawMany();
 
-      // Then, convert the groups to an array and sum the impressions and rewards
-      return Object.values(groupedRewards).map((group: HypeReward[]) => {
-        return group.reduce(
-          (acc, reward) => {
-            acc.telegramGroup = reward.telegramGroup;
-            // Add impressions and rewards if they are not null
-            if (reward.impressions)
-              acc.impressions += parseFloat(reward.impressions.toString());
-            if (reward.amount) acc.rewards += parseFloat(reward.amount);
-            return acc;
-          },
-          {
-            telegramGroup: '',
-            impressions: 0,
-            rewards: 0,
-          },
-        );
-      });
+      return rewards.map((reward) => ({
+        telegramGroup: reward.telegram_group,
+        impressions: reward.totalImpressions,
+        rewards: reward.totalRewards,
+      }));
     };
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
       rewardClaims.map(async (claim) => {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(claim.poolId);
+        const impressions = await aggregateRewardsByClaimId(claim.id);
         return {
           ...claim,
           pool: result.hypePool,
-          impressions: aggregateImpressionsAndRewards(claim.rewards),
+          impressions: impressions,
         };
       }),
     );
+
     const claims: PoolClaim[] = await Promise.all(
       fetchedClaims.map(async (claim) => {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(claim.poolId);
+        const impressions = await aggregateRewardsByClaimId(claim.id);
         return {
           ...claim,
           pool: result.hypePool,
-          impressions: aggregateImpressionsAndRewards(claim.rewards),
+          impressions: impressions,
         };
       }),
     );
+
     const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.pool_id)));
     const totalUnclaimed: TotalUnclaimed[] = [];
 
