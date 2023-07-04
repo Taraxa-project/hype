@@ -24,7 +24,6 @@ import { HypeClaim } from './claim.entity';
   'impressions',
   'telegramId',
   'telegramGroup',
-  'telegramUsername',
   'poolId',
 ])
 export class HypeReward extends BaseEntity implements IReward {
