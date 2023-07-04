@@ -8,7 +8,7 @@ export interface TotalUnclaimed {
   poolId: string;
   pool: IPool;
   tokenAddress: string | undefined;
-  impressions: RewardsDetails[];
+  rewards: RewardsDetails[];
 }
 
 export interface RewardsDetails {

@@ -1,7 +1,5 @@
 function removeTrailingZeros(numStr: string): string {
-  return numStr.indexOf('.') !== -1 && numStr.split('.')[1] === '00'
-    ? numStr.split('.')[0]
-    : numStr;
+  return parseFloat(numStr).toString();
 }
 
 export function prettifyNumber(num: number): string {

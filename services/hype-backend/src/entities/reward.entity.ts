@@ -70,11 +70,6 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   telegramGroup: string;
 
-  @Column({ nullable: false, default: false })
-  @IsNotEmpty()
-  @IsBoolean()
-  claimed: boolean;
-
   @Column({
     name: 'date_from',
     type: 'date',

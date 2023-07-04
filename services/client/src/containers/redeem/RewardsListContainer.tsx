@@ -60,7 +60,7 @@ export const ClaimHistoryContainer = ({ claims }: RewardProps) => {
                     pool={transactionItem.pool}
                     date={new Date()}
                     status={TransactionStatus.REDEEMED}
-                    impressions={transactionItem.impressions}
+                    rewards={transactionItem.rewards}
                   />
                 ))}
               </Box>
