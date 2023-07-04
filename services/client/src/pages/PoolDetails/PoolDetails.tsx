@@ -7,6 +7,7 @@ import {
   fullIpfsUrl,
   prettifyNumber,
   splitPrettifyNumber,
+  getPoolDuration,
 } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
@@ -87,7 +88,9 @@ export const PoolDetails = () => {
             <ListItem>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
             </ListItem>
-            <ListItem>{active ? 'Active' : 'Inactive'}</ListItem>
+            <ListItem>
+              {active ? (endDate * 1000 > Date.now() ? 'Active' : 'Expired') : 'Inactive'}
+            </ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
@@ -225,12 +228,27 @@ export const PoolDetails = () => {
             </InfoContainer>
           )}
 
+          {endDate && (
+            <InfoContainer>
+              <InfoHeader>Time left:</InfoHeader>
+              <InfoValue>
+                {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
+              </InfoValue>
+            </InfoContainer>
+          )}
+
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>
             {active ? (
-              <InfoValue>
-                <DotIcon color="#15AC5B" /> Active
-              </InfoValue>
+              endDate * 1000 > Date.now() ? (
+                <InfoValue>
+                  <DotIcon color="#15AC5B" /> Active
+                </InfoValue>
+              ) : (
+                <InfoValue>
+                  <DotIcon color="#F7614A" /> Expired
+                </InfoValue>
+              )
             ) : (
               <InfoValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)
