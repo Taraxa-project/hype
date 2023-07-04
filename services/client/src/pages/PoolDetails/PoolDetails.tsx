@@ -70,10 +70,10 @@ export const PoolDetails = () => {
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
   const tokensAwarded = poolStats?.tokensAwarded
     ? Number(transformFromWei(poolStats.tokensAwarded, tokenDecimals))
-    : null;
+    : 0;
   const tokensClaimed = poolStats?.tokensClaimed
     ? Number(transformFromWei(poolStats.tokensClaimed, tokenDecimals))
-    : null;
+    : 0;
 
   return (
     <PoolContainer>
@@ -99,36 +99,33 @@ export const PoolDetails = () => {
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
           {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
-          {poolStats &&
-            poolStats.tokensAwarded &&
-            poolStats.tokensClaimed &&
-            poolStats.impressions && (
-              <Box>
-                <CategoryTitle>
-                  🚩
-                  <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                    Hype Pool Progress
-                  </Text>
-                </CategoryTitle>
-                <Stats>
-                  <StatsCard
-                    title={splitPrettifyNumber(tokensAwarded)[0]}
-                    titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
-                    subtitle={`${tokenSymbol} awarded`}
-                  />
-                  <StatsCard
-                    title={splitPrettifyNumber(tokensClaimed)[0]}
-                    titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
-                    subtitle={`${tokenSymbol} claimed`}
-                  />
-                  <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
-                  <StatsCard
-                    title={prettifyNumber(Number(poolStats.impressions))}
-                    subtitle="Impressions generated"
-                  />
-                </Stats>
-              </Box>
-            )}
+          {poolStats && (
+            <Box>
+              <CategoryTitle>
+                🚩
+                <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
+                  Hype Pool Progress
+                </Text>
+              </CategoryTitle>
+              <Stats>
+                <StatsCard
+                  title={splitPrettifyNumber(tokensAwarded)[0]}
+                  titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
+                  subtitle={`${tokenSymbol} awarded`}
+                />
+                <StatsCard
+                  title={splitPrettifyNumber(tokensClaimed)[0]}
+                  titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
+                  subtitle={`${tokenSymbol} claimed`}
+                />
+                <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
+                <StatsCard
+                  title={prettifyNumber(Number(poolStats.impressions || 0))}
+                  subtitle="Impressions generated"
+                />
+              </Stats>
+            </Box>
+          )}
 
           <Box pt={4}>
             <CategoryTitle>
