@@ -120,7 +120,7 @@ export const PoolDetails = () => {
                 />
                 <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
                 <StatsCard
-                  title={prettifyNumber(Number(poolStats.impressions))}
+                  title={prettifyNumber(Number(poolStats.impressions || 0))}
                   subtitle="Impressions generated"
                 />
               </Stats>
