@@ -345,7 +345,7 @@ export class RewardService {
     const { total: tokensClaimed } = await this.rewardRepository
       .createQueryBuilder('reward')
       .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
-      .where('reward.claimed = :claimed', { claimed: true })
+      .where('reward.claimId IS NOT NULL')
       .andWhere('reward.poolId = :poolId', { poolId })
       .getRawOne();
 
