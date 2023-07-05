@@ -5,9 +5,20 @@ export const ShareOnButtonContainer = styled.div`
   gap: 2rem;
   margin-top: 2rem;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-direction: column;
-  }
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    justify-content: start;
+  }
+`;
+
+export const SocialIcons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    gap: 1rem;
+  }
 `;

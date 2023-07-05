@@ -7,6 +7,7 @@ import {
   fullIpfsUrl,
   prettifyNumber,
   splitPrettifyNumber,
+  getPoolDuration,
 } from '../../utils';
 import DotIcon from '../../assets/icons/Dot';
 import {
@@ -25,14 +26,13 @@ import {
   CategoryTitle,
   Stats,
   PoolTitle,
+  AddressValue,
 } from './PoolDetails.styled';
 import Button from '../../components/button/Button';
 import Box from '../../components/styles/Box';
 import Text from '../../components/styles/Text';
 import { SharePool } from '../../components/share-pool/SharePool';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
-import FlagIcon from '../../assets/icons/Flag';
-import CrownIcon from '../../assets/icons/Crown';
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 
@@ -71,10 +71,10 @@ export const PoolDetails = () => {
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
   const tokensAwarded = poolStats?.tokensAwarded
     ? Number(transformFromWei(poolStats.tokensAwarded, tokenDecimals))
-    : null;
+    : 0;
   const tokensClaimed = poolStats?.tokensClaimed
     ? Number(transformFromWei(poolStats.tokensClaimed, tokenDecimals))
-    : null;
+    : 0;
 
   return (
     <PoolContainer>
@@ -88,7 +88,9 @@ export const PoolDetails = () => {
             <ListItem>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
             </ListItem>
-            <ListItem>{active ? 'Active' : 'Inactive'}</ListItem>
+            <ListItem>
+              {active ? (endDate * 1000 > Date.now() ? 'Active' : 'Expired') : 'Inactive'}
+            </ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
@@ -100,47 +102,49 @@ export const PoolDetails = () => {
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
           {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
-          {poolStats &&
-            poolStats.tokensAwarded &&
-            poolStats.tokensClaimed &&
-            poolStats.impressions && (
-              <Box>
-                <CategoryTitle>
-                  <FlagIcon />
-                  <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                    Hype Pool Progress
-                  </Text>
-                </CategoryTitle>
-                <Stats>
-                  <StatsCard
-                    title={splitPrettifyNumber(tokensAwarded)[0]}
-                    titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
-                    subtitle={`${tokenSymbol} awarded`}
-                  />
-                  <StatsCard
-                    title={splitPrettifyNumber(tokensClaimed)[0]}
-                    titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
-                    subtitle={`${tokenSymbol} claimed`}
-                  />
-                  <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
-                  <StatsCard
-                    title={Number(poolStats.impressions).toFixed(1)}
-                    subtitle="Impressions generated"
-                  />
-                </Stats>
-              </Box>
-            )}
-          {leaderboard?.length > 0 && (
-            <Box pt={4}>
+          {poolStats && (
+            <Box>
               <CategoryTitle>
-                <CrownIcon />
+                🚩
                 <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                  Weekly Leaderboard
+                  Hype Pool Progress
                 </Text>
               </CategoryTitle>
-              <Leaderboard topAccounts={leaderboard} />
+              <Stats>
+                <StatsCard
+                  title={splitPrettifyNumber(tokensAwarded)[0]}
+                  titleCategory={splitPrettifyNumber(tokensAwarded)[1]}
+                  subtitle={`${tokenSymbol} awarded`}
+                />
+                <StatsCard
+                  title={splitPrettifyNumber(tokensClaimed)[0]}
+                  titleCategory={splitPrettifyNumber(tokensClaimed)[1]}
+                  subtitle={`${tokenSymbol} claimed`}
+                />
+                <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
+                <StatsCard
+                  title={prettifyNumber(Number(poolStats.impressions || 0))}
+                  subtitle="Impressions generated"
+                />
+              </Stats>
             </Box>
           )}
+
+          <Box pt={4}>
+            <CategoryTitle>
+              👑
+              <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
+                Weekly Leaderboard
+              </Text>
+            </CategoryTitle>
+            {leaderboard?.length > 0 ? (
+              <Leaderboard topAccounts={leaderboard} />
+            ) : (
+              <Text textAlign="center" fontSize="1.2rem" fontWeight="500">
+                A new week has begun, participate now to get ranked!
+              </Text>
+            )}
+          </Box>
         </Box>
       </RoundContainer>
 
@@ -224,12 +228,27 @@ export const PoolDetails = () => {
             </InfoContainer>
           )}
 
+          {endDate && (
+            <InfoContainer>
+              <InfoHeader>Time left:</InfoHeader>
+              <InfoValue>
+                {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
+              </InfoValue>
+            </InfoContainer>
+          )}
+
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>
             {active ? (
-              <InfoValue>
-                <DotIcon color="#15AC5B" /> Active
-              </InfoValue>
+              endDate * 1000 > Date.now() ? (
+                <InfoValue>
+                  <DotIcon color="#15AC5B" /> Active
+                </InfoValue>
+              ) : (
+                <InfoValue>
+                  <DotIcon color="#F7614A" /> Expired
+                </InfoValue>
+              )
             ) : (
               <InfoValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)
@@ -239,7 +258,9 @@ export const PoolDetails = () => {
           {creator && (
             <InfoContainer>
               <InfoHeader>Pool creator:</InfoHeader>
-              <InfoValue>{creator}</InfoValue>
+              <InfoValue>
+                <AddressValue>{creator}</AddressValue>
+              </InfoValue>
             </InfoContainer>
           )}
         </PoolDetailsWrapper>

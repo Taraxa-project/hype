@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import {
   IsString,
@@ -17,6 +18,14 @@ import { IReward } from '../models';
 import { HypeClaim } from './claim.entity';
 
 @Entity('hype_reward')
+@Unique([
+  'dateFrom',
+  'dateTo',
+  'impressions',
+  'telegramId',
+  'telegramGroup',
+  'poolId',
+])
 export class HypeReward extends BaseEntity implements IReward {
   constructor(reward?: Partial<HypeReward>) {
     super();
@@ -60,11 +69,6 @@ export class HypeReward extends BaseEntity implements IReward {
   @Column({ name: 'telegram_group', nullable: true })
   @IsString()
   telegramGroup: string;
-
-  @Column({ nullable: false, default: false })
-  @IsNotEmpty()
-  @IsBoolean()
-  claimed: boolean;
 
   @Column({
     name: 'date_from',
