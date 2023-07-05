@@ -123,7 +123,8 @@ export const PoolDetails = () => {
                 />
                 <StatsCard title={poolStats.participants} subtitle="Hypers participated" />
                 <StatsCard
-                  title={prettifyNumber(Number(poolStats.impressions || 0))}
+                  title={splitPrettifyNumber(Number(poolStats.impressions || 0))[0]}
+                  titleCategory={splitPrettifyNumber(Number(poolStats.impressions || 0))[1]}
                   subtitle="Impressions generated"
                 />
               </Stats>
