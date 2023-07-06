@@ -20,7 +20,7 @@ export interface TransactionProps {
   date: Date;
   buttonName?: string;
   buttonAction?: (transaction: any) => void;
-  impressions?: RewardsDetails[];
+  rewards?: RewardsDetails[];
 }
 
 const Transaction = ({
@@ -30,10 +30,10 @@ const Transaction = ({
   date,
   buttonName,
   buttonAction,
-  impressions,
+  rewards,
 }: TransactionProps) => {
   const { tokenSymbol } = useTokenDetails(pool);
-  const [showImpressions, setShowImpression] = useState<boolean>(false);
+  const [showRewards, setShowRewards] = useState<boolean>(false);
 
   return (
     <Box backgroundColor="greys.0" p="1.313rem" borderRadius="10px">
@@ -107,7 +107,7 @@ const Transaction = ({
           </Box>
         )}
       </Box>
-      {impressions && impressions.length > 0 && (
+      {rewards && rewards.length > 0 && (
         <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
           <Box
             display="flex"
@@ -120,13 +120,13 @@ const Transaction = ({
             <Text color="greys.3" fontSize="1rem" fontWeight="400">
               Details (cumulative)
             </Text>
-            {showImpressions ? (
-              <UpIcon click={() => setShowImpression(!showImpressions)} />
+            {showRewards ? (
+              <UpIcon click={() => setShowRewards(!showRewards)} />
             ) : (
-              <DownIcon click={() => setShowImpression(!showImpressions)} />
+              <DownIcon click={() => setShowRewards(!showRewards)} />
             )}
           </Box>
-          {showImpressions && <ImpressionsList impressions={impressions} pool={pool} />}
+          {showRewards && <ImpressionsList impressions={rewards} pool={pool} />}
         </Box>
       )}
     </Box>

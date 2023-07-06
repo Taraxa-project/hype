@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Text from '../../components/styles/Text';
 import { HypePool, RewardsDetails } from '../../models';
-import CrownIcon from '../../assets/icons/Crown';
-import Box from '../../components/styles/Box';
 import { useTokenDetails } from '../../hooks';
 import { transformFromWei } from '../../utils';
 
@@ -51,7 +49,7 @@ export const ImpressionsList = ({ impressions, pool }: ImpressionsListProps) => 
         {/* <StyledRow>
           <StyledCell>
             <Box display="flex" alignItems="center">
-              <CrownIcon />{' '}
+              👑
               <Text fontWeight="400" fontSize="1rem" pl={3}>
                 Leaderboard BONUS!
               </Text>

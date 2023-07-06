@@ -21,8 +21,7 @@ export interface CardProps {
 
 const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
-  const { title, projectName, description, cap, active, impressionReward, endDate } =
-    pool;
+  const { title, projectName, description, cap, active, impressionReward, endDate } = pool;
   const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
 
   return (
@@ -30,9 +29,7 @@ const Card = ({ children, ...props }: CardProps) => {
       <Container>
         <div>
           <CardTitle>{title}</CardTitle>
-          <CardDescription>
-            {shortenText(description)}
-          </CardDescription>
+          <CardDescription>{shortenText(description)}</CardDescription>
         </div>
         <div>
           {projectName && (
@@ -59,7 +56,7 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {endDate && (
             <DataContainer>
-              <DataHeader>Duration:</DataHeader>
+              <DataHeader>Time left:</DataHeader>
               <DataValue>
                 {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
               </DataValue>
@@ -68,9 +65,15 @@ const Card = ({ children, ...props }: CardProps) => {
           <DataContainer>
             <DataHeader>Status:</DataHeader>
             {active ? (
-              <DataValue>
-                <DotIcon color="#15AC5B" /> Active
-              </DataValue>
+              endDate * 1000 > Date.now() ? (
+                <DataValue>
+                  <DotIcon color="#15AC5B" /> Active
+                </DataValue>
+              ) : (
+                <DataValue>
+                  <DotIcon color="#F7614A" /> Expired
+                </DataValue>
+              )
             ) : (
               <DataValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)

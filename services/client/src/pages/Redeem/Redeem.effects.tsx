@@ -37,10 +37,13 @@ export const useRedeemEffects = () => {
         rewardee: currentClaim.rewardee,
         poolId: currentClaim.poolId,
       });
+      setCurrentClaim(null);
     }
   };
   useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess, () => {
     setEnableClaim(false);
+    setClaimArgs(defaultContractArgs);
+    setCurrentClaim(null);
   });
 
   useEffect(() => {

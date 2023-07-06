@@ -45,6 +45,8 @@ export const useRewardFormEffects = (
         shouldValidate: true,
       });
       setIsCustomToken(true);
+    } else {
+      setIsCustomToken(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ERC20tokenInfo]);

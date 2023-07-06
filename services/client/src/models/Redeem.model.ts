@@ -17,7 +17,7 @@ export interface PoolRewards {
   unclaimed: BigNumber;
   poolId: string;
   tokenAddress: string;
-  impressions: RewardsDetails[];
+  rewards: RewardsDetails[];
   pool: HypePool;
 }
 
@@ -31,6 +31,7 @@ export interface HypeReward {
   claimed: boolean;
   poolName?: string;
   pool: HypePool;
+  rewards?: RewardsDetails[];
 }
 
 export interface HypeClaim extends HypeReward {

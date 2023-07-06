@@ -65,7 +65,7 @@ export const TransactionsContainer = ({
                       <Transaction
                         value={reward.unclaimed}
                         pool={reward.pool}
-                        impressions={reward.impressions}
+                        rewards={reward.rewards}
                         date={new Date()}
                         status={TransactionStatus.PENDING}
                         buttonAction={() => onRedeem(reward)}
@@ -111,6 +111,7 @@ export const TransactionsContainer = ({
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
                       pool={claim.pool}
+                      rewards={claim.rewards}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}
