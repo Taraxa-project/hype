@@ -342,11 +342,11 @@ export class RewardService {
       .where('reward.poolId = :poolId', { poolId })
       .getRawOne();
 
-    const { total: tokensClaimed } = await this.rewardRepository
-      .createQueryBuilder('reward')
-      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
-      .where('reward.claimId IS NOT NULL')
-      .andWhere('reward.poolId = :poolId', { poolId })
+    const { total: tokensClaimed } = await this.claimRepository
+      .createQueryBuilder('claim')
+      .select('SUM(CAST(claim.amount AS DECIMAL))::TEXT', 'total')
+      .where('claim.claimed = :claimed', { claimed: true })
+      .andWhere('claim.poolId = :poolId', { poolId })
       .getRawOne();
 
     const { total: participants } = await this.rewardRepository
@@ -371,7 +371,7 @@ export class RewardService {
   }
 
   async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
-    const currentDate = DateTime.local();
+    const currentDate = DateTime.utc();
     const startDate = currentDate
       .startOf('week')
       .minus({ days: 1 })
