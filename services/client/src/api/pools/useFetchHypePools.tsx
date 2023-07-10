@@ -21,8 +21,6 @@ const computeFilters = (page: number, active: boolean, search?: string): FetchHy
   const orderDirection = 'desc';
 
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const defaultTimestamp = 0; // For endDate_lt
-  const futureTimestamp = Math.floor(Date.now() / 1000) + 10 * 365 * 24 * 60 * 60;
 
   const filters: FetchHypesFilter = {
     first,
@@ -37,9 +35,9 @@ const computeFilters = (page: number, active: boolean, search?: string): FetchHy
 
   if (active) {
     filters.endDate_gt = currentTimestamp;
-    filters.endDate_lt = futureTimestamp;
+    filters.endDate_lt = Math.floor(Date.now() / 1000) + 10 * 365 * 24 * 60 * 60;
   } else {
-    filters.endDate_gt = defaultTimestamp;
+    filters.endDate_gt = 0;
     filters.endDate_lt = currentTimestamp;
   }
 

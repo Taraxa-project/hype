@@ -52,16 +52,12 @@ export const useHomeEffects = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
 
-  useEffect(() => {
-    setSearchString(searchString || '');
+  const handleChange = (e: React.BaseSyntheticEvent) => {
+    setHypePools([]);
+    setSearchString(e.target.value || '');
     setPage(1);
     setMaxReached(false);
     setIsActive(true);
-  }, [searchString]);
-
-  const handleChange = (e: React.BaseSyntheticEvent) => {
-    setHypePools([]);
-    setSearchString(e.target.value);
   };
 
   const toggleActive = (active: boolean) => {
