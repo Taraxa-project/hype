@@ -93,7 +93,7 @@ export class RewardService {
     return await this.rewardRepository.find();
   }
 
-  private async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
+  async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
     return await this.userRepository.findOne({
       where: {
         telegramId,

@@ -41,6 +41,57 @@ export class GraphQlService {
     );
   }
 
+  async getActivePools(): Promise<{ hypePools: IPool[] }> {
+    return await this.graphQLClient.request(
+      gql`
+        query HypePools(
+          $first: Int!
+          $skip: Int!
+          $orderBy: String
+          $orderDirection: String
+          $text: String
+          $endDate_gt: BigInt
+        ) {
+          hypePools(
+            first: $first
+            skip: $skip
+            orderBy: $orderBy
+            orderDirection: $orderDirection
+            text: $text
+            where: { remainingFunds_not: 0, endDate_gt: $endDate_gt }
+          ) {
+            id
+            title
+            tokenName
+            network
+            tokenAddress
+            active
+            projectName
+            description
+            projectDescription
+            uri
+            cap
+            creator
+            endDate
+            startDate
+            duration
+            impressionReward
+            word
+            remainingFunds
+            imageUri
+          }
+        }
+      `,
+      {
+        first: 100,
+        skip: 0,
+        orderBy: 'endDate',
+        orderDirection: 'desc',
+        endDate_gt: Math.floor(Date.now() / 1000),
+      },
+    );
+  }
+
   async getClaimedEvents(
     poolId: string,
     receiver: string,

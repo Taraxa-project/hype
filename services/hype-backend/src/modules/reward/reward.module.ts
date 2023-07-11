@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from '../auth';
@@ -11,6 +11,7 @@ import { HypeReward } from '../../entities/reward.entity';
 import { RewardService } from './reward.service';
 import { PoolsController } from './pools.controller';
 import { GraphQlModule } from '../graphql';
+import { RewardTaskService } from './reward-task.service';
 
 @Module({
   imports: [
@@ -25,4 +26,15 @@ import { GraphQlModule } from '../graphql';
   providers: [RewardService],
   exports: [RewardService],
 })
-export class RewardModule {}
+export class RewardModule {
+  static forRoot(type = 'web'): DynamicModule {
+    let providers: Provider[] = [];
+    if (type === 'cron') {
+      providers = [RewardTaskService];
+    }
+    return {
+      module: RewardModule,
+      providers,
+    };
+  }
+}
