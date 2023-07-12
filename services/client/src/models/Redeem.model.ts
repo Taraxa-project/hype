@@ -5,6 +5,7 @@ export interface RewardsDetails {
   telegramGroup: string;
   impressions: string;
   rewards: string;
+  isBonus: boolean;
 }
 
 export interface HypeRewardSummary {

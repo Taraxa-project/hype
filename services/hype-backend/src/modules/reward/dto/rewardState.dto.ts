@@ -15,6 +15,7 @@ export interface RewardsDetails {
   telegramGroup: string;
   impressions: number;
   rewards: string;
+  isBonus: boolean;
 }
 
 export interface PoolClaim extends IClaim {
