@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectGraphQLClient } from '@golevelup/nestjs-graphql-request';
 import { gql, GraphQLClient } from 'graphql-request';
 import { IPool } from '../../models';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class GraphQlService {
@@ -42,6 +43,11 @@ export class GraphQlService {
   }
 
   async getActivePools(): Promise<{ hypePools: IPool[] }> {
+    const now = DateTime.utc();
+    const endOfWeek = now
+      .endOf('week')
+      .set({ hour: 23, minute: 59, second: 59, weekday: 6 });
+    const unixTimestamp = Math.floor(endOfWeek.toMillis() / 1000);
     return await this.graphQLClient.request(
       gql`
         query HypePools(
@@ -87,7 +93,7 @@ export class GraphQlService {
         skip: 0,
         orderBy: 'endDate',
         orderDirection: 'desc',
-        endDate_gt: Math.floor(Date.now() / 1000),
+        endDate_gt: unixTimestamp,
       },
     );
   }
