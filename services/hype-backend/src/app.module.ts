@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { resolve } from 'path';
@@ -97,4 +97,11 @@ const HypeAppTypeOrmModule = () => {
     GroupModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  static forRoot(type = 'web'): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [RewardModule.forRoot(type)],
+    };
+  }
+}

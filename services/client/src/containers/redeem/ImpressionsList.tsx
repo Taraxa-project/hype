@@ -46,38 +46,29 @@ export const ImpressionsList = ({ impressions, pool }: ImpressionsListProps) => 
         </StyledRow>
       </thead>
       <tbody>
-        {/* <StyledRow>
-          <StyledCell>
-            <Box display="flex" alignItems="center">
-              👑
-              <Text fontWeight="400" fontSize="1rem" pl={3}>
-                Leaderboard BONUS!
-              </Text>
-            </Box>
-          </StyledCell>
-          <StyledCell></StyledCell>
-          <StyledCell>2000 TARA</StyledCell>
-        </StyledRow> */}
-        {impressions?.map((item) => (
-          <StyledRow key={`${item.telegramGroup}-${item.impressions}`}>
-            <StyledCell>
-              <Text fontWeight="400" fontSize="1rem">
-                @{item.telegramGroup}
-              </Text>
-            </StyledCell>
-            <StyledCell>
-              <Text fontWeight="400" fontSize="1rem">
-                {Number(item.impressions)?.toFixed(2)}
-              </Text>
-            </StyledCell>
-            <StyledCell>
-              <Text fontWeight="400" fontSize="1rem">
-                {Number(transformFromWei(item.rewards.toString(), tokenDecimals)).toFixed(2)}{' '}
-                {tokenSymbol}
-              </Text>
-            </StyledCell>
-          </StyledRow>
-        ))}
+        {impressions
+          ?.sort((x, y) => (x.isBonus === y.isBonus ? 0 : x.isBonus ? -1 : 1))
+          .map((item) => (
+            <StyledRow key={`${item.telegramGroup}-${item.impressions}`}>
+              <StyledCell>
+                <Text fontWeight="400" fontSize="1rem">
+                  {item.isBonus ? '👑 ' : '@'}
+                  {item.telegramGroup}
+                </Text>
+              </StyledCell>
+              <StyledCell>
+                <Text fontWeight="400" fontSize="1rem">
+                  {Number(item.impressions)?.toFixed(2)}
+                </Text>
+              </StyledCell>
+              <StyledCell>
+                <Text fontWeight="400" fontSize="1rem">
+                  {Number(transformFromWei(item.rewards.toString(), tokenDecimals)).toFixed(2)}{' '}
+                  {tokenSymbol}
+                </Text>
+              </StyledCell>
+            </StyledRow>
+          ))}
       </tbody>
     </StyledTable>
   );

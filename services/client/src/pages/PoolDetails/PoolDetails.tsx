@@ -138,6 +138,10 @@ export const PoolDetails = () => {
                 Weekly Leaderboard
               </Text>
             </CategoryTitle>
+            <Text textAlign="center" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
+              1️⃣st place bonus: 10k TARA, 2️⃣nd place: 5k TARA, 3️⃣rd place: 2.5k TARA, bonuses
+              settled at the end of each week.
+            </Text>
             {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
             ) : (
