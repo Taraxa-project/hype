@@ -4,7 +4,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { RewardService } from './reward.service';
 import { GraphQlService } from '../graphql';
 import { IPool } from '../../models';
@@ -22,8 +22,7 @@ export class RewardTaskService implements OnModuleInit {
     this.logger.debug(`Init ${RewardTaskService.name} cron`);
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  // @Cron('0 23 * * 6')  // Once a week Saturday at 23:00
+  @Cron('0 23 * * 6') // Once a week Saturday at 23:00
   async calculateRewardsForLeaderboard() {
     this.logger.debug('Calculating rewards top user in Leaderboard...');
     // Get all current active pools (active = true, endDate > currentDate)

@@ -44,10 +44,11 @@ export class GraphQlService {
 
   async getActivePools(): Promise<{ hypePools: IPool[] }> {
     const now = DateTime.utc();
-    const endOfWeek = now
+    const endOfLastWeek = now
+      .minus({ week: 1 })
       .endOf('week')
       .set({ hour: 23, minute: 59, second: 59, weekday: 6 });
-    const unixTimestamp = Math.floor(endOfWeek.toMillis() / 1000);
+    const unixTimestamp = Math.floor(endOfLastWeek.toMillis() / 1000);
     return await this.graphQLClient.request(
       gql`
         query HypePools(
