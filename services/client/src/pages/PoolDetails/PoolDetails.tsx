@@ -110,8 +110,9 @@ export const PoolDetails = () => {
                   <Text>OR</Text>
                 </Box>
               ))}
-            {/* {word && <Keyword>{word}</Keyword>} */}
             {tokenName && <Keyword>{tokenName}</Keyword>}
+            {word && tokenName && <Text>OR</Text>}
+            {word && <Keyword>{word}</Keyword>}
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
           {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
