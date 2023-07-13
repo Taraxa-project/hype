@@ -35,6 +35,7 @@ import { SharePool } from '../../components/share-pool/SharePool';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
+import Tooltip from '../../components/tooltip/Tooltip';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -76,6 +77,8 @@ export const PoolDetails = () => {
     ? Number(transformFromWei(poolStats.tokensClaimed, tokenDecimals))
     : 0;
 
+  const projectKeywords = projectName?.split(',').map((item) => item.trim());
+
   return (
     <PoolContainer>
       <RoundContainer>
@@ -94,10 +97,20 @@ export const PoolDetails = () => {
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
-            <Text fontWeight="500" fontSize="1.25rem">
-              Required keywords:
-            </Text>
-            {word && <Keyword>{word}</Keyword>}
+            <Box display="flex" alignItems="center">
+              <Text fontWeight="500" fontSize="1.25rem" paddingRight="5px">
+                Required keywords:
+              </Text>
+              <Tooltip message="Use one of the following keywords" />
+            </Box>
+            {projectKeywords?.length > 0 &&
+              projectKeywords.map((keyword, i) => (
+                <Box key={`${keyword}-${i}`} display="flex" alignItems="center" gridGap="1rem">
+                  <Keyword>{keyword}</Keyword>
+                  <Text>OR</Text>
+                </Box>
+              ))}
+            {/* {word && <Keyword>{word}</Keyword>} */}
             {tokenName && <Keyword>{tokenName}</Keyword>}
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
