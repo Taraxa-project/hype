@@ -93,7 +93,7 @@ export class RewardService {
     return await this.rewardRepository.find();
   }
 
-  private async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
+  async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
     return await this.userRepository.findOne({
       where: {
         telegramId,
@@ -105,11 +105,12 @@ export class RewardService {
     const rewardsOfAddress = await this.rewardRepository
       .createQueryBuilder('reward')
       .select('reward.telegramGroup, reward.poolId')
+      .addSelect('reward.isBonus', 'isBonus')
       .addSelect('SUM(reward.impressions)', 'totalImpressions')
       .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'totalRewards')
       .where('LOWER(reward.rewardee) = LOWER(:address)', { address })
       .andWhere('reward.claimId IS NULL')
-      .groupBy('reward.telegramGroup, reward.poolId')
+      .groupBy('reward.telegramGroup, reward.poolId, reward.isBonus')
       .getRawMany();
 
     const unclaimedClaims = await this.claimRepository
@@ -128,10 +129,11 @@ export class RewardService {
       return await this.rewardRepository
         .createQueryBuilder('reward')
         .select('reward.telegramGroup', 'telegramGroup')
+        .addSelect('reward.isBonus', 'isBonus')
         .addSelect('SUM(reward.impressions)', 'impressions')
         .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'rewards')
         .where('reward.claimId = :claimId', { claimId })
-        .groupBy('reward.telegramGroup, reward.poolId')
+        .groupBy('reward.telegramGroup, reward.poolId, reward.isBonus')
         .getRawMany();
     };
 
@@ -174,6 +176,7 @@ export class RewardService {
             telegramGroup: rewardOfPool.telegram_group,
             impressions: rewardOfPool.totalImpressions,
             rewards: rewardOfPool.totalRewards,
+            isBonus: rewardOfPool.isBonus,
           };
         });
         const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
@@ -313,6 +316,33 @@ export class RewardService {
         }
       }),
     );
+  }
+
+  async saveRewardBonus(
+    amount: string,
+    tokenAddress: string,
+    userAddress: string,
+    telegramId: string,
+    telegramUsername: string,
+    poolId: string,
+  ): Promise<HypeReward> {
+    const newReward = this.rewardRepository.create({
+      amount: amount,
+      tokenAddress: tokenAddress,
+      rewardee: userAddress || null,
+      telegramId: telegramId,
+      telegramUsername: telegramUsername,
+      telegramGroup: `Leaderboard BONUS!`,
+      poolId: poolId,
+      isBonus: true,
+    });
+
+    try {
+      const saved = await this.rewardRepository.save(newReward);
+      return saved;
+    } catch (error) {
+      this.logger.error(`Error saving reward: ${JSON.stringify(error)}`);
+    }
   }
 
   async getJoinedPools(address: string): Promise<IPool[]> {
