@@ -1,5 +1,5 @@
-import ABIs from '../abi';
-import { escrowAddress } from '../constants';
+import ABIs from '../../abi';
+import { escrowAddress } from '../../constants';
 import { useAccount, useContractRead } from 'wagmi';
 import { BigNumber } from 'ethers';
 

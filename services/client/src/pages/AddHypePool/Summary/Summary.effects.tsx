@@ -2,14 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
-import {
-  useAuth,
-  useContractERC20Approve,
-  useContractActivatePool,
-  useContractEscrowDeposit,
-  useContractEscrowGetDepositsOf,
-  useLoadingModals,
-} from '../../../hooks';
+import { useAuth, useLoadingModals, useEscrow, useHypePools } from '../../../hooks';
 import { AddressType, NotificationType } from '../../../utils';
 
 export const useSummaryEffects = (
@@ -21,62 +14,27 @@ export const useSummaryEffects = (
   const { address: account } = useAccount();
   const { authenticated } = useAuth();
 
-  const [enableActivate, setEnableActivate] = useState<boolean>(false);
-  const [enableApprove, setEnableApprove] = useState<boolean>(false);
-  const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-  const [hasDeposited, setHasDeposited] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(
-    createdPoolIndex,
-    hasDeposited,
-    isCustomToken,
-  );
+  const { depositsOf, deposit, approve } = useEscrow();
+  const { activatePool } = useHypePools();
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
 
-  const successCallbackDeposit = (): void => {
-    setHasDeposited(true);
-  };
-  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool, () => {
-    setEnableActivate(false);
-  });
-  useContractERC20Approve(
-    account,
-    createdPoolIndex,
-    amount,
-    rewards.tokenAddress as AddressType,
-    enableApprove,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableApprove(false);
-    },
-  );
-  useContractEscrowDeposit(
-    account,
-    createdPoolIndex,
-    amount,
-    rewards.tokenAddress,
-    enableDeposit,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableDeposit(false);
-    },
-  );
-
   useEffect(() => {
-    if (depositsOf && amount) {
-      if (
-        depositsOf?.weiAmount?.toString() === amount.toString() &&
-        depositsOf?.poolId?.toString() === createdPoolIndex.toString()
-      ) {
-        setIsDeposited(true);
-      }
+    if (amount && createdPoolIndex) {
+      (async () => {
+        const { weiAmount, poolId } = await depositsOf(createdPoolIndex);
+        if (
+          weiAmount?.toString() === amount.toString() &&
+          poolId?.toString() === createdPoolIndex.toString()
+        ) {
+          setIsDeposited(true);
+        }
+      })();
     }
-  }, [depositsOf, amount, createdPoolIndex]);
+  }, [amount, createdPoolIndex]);
 
   useEffect(() => {
     if (rewards.tokenDecimals) {
@@ -97,9 +55,9 @@ export const useSummaryEffects = (
         );
       } else {
         if (isCustomToken) {
-          setEnableApprove(true);
+          approve(account, createdPoolIndex, amount, rewards.tokenAddress as AddressType);
         } else {
-          setEnableDeposit(true);
+          deposit(account, createdPoolIndex, amount, rewards.tokenAddress);
         }
       }
     }
@@ -107,7 +65,7 @@ export const useSummaryEffects = (
 
   const activate = () => {
     if (isDeposited) {
-      setEnableActivate(true);
+      activatePool(createdPoolIndex, successCallbackActivatePool);
     }
   };
 

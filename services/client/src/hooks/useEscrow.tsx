@@ -69,7 +69,6 @@ export const useEscrow = () => {
       poolId: string,
       amount: BigNumber,
       tokenAddress: string,
-      successCallback: () => void,
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Funding the pool...']);
       try {
@@ -81,7 +80,6 @@ export const useEscrow = () => {
         );
         const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
-        successCallback();
         return response;
       } catch (error: any) {
         console.log('On error: ', error);
@@ -98,7 +96,6 @@ export const useEscrow = () => {
       poolId: string,
       amount: BigNumber,
       tokenAddress: AddressType,
-      successCallback: () => void,
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading([
         'Please, sign the message...',
@@ -109,7 +106,7 @@ export const useEscrow = () => {
         const tx: ethers.providers.TransactionResponse = await contract!.approve(spender, amount);
         const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
-        return await deposit(spender as AddressType, poolId, amount, tokenAddress, successCallback);
+        return await deposit(spender as AddressType, poolId, amount, tokenAddress);
       } catch (error: any) {
         console.log('On error: ', error);
         hideLoadingModal();

@@ -1,10 +1,10 @@
-import ABIs from '../abi';
-import { escrowAddress } from '../constants';
+import ABIs from '../../abi';
+import { escrowAddress } from '../../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useLoadingModals } from './useLoadingModals';
-import { NotificationType } from '../utils';
+import { useLoadingModals } from '../useLoadingModals';
+import { NotificationType } from '../../utils';
 
 export interface ClaimArgs {
   receiver: string;

@@ -1,9 +1,9 @@
-import ABIs from '../abi';
-import { hypeAddress } from '../constants';
+import ABIs from '../../abi';
+import { hypeAddress } from '../../constants';
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { useLoadingModals } from './useLoadingModals';
-import { NotificationType } from '../utils';
+import { useLoadingModals } from '../useLoadingModals';
+import { NotificationType } from '../../utils';
 import { BigNumber, ethers } from 'ethers';
 
 export interface WritePoolDetailsArgs {

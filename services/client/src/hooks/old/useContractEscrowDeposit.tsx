@@ -1,41 +1,45 @@
-import ABIs from '../abi';
-import { hypeAddress } from '../constants';
+import ABIs from '../../abi';
+import { escrowAddress } from '../../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { NotificationType } from '../utils';
+import { useLoadingModals } from '../useLoadingModals';
+import { AddressType, NotificationType } from '../../utils';
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useLoadingModals } from './useLoadingModals';
 
-export const useContractActivatePool = (
-  id: string,
+export const useContractEscrowDeposit = (
+  spender: AddressType,
+  poolId: string,
+  amount: BigNumber,
+  tokenAddress: string,
   enabled: boolean,
-  successCallbackActivatePool: () => void,
+  isCustomToken: boolean,
+  successCallbackDeposit: () => void,
   resetWriteContract: () => void,
 ) => {
-  const { abi } = ABIs.contracts.HypePool;
+  const { abi } = ABIs.contracts.DynamicEscrow;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
-    address: hypeAddress,
+    address: escrowAddress,
     abi,
-    functionName: 'activatePool',
-    args: [id],
+    functionName: 'deposit',
+    args: [spender, poolId, amount, tokenAddress],
+    enabled: !!spender && !!poolId && !!amount && !!tokenAddress && enabled,
     overrides: {
+      from: spender,
       gasLimit: BigNumber.from(9999999),
+      value: amount, // Not sure if this is needed
     },
   });
 
   const { data, isError, isLoading, write } = useContractWrite({
     ...config,
     onMutate() {
-      showLoading(['Please, sign the message...', 'Activating pool...']);
-    },
-    onSuccess(data: any) {
-      resetWriteContract();
+      showLoading(['Please, sign the message...', 'Funding the pool...']);
     },
     onError(error: any) {
-      console.log('On error: ', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
@@ -44,19 +48,20 @@ export const useContractActivatePool = (
 
   useWaitForTransaction({
     hash: data?.hash,
-    onSuccess() {
+    // wait: data?.wait,
+    onSuccess(transactionData) {
       hideLoadingModal();
       resetWriteContract();
     },
     onError(error: any) {
-      console.log('Error', error);
+      console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
       resetWriteContract();
     },
-    onSettled(data, error) {
+    onSettled() {
       hideLoadingModal();
-      successCallbackActivatePool();
+      successCallbackDeposit();
     },
   });
 
@@ -67,7 +72,7 @@ export const useContractActivatePool = (
   }, [write]);
 
   useEffect(() => {
-    if (enabled && id && isWrite === true) {
+    if (enabled && spender && poolId && amount && tokenAddress && isWrite === true) {
       write();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

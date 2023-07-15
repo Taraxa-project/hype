@@ -1,8 +1,8 @@
-import ABIs from '../abi';
+import ABIs from '../../abi';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
-import { useLoadingModals } from './useLoadingModals';
+import { useLoadingModals } from '../useLoadingModals';
 import { useContractEscrowDeposit } from './useContractEscrowDeposit';
-import { AddressType, NotificationType } from '../utils';
+import { AddressType, NotificationType } from '../../utils';
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 

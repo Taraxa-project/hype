@@ -3,15 +3,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 import { useAccount, useBalance } from 'wagmi';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
-import {
-  useAuth,
-  useContractActivatePool,
-  useContractERC20Approve,
-  useContractEscrowDeposit,
-  useContractEscrowGetDepositsOf,
-  useLoadingModals,
-  useTokenDetails,
-} from '../../hooks';
+import { useAuth, useLoadingModals, useEscrow, useTokenDetails, useHypePools } from '../../hooks';
 import { HypePool } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
 import { useNavigate } from 'react-router-dom';
@@ -30,22 +22,15 @@ export const usePoolDetailsEffects = (poolId: string) => {
   });
   let navigate = useNavigate();
 
-  const [enableActivate, setEnableActivate] = useState<boolean>(false);
-  const [enableApprove, setEnableApprove] = useState<boolean>(false);
-  const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-  const [hasDeposited, setHasDeposited] = useState<boolean>(true);
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(poolId, hasDeposited, isCustomToken);
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
   const { data: poolStats } = useGetPoolStats(poolId);
   const { data: leaderboard } = useGetPoolLeaderboard(poolId);
-
-  const successCallbackDeposit = (): void => {
-    setHasDeposited(true);
-  };
+  const { depositsOf, deposit, approve } = useEscrow();
+  const { activatePool } = useHypePools();
 
   const successCallbackActivatePool = (): void => {
     setPool({
@@ -54,44 +39,16 @@ export const usePoolDetailsEffects = (poolId: string) => {
     });
   };
 
-  useContractActivatePool(poolId, enableActivate, successCallbackActivatePool, () => {
-    setEnableActivate(false);
-  });
-  useContractERC20Approve(
-    account,
-    poolId,
-    amount,
-    pool?.tokenAddress as AddressType,
-    enableApprove,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableApprove(false);
-    },
-  );
-  useContractEscrowDeposit(
-    account,
-    poolId,
-    amount,
-    pool?.tokenAddress,
-    enableDeposit,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableDeposit(false);
-    },
-  );
-
   useEffect(() => {
-    if (depositsOf && pool) {
-      if (
-        depositsOf?.weiAmount?.toString() === pool.cap.toString() &&
-        depositsOf?.poolId?.toString() === poolId.toString()
-      ) {
-        setIsDeposited(true);
-      }
+    if (amount && poolId) {
+      (async () => {
+        const { weiAmount, poolId: id } = await depositsOf(poolId);
+        if (weiAmount?.toString() === amount.toString() && id?.toString() === poolId.toString()) {
+          setIsDeposited(true);
+        }
+      })();
     }
-  }, [depositsOf, pool, poolId]);
+  }, [amount, poolId]);
 
   useEffect(() => {
     if (hypePoolData) {
@@ -107,7 +64,6 @@ export const usePoolDetailsEffects = (poolId: string) => {
   }, [pool]);
 
   const fund = () => {
-    setHasDeposited(false);
     if (balance && pool?.cap) {
       if (balance?.value.lt(BigNumber.from(pool?.cap))) {
         showNotificationModal(
@@ -116,9 +72,9 @@ export const usePoolDetailsEffects = (poolId: string) => {
         );
       } else {
         if (isCustomToken) {
-          setEnableApprove(true);
+          approve(account, poolId, amount, pool?.tokenAddress as AddressType);
         } else {
-          setEnableDeposit(true);
+          deposit(account, poolId, amount, pool?.tokenAddress as AddressType);
         }
       }
     }
@@ -126,7 +82,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
 
   const activate = () => {
     if (isDeposited) {
-      setEnableActivate(true);
+      activatePool(poolId, successCallbackActivatePool);
     }
   };
 

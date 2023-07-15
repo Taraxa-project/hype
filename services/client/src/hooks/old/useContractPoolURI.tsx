@@ -1,5 +1,5 @@
-import ABIs from '../abi';
-import { hypeAddress } from '../constants';
+import ABIs from '../../abi';
+import { hypeAddress } from '../../constants';
 import { useContractRead } from 'wagmi';
 
 export const useContractPoolURI = (tokenId: number) => {
