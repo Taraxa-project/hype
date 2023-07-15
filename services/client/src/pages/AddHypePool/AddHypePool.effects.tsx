@@ -8,6 +8,7 @@ import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
 import { NotificationType } from '../../utils';
+import { useHypePools } from '../../hooks/useHypePools';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
@@ -57,6 +58,7 @@ export const useAddHypePoolEffects = () => {
     startDate: 0,
     endDate: 0,
   });
+  const { createPool: testCreatePool } = useHypePools();
 
   useContractCreatePool(
     writePoolArgs,
@@ -136,7 +138,27 @@ export const useAddHypePoolEffects = () => {
         duration: rewards.duration * 24 * 60 * 60,
       },
     });
-    setContractEnabled(true);
+    const args: WritePoolArgs = {
+      uri: ipfsUrl,
+      details,
+      rewards: {
+        ...rewards,
+        cap,
+        impressionReward,
+        tokenAddress:
+          rewards.tokenSymbol && rewards.tokenAddress ? rewards.tokenAddress : rewards.token,
+        endDate: 0,
+        startDate: 0,
+        duration: rewards.duration * 24 * 60 * 60,
+      },
+    };
+    testCreatePool(
+      args,
+      successCallback,
+      setCreatedPoolIndex,
+      setPoolTransaction,
+    );
+    // setContractEnabled(true);
     setPoolReward(rewards);
   };
 
