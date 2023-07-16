@@ -15,7 +15,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { address: account } = useAccount();
   const [pool, setPool] = useState<HypePool>();
   const { isCustomToken, tokenDecimals, tokenSymbol } = useTokenDetails(pool);
-  const [{ data: hypePoolData }] = useQuery({
+  const [{ data: hypePoolData, fetching: fetchingPoolData }] = useQuery({
     query: HYPEPOOL_QUERIES.poolQuery,
     variables: { id: poolId },
     pause: poolId === undefined || poolId === null,
@@ -91,7 +91,8 @@ export const usePoolDetailsEffects = (poolId: string) => {
   };
 
   return {
-    ...pool,
+    pool,
+    fetchingPoolData,
     tokenDecimals,
     tokenSymbol,
     isDeposited,

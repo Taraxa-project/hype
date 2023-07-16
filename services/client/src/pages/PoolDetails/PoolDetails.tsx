@@ -40,11 +40,52 @@ import Tooltip from '../../components/tooltip/Tooltip';
 export const PoolDetails = () => {
   const { poolId } = useParams();
   const {
+    pool,
+    fetchingPoolData,
+    tokenDecimals,
+    tokenSymbol,
+    isDeposited,
+    authenticated,
+    fund,
+    activate,
+    account,
+    onParticipate,
+    poolStats,
+    leaderboard,
+  } = usePoolDetailsEffects(poolId);
+
+  if (fetchingPoolData) {
+    return;
+  }
+
+  if (!pool) {
+    return (
+      <PoolContainer>
+        <RoundContainer>
+          <Box>
+            <Text
+              fontWeight="700"
+              fontSize="2rem"
+              lineHeight="26px"
+              textAlign="center"
+              paddingBottom="2rem"
+            >
+              There is no pool asociated with this ID:
+            </Text>
+            <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px" textAlign="center">
+              {poolId}
+            </Text>
+          </Box>
+        </RoundContainer>
+      </PoolContainer>
+    );
+  }
+
+  const {
     title,
     description,
     projectDescription,
     tokenName,
-    tokenSymbol,
     word,
     network,
     tokenAddress,
@@ -54,19 +95,10 @@ export const PoolDetails = () => {
     impressionReward,
     active,
     endDate,
-    startDate,
-    tokenDecimals,
     duration,
-    isDeposited,
-    authenticated,
     imageUri,
-    fund,
-    activate,
-    account,
-    onParticipate,
-    poolStats,
-    leaderboard,
-  } = usePoolDetailsEffects(poolId);
+    startDate,
+  } = pool;
   const startedAt =
     Number(startDate) !== 0 && !!startDate ? formatDate(new Date(+startDate * 1000)) : null;
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;

@@ -30,9 +30,9 @@ export const useEscrow = () => {
 
   const depositsOf = useCallback(
     async (poolId: string): Promise<DepositsOf> => {
-      return await mainnetEscrow!.poolURI(payee, poolId);
+      return await mainnetEscrow!.depositsOf(payee, poolId);
     },
-    [mainnetEscrow],
+    [mainnetEscrow, payee],
   );
 
   const claim = useCallback(
@@ -49,6 +49,9 @@ export const useEscrow = () => {
           args.tokenAddress,
           args.nonce,
           args.hash,
+          {
+            gasLimit: BigNumber.from(9999999),
+          },
         );
         const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
@@ -60,7 +63,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserEscrow],
+    [browserEscrow, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   const deposit = useCallback(
@@ -77,6 +80,11 @@ export const useEscrow = () => {
           poolId,
           amount,
           tokenAddress,
+          {
+            from: spender,
+            gasLimit: BigNumber.from(9999999),
+            value: amount,
+          },
         );
         const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
@@ -87,7 +95,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserEscrow],
+    [browserEscrow, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   const approve = useCallback(
@@ -104,7 +112,7 @@ export const useEscrow = () => {
       try {
         const contract = new ethers.Contract(tokenAddress, erc20ABI, browserProvider);
         const tx: ethers.providers.TransactionResponse = await contract!.approve(spender, amount);
-        const response: ethers.providers.TransactionReceipt = await tx.wait();
+        await tx.wait();
         hideLoadingModal();
         return await deposit(spender as AddressType, poolId, amount, tokenAddress);
       } catch (error: any) {
@@ -113,7 +121,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserEscrow],
+    [browserProvider, deposit, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   return useMemo(

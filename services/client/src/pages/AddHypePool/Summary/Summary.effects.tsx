@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
-import { useAuth, useLoadingModals, useEscrow, useHypePools } from '../../../hooks';
+import { useAuth, useLoadingModals, useEscrow, useHypePools, DepositsOf } from '../../../hooks';
 import { AddressType, NotificationType } from '../../../utils';
 
 export const useSummaryEffects = (
@@ -15,6 +15,7 @@ export const useSummaryEffects = (
   const { authenticated } = useAuth();
 
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
+  const [depositsData, setDepositsData] = useState<DepositsOf>();
 
   const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
   const { depositsOf, deposit, approve } = useEscrow();
@@ -23,18 +24,16 @@ export const useSummaryEffects = (
   const { showNotificationModal } = useLoadingModals();
 
   useEffect(() => {
-    if (amount && createdPoolIndex) {
-      (async () => {
-        const { weiAmount, poolId } = await depositsOf(createdPoolIndex);
-        if (
-          weiAmount?.toString() === amount.toString() &&
-          poolId?.toString() === createdPoolIndex.toString()
-        ) {
-          setIsDeposited(true);
-        }
-      })();
+    if (amount && createdPoolIndex && depositsData) {
+      const { weiAmount, poolId } = depositsData;
+      if (
+        weiAmount?.toString() === amount.toString() &&
+        poolId?.toString() === createdPoolIndex.toString()
+      ) {
+        setIsDeposited(true);
+      }
     }
-  }, [amount, createdPoolIndex]);
+  }, [depositsData, amount, createdPoolIndex]);
 
   useEffect(() => {
     if (rewards.tokenDecimals) {
@@ -46,7 +45,7 @@ export const useSummaryEffects = (
     }
   }, [rewards]);
 
-  const fund = () => {
+  const fund = async () => {
     if (balance && amount) {
       if (balance?.value.lt(amount)) {
         showNotificationModal(
@@ -55,17 +54,21 @@ export const useSummaryEffects = (
         );
       } else {
         if (isCustomToken) {
-          approve(account, createdPoolIndex, amount, rewards.tokenAddress as AddressType);
+          await approve(account, createdPoolIndex, amount, rewards.tokenAddress as AddressType);
+          const depositData = await depositsOf(createdPoolIndex);
+          setDepositsData(depositData);
         } else {
-          deposit(account, createdPoolIndex, amount, rewards.tokenAddress);
+          await deposit(account, createdPoolIndex, amount, rewards.tokenAddress);
+          const depositData = await depositsOf(createdPoolIndex);
+          setDepositsData(depositData);
         }
       }
     }
   };
 
-  const activate = () => {
+  const activate = async () => {
     if (isDeposited) {
-      activatePool(createdPoolIndex, successCallbackActivatePool);
+      await activatePool(createdPoolIndex, successCallbackActivatePool);
     }
   };
 
