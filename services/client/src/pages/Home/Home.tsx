@@ -24,14 +24,24 @@ import {
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
+
 import { HypePool } from '../../models';
 import walkthrough from '../../assets/images/walkthrough.png';
 import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
 import { TelegramListButton } from '../../components/button/TelegramListButton';
 import { RoundContainer } from '../../components/container/RoundContainer.styled';
+import { ToggleSwitch } from '../../components/toggle-switch/ToggleSwitch';
 
 export const Home = () => {
-  const { debouncedResults, hypePools, onClick, isFetchingNextPage } = useHomeEffects();
+  const {
+    debouncedResults,
+    hypePools,
+    onClick,
+    isFetchingNextPage,
+    toggleActive,
+    isActive,
+    searchString,
+  } = useHomeEffects();
 
   return (
     <RoundContainer>
@@ -67,7 +77,17 @@ export const Home = () => {
         </TelegramButtonsContainer>
       </TelegramInfoContainer>
       <PoolContainer>
-        <TitleText>Active Hype Pools</TitleText>
+        <Box display="flex" gridGap="1rem" justifyContent={'space-between'}>
+          <TitleText>
+            {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools
+          </TitleText>
+          <ToggleSwitch
+            label={`Show Active`}
+            checked={isActive}
+            onCheck={toggleActive}
+            disabled={!!searchString}
+          />
+        </Box>
         <Input
           icon={<SearchIcon />}
           placeholder="Search for hype pools..."

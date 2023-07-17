@@ -4,7 +4,11 @@ import { IsNumber, IsString } from 'class-validator';
 export class TopTelegramAccountDto {
   @ApiProperty()
   @IsNumber()
-  rank: number;
+  rank: string;
+
+  @ApiProperty()
+  @IsString()
+  telegramId: string;
 
   @ApiProperty()
   @IsString()

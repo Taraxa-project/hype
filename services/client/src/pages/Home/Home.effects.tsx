@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom';
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState<string>('');
   const [maxReached, setMaxReached] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
   let navigate = useNavigate();
-  const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, searchString);
+  const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, isActive, searchString);
 
   useEffect(() => {
     const onScroll = async (event: any) => {
@@ -34,16 +35,14 @@ export const useHomeEffects = () => {
       }
       if (searchString) {
         setHypePools((prevPools) => {
-          const newPools = filterInactiveAndExpiredPools(data);
-          const filteredNewPools = newPools.filter(
+          const filteredNewPools = data.filter(
             (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
           );
           return [...prevPools, ...filteredNewPools];
         });
       } else {
         setHypePools((prevPools) => {
-          const newPools = filterInactiveAndExpiredPools(data);
-          const filteredNewPools = newPools.filter(
+          const filteredNewPools = data.filter(
             (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
           );
           return [...prevPools, ...filteredNewPools];
@@ -52,21 +51,21 @@ export const useHomeEffects = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
-  const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
-    const now = Date.now(); // get current timestamp in milliseconds
-    // return pools.filter((p: HypePool) => p.active === true && +p.endDate * 1000 > now);
-    return pools.filter((p: HypePool) => p.remainingFunds !== '0' && +p.endDate * 1000 > now);
-  };
-
-  useEffect(() => {
-    setSearchString(searchString || '');
-    setPage(1);
-    setMaxReached(false);
-  }, [searchString]);
 
   const handleChange = (e: React.BaseSyntheticEvent) => {
     setHypePools([]);
-    setSearchString(e.target.value);
+    setSearchString(e.target.value || '');
+    setPage(1);
+    setMaxReached(false);
+    setIsActive(true);
+  };
+
+  const toggleActive = (active: boolean) => {
+    setHypePools([]);
+    setIsActive(active);
+    setSearchString('');
+    setPage(1);
+    setMaxReached(false);
   };
 
   const debouncedResults = useMemo(() => {
@@ -88,5 +87,8 @@ export const useHomeEffects = () => {
     hypePools,
     onClick,
     isFetchingNextPage,
+    toggleActive,
+    isActive,
+    searchString,
   };
 };
