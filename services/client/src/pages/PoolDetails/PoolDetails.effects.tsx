@@ -42,10 +42,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   useEffect(() => {
     if (amount && poolId) {
       (async () => {
-        const { weiAmount, poolId: id } = await depositsOf(poolId);
-        if (weiAmount?.toString() === amount.toString() && id?.toString() === poolId.toString()) {
-          setIsDeposited(true);
-        }
+        await checkDepositsOf(amount, poolId);
       })();
     }
   }, [amount, poolId]);
@@ -63,7 +60,14 @@ export const usePoolDetailsEffects = (poolId: string) => {
     }
   }, [pool]);
 
-  const fund = () => {
+  const checkDepositsOf = async (amount: BigNumber, poolId: string) => {
+    const { weiAmount, poolId: id } = await depositsOf(poolId);
+    if (weiAmount?.toString() === amount.toString() && id?.toString() === poolId.toString()) {
+      setIsDeposited(true);
+    }
+  };
+
+  const fund = async () => {
     if (balance && pool?.cap) {
       if (balance?.value.lt(BigNumber.from(pool?.cap))) {
         showNotificationModal(
@@ -72,17 +76,19 @@ export const usePoolDetailsEffects = (poolId: string) => {
         );
       } else {
         if (isCustomToken) {
-          approve(account, poolId, amount, pool?.tokenAddress as AddressType);
+          await approve(account, poolId, amount, pool?.tokenAddress as AddressType);
+          await checkDepositsOf(amount, poolId);
         } else {
-          deposit(account, poolId, amount, pool?.tokenAddress as AddressType);
+          await deposit(account, poolId, amount, pool?.tokenAddress as AddressType);
+          await checkDepositsOf(amount, poolId);
         }
       }
     }
   };
 
-  const activate = () => {
+  const activate = async () => {
     if (isDeposited) {
-      activatePool(poolId, successCallbackActivatePool);
+      await activatePool(poolId, successCallbackActivatePool);
     }
   };
 

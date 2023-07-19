@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import { useLoadingModals } from './useLoadingModals';
 import { AddressType, NotificationType } from '../utils';
-import { useContractEscrow } from './useContractEscrow';
+import { useContracts } from './useContracts';
 import { useAccount, useProvider } from 'wagmi';
 import ABIs from '../abi';
 
@@ -22,17 +22,21 @@ export interface DepositsOf {
 }
 
 export const useEscrow = () => {
-  const { mainnetEscrow, browserEscrow } = useContractEscrow();
+  const { escrowContract } = useContracts();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { address: payee } = useAccount();
   const { abi: erc20ABI } = ABIs.contracts.HypeToken;
-  const browserProvider = useProvider();
+  const provider = useProvider();
 
   const depositsOf = useCallback(
     async (poolId: string): Promise<DepositsOf> => {
-      return await mainnetEscrow!.depositsOf(payee, poolId);
+      try {
+        return await escrowContract!.depositsOf(payee, poolId);
+      } catch (error: any) {
+        console.log('Can`t fetch the deposits of: ', error?.message);
+      }
     },
-    [mainnetEscrow, payee],
+    [escrowContract, payee],
   );
 
   const claim = useCallback(
@@ -42,7 +46,7 @@ export const useEscrow = () => {
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Claiming rewards...']);
       try {
-        const tx: ethers.providers.TransactionResponse = await browserEscrow!.claim(
+        const tx: ethers.providers.TransactionResponse = await escrowContract!.claim(
           args.receiver,
           args.poolId,
           args.amount,
@@ -63,7 +67,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserEscrow, hideLoadingModal, showLoading, showNotificationModal],
+    [escrowContract, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   const deposit = useCallback(
@@ -75,7 +79,7 @@ export const useEscrow = () => {
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Funding the pool...']);
       try {
-        const tx: ethers.providers.TransactionResponse = await browserEscrow!.deposit(
+        const tx: ethers.providers.TransactionResponse = await escrowContract!.deposit(
           spender,
           poolId,
           amount,
@@ -95,7 +99,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserEscrow, hideLoadingModal, showLoading, showNotificationModal],
+    [escrowContract, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   const approve = useCallback(
@@ -110,7 +114,7 @@ export const useEscrow = () => {
         'You need to approve in order to deposit your funds',
       ]);
       try {
-        const contract = new ethers.Contract(tokenAddress, erc20ABI, browserProvider);
+        const contract = new ethers.Contract(tokenAddress, erc20ABI, provider);
         const tx: ethers.providers.TransactionResponse = await contract!.approve(spender, amount);
         await tx.wait();
         hideLoadingModal();
@@ -121,7 +125,7 @@ export const useEscrow = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserProvider, deposit, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
+    [provider, deposit, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   return useMemo(

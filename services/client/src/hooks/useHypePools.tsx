@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useContractPools } from './useContractPools';
+import { useContracts } from './useContracts';
 import { BigNumber, ethers } from 'ethers';
 import { HypePool } from '../models';
 import { useLoadingModals } from './useLoadingModals';
@@ -30,22 +30,22 @@ export interface WritePoolArgs {
 }
 
 export const useHypePools = () => {
-  const { mainnetHype, browserHype } = useContractPools();
+  const { hypeContract } = useContracts();
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { abi } = ABIs.contracts.HypePool;
 
   const getPool = useCallback(
-    async (tokenId: BigNumber): Promise<HypePool> => {
-      return await mainnetHype!.getPool(tokenId);
+    async (poolId: string): Promise<HypePool> => {
+      return await hypeContract!.getPool(poolId);
     },
-    [mainnetHype],
+    [hypeContract],
   );
 
   const getPoolUri = useCallback(
-    async (tokenId: BigNumber): Promise<HypePool> => {
-      return await mainnetHype!.poolURI(tokenId);
+    async (poolId: string): Promise<HypePool> => {
+      return await hypeContract!.poolURI(poolId);
     },
-    [mainnetHype],
+    [hypeContract],
   );
 
   const createPool = useCallback(
@@ -57,7 +57,7 @@ export const useHypePools = () => {
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Creating your Hype Pool on-chain...']);
       try {
-        const poolTx: ethers.providers.TransactionResponse = await browserHype!.createPool(
+        const poolTx: ethers.providers.TransactionResponse = await hypeContract!.createPool(
           args.uri,
           args.details,
           args.rewards,
@@ -81,7 +81,7 @@ export const useHypePools = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserHype],
+    [abi, hideLoadingModal, hypeContract, showLoading, showNotificationModal],
   );
 
   const activatePool = useCallback(
@@ -91,7 +91,7 @@ export const useHypePools = () => {
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Activating pool...']);
       try {
-        const poolTx: ethers.providers.TransactionResponse = await browserHype!.activatePool(id);
+        const poolTx: ethers.providers.TransactionResponse = await hypeContract!.activatePool(id);
         const response: ethers.providers.TransactionReceipt = await poolTx.wait();
         hideLoadingModal();
         successCallback();
@@ -101,7 +101,7 @@ export const useHypePools = () => {
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [browserHype],
+    [hideLoadingModal, hypeContract, showLoading, showNotificationModal],
   );
 
   return useMemo(
