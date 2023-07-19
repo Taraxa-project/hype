@@ -38,7 +38,7 @@ abstract contract ERC20 is ERC20Basic {
 }
 
 contract DynamicEscrowBase is IEscrow {
-
+    address private _hypePoolAddress;
     /* @dev Deposits always need to be tied to a pool. For now there is no check if
      * the pool exists because it would limit the contract, but its something worth to ideate on.
      */
@@ -49,6 +49,16 @@ contract DynamicEscrowBase is IEscrow {
      * @dev Log of claimed hashes. No hash should be claimable twice
      */
     mapping(bytes32 => uint256) private _claimed;
+
+    function canWithdraw(bytes32 poolId) internal view returns (bool) {
+        IHypePool hypePool = IHypePool(_hypePoolAddress);
+        uint256 poolEndDate = hypePool.getPoolRewards(poolId).endDate;
+        return (block.timestamp > poolEndDate + 1 weeks);
+    }
+
+    function _setHypePoolAddress(address _hypePool) internal {
+        _hypePoolAddress = _hypePool;
+    }
 
     /*
      * @dev Read Deposits to the escrow.
@@ -147,8 +157,14 @@ contract DynamicEscrowBase is IEscrow {
         bytes32 poolId,
         uint256 amount
     ) internal {
+        require(
+           canWithdraw(poolId),
+            'Withdraw: Pool has not yet ended or grace period not passed'
+        );
+
         IEscrow.DynamicDeposit storage depo = _deposits[poolId][msg.sender];
         address contractAddress = depo.tokenAddress;
+
         require(depo.weiAmount >= amount, 'Not enough funds');
         if (depo.weiAmount == amount) {
             delete _deposits[poolId][msg.sender];

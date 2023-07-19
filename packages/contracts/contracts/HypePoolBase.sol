@@ -17,7 +17,10 @@ contract HypePoolBase is IHypePool, AccessControl {
     mapping(bytes32 => bool) private _hashes;
     bytes32 private _latestUuid;
 
-    function initializeBase(address escrowContractAddress, address activator) internal virtual {
+    function initializeBase(
+        address escrowContractAddress,
+        address activator
+    ) internal virtual {
         require(
             escrowContractAddress != address(0),
             'Escrow contract address cannot be zero address'
@@ -41,6 +44,13 @@ contract HypePoolBase is IHypePool, AccessControl {
 
     function getPool(bytes32 uuid) public view returns (HypePool memory) {
         return _pools[uuid];
+    }
+
+    function getPoolRewards(
+        bytes32 uuid
+    ) public view returns (IHypePool.Rewards memory) {
+        HypePool memory pool = getPool(uuid);
+        return pool.rewards;
     }
 
     function _setPool(

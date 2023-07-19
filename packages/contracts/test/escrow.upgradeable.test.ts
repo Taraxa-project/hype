@@ -117,6 +117,7 @@ describe('DynamicEscrowUpgradeable', function () {
       const poolDeployed = await hypePool.deployed();
       expect(poolDeployed).not.to.be.undefined;
       expect(poolDeployed.address).to.be.equal(hypePool.address);
+      await dynamicEscrow.setHypePoolAddress(hypePool.address);
     },
   );
 
@@ -734,15 +735,52 @@ describe('DynamicEscrowUpgradeable', function () {
       );
   });
 
-  it('Owner withdraws the funds from pool2, Withdrawn event is emitted', async () => {
+  it('Owner tries to withdraw the funds from pool2 but grace period is still active', async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    await expect(
+      dynamicEscrow
+        .connect(owner)
+        .withdraw(
+          owner.address,
+          currentPoolIndex,
+          ethers.utils.parseEther('13'),
+        ),
+    ).to.be.revertedWith(
+      'Withdraw: Pool has not yet ended or grace period not passed',
+    );
+  });
+
+  it('Owner withdraws the funds from pool2, Withdrawn event is emitted after grace period', async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const tokensOfOwnerBefore = await erc20.balanceOf(owner.address);
+
+    // Get the current pool and its end date.
+    const poolRewards = await hypePool.getPoolRewards(currentPoolIndex);
+    const endDate = poolRewards.endDate;
+
+    // Calculate the grace period end (endDate + 1 week in seconds).
+    // const gracePeriodEnd = Number(endDate.add(604800).toString()); // 604800 is the number of seconds in one week.
+    const gracePeriodEnd = Number(endDate.toString()) + 604800;
+    // Get the current blockchain time.
+    const currentTime = (await ethers.provider.getBlock('latest')).timestamp;
+
+    // Calculate the time to increase. If the grace period has already passed, no need to increase the time.
+    const timeIncrease =
+      currentTime >= gracePeriodEnd ? 0 : gracePeriodEnd - currentTime;
+
+    // Increase time if needed.
+    if (timeIncrease > 0) {
+      await ethers.provider.send('evm_increaseTime', [timeIncrease]);
+      await ethers.provider.send('evm_mine', []); // this is necessary to make the next block effective
+    }
+
     const withdrawal = await dynamicEscrow
       .connect(owner)
       .withdraw(owner.address, currentPoolIndex, ethers.utils.parseEther('13'));
     await expect(withdrawal)
       .to.emit(dynamicEscrow, 'Withdrawn')
       .withArgs(owner.address, ethers.utils.parseEther('13'), currentPoolIndex);
+
     const tokensOfOwnerAfter = await erc20.balanceOf(owner.address);
     const diff = tokensOfOwnerAfter.sub(tokensOfOwnerBefore);
     expect(diff).to.be.equal(ethers.utils.parseEther('13'));

@@ -28,6 +28,7 @@ interface IHypePool {
     }
 
     function getPool(bytes32 poolId) external view returns (HypePool memory);
+    function getPoolRewards(bytes32 poolId) external view returns (Rewards memory);
 
     function getCurrentIndex() external view returns (bytes32);
 

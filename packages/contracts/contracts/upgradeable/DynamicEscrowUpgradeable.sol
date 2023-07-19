@@ -26,7 +26,7 @@ contract DynamicEscrowUpgradeable is
     function initialize(address trustedAccountAddress) public initializer {
         __DynamicEscrow_init();
         __ReentrancyGuard_init();
-         _trustedAccountAddress = trustedAccountAddress;
+        _trustedAccountAddress = trustedAccountAddress;
     }
 
     using AddressUpgradeable for address payable;
@@ -36,6 +36,10 @@ contract DynamicEscrowUpgradeable is
     /* @dev Reads the configured trusted wallet address. */
     function getTrustedAccount() public view returns (address) {
         return _trustedAccountAddress;
+    }
+
+    function setHypePoolAddress(address _hypePool) external onlyOwner {
+        _setHypePoolAddress(_hypePool);
     }
 
     function deposit(

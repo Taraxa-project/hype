@@ -28,6 +28,10 @@ contract DynamicEscrow is
         return _trustedAccountAddress;
     }
 
+    function setHypePoolAddress(address _hypePool) external onlyOwner {
+        _setHypePoolAddress(_hypePool);
+    }
+
     function deposit(
         address spender,
         bytes32 poolId,
