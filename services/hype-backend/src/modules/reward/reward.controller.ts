@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Param,
   Patch,
   Post,
   Query,
@@ -17,24 +16,21 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { HttpService } from '@nestjs/axios';
 import * as dotenv from 'dotenv';
-import { WalletGuard } from '../guards';
 import { ClaimResult, RewardService } from './reward.service';
 import { RewardDto, RewardStateDto, ClaimDto } from './dto';
 import { HypeClaim } from '../../entities';
+import { AuthGuard } from '@nestjs/passport';
+import { GetAddress } from '../auth/get-address.decorator';
 dotenv.config();
 
 @ApiTags('rewards')
 @Controller('rewards')
 export class RewardController {
-  constructor(
-    private readonly rewardService: RewardService,
-    private httpService: HttpService,
-  ) {}
+  constructor(private readonly rewardService: RewardService) {}
 
   @Get()
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
@@ -45,8 +41,8 @@ export class RewardController {
     return await this.rewardService.getAllRewards();
   }
 
-  @Get(':address')
-  @UseGuards(WalletGuard)
+  @Get('address')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiResponse({
     status: HttpStatus.OK,
@@ -54,13 +50,13 @@ export class RewardController {
     description: 'Returns rewards and claims based on address',
   })
   async getAllRewardsForAddress(
-    @Param('address') address: string,
+    @GetAddress() address: string,
   ): Promise<RewardStateDto> {
     return await this.rewardService.getRewardSummaryForAddress(address);
   }
 
   @Post('claim')
-  @UseGuards(WalletGuard)
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Claim not found' })
@@ -68,14 +64,14 @@ export class RewardController {
     return await this.rewardService.claim(claim);
   }
 
-  @Patch(':address')
-  @UseGuards(WalletGuard)
+  @Patch()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('authorization')
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Address not found' })
   @ApiBadRequestResponse({ description: 'No rewards to claim' })
   public async claimRewards(
-    @Param('address') address: string,
+    @GetAddress() address: string,
     @Query('poolId') poolId: string,
   ): Promise<ClaimResult> {
     return await this.rewardService.releaseRewardHash(address, poolId);

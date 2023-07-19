@@ -6,6 +6,8 @@ import { HypeClaim, PoolRewards } from '../../models';
 import { TransactionStatus } from '../../utils';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import LoadingSpinner from '../../assets/icons/Spinner';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
+
 
 interface TransactionsProps {
   totalPoolRewards: PoolRewards[];
@@ -25,14 +27,7 @@ export const TransactionsContainer = ({
   const { isConnected } = useWallet();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      backgroundColor="greys.1"
-      p="2rem"
-      borderRadius="10px"
-      minWidth={!isConnected ? { md: '340px', lg: '340px', xl: '340px' } : ''}
-    >
+    <RoundContainer minWidth={!isConnected ? { md: '340px', lg: '340px', xl: '340px' } : ''}>
       <Box
         display="flex"
         flexDirection={{ _: 'column', lg: 'column', xl: 'column' }}
@@ -60,18 +55,24 @@ export const TransactionsContainer = ({
               {totalPoolRewards.length > 0 ? (
                 <Box display="flex" flexDirection="column" py="1rem" gridGap="1rem">
                   {totalPoolRewards.map((reward) => (
-                    <Transaction
-                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${
-                        reward.pool?.title
-                      }`}
-                      value={reward.unclaimed}
-                      symbol={reward.symbol}
-                      pool={reward.pool?.title}
-                      date={new Date()}
-                      status={TransactionStatus.PENDING}
-                      buttonAction={() => onRedeem(reward)}
-                      buttonName="Redeem"
-                    />
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      py="1rem"
+                      gridGap="1rem"
+                      key={`redeem-${reward.unclaimed}-${reward.poolId}-${reward.pool?.title}`}
+                    >
+                      <Transaction
+                        value={reward.unclaimed}
+                        pool={reward.pool}
+                        rewards={reward.rewards}
+                        date={new Date()}
+                        status={TransactionStatus.PENDING}
+                        buttonAction={() => onRedeem(reward)}
+                        buttonName="Redeem"
+                      />
+                  
+                    </Box>
                   ))}
                 </Box>
               ) : (
@@ -109,8 +110,8 @@ export const TransactionsContainer = ({
                     <Transaction
                       key={`claim-${claim.id}-${claim.poolId}`}
                       value={claim.amount}
-                      symbol={claim.symbol || 'TARA'}
-                      pool={claim.pool?.title || 'APE Hype 12'}
+                      pool={claim.pool}
+                      rewards={claim.rewards}
                       date={new Date()}
                       status={TransactionStatus.REDEEMED}
                       buttonAction={() => onClaim(claim)}
@@ -131,6 +132,6 @@ export const TransactionsContainer = ({
           )}
         </Box>
       </Box>
-    </Box>
+    </RoundContainer>
   );
 };

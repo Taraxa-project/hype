@@ -19,9 +19,11 @@ export const useContractEscrowClaim = (
   args: ClaimArgs,
   enabled: boolean,
   successCallback: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const [isWrite, setIsWrite] = useState<boolean>(false);
+  const [shouldWrite, setShouldWrite] = useState<boolean>(false);
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { config } = usePrepareContractWrite({
     address: escrowAddress,
@@ -39,13 +41,13 @@ export const useContractEscrowClaim = (
     onMutate() {
       showLoading(['Please, sign the message...', 'Claiming rewards...']);
     },
-    onSuccess(data: any) {
-      // console.log('Successfully called', data);
-    },
+    // onSuccess(data: any) {},
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
+      setIsWrite(false);
     },
   });
 
@@ -54,11 +56,14 @@ export const useContractEscrowClaim = (
     onSuccess() {
       hideLoadingModal();
       successCallback();
+      setIsWrite(false);
     },
     onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
+      setIsWrite(false);
     },
     onSettled(data, error) {
       hideLoadingModal();
@@ -72,11 +77,19 @@ export const useContractEscrowClaim = (
   }, [write]);
 
   useEffect(() => {
-    if (enabled && args && isWrite === true) {
-      write();
+    if (enabled && args) {
+      setShouldWrite(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, isWrite]);
+  }, [enabled, args]);
+
+  useEffect(() => {
+    if (shouldWrite && isWrite) {
+      write();
+      setShouldWrite(false); // Reset shouldWrite to false after initiating the write operation
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldWrite, isWrite]);
+
 
   return {
     isError,

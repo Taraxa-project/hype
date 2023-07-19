@@ -1,14 +1,9 @@
-import { FC, useState } from 'react';
-import { FormColumn, FormInput } from '../AddHypePool.styled';
+import { FC } from 'react';
 import Text from '../../../components/styles/Text';
-import TitleText from '../../../components/titletext/TitleText';
 import Box from '../../../components/styles/Box';
 import { Link } from '../../../components/styles/Link';
 import { getExplorerFromNetwork } from '../../../utils';
-import Button from '../../../components/button/Button';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { TelegramShareButton, TwitterShareButton } from 'react-share';
-import { SocialButton } from './Completed.styled';
+import { SharePool } from '../../../components/share-pool/SharePool';
 
 export interface CompletedProps {
   createdPoolIndex: string;
@@ -23,20 +18,13 @@ export const Completed: FC<CompletedProps> = ({
   transaction,
   network,
 }) => {
-  const poolUrl = `${window.location.href}/${createdPoolIndex}`;
-  const [copyBtnText, setCopyBtnText] = useState<string>('Copy');
   const { text, href } = getExplorerFromNetwork(Number(network), transaction);
 
-  const onCopy = () => {
-    setCopyBtnText('✔️');
-    setTimeout(() => {
-      setCopyBtnText('Copy');
-    }, 2000);
-  };
-
   return (
-    <FormColumn>
-      <TitleText>{poolName} is active!</TitleText>
+    <Box width={'100%'}>
+      <Text fontWeight="700" fontSize="2rem" lineHeight="26px">
+        {poolName} is active!
+      </Text>
       <Box pb={4}>
         {text && href && (
           <Box display="flex">
@@ -47,35 +35,10 @@ export const Completed: FC<CompletedProps> = ({
           </Box>
         )}
       </Box>
-      <TitleText>Hype your Hype Pool!</TitleText>
-      <Box display="flex" gridGap="1rem" mt={2}>
-        <FormInput
-          disabled={true}
-          placeholder="ERC20 Token address"
-          name="tokenAddress"
-          style={{ color: '#595959', width: '500px' }}
-          value={poolUrl}
-        />
-        <CopyToClipboard text={poolUrl} onCopy={onCopy}>
-          <Button size="regular" type="button" variant="primary">
-            <Box width="50px" height="20px">
-              {copyBtnText}
-            </Box>
-          </Button>
-        </CopyToClipboard>
-      </Box>
-      <Box display="flex" gridGap="1rem" mt={5}>
-        <TwitterShareButton
-          title={`${poolName} is active!`}
-          url={poolUrl}
-          hashtags={['Hype App', `${poolName}`]}
-        >
-          <SocialButton>Twitter</SocialButton>
-        </TwitterShareButton>
-        <TelegramShareButton title={`${poolName} is active!`} url={poolUrl}>
-          <SocialButton>Telegram</SocialButton>
-        </TelegramShareButton>
-      </Box>
-    </FormColumn>
+      <Text fontWeight="700" fontSize="2rem" lineHeight="26px">
+        Hype your Hype Pool!
+      </Text>
+      <SharePool createdPoolIndex={createdPoolIndex} poolName={poolName} />
+    </Box>
   );
 };

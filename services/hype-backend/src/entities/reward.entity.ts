@@ -1,8 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from 'typeorm';
-import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  Unique,
+} from 'typeorm';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsDate,
+  IsNumber,
+} from 'class-validator';
 import { IReward } from '../models';
+import { HypeClaim } from './claim.entity';
 
 @Entity('hype_reward')
+@Unique([
+  'dateFrom',
+  'dateTo',
+  'impressions',
+  'telegramId',
+  'telegramGroup',
+  'poolId',
+])
 export class HypeReward extends BaseEntity implements IReward {
   constructor(reward?: Partial<HypeReward>) {
     super();
@@ -12,7 +35,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ nullable: false })
+  @Column({ name: 'pool_id', nullable: false })
   @IsNotEmpty()
   @IsString()
   poolId: string;
@@ -22,7 +45,7 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   amount: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'telegram_id', nullable: true })
   @IsString()
   telegramId: string;
 
@@ -30,13 +53,53 @@ export class HypeReward extends BaseEntity implements IReward {
   @IsString()
   rewardee: string;
 
-  @Column({ nullable: false })
+  @Column({ name: 'telegram_username', nullable: true })
+  @IsString()
+  telegramUsername: string;
+
+  @Column({ type: 'decimal', nullable: true })
+  @IsNumber()
+  impressions: number;
+
+  @Column({ name: 'token_address', nullable: false })
   @IsNotEmpty()
   @IsString()
   tokenAddress: string;
 
-  @Column({ nullable: false, default: false })
-  @IsNotEmpty()
+  @Column({ name: 'telegram_group', nullable: true })
+  @IsString()
+  telegramGroup: string;
+
+  @Column({ name: 'is_bonus', default: false })
   @IsBoolean()
-  claimed: boolean;
+  isBonus: boolean;
+
+  @Column({
+    name: 'date_from',
+    type: 'date',
+    nullable: true,
+  })
+  @IsNotEmpty()
+  @IsDate()
+  dateFrom: Date;
+
+  @Column({
+    name: 'date_to',
+    type: 'date',
+    nullable: true,
+  })
+  @IsNotEmpty()
+  @IsDate()
+  dateTo: Date;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp with time zone',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @ManyToOne(() => HypeClaim, (claim) => claim.rewards)
+  claim: HypeClaim;
 }

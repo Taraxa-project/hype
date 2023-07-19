@@ -23,6 +23,7 @@ export const CardDetails = () => {
     description,
     projectDescription,
     tokenName,
+    tokenSymbol,
     word,
     network,
     tokenAddress,
@@ -71,7 +72,7 @@ export const CardDetails = () => {
       open={open}
       closeModal={closeModal}
       modalActions={modalActions}
-      // height='42rem' // This is usefull when adding two buttons
+      // height='42rem' // This is useful when adding two buttons
     >
       <CardInnerContainer>
         <CardSubheader>Pool creator:</CardSubheader>
@@ -81,7 +82,7 @@ export const CardDetails = () => {
             <Account>{creator}</Account>
           </BlockiesContainer>
         )}
-        <CardSubheader>Description:</CardSubheader>
+        <CardSubheader>Campaign Description:</CardSubheader>
         <CardDescription>{description}</CardDescription>
         <CardSubheader>Project description:</CardSubheader>
         <CardDescription>{projectDescription}</CardDescription>
@@ -105,7 +106,7 @@ export const CardDetails = () => {
         )}
         {tokenName && (
           <DataContainer>
-            <DataHeader>Token name:</DataHeader>
+            <DataHeader>Project Token name:</DataHeader>
             <DataValue>{tokenName}</DataValue>
           </DataContainer>
         )}
@@ -120,36 +121,36 @@ export const CardDetails = () => {
         )}
         {cap && (
           <DataContainer>
-            <DataHeader key={`pool-${Date.now()}`}>Total rewards for the pool:</DataHeader>
-            <DataValue key={`${cap}-${Date.now()}`}>
-              {transformFromWei(cap, tokenDecimals)} {tokenName}
+            <DataHeader>Total rewards for the pool:</DataHeader>
+            <DataValue>
+              {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}
         {impressionReward && (
           <DataContainer>
-            <DataHeader key={`min-${Date.now()}`}>Reward /impression:</DataHeader>
-            <DataValue key={`${impressionReward}-${Date.now()}`}>
-              {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
+            <DataHeader>Reward /impression:</DataHeader>
+            <DataValue>
+              {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
             </DataValue>
           </DataContainer>
         )}
         <DataContainer>
-          <DataHeader key={`startDate-${Date.now()}`}>Start Date:</DataHeader>
-          <DataValue key={`${startDate}-${Date.now()}`}>{startedAt}</DataValue>
+          <DataHeader>Start Date:</DataHeader>
+          <DataValue>{startedAt}</DataValue>
         </DataContainer>
         <DataContainer>
-          <DataHeader key={`endDate-${Date.now()}`}>End Date:</DataHeader>
-          <DataValue key={`${endDate}-${Date.now()}`}>{endsAt}</DataValue>
+          <DataHeader>End Date:</DataHeader>
+          <DataValue>{endsAt}</DataValue>
         </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
           {active ? (
-            <DataValue key={`active-${Date.now()}`}>
+            <DataValue>
               <DotIcon color="#15AC5B" /> Active
             </DataValue>
           ) : (
-            <DataValue key={`active-${Date.now()}`}>
+            <DataValue>
               <DotIcon color="#C2C2C2" /> (not yet active)
             </DataValue>
           )}

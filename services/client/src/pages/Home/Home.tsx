@@ -20,12 +20,17 @@ import {
   TelegramInfoContainer,
   TelegramButtonsContainer,
   TelegramDetails,
-  StepGuide,
+  Guide,
 } from './Home.styled';
 import Card from '../../components/card/Card';
 import Box from '../../components/styles/Box';
+
 import { HypePool } from '../../models';
-import Button from '../../components/button/Button';
+import walkthrough from '../../assets/images/walkthrough.png';
+import { TelegramSubmitButton } from '../../components/button/TelegramSubmitGroupButton';
+import { TelegramListButton } from '../../components/button/TelegramListButton';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
+import { ToggleSwitch } from '../../components/toggle-switch/ToggleSwitch';
 
 export const Home = () => {
   const {
@@ -33,12 +38,13 @@ export const Home = () => {
     hypePools,
     onClick,
     isFetchingNextPage,
-    onlistTelegram,
-    onSubmitTelegram,
+    toggleActive,
+    isActive,
+    searchString,
   } = useHomeEffects();
 
   return (
-    <>
+    <RoundContainer>
       <HeroContainer>
         <IntroContainer>
           <Logo>
@@ -52,32 +58,36 @@ export const Home = () => {
             open-source, and transparent.
           </DescriptionContainer>
         </IntroContainer>
-        <GuideContainer>
-          <StepGuide>
-            <TitleText>Step by Step guide</TitleText>
-          </StepGuide>
+        <GuideContainer href="https://docs.taraxa.io/social-listening/hype-app" target="_blank">
+          <Guide src={walkthrough} alt="Hype! app Guide" />
         </GuideContainer>
       </HeroContainer>
       <TelegramInfoContainer>
         <TelegramDetails>
-          <TitleText>Make sure Telegram groups you`re in are indexed!</TitleText>
+          <TitleText>Make sure Telegram groups you’re in are indexed!</TitleText>
           <DescriptionContainer>
-            To be rewarded, the groups where you`re hyping in must be indexed. Please check to see
-            if the crypto Telegram groups you frequent are indexed, if they`re not, submit them to
-            us and we`ll add them to the list.
+            To be rewarded, the groups where you’re hyping in must be indexed. Please check to see
+            if the crypto Telegram groups you frequent are indexed, if they’re not, submit them to
+            us and we’ll add them to the list.
           </DescriptionContainer>
         </TelegramDetails>
         <TelegramButtonsContainer>
-          <Button variant="secondary" onClick={onlistTelegram}>
-            📋 List of Indexed Telegram Groups
-          </Button>
-          <Button variant="secondary" onClick={onSubmitTelegram}>
-            ⬆ Submit a New Telegram Group
-          </Button>
+          <TelegramListButton />
+          <TelegramSubmitButton />
         </TelegramButtonsContainer>
       </TelegramInfoContainer>
       <PoolContainer>
-        <TitleText>Active Hype Pools</TitleText>
+        <Box display="flex" gridGap="1rem" justifyContent={'space-between'}>
+          <TitleText>
+            {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools
+          </TitleText>
+          <ToggleSwitch
+            label={`Show Active`}
+            checked={isActive}
+            onCheck={toggleActive}
+            disabled={!!searchString}
+          />
+        </Box>
         <Input
           icon={<SearchIcon />}
           placeholder="Search for hype pools..."
@@ -88,7 +98,9 @@ export const Home = () => {
         <CardContainer>
           {hypePools.map(
             (data: HypePool, i: number) =>
-              data && <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />,
+              data && (
+                <Card key={`${data?.title}-${i}`} pool={data} onClick={() => onClick(data)} />
+              ),
           )}
         </CardContainer>
       )}
@@ -104,6 +116,6 @@ export const Home = () => {
           </NotFoundText>
         </NotFoundContainer>
       )}
-    </>
+    </RoundContainer>
   );
 };

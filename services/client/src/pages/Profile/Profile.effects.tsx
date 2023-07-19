@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetHypeUserBy } from '../../api/user/useGetUserBy';
+import { useGetHypeUser } from '../../api/user/useGetUser';
 import { useUpdateTelegram } from '../../api/user/useUpdateTelegram';
 import useWallet from '../../hooks/useWallet';
 import { useQuery } from 'urql';
@@ -20,16 +20,15 @@ export const useProfileEffects = () => {
   const { account } = useWallet();
   const [joinedPools, setJoinedPools] = useState<HypePool[]>([]);
   const [createdPools, setCreatedPools] = useState<HypePool[]>([]);
-  const [currentRewardsNo, setCurrentRewardsNo] = useState<number>(null);
-  const { data } = useGetMyRewards(account);
-  const { data: fetchedJoinedPolls } = useGetJoinedPools(account);
+  const { data } = useGetMyRewards();
+  const { data: fetchedJoinedPolls } = useGetJoinedPools();
   const [telegramProfile, setTelegramProfile] = useState<TelegramProfile>({} as TelegramProfile);
   const [{ data: hypePoolsData }] = useQuery({
     query: HYPEPOOL_QUERIES.profilePoolsQuery,
-    variables: { creator: account },
+    variables: { creator: account, orderBy: 'endDate', orderDirection: 'desc' },
     pause: !account,
   });
-  const { data: hypeUser } = useGetHypeUserBy(account);
+  const { data: hypeUser } = useGetHypeUser();
   const submitHandler = useUpdateTelegram();
   const dispatchModals = useModalsDispatch();
   let navigate = useNavigate();
@@ -44,11 +43,7 @@ export const useProfileEffects = () => {
     navigate(`/redeem`);
   };
 
-  useEffect(() => {
-    if (account && data) {
-      setCurrentRewardsNo(data.totalUnclaimed.length);
-    }
-  }, [account, data]);
+  const currentRewardsNo = data?.totalUnclaimed.length;
 
   useEffect(() => {
     if (fetchedJoinedPolls) {
@@ -123,6 +118,10 @@ export const useProfileEffects = () => {
     }
   }, [account, hypeUser]);
 
+  const onPoolDetails = (cardData: HypePool) => {
+    navigate(`/pool/${cardData.id}`);
+  };
+
   return {
     joinedPools,
     createdPools,
@@ -131,5 +130,6 @@ export const useProfileEffects = () => {
     telegramProfile,
     connect,
     disconnect,
+    onPoolDetails,
   };
 };

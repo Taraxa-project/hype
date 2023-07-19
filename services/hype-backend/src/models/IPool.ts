@@ -1,5 +1,5 @@
 export interface IPool {
-  id?: number;
+  id?: string;
   title: string;
   tokenName: string;
   tokenAddress: string;

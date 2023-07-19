@@ -10,3 +10,4 @@ export * from './chainIDs';
 export * from './networks';
 export * from './poolDuration';
 export * from './eth';
+export * from './prettifyNumber';

@@ -59,8 +59,6 @@ export function handlePoolRewards(event: PoolRewardsCreated): void {
   hypepool.impressionReward = event.params.impressionReward;
   hypepool.startDate = event.params.startDate;
   hypepool.duration = event.params.duration;
-  hypepool.startDate = event.params.startDate;
-  hypepool.duration = event.params.duration;
   hypepool.endDate = event.params.endDate;
   hypepool.save();
 }
@@ -95,6 +93,10 @@ export function handlePoolUriSet(event: PoolUriSet): void {
       const projectDescription = value.get('projectDescription');
       if (projectDescription) {
         hypepool.projectDescription = projectDescription.toString();
+      }
+      const imageUri = value.get('imageUri');
+      if (imageUri) {
+        hypepool.imageUri = imageUri.toString();
       }
     }
   }

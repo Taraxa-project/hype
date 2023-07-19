@@ -1,16 +1,17 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
-import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
+import { useNavigate } from 'react-router-dom';
 
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState<string>('');
   const [maxReached, setMaxReached] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [hypePools, setHypePools] = useState<HypePool[]>([]);
-  const dispatchModals = useModalsDispatch();
-  const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, searchString);
+  let navigate = useNavigate();
+  const { data, fetching: isFetchingNextPage } = useFetchHypePools(page, isActive, searchString);
 
   useEffect(() => {
     const onScroll = async (event: any) => {
@@ -29,34 +30,42 @@ export const useHomeEffects = () => {
 
   useEffect(() => {
     if (data) {
-      if (data.length === 0 || data.length === 0) {
+      if (data.length === 0) {
         setMaxReached(true);
       }
       if (searchString) {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.poolSearch))));
+        setHypePools((prevPools) => {
+          const filteredNewPools = data.filter(
+            (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
+          );
+          return [...prevPools, ...filteredNewPools];
+        });
       } else {
-        setHypePools(hypePools.concat(filterInactiveAndExpiredPools(data)));
-        // setHypePools(Array.from(new Set(hypePools.concat(data?.hypePools))));
+        setHypePools((prevPools) => {
+          const filteredNewPools = data.filter(
+            (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
+          );
+          return [...prevPools, ...filteredNewPools];
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, searchString]);
 
-  const filterInactiveAndExpiredPools = (pools: HypePool[]) => {
-    const now = Date.now(); // get current timestamp in milliseconds
-    return pools.filter((p: HypePool) => p.active === true && +p.endDate * 1000 > now);
-  };
-
-  useEffect(() => {
-    setSearchString(searchString || '');
-    setPage(1);
-    setMaxReached(false);
-  }, [searchString]);
-
   const handleChange = (e: React.BaseSyntheticEvent) => {
     setHypePools([]);
-    setSearchString(e.target.value);
+    setSearchString(e.target.value || '');
+    setPage(1);
+    setMaxReached(false);
+    setIsActive(true);
+  };
+
+  const toggleActive = (active: boolean) => {
+    setHypePools([]);
+    setIsActive(active);
+    setSearchString('');
+    setPage(1);
+    setMaxReached(false);
   };
 
   const debouncedResults = useMemo(() => {
@@ -70,20 +79,7 @@ export const useHomeEffects = () => {
   });
 
   const onClick = (cardData: HypePool) => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_CARD_DETAILS,
-      payload: {
-        open: true,
-        cardData,
-      },
-    });
-  };
-
-  const onlistTelegram = () => {
-    console.log('List of Indexed Telegram Groups');
-  };
-  const onSubmitTelegram = () => {
-    window.open('https://forms.gle/fuSNPsuVaUwaB8wbA', '_blank');
+    navigate(`/pool/${cardData.id}`);
   };
 
   return {
@@ -91,7 +87,8 @@ export const useHomeEffects = () => {
     hypePools,
     onClick,
     isFetchingNextPage,
-    onlistTelegram,
-    onSubmitTelegram,
+    toggleActive,
+    isActive,
+    searchString,
   };
 };

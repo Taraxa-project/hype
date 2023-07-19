@@ -1,14 +1,12 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetByDTO, UserDTO } from './dto';
+import { UserDTO } from './dto';
 import { HypeUser } from '../../entities/user.entity';
 import { HypeReward } from '../reward';
 
 @Injectable()
 export class UsersService {
-  private logger = new Logger('UsersService');
-
   constructor(
     @InjectRepository(HypeUser)
     private repository: Repository<HypeUser>,
@@ -16,17 +14,18 @@ export class UsersService {
     private readonly rewardRepository: Repository<HypeReward>,
   ) {}
 
-  async getUserByAddress({ publicAddress }: GetByDTO): Promise<HypeUser> {
-    return await this.repository.findOne({
-      where: {
-        address: publicAddress,
-      },
-    });
+  async getUserByAddress(address: string): Promise<HypeUser> {
+    return await this.repository
+      .createQueryBuilder('hype_user')
+      .where('LOWER(hype_user.address) LIKE LOWER(:address)', {
+        address: address,
+      })
+      .getOne();
   }
 
   async updateAccount(userDTO: UserDTO): Promise<HypeUser> {
     const publicAddress = userDTO.address;
-    const user = await this.getUserByAddress({ publicAddress });
+    const user = await this.getUserByAddress(publicAddress);
     if (!user) {
       const existingUser = await this.repository.findOne({
         where: {
@@ -47,7 +46,7 @@ export class UsersService {
       await this.updateRewardsRewardee(userDTO.address, userDTO.telegramId);
     }
 
-    return await this.getUserByAddress({ publicAddress });
+    return await this.getUserByAddress(publicAddress);
   }
 
   private async createNewUser(userDTO: UserDTO): Promise<HypeUser> {

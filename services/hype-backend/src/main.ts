@@ -12,7 +12,9 @@ export function getPort(): number {
 async function bootstrap() {
   const logger = new Logger('bootstrap');
   const PORT = getPort();
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true,
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableShutdownHooks();
@@ -28,7 +30,13 @@ async function bootstrap() {
     .setDescription('Swagger documentation for Taraxa Hype Pool API')
     .setVersion('0.1')
     .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      {
+        name: 'Authorization',
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Bearer',
+        in: 'Header',
+      },
       'authorization',
     )
     .build();

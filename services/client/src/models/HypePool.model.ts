@@ -12,6 +12,8 @@ export interface AddHypePool {
   endDate: number;
   duration: number;
   tokenName?: string;
+  remainingFunds?: string;
+  imageUri?: string;
 }
 
 export interface HypePool extends AddHypePool {
@@ -22,4 +24,6 @@ export interface HypePool extends AddHypePool {
 }
 
 export interface HypeProjectDetails
-  extends Pick<AddHypePool, 'projectDescription' | 'description'> {}
+  extends Pick<AddHypePool, 'projectDescription' | 'description'> {
+  imageUri: string;
+}

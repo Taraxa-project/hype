@@ -1,5 +1,5 @@
 import ABIs from '../abi';
-import { escrowAddress, ethEscrowAddress } from '../constants';
+import { escrowAddress } from '../constants';
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 import { useLoadingModals } from './useLoadingModals';
 import { AddressType, NotificationType } from '../utils';
@@ -14,13 +14,14 @@ export const useContractEscrowDeposit = (
   enabled: boolean,
   isCustomToken: boolean,
   successCallbackDeposit: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.DynamicEscrow;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const [isWrite, setIsWrite] = useState<boolean>(false);
 
   const { config } = usePrepareContractWrite({
-    address: isCustomToken ? ethEscrowAddress: escrowAddress,
+    address: escrowAddress,
     abi,
     functionName: 'deposit',
     args: [spender, poolId, amount, tokenAddress],
@@ -41,6 +42,7 @@ export const useContractEscrowDeposit = (
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
@@ -49,11 +51,13 @@ export const useContractEscrowDeposit = (
     // wait: data?.wait,
     onSuccess(transactionData) {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('onError', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled() {
       hideLoadingModal();

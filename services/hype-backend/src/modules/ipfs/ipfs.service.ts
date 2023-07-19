@@ -16,7 +16,7 @@ export interface IpfsResult {
 }
 
 export interface IpfsAddResult {
-  cid: CID;
+  cid: CID | string;
   size: number;
   path: string;
   mode?: number;
@@ -61,6 +61,7 @@ export class IpfsService {
       ).toString('base64')}`;
       this.ipfsUseAuth = ipfsConfig.ipfsUseAuth === 'true';
     }
+    this.setIpfsClient();
   }
 
   public getFullIpfsUrl(resourcePath: string): string {
@@ -94,25 +95,48 @@ export class IpfsService {
     return this.ipfsClient;
   }
 
-  public async uploadToIpfs(
+  public async uploadDetailsToIpfs(
     details: ProjectDetailsDTO,
   ): Promise<IpfsResult | IpfsAddResult> {
     if (!details) {
       throw new NotFoundException('Project details for Hype not found');
     }
-    this.setIpfsClient();
     const ipfsClient = this.getIpfsClient();
-    const { description, projectDescription } = details;
+    const { description, projectDescription, imageUri } = details;
     try {
       const uploaded = await ipfsClient.add(
-        JSON.stringify({ description, projectDescription }),
+        JSON.stringify({ description, projectDescription, imageUri }),
       );
-      console.log('uploaded: ', uploaded);
+      this.logger.log(`uploaded: ${JSON.stringify(uploaded)}`);
       return uploaded;
     } catch (error) {
-      console.log('Error uploading to IPFS: ', error);
+      this.logger.error(`Error uploading to ipfs: ${JSON.stringify(error)}`);
       throw new InternalServerErrorException(
         `Error uploading to IPFS: ${error}`,
+      );
+    }
+  }
+
+  public async uploadImageToIpfs(
+    filename: string,
+    content: Buffer,
+  ): Promise<IpfsResult | IpfsAddResult> {
+    const ipfsClient = this.getIpfsClient();
+    try {
+      const uploaded = await ipfsClient.add({
+        path: filename,
+        content,
+      });
+      console.log('Image uploaded: ', uploaded);
+      return {
+        path: uploaded.path,
+        size: uploaded.size,
+        cid: uploaded.cid.toString(), // convert cid to string
+      };
+    } catch (error) {
+      console.log('Error uploading image to IPFS: ', error);
+      throw new InternalServerErrorException(
+        `Error uploading image to IPFS: ${error}`,
       );
     }
   }

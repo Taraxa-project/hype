@@ -8,10 +8,18 @@ import { getAuthenticationToken, NotificationType, removeAuthenticationToken } f
 import { useSignMessage } from 'wagmi';
 import { LoginSignature } from '../models';
 import { ModalsActionsEnum, useModalsDispatch } from './modal';
+import jwt_decode from 'jwt-decode';
 
 type SignMessageArgs = {
   /** Message to sign with wallet */
   message: string | Uint8Array;
+};
+
+type JwtData = {
+  address: string;
+  exp: number;
+  iat: number;
+  nonce: number;
 };
 
 export interface IAuthContext {
@@ -112,6 +120,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsSignatureLoading(false);
     }
   }, [isLoginLoading, isLoginSuccess]);
+
+  useEffect(() => {
+    const token = getAuthenticationToken();
+    if (token) {
+      const decodedToken: JwtData = jwt_decode(token);
+      const accountInToken = decodedToken.address;
+      if (account !== accountInToken) {
+        dispatchModals({
+          type: ModalsActionsEnum.SHOW_NOTIFICATION,
+          payload: {
+            open: true,
+            type: NotificationType.INFO,
+            message: [
+              'You have changed your account',
+              'Please sign in again.',
+              'You have to sign the request in your Metamask wallet in order to access your profile.',
+            ],
+            title: 'Account changed',
+          },
+        });
+        logout();
+      }
+    }
+  }, [account]);
 
   const context: IAuthContext = {
     account,

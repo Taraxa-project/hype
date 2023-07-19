@@ -11,7 +11,7 @@ import {
   Container,
 } from './Card.styled';
 import DotIcon from '../../assets/icons/Dot';
-import { useTokenDecimals } from '../../hooks';
+import { useTokenDetails } from '../../hooks';
 
 export interface CardProps {
   pool: HypePool;
@@ -21,18 +21,15 @@ export interface CardProps {
 
 const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
-  const { title, projectName, description, tokenName, cap, active, impressionReward, endDate } =
-    pool;
-  const { tokenDecimals } = useTokenDecimals(pool);
+  const { title, projectName, description, cap, active, impressionReward, endDate } = pool;
+  const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
 
   return (
     <StyledCard>
       <Container>
         <div>
           <CardTitle>{title}</CardTitle>
-          <CardDescription key={`${description}-${Date.now()}`}>
-            {shortenText(description)}
-          </CardDescription>
+          <CardDescription>{shortenText(description)}</CardDescription>
         </div>
         <div>
           {projectName && (
@@ -43,24 +40,24 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           {cap && (
             <DataContainer>
-              <DataHeader key={`pool-${Date.now()}`}>Pool:</DataHeader>
-              <DataValue key={`${cap}-${Date.now()}`}>
-                {transformFromWei(cap, tokenDecimals)} {tokenName}
+              <DataHeader>Pool:</DataHeader>
+              <DataValue>
+                {transformFromWei(cap, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}
           {impressionReward && (
             <DataContainer>
-              <DataHeader key={`min-${Date.now()}`}>Reward / impression:</DataHeader>
-              <DataValue key={`${impressionReward}-${Date.now()}`}>
-                {transformFromWei(impressionReward, tokenDecimals)} {tokenName}
+              <DataHeader>Reward / impression:</DataHeader>
+              <DataValue>
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol}
               </DataValue>
             </DataContainer>
           )}
           {endDate && (
             <DataContainer>
-              <DataHeader key={`endDate-${Date.now()}`}>Duration:</DataHeader>
-              <DataValue key={`${endDate}-${Date.now()}`}>
+              <DataHeader>Time left:</DataHeader>
+              <DataValue>
                 {Number(endDate) !== 0 ? getPoolDuration(+endDate) : '(not yet active)'}
               </DataValue>
             </DataContainer>
@@ -68,11 +65,17 @@ const Card = ({ children, ...props }: CardProps) => {
           <DataContainer>
             <DataHeader>Status:</DataHeader>
             {active ? (
-              <DataValue key={`active-${Date.now()}`}>
-                <DotIcon color="#15AC5B" /> Active
-              </DataValue>
+              endDate * 1000 > Date.now() ? (
+                <DataValue>
+                  <DotIcon color="#15AC5B" /> Active
+                </DataValue>
+              ) : (
+                <DataValue>
+                  <DotIcon color="#F7614A" /> Expired
+                </DataValue>
+              )
             ) : (
-              <DataValue key={`active-${Date.now()}`}>
+              <DataValue>
                 <DotIcon color="#C2C2C2" /> (not yet active)
               </DataValue>
             )}

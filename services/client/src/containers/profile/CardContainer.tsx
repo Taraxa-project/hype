@@ -1,12 +1,11 @@
 import React from 'react';
 import Box from '../../components/styles/Box';
 import Heading from '../../components/styles/Heading';
-import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { NotAvailable } from '../../components/not-available/NotAvailable';
 import { HypePool } from '../../models';
 import Card from '../../components/card/Card';
 import styled from 'styled-components';
-import { ModalAction } from '../../components/modals/modal-container/ModalContainer';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 const StyledCardContainer = styled.div`
   position: relative;
@@ -15,7 +14,6 @@ const StyledCardContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 25rem;
-  margin-top: 1rem;
   border-radius: 1rem;
 
   display: grid;
@@ -35,27 +33,16 @@ export const CardContainer = ({
   cards,
   emptyMessage,
   target,
-  poolModalAction,
-  isPrivate,
+  action,
 }: {
   title: string;
   cards: HypePool[];
   emptyMessage: string;
   target: string;
-  poolModalAction: ModalAction;
-  isPrivate?: boolean;
+  action: (data: HypePool) => void;
 }) => {
-  const dispatchModals = useModalsDispatch();
-
   return (
-    <Box
-      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="10px"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-evenly"
-      backgroundColor="greys.1"
-    >
+    <RoundContainer>
       <Heading
         fontSize="1.25rem"
         fontWeight="700"
@@ -68,21 +55,7 @@ export const CardContainer = ({
       {cards.length > 0 ? (
         <StyledCardContainer>
           {cards.map((data, i) => (
-            <Card
-              key={`${data?.title}-${i}`}
-              pool={data}
-              onClick={() => {
-                dispatchModals({
-                  type: ModalsActionsEnum.SHOW_CARD_DETAILS,
-                  payload: {
-                    open: true,
-                    cardData: cards[i],
-                    cardModalAction: poolModalAction,
-                    isPrivate,
-                  },
-                });
-              }}
-            />
+            <Card key={`${data?.title}-${i}`} pool={data} onClick={() => action(data)} />
           ))}
         </StyledCardContainer>
       ) : (
@@ -99,6 +72,6 @@ export const CardContainer = ({
           <NotAvailable message={emptyMessage} />
         </Box>
       )}
-    </Box>
+    </RoundContainer>
   );
 };

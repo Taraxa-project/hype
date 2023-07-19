@@ -11,7 +11,8 @@ import { ethereum, auth } from '@taraxa-hype/config';
 import { BigNumber } from 'ethers';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
-import { Raw, Repository } from 'typeorm';
+import { IsNull, Raw, Repository } from 'typeorm';
+import { DateTime } from 'luxon';
 import { HypeReward } from '../../entities/reward.entity';
 import {
   ImpressionDto,
@@ -19,6 +20,9 @@ import {
   PoolClaim,
   RewardStateDto,
   TotalUnclaimed,
+  TopTelegramAccountDto,
+  PoolStatsDto,
+  RewardsDetails,
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
@@ -43,9 +47,9 @@ export class RewardService {
 
   constructor(
     @Inject(ethereum.KEY)
-    private readonly ethereumConfig: ConfigType<typeof ethereum>,
+    ethereumConfig: ConfigType<typeof ethereum>,
     @Inject(auth.KEY)
-    private readonly authConfig: ConfigType<typeof auth>,
+    authConfig: ConfigType<typeof auth>,
     @InjectRepository(HypeReward)
     private readonly rewardRepository: Repository<HypeReward>,
     @InjectRepository(HypeClaim)
@@ -54,7 +58,7 @@ export class RewardService {
     private readonly userRepository: Repository<HypeUser>,
     private graphQlService: GraphQlService,
   ) {
-    this.privateKey = Buffer.from(this.ethereumConfig.privateSigningKey, 'hex');
+    this.privateKey = Buffer.from(ethereumConfig.privateSigningKey, 'hex');
     this.gsSecret = authConfig.gsSecret;
   }
 
@@ -89,7 +93,7 @@ export class RewardService {
     return await this.rewardRepository.find();
   }
 
-  private async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
+  async getUserByTelegramId(telegramId: string): Promise<HypeUser> {
     return await this.userRepository.findOne({
       where: {
         telegramId,
@@ -98,56 +102,87 @@ export class RewardService {
   }
 
   async getRewardSummaryForAddress(address: string): Promise<RewardStateDto> {
-    const rewardsOfAddress = await this.rewardRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: false,
-    });
-    const fetchedClaims = await this.claimRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: false,
-    });
-    const rewardClaims = await this.claimRepository.findBy({
-      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
-        address,
-      }),
-      claimed: true,
-    });
+    const rewardsOfAddress = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('reward.telegramGroup, reward.poolId')
+      .addSelect('reward.isBonus', 'isBonus')
+      .addSelect('SUM(reward.impressions)', 'totalImpressions')
+      .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'totalRewards')
+      .where('LOWER(reward.rewardee) = LOWER(:address)', { address })
+      .andWhere('reward.claimId IS NULL')
+      .groupBy('reward.telegramGroup, reward.poolId, reward.isBonus')
+      .getRawMany();
+
+    const unclaimedClaims = await this.claimRepository
+      .createQueryBuilder('claim')
+      .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
+      .andWhere('claim.claimed = :claimed', { claimed: false })
+      .getMany();
+
+    const claimedClaims = await this.claimRepository
+      .createQueryBuilder('claim')
+      .where('LOWER(claim.rewardee) = LOWER(:address)', { address })
+      .andWhere('claim.claimed = :claimed', { claimed: true })
+      .getMany();
+
+    const aggregateRewardsByClaimId = async (claimId: number) => {
+      return await this.rewardRepository
+        .createQueryBuilder('reward')
+        .select('reward.telegramGroup', 'telegramGroup')
+        .addSelect('reward.isBonus', 'isBonus')
+        .addSelect('SUM(reward.impressions)', 'impressions')
+        .addSelect('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'rewards')
+        .where('reward.claimId = :claimId', { claimId })
+        .groupBy('reward.telegramGroup, reward.poolId, reward.isBonus')
+        .getRawMany();
+    };
 
     const rewardsReceived: PoolClaim[] = await Promise.all(
-      rewardClaims.map(async (claim) => {
+      claimedClaims.map(async (claim) => {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(claim.poolId);
+        const rewards = await aggregateRewardsByClaimId(claim.id);
         return {
           ...claim,
           pool: result.hypePool,
+          rewards,
         };
       }),
     );
+
     const claims: PoolClaim[] = await Promise.all(
-      fetchedClaims.map(async (claim) => {
+      unclaimedClaims.map(async (claim) => {
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(claim.poolId);
+        const rewards = await aggregateRewardsByClaimId(claim.id);
         return {
           ...claim,
           pool: result.hypePool,
+          rewards,
         };
       }),
     );
-    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.poolId)));
+
+    const poolIds = Array.from(new Set(rewardsOfAddress.map((r) => r.pool_id)));
     const totalUnclaimed: TotalUnclaimed[] = [];
 
     await Promise.all(
       poolIds.map(async (poolId) => {
         const rewardsOfPool = rewardsOfAddress.filter(
-          (r) => r.poolId === poolId,
+          (r) => r.pool_id === poolId,
         );
+        const rewards: RewardsDetails[] = rewardsOfPool.map((rewardOfPool) => {
+          return {
+            telegramGroup: rewardOfPool.telegram_group,
+            impressions: rewardOfPool.totalImpressions,
+            rewards: rewardOfPool.totalRewards,
+            isBonus: rewardOfPool.isBonus,
+          };
+        });
         const token = rewardsOfPool ? rewardsOfPool[0].tokenAddress : '';
         const unclaimed = rewardsOfPool.reduce(
-          (total, unc) => BigNumber.from(total).add(BigNumber.from(unc.amount)),
+          (total, unc) =>
+            BigNumber.from(total).add(BigNumber.from(unc.totalRewards)),
           BigNumber.from('0'),
         );
         const result: { hypePool: IPool } =
@@ -157,6 +192,7 @@ export class RewardService {
           poolId,
           pool: result.hypePool,
           tokenAddress: token,
+          rewards,
         });
       }),
     );
@@ -176,7 +212,7 @@ export class RewardService {
       rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
         address,
       }),
-      claimed: false,
+      claim: IsNull(),
     });
 
     const biggestId = rewardsOfAddress
@@ -196,11 +232,20 @@ export class RewardService {
     );
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);
-    let tokenAddress = '';
+    const claim = this.claimRepository.create();
+    claim.amount = total.toString();
+    claim.claimed = false;
+    claim.poolId = poolId;
+    claim.rewardee = address;
+    claim.tokenAddress = rewardsOfAddress[0].tokenAddress;
+    claim.hash = hash;
+    claim.nonce = nonce;
+    const claimFinalized = await claim.save();
+
     if (nonce && hash && total) {
       for (const reward of rewardsOfAddress) {
-        reward.claimed = true;
-        tokenAddress = reward.tokenAddress;
+        // Associate the claim to each reward
+        reward.claim = claimFinalized;
         const updated = await this.rewardRepository.save(reward);
         if (updated) {
           this.logger.log(
@@ -208,15 +253,7 @@ export class RewardService {
           );
         }
       }
-      const claim = this.claimRepository.create();
-      claim.amount = total.toString();
-      claim.claimed = false;
-      claim.poolId = poolId;
-      claim.rewardee = address;
-      claim.tokenAddress = tokenAddress;
-      claim.hash = hash;
-      claim.nonce = nonce;
-      const claimFinalized = await claim.save();
+
       return {
         nonce,
         hash,
@@ -243,45 +280,168 @@ export class RewardService {
     return savedClaim;
   }
 
-  async saveImpressions(impressions: ImpressionDto[]): Promise<any> {
+  async saveImpressions(impressions: ImpressionDto[]): Promise<void> {
     await Promise.all(
       impressions.map(async (impression: ImpressionDto) => {
-        const user = await this.getUserByTelegramId(impression.user_id);
+        const user = await this.getUserByTelegramId(
+          impression.user_id.toString(),
+        );
         const result: { hypePool: IPool } =
           await this.graphQlService.getPoolById(impression.pool_id);
         const pool = result.hypePool;
+        if (!pool) {
+          throw new NotFoundException('Pool does not exist!');
+        }
         const rewardValue =
-          (impression.message_impressions / 1000) *
-          Number(pool.impressionReward);
+          impression.message_impressions * Number(pool.impressionReward);
 
         const newReward = this.rewardRepository.create({
-          amount: rewardValue?.toString(),
+          amount: rewardValue.toString(),
           tokenAddress: pool.tokenAddress,
           rewardee: user ? user.address : null,
-          telegramId: impression.user_id,
+          telegramId: impression.user_id.toString(),
+          telegramUsername: impression.username,
+          telegramGroup: impression.telegram_group,
+          impressions: impression.message_impressions,
           poolId: impression.pool_id,
+          dateFrom: new Date(impression.from),
+          dateTo: new Date(impression.to),
         });
-        const saved = await this.rewardRepository.save(newReward);
-        return saved;
+
+        try {
+          const saved = await this.rewardRepository.save(newReward);
+          return saved;
+        } catch (error) {
+          this.logger.error(`Error saving reward: ${JSON.stringify(error)}`);
+        }
       }),
     );
   }
 
+  async saveRewardBonus(
+    amount: string,
+    tokenAddress: string,
+    userAddress: string,
+    telegramId: string,
+    telegramUsername: string,
+    poolId: string,
+  ): Promise<HypeReward> {
+    const newReward = this.rewardRepository.create({
+      amount: amount,
+      tokenAddress: tokenAddress,
+      rewardee: userAddress || null,
+      telegramId: telegramId,
+      telegramUsername: telegramUsername,
+      telegramGroup: `Leaderboard BONUS!`,
+      poolId: poolId,
+      isBonus: true,
+    });
+
+    try {
+      const saved = await this.rewardRepository.save(newReward);
+      return saved;
+    } catch (error) {
+      this.logger.error(`Error saving reward: ${JSON.stringify(error)}`);
+    }
+  }
+
   async getJoinedPools(address: string): Promise<IPool[]> {
-    const rewards: Partial<HypeReward[]> = await this.rewardRepository
-      .createQueryBuilder()
-      .select('DISTINCT "poolId"')
-      .where('rewardee = :address', { address })
+    const rewards = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('DISTINCT reward.poolId')
+      .where('reward.rewardee = :address', { address })
       .getRawMany();
 
     const pools: IPool[] = [];
     await Promise.all(
       rewards.map(async (reward) => {
         const result: { hypePool: IPool } =
-          await this.graphQlService.getPoolById(reward.poolId);
-        pools.push(result.hypePool);
+          await this.graphQlService.getPoolById(reward.pool_id);
+        if (result?.hypePool) {
+          pools.push(result.hypePool);
+        }
       }),
     );
     return pools;
+  }
+
+  async getPoolStats(poolId: string): Promise<PoolStatsDto> {
+    const { total: tokensAwarded } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(CAST(reward.amount AS DECIMAL))::TEXT', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: tokensClaimed } = await this.claimRepository
+      .createQueryBuilder('claim')
+      .select('SUM(CAST(claim.amount AS DECIMAL))::TEXT', 'total')
+      .where('claim.claimed = :claimed', { claimed: true })
+      .andWhere('claim.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: participants } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('COUNT(DISTINCT reward.telegramId)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .getRawOne();
+
+    const { total: impressions } = await this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('SUM(reward.impressions)', 'total')
+      .where('reward.poolId = :poolId', { poolId })
+      .andWhere('reward.impressions IS NOT NULL')
+      .getRawOne();
+
+    return {
+      tokensAwarded,
+      tokensClaimed,
+      participants,
+      impressions,
+    };
+  }
+
+  async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
+    const currentDate = DateTime.utc();
+    const startDate = currentDate
+      .startOf('week')
+      .minus({ days: 1 })
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      .toJSDate();
+    const endDate = currentDate
+      .endOf('week')
+      .minus({ days: 1 })
+      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+      .toJSDate();
+
+    const qb = this.rewardRepository
+      .createQueryBuilder('reward')
+      .select('reward.telegramId', 'telegramId')
+      .addSelect(
+        "CASE WHEN reward.telegramUsername IS NULL THEN reward.telegramId ELSE CONCAT('@', reward.telegramUsername) END",
+        'telegramUsername',
+      )
+      .addSelect('SUM(reward.impressions)', 'totalImpressions')
+      .addSelect(
+        'ROW_NUMBER() OVER (ORDER BY SUM(reward.impressions) DESC)',
+        'rank',
+      )
+      .where('reward.poolId = :poolId', { poolId })
+      .andWhere('reward.impressions IS NOT NULL')
+      .andWhere(
+        '(reward.telegramUsername IS NOT NULL OR reward.telegramId IS NOT NULL)',
+      )
+      .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      })
+      .andWhere('reward.date_to BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      })
+      .groupBy('reward.telegramId, reward.telegramUsername')
+      .orderBy('"totalImpressions"', 'DESC')
+      .take(10);
+
+    return qb.getRawMany();
   }
 }

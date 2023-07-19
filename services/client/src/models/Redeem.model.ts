@@ -1,6 +1,13 @@
 import { BigNumber } from 'ethers';
 import { HypePool } from './HypePool.model';
 
+export interface RewardsDetails {
+  telegramGroup: string;
+  impressions: string;
+  rewards: string;
+  isBonus: boolean;
+}
+
 export interface HypeRewardSummary {
   totalUnclaimed: PoolRewards[];
   claims: HypeClaim[];
@@ -11,9 +18,10 @@ export interface PoolRewards {
   unclaimed: BigNumber;
   poolId: string;
   tokenAddress: string;
-  symbol?: string;
+  rewards: RewardsDetails[];
   pool: HypePool;
 }
+
 export interface HypeReward {
   id: number;
   poolId: string;
@@ -24,6 +32,7 @@ export interface HypeReward {
   claimed: boolean;
   poolName?: string;
   pool: HypePool;
+  rewards?: RewardsDetails[];
 }
 
 export interface HypeClaim extends HypeReward {

@@ -144,7 +144,7 @@ export const RewardForm = ({
           </FormElement>
         )}
 
-        {/* Custom token name */}
+        {/* Custom token symbol */}
         {showToken && (
           <FormElement>
             <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
@@ -153,13 +153,13 @@ export const RewardForm = ({
             <FormInput
               disabled
               placeholder="ERC20 Token name"
-              name="tokenName"
+              name="tokenSymbol"
               style={{ color: '#595959' }}
-              {...register('tokenName')}
+              {...register('tokenSymbol')}
             />
-            {errors.tokenName && (
+            {errors.tokenSymbol && (
               <Text color="danger" fontSize="0.8rem">
-                {errors.tokenName.message}
+                {errors.tokenSymbol.message}
               </Text>
             )}
           </FormElement>
@@ -168,15 +168,15 @@ export const RewardForm = ({
         {/* Impression Reward */}
         <FormElement>
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
-            <Label>Reward per 1,000 impressions:</Label>
+            <Label>Reward per 1 impression:</Label>
           </Box>
           <Example>
-            How much reward to give for every 1,000 impressions (or views) of effective social
+            How much reward to give for every 1 impression (or view) of effective social
             mentions in support of your hype?
           </Example>
           <FormInput
             disabled={!authenticated}
-            placeholder="ex: 200,000"
+            placeholder="ex: 0.2"
             name="impressionReward"
             {...register('impressionReward')}
           />
@@ -216,7 +216,7 @@ export const RewardForm = ({
           </Box>
           <Example>
             Defines how long the Hype Pool will last. At the end of the Hype Pool if rewards have
-            not been fully doled out, they`ll be returned.
+            not been fully doled out, they’ll be returned.
           </Example>
           <FormInput
             disabled={!authenticated}
@@ -243,11 +243,11 @@ export const RewardForm = ({
         {authenticated ? (
           <div>
             <FormAction>
-              <Button size="full-width" type="button" variant="secondary" onClick={onBack}>
-                ⬅️ Prev: What are you Hyping?
-              </Button>
               <Button size="full-width" type="submit" variant="primary">
                 Next: Fund and Activate the Pool ➡️
+              </Button>
+              <Button size="full-width" type="button" variant="secondary" onClick={onBack}>
+                ⬅️ Prev: What are you Hyping?
               </Button>
             </FormAction>
           </div>

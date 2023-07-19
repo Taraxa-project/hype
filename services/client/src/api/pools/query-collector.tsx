@@ -1,7 +1,7 @@
 export const HYPEPOOL_QUERIES = {
   poolsSearchQuery: `
-    query HypePoolsSearch($first: Int!, $skip: Int!, $text: String) {
-      poolSearch(first: $first, skip: $skip, text: $text) {
+    query HypePoolsSearch($first: Int!, $skip: Int!, $orderBy: String, $orderDirection: String, $text: String, $endDate_gt: BigInt, $endDate_lt: BigInt) {
+      poolSearch(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, text: $text, where: {remainingFunds_not: 0, endDate_gt: $endDate_gt, endDate_lt: $endDate_lt}) {
         id
         title
         tokenName
@@ -19,12 +19,15 @@ export const HYPEPOOL_QUERIES = {
         duration
         impressionReward
         word
+        remainingFunds
+        imageUri
       }
     }
   `,
+
   poolsQuery: `
-    query HypePools($first: Int!, $skip: Int!, $text: String) {
-      hypePools(first: $first, skip: $skip, text: $text) {
+    query HypePools($first: Int!, $skip: Int!, $orderBy: String, $orderDirection: String, $text: String, $endDate_gt: BigInt, $endDate_lt: BigInt) {
+      hypePools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, text: $text, where: {remainingFunds_not: 0, endDate_gt: $endDate_gt, endDate_lt: $endDate_lt}) {
         id
         title
         tokenName
@@ -42,13 +45,18 @@ export const HYPEPOOL_QUERIES = {
         duration
         impressionReward
         word
+        remainingFunds
+        imageUri
       }
     }
   `,
+
   profilePoolsQuery: `
-    query HypePoolsByCreator($creator: String) {
+    query HypePoolsByCreator($creator: String, $orderBy: String, $orderDirection: String) {
       hypePools(
-        where: { creator: $creator }
+        where: { creator: $creator },
+        orderBy: $orderBy,
+        orderDirection: $orderDirection
       ) {
         id
         title
@@ -67,6 +75,8 @@ export const HYPEPOOL_QUERIES = {
         duration
         impressionReward
         word
+        remainingFunds
+        imageUri
       }
     }
   `,
@@ -93,6 +103,8 @@ export const HYPEPOOL_QUERIES = {
         duration
         impressionReward
         word
+        remainingFunds
+        imageUri
       }
     }
   `,

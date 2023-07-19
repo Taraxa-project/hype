@@ -1,39 +1,43 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
 import * as crypto from 'crypto';
-import * as dotenv from 'dotenv';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-dotenv.config();
-
 @Injectable()
-export class HmacMiddleware implements NestMiddleware {
+export class HMACGuard implements CanActivate {
   private secretKey: string;
 
   constructor(private readonly config: ConfigService) {
     this.secretKey = this.config.get<string>('auth.gsSecret');
   }
 
-  use(req: Request, res: Response, next: NextFunction) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const req = context.switchToHttp().getRequest();
+
     const hmac = crypto.createHmac('sha256', this.secretKey);
-    hmac.update(JSON.stringify(req.body)); // Hash the request body with the secret key
-    const calculatedDigest = hmac.digest('hex'); // Generate the HMAC digest
+    hmac.update(req.rawBody);
+    const calculatedDigest = hmac.digest('hex');
 
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
-      return res.status(401).send('Unauthorized');
+      throw new UnauthorizedException();
     }
 
     const [scheme, digest] = authHeader.split(' ');
 
     if (scheme !== 'HMAC' || !digest) {
-      return res.status(401).send('Unauthorized');
+      throw new UnauthorizedException();
     }
 
     if (calculatedDigest !== digest) {
-      return res.status(401).send('Unauthorized');
+      throw new UnauthorizedException();
     }
 
-    next();
+    return true;
   }
 }

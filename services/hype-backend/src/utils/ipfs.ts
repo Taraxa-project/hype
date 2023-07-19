@@ -32,7 +32,7 @@ if (ipfsUrl) {
 }
 
 export const fullIpfsUrl = (resourcePath: string) => {
-  return `${ipfsBaseUrl}${resourcePath}`;
+  return `${ipfsBaseUrl}/${resourcePath}`;
 };
 
 if (ipfsSecret && ipfsProject && ipfsUseAuth === 'true') {

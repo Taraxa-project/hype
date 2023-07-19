@@ -4,8 +4,8 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class ImpressionDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  user_id: string;
+  @IsNumber()
+  user_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -16,4 +16,24 @@ export class ImpressionDto {
   @IsNotEmpty()
   @IsString()
   pool_id: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  from: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  to: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  telegram_group: string;
 }

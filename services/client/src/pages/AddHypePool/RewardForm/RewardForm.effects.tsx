@@ -14,7 +14,7 @@ export interface HypePoolRewardForm
     'network' | 'token' | 'impressionReward' | 'cap' | 'endDate' | 'startDate' | 'duration'
   > {
   tokenAddress: string;
-  tokenName: string;
+  tokenSymbol: string;
   tokenDecimals: number;
 }
 
@@ -38,13 +38,15 @@ export const useRewardFormEffects = (
       setValue('tokenAddress', ERC20tokenInfo.address || '', {
         shouldValidate: true,
       });
-      setValue('tokenName', ERC20tokenInfo.name || '', {
+      setValue('tokenSymbol', ERC20tokenInfo.symbol || '', {
         shouldValidate: true,
       });
       setValue('tokenDecimals', ERC20tokenInfo.decimals || 18, {
         shouldValidate: true,
       });
       setIsCustomToken(true);
+    } else {
+      setIsCustomToken(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ERC20tokenInfo]);
@@ -64,7 +66,10 @@ export const useRewardFormEffects = (
         .max(42)
         .notOneOf(['0x0'])
         .label('Custom Token address'),
-      tokenName: yup.string().required('Custom token name is required!').label('Custom Token name'),
+      tokenSymbol: yup
+        .string()
+        .required('Custom token name is required!')
+        .label('Custom Token name'),
       tokenDecimals: yup.number().required(),
       cap: yup
         .number()
@@ -111,7 +116,7 @@ export const useRewardFormEffects = (
         shouldValidate: true,
       });
       setValue('tokenAddress', tokensOptions[0].value);
-      setValue('tokenName', tokensOptions[0].name);
+      setValue('tokenSymbol', tokensOptions[0].name);
       setValue('tokenDecimals', tokensOptions[0].decimals);
     }
     if (
@@ -123,7 +128,7 @@ export const useRewardFormEffects = (
         shouldValidate: true,
       });
       setValue('tokenAddress', tokensOptions[1].value);
-      setValue('tokenName', tokensOptions[1].name);
+      setValue('tokenSymbol', tokensOptions[1].name);
       setValue('tokenDecimals', tokensOptions[1].decimals);
     }
   };
@@ -131,13 +136,13 @@ export const useRewardFormEffects = (
   const handleTokenSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const token = event.target.value;
     setValue('tokenAddress', '');
-    setValue('tokenName', '');
+    setValue('tokenSymbol', '');
     if (token === tokensOptions[2].name) {
       setShowToken(true);
     } else {
       const currentTokenInfo = tokensOptions.find((option) => option.name === token);
       setValue('tokenAddress', currentTokenInfo?.value);
-      setValue('tokenName', currentTokenInfo?.name);
+      setValue('tokenSymbol', currentTokenInfo?.name);
       setValue('tokenDecimals', currentTokenInfo?.decimals);
       setShowToken(false);
       setIsCustomToken(false);
@@ -146,7 +151,7 @@ export const useRewardFormEffects = (
 
   const debouncedResults = useMemo(() => {
     const handleTokenAddressInput = (event: ChangeEvent<HTMLInputElement>) => {
-      setValue('tokenName', '');
+      setValue('tokenSymbol', '');
       const tokenAddress = event.target.value?.trim();
       if (tokenAddress && tokenAddress.length === 42) {
         setTokenAddress(tokenAddress as AddressType);

@@ -16,13 +16,15 @@ export const DisconnectTelegram = () => {
     close: closeModal,
   };
 
-  const modalActions: ModalAction[] = [{
-    name: 'Yes, disconnect this account',
-    onAction: () => {
-      onDisconnect();
-      closeModal();
+  const modalActions: ModalAction[] = [
+    {
+      name: 'Yes, disconnect this account',
+      onAction: () => {
+        onDisconnect();
+        closeModal();
+      },
     },
-  }];
+  ];
 
   return (
     <ModalContainer

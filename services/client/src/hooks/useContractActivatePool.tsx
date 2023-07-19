@@ -10,6 +10,7 @@ export const useContractActivatePool = (
   id: string,
   enabled: boolean,
   successCallbackActivatePool: () => void,
+  resetWriteContract: () => void,
 ) => {
   const { abi } = ABIs.contracts.HypePool;
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
@@ -31,12 +32,13 @@ export const useContractActivatePool = (
       showLoading(['Please, sign the message...', 'Activating pool...']);
     },
     onSuccess(data: any) {
-      // console.log('Successfully called', data);
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('On error: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 
@@ -44,11 +46,13 @@ export const useContractActivatePool = (
     hash: data?.hash,
     onSuccess() {
       hideLoadingModal();
+      resetWriteContract();
     },
     onError(error: any) {
       console.log('Error', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
     onSettled(data, error) {
       hideLoadingModal();

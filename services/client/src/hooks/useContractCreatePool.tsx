@@ -65,6 +65,7 @@ export const useContractCreatePool = (
       console.log('onError: ', error);
       hideLoadingModal();
       showNotificationModal(NotificationType.ERROR, error?.message);
+      resetWriteContract();
     },
   });
 

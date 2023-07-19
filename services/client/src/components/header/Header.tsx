@@ -71,7 +71,7 @@ const Header = React.memo(
                 (e: HeaderLink) =>
                   e.display && (
                     <SidebarMenuLink
-                      key={`menu-link-${e.name}-${Date.now()}`}
+                      key={`menu-link-${e.name}-${e.route}`}
                       selected={e.name === selected}
                       onClick={() => onSelect(e)}
                     >
@@ -86,9 +86,9 @@ const Header = React.memo(
         <StyledHeader>
           <div>
             <div className="header-left">
-              <Link to="/" style={{ textDecoration: 'none' }}>
+              <Link to="/" style={{ textDecoration: 'none', display: 'flex' }}>
                 <Logo>
-                  <Image src={Megaphone} alt="Megaphone" width="60px" />
+                  <Image src={Megaphone} alt="Megaphone" width="50px" />
                   <Box display={{ _: 'none', xs: 'flex' }}>
                     <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
                   </Box>
@@ -144,7 +144,7 @@ const Header = React.memo(
                 {headerEntries.map(
                   (e: HeaderLink) =>
                     e.display && (
-                      <Box key={`menu-link-${e.name}-${Date.now()}`}>
+                      <Box key={`menu-link-${e.name}-${e.route}`}>
                         {e.name === selected ? (
                           <span className="selected">
                             {e.name}

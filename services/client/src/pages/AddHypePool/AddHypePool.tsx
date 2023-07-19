@@ -7,6 +7,7 @@ import { DetailsForm } from './DetailsForm';
 import { RewardForm } from './RewardForm';
 import { Summary } from './Summary';
 import { Completed } from './Completed';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 export const AddHypePool = () => {
   const {
@@ -21,62 +22,64 @@ export const AddHypePool = () => {
     isCustomToken,
     setIsCustomToken,
     poolTransaction,
+    imageUploadRef,
   } = useAddHypePoolEffects();
 
   return (
-    <Wrapper>
-      <Steps>
-        <Step>
-          <StepTitle active={currentStep > 1}>➕</StepTitle>
-          <StepSubTitle active={currentStep > 1}>WHAT are you Hyping?</StepSubTitle>
-        </Step>
-        <Step>
-          <StepTitle active={currentStep > 2}>💲</StepTitle>
-          <StepSubTitle active={currentStep > 2}>HOW will you reward?</StepSubTitle>
-        </Step>
-        <Step>
-          <StepTitle active={currentStep > 3}>📣</StepTitle>
-          <StepSubTitle active={currentStep > 3}>START Hyping!</StepSubTitle>
-        </Step>
-      </Steps>
+    <RoundContainer>
+      <Wrapper>
+        <Steps>
+          <Step>
+            <StepTitle active={currentStep > 1}>➕</StepTitle>
+            <StepSubTitle active={currentStep > 1}>WHAT are you Hyping?</StepSubTitle>
+          </Step>
+          <Step>
+            <StepTitle active={currentStep > 2}>💲</StepTitle>
+            <StepSubTitle active={currentStep > 2}>HOW will you reward?</StepSubTitle>
+          </Step>
+          <Step>
+            <StepTitle active={currentStep > 3}>📣</StepTitle>
+            <StepSubTitle active={currentStep > 3}>START Hyping!</StepSubTitle>
+          </Step>
+        </Steps>
 
-      {currentStep === 1 && (
-        <StepContent>
-          <DetailsForm defaultValues={poolDetails} onSubmit={onSubmitDetails} />
-          <HowItWorks step={currentStep} />
-        </StepContent>
-      )}
-
-      {currentStep === 2 && (
-        <>
+        {currentStep === 1 && (
           <StepContent>
-            <RewardForm
-              defaultValues={poolReward}
-              onSubmit={onSubmitRewards}
-              onBack={onBackFromRewards}
-              setIsCustomToken={setIsCustomToken}
+            <DetailsForm
+              defaultValues={poolDetails}
+              onSubmit={onSubmitDetails}
+              imageUploadRef={imageUploadRef}
             />
             <HowItWorks step={currentStep} />
           </StepContent>
-        </>
-      )}
-      {currentStep === 3 && (
-        <StepContent>
-          <Summary
-            createdPoolIndex={createdPoolIndex}
-            details={poolDetails}
-            rewards={poolReward}
-            successCallbackActivatePool={successCallbackActivatePool}
-            isCustomToken={isCustomToken}
-          />
-          <HowItWorks step={currentStep} />
-        </StepContent>
-      )}
-      {currentStep === 4 &&
-        createdPoolIndex &&
-        poolTransaction &&
-        poolDetails &&
-        poolReward && (
+        )}
+
+        {currentStep === 2 && (
+          <>
+            <StepContent>
+              <RewardForm
+                defaultValues={poolReward}
+                onSubmit={onSubmitRewards}
+                onBack={onBackFromRewards}
+                setIsCustomToken={setIsCustomToken}
+              />
+              <HowItWorks step={currentStep} />
+            </StepContent>
+          </>
+        )}
+        {currentStep === 3 && (
+          <StepContent>
+            <Summary
+              createdPoolIndex={createdPoolIndex}
+              details={poolDetails}
+              rewards={poolReward}
+              successCallbackActivatePool={successCallbackActivatePool}
+              isCustomToken={isCustomToken}
+            />
+            <HowItWorks step={currentStep} />
+          </StepContent>
+        )}
+        {currentStep === 4 && createdPoolIndex && poolTransaction && poolDetails && poolReward && (
           <StepContent>
             <Completed
               createdPoolIndex={createdPoolIndex}
@@ -86,7 +89,7 @@ export const AddHypePool = () => {
             />
           </StepContent>
         )}
-      {/* {currentStep === 4 &&
+        {/* {currentStep === 4 &&
         (
           <StepContent>
             <Completed
@@ -97,6 +100,7 @@ export const AddHypePool = () => {
             />
           </StepContent>
         )} */}
-    </Wrapper>
+      </Wrapper>
+    </RoundContainer>
   );
 };

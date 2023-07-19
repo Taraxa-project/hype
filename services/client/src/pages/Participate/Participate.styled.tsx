@@ -4,16 +4,6 @@ export const ParticipateContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  gap: 2rem;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: 2.5rem;
-    padding: 0 1.5rem;
-  }
 `;
 
 export const TitleText = styled.h1`
@@ -58,5 +48,8 @@ export const ButtonsContainer = styled.div`
   margin-top: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-direction: column;
+    > * {
+      width: 100%;
+    }
   }
 `;

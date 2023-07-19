@@ -11,6 +11,7 @@ import { TelegramUser } from '../../models';
 import Button from '../../components/button/Button';
 import { TelegramLogo } from '../../assets/icons/Telegram';
 import { TelegramBotName } from '../../constants';
+import { RoundContainer } from '../../components/container/RoundContainer.styled';
 
 export const Account = styled.p<{ theme: HypeThemeType }>`
   font-weight: 600;
@@ -34,16 +35,10 @@ export const ProfileContainer = ({
   disconnect,
 }: ProfileProps) => {
   return (
-    <Box
-      backgroundColor="greys.1"
-      p={{ _: '1.5rem', sm: '1.5rem', md: '2rem' }}
-      borderRadius="10px"
-      display="flex"
-      flexDirection="column"
+    <RoundContainer
       justifyContent="space-between"
       flex="1 1 auto"
       alignItems="left"
-      width={{ _: 'unset', sm: 'unset', md: '100%' }}
     >
       <Heading
         fontSize="1.25rem"
@@ -109,6 +104,6 @@ export const ProfileContainer = ({
           />
         )}
       </Box>
-    </Box>
+    </RoundContainer>
   );
 };

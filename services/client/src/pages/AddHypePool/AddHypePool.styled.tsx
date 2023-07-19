@@ -4,15 +4,10 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import Select from '../../components/select/Select';
 
 export const Wrapper = styled.div`
-  padding: 5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: 2rem;
-  }
 `;
 
 export const FormColumn = styled.div`
@@ -66,6 +61,10 @@ export const Steps = styled.div`
   margin: 0 auto;
   width: 100%;
   max-width: 40rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 1.2rem;
+    max-width: unset;
+  }
 `;
 
 export const Step = styled.div`
@@ -159,4 +158,10 @@ export const InfoCard = styled.div`
   line-height: 1.25rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+`;
+
+export const PoolImage = styled.img`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
 `;

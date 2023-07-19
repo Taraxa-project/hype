@@ -39,7 +39,9 @@ export const useSummaryEffects = (
   const successCallbackDeposit = (): void => {
     setHasDeposited(true);
   };
-  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool);
+  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool, () => {
+    setEnableActivate(false);
+  });
   useContractERC20Approve(
     account,
     createdPoolIndex,
@@ -48,6 +50,9 @@ export const useSummaryEffects = (
     enableApprove,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableApprove(false);
+    },
   );
   useContractEscrowDeposit(
     account,
@@ -57,6 +62,9 @@ export const useSummaryEffects = (
     enableDeposit,
     isCustomToken,
     successCallbackDeposit,
+    () => {
+      setEnableDeposit(false);
+    },
   );
 
   useEffect(() => {
@@ -85,7 +93,7 @@ export const useSummaryEffects = (
       if (balance?.value.lt(amount)) {
         showNotificationModal(
           NotificationType.ERROR,
-          'You don`t have enough balance in your account! Please add funds into your account in order to fund the pool!',
+          'You don’t have enough balance in your account! Please add funds into your account in order to fund the pool!',
         );
       } else {
         if (isCustomToken) {
