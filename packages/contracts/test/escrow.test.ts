@@ -482,6 +482,47 @@ describe('DynamicEscrow', function () {
       );
   });
 
+  it('should return true if a pool is active', async function () {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const isActive = await hypePool.isActive(currentPoolIndex);
+    expect(isActive).to.be.true;
+  });
+
+  it('should return true if a pool is expired', async function () {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    await ethers.provider.send('evm_increaseTime', [604800 * 2]); // Increasing time by two weeks.
+    await ethers.provider.send('evm_mine', []);
+    const isExpired = await hypePool.isExpired(currentPoolIndex);
+    expect(isExpired).to.be.true;
+  });
+
+  it('should return true if a pool is in its grace period', async function () {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const poolRewards = await hypePool.getPoolRewards(currentPoolIndex);
+    const endDate = poolRewards.endDate;
+
+    // Calculate the grace period end (endDate + 1 week in seconds).
+    const gracePeriodStart = Number(endDate.toString()) + 604800; // Added a week's worth of seconds
+
+    // Get the current blockchain time.
+    const currentTime = (await ethers.provider.getBlock('latest')).timestamp;
+
+    // Calculate the time to increase. If the grace period has already passed, no need to increase the time.
+    const timeIncrease =
+      currentTime >= gracePeriodStart
+        ? 0
+        : gracePeriodStart - currentTime - 3600;
+
+    // Increase time if needed.
+    if (timeIncrease > 0) {
+      await ethers.provider.send('evm_increaseTime', [timeIncrease]);
+      await ethers.provider.send('evm_mine', []);
+    }
+    const isGracePeriod = await hypePool.isGracePeriod(currentPoolIndex);
+
+    expect(isGracePeriod).to.be.true;
+  });
+
   it('DepositorTwo generates a signature for a claim of 0.1 ETH for an address, depositor one claims, emits Claimed event', async () => {
     const currentPoolIndex = await hypePool.getCurrentIndex();
     const value = BigNumber.from('100000000000000000');

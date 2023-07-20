@@ -46,6 +46,40 @@ contract HypePoolBase is IHypePool, AccessControl {
         return _pools[uuid];
     }
 
+    /**
+     * @dev Check if a pool is active. A pool is active if its end date is not null and its end date is still in the future.
+     * @param uuid The ID of the pool to check.
+     * @return A boolean indicating if the pool is active.
+     */
+    function isActive(bytes32 uuid) public view returns (bool) {
+        IHypePool.HypePool memory _pool = _pools[uuid];
+        return (_pool.rewards.endDate != 0 &&
+            _pool.rewards.endDate > block.timestamp);
+    }
+
+    /**
+     * @dev Check if a pool is expired. A pool is expired if its end date is not null and its end date is in the past.
+     * @param uuid The ID of the pool to check.
+     * @return A boolean indicating if the pool is expired.
+     */
+    function isExpired(bytes32 uuid) public view returns (bool) {
+        IHypePool.HypePool memory _pool = _pools[uuid];
+        return (_pool.rewards.endDate != 0 &&
+            _pool.rewards.endDate < block.timestamp);
+    }
+
+    /**
+     * @dev Check if a pool is in its grace period. A pool is in its grace period if its end date is in the past and the current timestamp is less than its end date + 1 week.
+     * @param uuid The ID of the pool to check.
+     * @return A boolean indicating if the pool is in its grace period.
+     */
+    function isGracePeriod(bytes32 uuid) public view returns (bool) {
+        IHypePool.HypePool memory _pool = _pools[uuid];
+        return (_pool.rewards.endDate != 0 &&
+            _pool.rewards.endDate < block.timestamp &&
+            block.timestamp < _pool.rewards.endDate + 1 weeks);
+    }
+
     function getPoolRewards(
         bytes32 uuid
     ) public view returns (IHypePool.Rewards memory) {
