@@ -133,7 +133,10 @@ contract HypePoolBase is IHypePool, AccessControl {
             rewards.cap,
             rewards.startDate,
             rewards.endDate,
-            rewards.duration
+            rewards.duration,
+            rewards.firstLeaderRewards,
+            rewards.secondLeaderRewards,
+            rewards.thirdLeaderRewards
         );
     }
 

@@ -140,6 +140,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('10'),
+      secondLeaderRewards: ethers.utils.parseEther('5'),
+      thirdLeaderRewards: ethers.utils.parseEther('2.5'),
     };
     const createPool = await hypePool
       .connect(depositorOne)
@@ -231,6 +234,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('0.0'),
+      secondLeaderRewards: ethers.utils.parseEther('0.0'),
+      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
     const secondaryCreation = await hypePool
       .connect(depositorOne)
@@ -263,6 +269,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('0.0'),
+      secondLeaderRewards: ethers.utils.parseEther('0.0'),
+      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
     await expect(
       hypePool.connect(depositorOne).createPool('', details, rewards),
@@ -276,6 +285,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       }),
     ).to.be.revertedWith('Invalid pool cap');
     await expect(
@@ -287,6 +299,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       }),
     ).to.be.revertedWith('Invalid impression hype reward');
     await expect(
@@ -298,6 +313,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: NON_ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       }),
     ).to.be.revertedWith('Start date must be zero');
     await expect(
@@ -309,6 +327,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: ZERO_DURATION,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       }),
     ).to.be.revertedWith('Duration must be at least one day');
     await expect(
@@ -320,6 +341,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: NON_ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       }),
     ).to.be.revertedWith('End date must be zero');
   });
@@ -661,6 +685,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('0.0'),
+      secondLeaderRewards: ethers.utils.parseEther('0.0'),
+      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
     const createPool = await hypePool
       .connect(owner)
@@ -857,6 +884,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('0.0'),
+      secondLeaderRewards: ethers.utils.parseEther('0.0'),
+      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
     const createPool = await hypePool
       .connect(depositorOne)
@@ -960,6 +990,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       };
       const createPool = await hypePool
         .connect(depositorOne)
@@ -1002,6 +1035,9 @@ describe('DynamicEscrowUpgradeable', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
+        firstLeaderRewards: ethers.utils.parseEther('0.0'),
+        secondLeaderRewards: ethers.utils.parseEther('0.0'),
+        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       };
       expect(
         hypePool.connect(depositorOne).createPool('', details, rewards),
@@ -1031,6 +1067,9 @@ describe('DynamicEscrowUpgradeable', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
+      firstLeaderRewards: ethers.utils.parseEther('0.0'),
+      secondLeaderRewards: ethers.utils.parseEther('0.0'),
+      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
     const createPool = await hypePool
       .connect(owner)

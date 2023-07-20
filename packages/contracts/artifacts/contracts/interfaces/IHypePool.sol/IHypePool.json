@@ -165,6 +165,24 @@
           "internalType": "uint256",
           "name": "duration",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "firstLeaderRewards",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "secondLeaderRewards",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "thirdLeaderRewards",
+          "type": "uint256"
         }
       ],
       "name": "PoolRewardsCreated",
@@ -292,6 +310,21 @@
                   "internalType": "uint256",
                   "name": "duration",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "firstLeaderRewards",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "secondLeaderRewards",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "thirdLeaderRewards",
+                  "type": "uint256"
                 }
               ],
               "internalType": "struct IHypePool.Rewards",
@@ -352,6 +385,21 @@
             {
               "internalType": "uint256",
               "name": "duration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "firstLeaderRewards",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "secondLeaderRewards",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "thirdLeaderRewards",
               "type": "uint256"
             }
           ],
