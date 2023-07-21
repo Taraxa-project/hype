@@ -6,7 +6,7 @@ import {
   PoolUriSet,
 } from '../generated/HypePool/HypePool';
 import { HypePool, HypeUri } from '../generated/schema';
-import { BigInt, ipfs, json } from '@graphprotocol/graph-ts';
+import { BigInt, ethereum, ipfs, json } from '@graphprotocol/graph-ts';
 
 export function handlePoolActivated(event: PoolActivated): void {
   const id = event.params.poolId;
@@ -16,7 +16,7 @@ export function handlePoolActivated(event: PoolActivated): void {
     hypepool = new HypePool(id);
   }
   if (activator) {
-    hypepool.active = true;
+    hypepool.status = 'STARTED';
     hypepool.startDate = event.params.startDate;
     hypepool.endDate = event.params.endDate;
   }
@@ -29,7 +29,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   hypepool.creator = event.params.creator;
   hypepool.uri = event.params.uri;
   hypepool.remainingFunds = BigInt.zero();
-  hypepool.active = false;
+  hypepool.status = 'CREATED';
   hypepool.save();
 }
 
@@ -103,4 +103,12 @@ export function handlePoolUriSet(event: PoolUriSet): void {
 
   hypepool.save();
   hypeUri.save();
+}
+
+export function handleBlock(block: ethereum.Block): void {
+  let blockNumber = block.number.toI32();
+
+  if (blockNumber % 100 === 0) {
+    // Do something every 100 blocks.
+  }
 }

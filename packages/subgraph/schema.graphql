@@ -30,7 +30,6 @@ type HypePool @entity(immutable: false) {
   id: Bytes!
   creator: Bytes!
   uri: String!
-  active: Boolean
   title: String
   projectName: String
   tokenName: String
@@ -46,6 +45,10 @@ type HypePool @entity(immutable: false) {
   duration: BigInt
   endDate: BigInt
   imageUri: String
+  status: String
+  firstLeaderRewards: BigInt
+  secondLeaderRewards: BigInt
+  thirdLeaderRewards: BigInt
 }
 
 type HypeUri @entity(immutable: true) {
