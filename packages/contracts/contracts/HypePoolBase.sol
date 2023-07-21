@@ -96,7 +96,6 @@ contract HypePoolBase is IHypePool, AccessControl {
         _pools[uuid] = IHypePool.HypePool(
             uuid,
             msg.sender,
-            false,
             details,
             rewards
         );
@@ -182,7 +181,7 @@ contract HypePoolBase is IHypePool, AccessControl {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_hashes[uuid], 'Pool does not exist');
-        require(_pool.active == false, 'Pool is already active');
+        require(isActive(uuid) == false, 'Pool is already active');
 
         bool hasActivatorRole = super.hasRole(ACTIVATOR_ROLE, msg.sender);
         if (!hasActivatorRole) {
@@ -200,7 +199,6 @@ contract HypePoolBase is IHypePool, AccessControl {
                 'Deposited token address does not match pool token address'
             );
         }
-        _pool.active = true;
         _pool.rewards.startDate = block.timestamp;
         _pool.rewards.endDate = block.timestamp + _pool.rewards.duration;
         _pools[uuid] = _pool;
@@ -214,16 +212,15 @@ contract HypePoolBase is IHypePool, AccessControl {
 
     /**
      * @dev Pool deactivator method. Must be triggered b when someone withdraws the pool funds from the escrow contract.
-     * @param hash The id of the pool to activate.
+     * @param uuid The id of the pool to activate.
      */
-    function _deactivatePool(bytes32 hash) internal {
-        IHypePool.HypePool memory _pool = _pools[hash];
+    function _deactivatePool(bytes32 uuid) internal {
+        IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_pool.active == true, 'Pool is already inactive');
-        _pool.active = false;
+        require(isActive(uuid) == true, 'Pool is already inactive');
         _pool.rewards.endDate = block.timestamp;
-        _pools[hash] = _pool;
-        emit PoolDeactivated(hash, msg.sender);
+        _pools[uuid] = _pool;
+        emit PoolDeactivated(uuid, msg.sender);
     }
 
     /**

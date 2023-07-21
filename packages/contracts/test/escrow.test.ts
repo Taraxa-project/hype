@@ -795,6 +795,8 @@ describe('DynamicEscrow', function () {
       .connect(owner)
       .activatePool(currentPoolIndex);
     expect(activation).not.to.be.undefined;
+    const isActive = await hypePool.isActive(currentPoolIndex);
+    expect(isActive).to.be.true;
     const block = await ethers.provider.getBlock(activation.blockHash!);
     await expect(activation)
       .to.emit(hypePool, 'PoolActivated')
@@ -819,6 +821,30 @@ describe('DynamicEscrow', function () {
     ).to.be.revertedWith(
       'Withdraw: Pool has not yet ended or grace period not passed',
     );
+  });
+
+  it('Deactivates the pool, emits PoolDeactivated event, then activates it back', async () => {
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const isActive = await hypePool.isActive(currentPoolIndex);
+    expect(isActive).to.be.true;
+    const deactivation = await hypePool
+      .connect(owner)
+      .deactivatePool(currentPoolIndex);
+    await expect(deactivation)
+      .to.emit(hypePool, 'PoolDeactivated')
+      .withArgs(currentPoolIndex, owner.address);
+    const activation = await hypePool
+      .connect(owner)
+      .activatePool(currentPoolIndex);
+    const block = await ethers.provider.getBlock(activation.blockHash!);
+    await expect(activation)
+      .to.emit(hypePool, 'PoolActivated')
+      .withArgs(
+        currentPoolIndex,
+        owner.address,
+        block.timestamp,
+        block.timestamp + TEN_DAYS_TIMESTAMP,
+      );
   });
 
   it('Owner withdraws the funds from pool2, Withdrawn event is emitted after grace period', async () => {
@@ -855,18 +881,6 @@ describe('DynamicEscrow', function () {
     const tokensOfOwnerAfter = await erc20.balanceOf(owner.address);
     const diff = tokensOfOwnerAfter.sub(tokensOfOwnerBefore);
     expect(diff).to.be.equal(ethers.utils.parseEther('13'));
-  });
-
-  it('Deactivates the pool, emits PoolDeactivated event', async () => {
-    const currentPoolIndex = await hypePool.getCurrentIndex();
-    const poolBefore = await hypePool.getPool(currentPoolIndex);
-    expect(poolBefore.active).to.be.true;
-    const deactivation = await hypePool
-      .connect(owner)
-      .deactivatePool(currentPoolIndex);
-    await expect(deactivation)
-      .to.emit(hypePool, 'PoolDeactivated')
-      .withArgs(currentPoolIndex, owner.address);
   });
 
   it(`================================================================

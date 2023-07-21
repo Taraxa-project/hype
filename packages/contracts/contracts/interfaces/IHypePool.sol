@@ -25,7 +25,6 @@ interface IHypePool {
     struct HypePool {
         bytes32 id;
         address creator;
-        bool active;
         Details details;
         Rewards rewards;
     }

@@ -243,11 +243,6 @@
               "type": "address"
             },
             {
-              "internalType": "bool",
-              "name": "active",
-              "type": "bool"
-            },
-            {
               "components": [
                 {
                   "internalType": "string",
