@@ -24,7 +24,7 @@ export enum NotificationType {
   ERROR = 'Error',
 }
 
-export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger';
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'info';
 
 export const AUTHENTICATION_TOKEN = 'AUTHENTICATION_TOKEN';
 
