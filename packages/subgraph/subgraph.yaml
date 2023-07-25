@@ -11,7 +11,7 @@ dataSources:
     name: HypePool
     network: mainnet
     source:
-      address: '0x721A716b5eb9eF1A09Ca785215F74D460987052A'
+      address: '0xA9aE59b5fe752D11c82fef31cFBD2527d573D158'
       abi: HypePool
     mapping:
       kind: ethereum/events
@@ -29,16 +29,18 @@ dataSources:
           handler: handlePoolCreated
         - event: PoolDetailsCreated(bytes32,string,string,string,string)
           handler: handlePoolDetails
-        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256)
+        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handlePoolRewards
         - event: PoolUriSet(bytes32,string)
           handler: handlePoolUriSet
+      blockHandlers:
+        - handler: handleBlock
       file: ./src/hype-pool.ts
   - kind: ethereum
     name: DynamicEscrow
     network: mainnet
     source:
-      address: '0xC875Ab7E3a6e8906C3f7C20fB74106061772EC9b'
+      address: '0x6BDA65fd6572B851fcC596D79215532a3FC19954'
       abi: DynamicEscrow
     mapping:
       kind: ethereum/events

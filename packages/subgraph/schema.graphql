@@ -83,3 +83,8 @@ type RewardCreditedEvent @entity(immutable: true) {
   receiver: Bytes!
   poolId: Bytes!
 }
+
+type HypeIds @entity(immutable: false) {
+  id: ID!
+  ids: [Bytes!]!
+}
