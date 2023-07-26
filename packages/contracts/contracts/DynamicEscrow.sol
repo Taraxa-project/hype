@@ -32,6 +32,15 @@ contract DynamicEscrow is
         _setHypePoolAddress(_hypePool);
     }
 
+    /**
+     * @dev Deposit tokens to the escrow.
+     * @notice The caller of this method must first have enough approval from spender to the escrow contract deposit the tokens.
+     * @param spender The address of the spender.
+     * @param poolId The pool id of the deposit target reward pool.
+     * @param amount The amount of tokens to deposit.
+     * @param tokenAddress The address of the token to deposit.
+     * modifier payable: The method can be called with TARA.
+     */
     function deposit(
         address spender,
         bytes32 poolId,
@@ -41,6 +50,15 @@ contract DynamicEscrow is
         _deposit(spender, poolId, amount, tokenAddress);
     }
 
+    /**
+     * @dev Claims the given amount of tokens from the escrow.
+     * @notice The caller of this method can be anyone who wants to redeem tokens.
+     * @param receiver The address to receive the tokens.
+     * @param poolId The reward pool id of which the tokens are withdrawn.
+     * @param amount The amount of tokens to withdraw.
+     * @param tokenAddress the reward token address of the pool
+     * @param nonce the nonce given by the hype backend
+     */
     function claim(
         address payable receiver,
         bytes32 poolId,
@@ -58,6 +76,14 @@ contract DynamicEscrow is
         _claim(receiver, poolId, amount, tokenAddress, nonce);
     }
 
+    /**
+     * @dev Withdraws the given amount of tokens from the escrow.
+     * @notice The caller of this method must be the owner of the escrow deposit.
+     * The withdrawal can be made to a differnet address than the one specified in the deposit.
+     * @param receiver The address to receive the tokens.
+     * @param poolId The reward pool id of which the tokens are withdrawn.
+     * @param amount The amount of tokens to withdraw.
+     */
     function withdraw(
         address payable receiver,
         bytes32 poolId,

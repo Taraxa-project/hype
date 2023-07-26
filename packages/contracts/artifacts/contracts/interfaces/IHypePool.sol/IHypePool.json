@@ -108,7 +108,7 @@
         {
           "indexed": false,
           "internalType": "string",
-          "name": "word",
+          "name": "campaignWord",
           "type": "string"
         }
       ],
@@ -168,21 +168,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
-          "name": "firstLeaderRewards",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "secondLeaderRewards",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "thirdLeaderRewards",
-          "type": "uint256"
+          "internalType": "uint256[]",
+          "name": "leaderRewards",
+          "type": "uint256[]"
         }
       ],
       "name": "PoolRewardsCreated",
@@ -206,6 +194,25 @@
       ],
       "name": "PoolUriSet",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "uuid",
+          "type": "bytes32"
+        }
+      ],
+      "name": "doesPoolExist",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -261,7 +268,7 @@
                 },
                 {
                   "internalType": "string",
-                  "name": "word",
+                  "name": "campaignWord",
                   "type": "string"
                 }
               ],
@@ -305,26 +312,16 @@
                   "internalType": "uint256",
                   "name": "duration",
                   "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "firstLeaderRewards",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "secondLeaderRewards",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "thirdLeaderRewards",
-                  "type": "uint256"
                 }
               ],
               "internalType": "struct IHypePool.Rewards",
               "name": "rewards",
               "type": "tuple"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "leaderRewards",
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct IHypePool.HypePool",
@@ -380,21 +377,6 @@
             {
               "internalType": "uint256",
               "name": "duration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "firstLeaderRewards",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "secondLeaderRewards",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "thirdLeaderRewards",
               "type": "uint256"
             }
           ],

@@ -132,7 +132,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: oneEth,
@@ -142,13 +142,15 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('10'),
-      secondLeaderRewards: ethers.utils.parseEther('5'),
-      thirdLeaderRewards: ethers.utils.parseEther('2.5'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('10'),
+      ethers.utils.parseEther('5'),
+      ethers.utils.parseEther('2.5'),
+    ];
     const createPool = await hypePool
       .connect(depositorOne)
-      .createPool('https://pool.data.json', details, rewards);
+      .createPool('https://pool.data.json', details, rewards, leaderRewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
@@ -226,7 +228,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: oneEth,
@@ -236,13 +238,15 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('10'),
-      secondLeaderRewards: ethers.utils.parseEther('5'),
-      thirdLeaderRewards: ethers.utils.parseEther('2.5'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('10'),
+      ethers.utils.parseEther('5'),
+      ethers.utils.parseEther('2.5'),
+    ];
     const secondaryCreation = await hypePool
       .connect(depositorOne)
-      .createPool('https://pool.data.json', details, rewards);
+      .createPool('https://pool.data.json', details, rewards, leaderRewards);
     expect(secondaryCreation).not.to.be.undefined;
     const currentPoolIndex = await hypePool.getCurrentIndex();
     await expect(secondaryCreation)
@@ -261,7 +265,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: oneEth,
@@ -271,82 +275,96 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('0.0'),
-      secondLeaderRewards: ethers.utils.parseEther('0.0'),
-      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+    ];
     await expect(
-      hypePool.connect(depositorOne).createPool('', details, rewards),
+      hypePool
+        .connect(depositorOne)
+        .createPool('', details, rewards, leaderRewards),
     ).to.be.revertedWith('Missing metadata URI');
     await expect(
-      hypePool.connect(depositorOne).createPool('as', details, {
-        tokenAddress: zeroAddress,
-        network: 843,
-        cap: ethers.utils.parseEther('0.0'),
-        impressionReward: ethers.utils.parseEther('0.0'),
-        startDate: ZERO_TIMESTAMP,
-        duration: TEN_DAYS_TIMESTAMP,
-        endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
-      }),
+      hypePool.connect(depositorOne).createPool(
+        'as',
+        details,
+        {
+          tokenAddress: zeroAddress,
+          network: 843,
+          cap: ethers.utils.parseEther('0.0'),
+          impressionReward: ethers.utils.parseEther('0.0'),
+          startDate: ZERO_TIMESTAMP,
+          duration: TEN_DAYS_TIMESTAMP,
+          endDate: ZERO_TIMESTAMP,
+        },
+        leaderRewards,
+      ),
     ).to.be.revertedWith('Invalid pool cap');
     await expect(
-      hypePool.connect(depositorOne).createPool('as', details, {
-        tokenAddress: zeroAddress,
-        network: 843,
-        cap: oneEth,
-        impressionReward: ethers.utils.parseEther('0.0'),
-        startDate: ZERO_TIMESTAMP,
-        duration: TEN_DAYS_TIMESTAMP,
-        endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
-      }),
+      hypePool.connect(depositorOne).createPool(
+        'as',
+        details,
+        {
+          tokenAddress: zeroAddress,
+          network: 843,
+          cap: oneEth,
+          impressionReward: ethers.utils.parseEther('0.0'),
+          startDate: ZERO_TIMESTAMP,
+          duration: TEN_DAYS_TIMESTAMP,
+          endDate: ZERO_TIMESTAMP,
+        },
+        leaderRewards,
+      ),
     ).to.be.revertedWith('Invalid impression hype reward');
     await expect(
-      hypePool.connect(depositorOne).createPool('as', details, {
-        cap: oneEth,
-        tokenAddress: zeroAddress,
-        network: 843,
-        impressionReward: ethers.utils.parseEther('0.03'),
-        startDate: NON_ZERO_TIMESTAMP,
-        duration: TEN_DAYS_TIMESTAMP,
-        endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
-      }),
+      hypePool.connect(depositorOne).createPool(
+        'as',
+        details,
+        {
+          cap: oneEth,
+          tokenAddress: zeroAddress,
+          network: 843,
+          impressionReward: ethers.utils.parseEther('0.03'),
+          startDate: NON_ZERO_TIMESTAMP,
+          duration: TEN_DAYS_TIMESTAMP,
+          endDate: ZERO_TIMESTAMP,
+        },
+        leaderRewards,
+      ),
     ).to.be.revertedWith('Start date must be zero');
     await expect(
-      hypePool.connect(depositorOne).createPool('as', details, {
-        cap: oneEth,
-        tokenAddress: zeroAddress,
-        network: 843,
-        impressionReward: ethers.utils.parseEther('0.03'),
-        startDate: ZERO_TIMESTAMP,
-        duration: ZERO_DURATION,
-        endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
-      }),
+      hypePool.connect(depositorOne).createPool(
+        'as',
+        details,
+        {
+          cap: oneEth,
+          tokenAddress: zeroAddress,
+          network: 843,
+          impressionReward: ethers.utils.parseEther('0.03'),
+          startDate: ZERO_TIMESTAMP,
+          duration: ZERO_DURATION,
+          endDate: ZERO_TIMESTAMP,
+        },
+        leaderRewards,
+      ),
     ).to.be.revertedWith('Duration must be at least one day');
     await expect(
-      hypePool.connect(depositorOne).createPool('as', details, {
-        cap: oneEth,
-        tokenAddress: zeroAddress,
-        network: 843,
-        impressionReward: ethers.utils.parseEther('0.03'),
-        startDate: ZERO_TIMESTAMP,
-        duration: TEN_DAYS_TIMESTAMP,
-        endDate: NON_ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
-      }),
+      hypePool.connect(depositorOne).createPool(
+        'as',
+        details,
+        {
+          cap: oneEth,
+          tokenAddress: zeroAddress,
+          network: 843,
+          impressionReward: ethers.utils.parseEther('0.03'),
+          startDate: ZERO_TIMESTAMP,
+          duration: TEN_DAYS_TIMESTAMP,
+          endDate: NON_ZERO_TIMESTAMP,
+        },
+        leaderRewards,
+      ),
     ).to.be.revertedWith('End date must be zero');
   });
 
@@ -678,7 +696,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: ethers.utils.parseEther('13'),
@@ -688,13 +706,15 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('0.0'),
-      secondLeaderRewards: ethers.utils.parseEther('0.0'),
-      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+    ];
     const createPool = await hypePool
       .connect(owner)
-      .createPool('https://pool.data.json', details, rewards);
+      .createPool('https://pool.data.json', details, rewards, leaderRewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
     expect(createPool).not.to.be.undefined;
     await expect(createPool)
@@ -891,7 +911,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: oneEth,
@@ -901,13 +921,15 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('0.0'),
-      secondLeaderRewards: ethers.utils.parseEther('0.0'),
-      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+    ];
     const createPool = await hypePool
       .connect(depositorOne)
-      .createPool('https://pool.data.json', details, rewards);
+      .createPool('https://pool.data.json', details, rewards, leaderRewards);
     expect(createPool).not.to.be.undefined;
     const currentPoolIndex = await hypePool.getCurrentIndex();
     await expect(createPool)
@@ -995,7 +1017,7 @@ describe('DynamicEscrow', function () {
         projectName: 'project name test',
         title: 'title',
         tokenName: 'TARA',
-        word: 'testnet',
+        campaignWord: 'testnet',
       };
       const rewards = {
         cap: oneEth,
@@ -1005,13 +1027,15 @@ describe('DynamicEscrow', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       };
+      const leaderRewards = [
+        ethers.utils.parseEther('0.0'),
+        ethers.utils.parseEther('0.0'),
+        ethers.utils.parseEther('0.0'),
+      ];
       const createPool = await hypePool
         .connect(depositorOne)
-        .createPool('https://pool.data.json', details, rewards);
+        .createPool('https://pool.data.json', details, rewards, leaderRewards);
       const currentPoolIndex = await hypePool.getCurrentIndex();
       await expect(createPool).to.be.revertedWith('Pausable: paused');
       const activation = await hypePool
@@ -1039,7 +1063,7 @@ describe('DynamicEscrow', function () {
         projectName: 'project name test',
         title: 'title',
         tokenName: 'TARA',
-        word: 'testnet',
+        campaignWord: 'testnet',
       };
       const rewards = {
         cap: oneEth,
@@ -1049,12 +1073,16 @@ describe('DynamicEscrow', function () {
         startDate: ZERO_TIMESTAMP,
         duration: TEN_DAYS_TIMESTAMP,
         endDate: ZERO_TIMESTAMP,
-        firstLeaderRewards: ethers.utils.parseEther('0.0'),
-        secondLeaderRewards: ethers.utils.parseEther('0.0'),
-        thirdLeaderRewards: ethers.utils.parseEther('0.0'),
       };
+      const leaderRewards = [
+        ethers.utils.parseEther('0.0'),
+        ethers.utils.parseEther('0.0'),
+        ethers.utils.parseEther('0.0'),
+      ];
       expect(
-        hypePool.connect(depositorOne).createPool('', details, rewards),
+        hypePool
+          .connect(depositorOne)
+          .createPool('', details, rewards, leaderRewards),
       ).to.be.revertedWith('Missing metadata URI');
       const activation = await hypePool
         .connect(depositorOne)
@@ -1071,7 +1099,7 @@ describe('DynamicEscrow', function () {
       projectName: 'project name test claim',
       title: 'title',
       tokenName: 'TARA',
-      word: 'testnet',
+      campaignWord: 'testnet',
     };
     const rewards = {
       cap: ethers.utils.parseEther('13'),
@@ -1081,13 +1109,15 @@ describe('DynamicEscrow', function () {
       startDate: ZERO_TIMESTAMP,
       duration: TEN_DAYS_TIMESTAMP,
       endDate: ZERO_TIMESTAMP,
-      firstLeaderRewards: ethers.utils.parseEther('0.0'),
-      secondLeaderRewards: ethers.utils.parseEther('0.0'),
-      thirdLeaderRewards: ethers.utils.parseEther('0.0'),
     };
+    const leaderRewards = [
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+      ethers.utils.parseEther('0.0'),
+    ];
     const createPool = await hypePool
       .connect(owner)
-      .createPool('https://pool.data.json', details, rewards);
+      .createPool('https://pool.data.json', details, rewards, leaderRewards);
     const currentPoolIndex = await hypePool.getCurrentIndex();
     ownerPoolId = currentPoolIndex;
     expect(createPool).not.to.be.undefined;

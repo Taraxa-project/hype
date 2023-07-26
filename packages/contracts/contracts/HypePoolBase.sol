@@ -9,7 +9,7 @@ import './AccessControl.sol';
 contract HypePoolBase is IHypePool, AccessControl {
     bytes32 public constant ACTIVATOR_ROLE = keccak256('ACTIVATOR_ROLE');
     address private _activator;
-    address _escrowContractAddress;
+    address private _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
     mapping(bytes32 => string) private _tokenURIs;
@@ -38,11 +38,16 @@ contract HypePoolBase is IHypePool, AccessControl {
         return _latestUuid;
     }
 
+    function doesPoolExist(bytes32 uuid) public view returns (bool) {
+        return _hashes[uuid];
+    }
+
     function poolURI(bytes32 uuid) public view returns (string memory) {
         return _tokenURIs[uuid];
     }
 
     function getPool(bytes32 uuid) public view returns (HypePool memory) {
+        require(_hashes[uuid], 'Pool does not exist');
         return _pools[uuid];
     }
 
@@ -91,20 +96,16 @@ contract HypePoolBase is IHypePool, AccessControl {
         bytes32 uuid,
         string memory _tokenURI,
         IHypePool.Details memory details,
-        IHypePool.Rewards memory rewards
+        IHypePool.Rewards memory rewards,
+        uint256[] memory leaderRewards
     ) internal virtual {
-        _pools[uuid] = IHypePool.HypePool(
-            uuid,
-            msg.sender,
-            details,
-            rewards
-        );
+        _pools[uuid] = IHypePool.HypePool(uuid, msg.sender, details, rewards, leaderRewards);
         _hashes[uuid] = true;
         _latestUuid = uuid;
 
         emit PoolCreated(uuid, msg.sender, _tokenURI);
         _emitPoolDetails(uuid, details);
-        _emitPoolRewards(uuid, rewards);
+        _emitPoolRewards(uuid, rewards, leaderRewards);
     }
 
     function _emitPoolDetails(
@@ -116,13 +117,14 @@ contract HypePoolBase is IHypePool, AccessControl {
             details.title,
             details.projectName,
             details.tokenName,
-            details.word
+            details.campaignWord
         );
     }
 
     function _emitPoolRewards(
         bytes32 uuid,
-        IHypePool.Rewards memory rewards
+        IHypePool.Rewards memory rewards,
+        uint256[] memory leaderRewards
     ) internal virtual {
         emit PoolRewardsCreated(
             uuid,
@@ -133,9 +135,7 @@ contract HypePoolBase is IHypePool, AccessControl {
             rewards.startDate,
             rewards.endDate,
             rewards.duration,
-            rewards.firstLeaderRewards,
-            rewards.secondLeaderRewards,
-            rewards.thirdLeaderRewards
+            leaderRewards
         );
     }
 
@@ -155,7 +155,8 @@ contract HypePoolBase is IHypePool, AccessControl {
     function _createPool(
         string memory uri,
         IHypePool.Details memory details,
-        IHypePool.Rewards memory rewards
+        IHypePool.Rewards memory rewards,
+        uint256[] memory leaderRewards
     ) internal returns (IHypePool.HypePool memory) {
         require(bytes(uri).length > 0, 'Missing metadata URI');
         require(rewards.cap > 0, 'Invalid pool cap');
@@ -167,7 +168,7 @@ contract HypePoolBase is IHypePool, AccessControl {
         bytes32 uuid = _generateHashId();
         require(!_hashes[uuid], 'Uuid already exists');
 
-        _setPool(uuid, uri, details, rewards);
+        _setPool(uuid, uri, details, rewards, leaderRewards);
         _setPoolURI(uuid, uri);
         return _pools[uuid];
     }
@@ -181,7 +182,7 @@ contract HypePoolBase is IHypePool, AccessControl {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(_hashes[uuid], 'Pool does not exist');
-        require(isActive(uuid) == false, 'Pool is already active');
+        require(!isActive(uuid), 'Pool is already active');
 
         bool hasActivatorRole = super.hasRole(ACTIVATOR_ROLE, msg.sender);
         if (!hasActivatorRole) {
@@ -211,14 +212,14 @@ contract HypePoolBase is IHypePool, AccessControl {
     }
 
     /**
-     * @dev Pool deactivator method. Must be triggered b when someone withdraws the pool funds from the escrow contract.
+     * @dev Pool deactivator method. Must be triggered when someone withdraws the pool funds from the escrow contract.
      * @param uuid The id of the pool to activate.
      */
     function _deactivatePool(bytes32 uuid) internal {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
         require(isActive(uuid) == true, 'Pool is already inactive');
-        _pool.rewards.endDate = block.timestamp;
+        _pool.rewards.endDate = block.timestamp - 7 days;
         _pools[uuid] = _pool;
         emit PoolDeactivated(uuid, msg.sender);
     }

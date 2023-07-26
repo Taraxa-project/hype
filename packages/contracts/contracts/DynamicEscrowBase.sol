@@ -52,12 +52,15 @@ contract DynamicEscrowBase is IEscrow {
 
     function canWithdraw(bytes32 poolId) internal view returns (bool) {
         IHypePool hypePool = IHypePool(_hypePoolAddress);
+        if (!hypePool.doesPoolExist(poolId)) {
+            return false;
+        }
         uint256 poolEndDate = hypePool.getPoolRewards(poolId).endDate;
         return (block.timestamp > poolEndDate + 1 weeks);
     }
 
-    function _setHypePoolAddress(address _hypePool) internal {
-        _hypePoolAddress = _hypePool;
+    function _setHypePoolAddress(address hypePool) internal {
+        _hypePoolAddress = hypePool;
     }
 
     /*
@@ -69,7 +72,7 @@ contract DynamicEscrowBase is IEscrow {
     function depositsOf(
         address payee,
         bytes32 poolId
-    ) public view override returns (IEscrow.DynamicDeposit memory) {
+    ) public view returns (IEscrow.DynamicDeposit memory) {
         return _deposits[poolId][payee];
     }
 
@@ -80,7 +83,6 @@ contract DynamicEscrowBase is IEscrow {
      * @param poolId The pool id of the deposit target reward pool.
      * @param amount The amount of tokens to deposit.
      * @param tokenAddress The address of the token to deposit.
-     * modifier payable: The method can be called with TARA.
      */
     function _deposit(
         address spender,
@@ -97,6 +99,14 @@ contract DynamicEscrowBase is IEscrow {
             ERC20 token = ERC20(tokenAddress);
             uint256 balance = token.balanceOf(spender);
             require(balance >= amount, 'Insufficient balance');
+
+            // Check if the allowance is enough
+            uint256 allowance = token.allowance(spender, address(this));
+            require(
+                allowance >= amount,
+                'Contract not allowed to spend enough tokens'
+            );
+
             token.transferFrom(spender, address(this), amount);
         } else {
             require(msg.value == amount, 'Invalid amount');
@@ -158,7 +168,7 @@ contract DynamicEscrowBase is IEscrow {
         uint256 amount
     ) internal {
         require(
-           canWithdraw(poolId),
+            canWithdraw(poolId),
             'Withdraw: Pool has not yet ended or grace period not passed'
         );
 

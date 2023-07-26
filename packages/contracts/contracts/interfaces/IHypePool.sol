@@ -6,7 +6,7 @@ interface IHypePool {
         string title;
         string projectName;
         string tokenName;
-        string word;
+        string campaignWord;
     }
 
     struct Rewards {
@@ -17,9 +17,6 @@ interface IHypePool {
         uint256 startDate;
         uint256 endDate;
         uint256 duration;
-        uint256 firstLeaderRewards;
-        uint256 secondLeaderRewards;
-        uint256 thirdLeaderRewards;
     }
 
     struct HypePool {
@@ -27,9 +24,12 @@ interface IHypePool {
         address creator;
         Details details;
         Rewards rewards;
+        uint256[] leaderRewards;
     }
 
     function getPool(bytes32 poolId) external view returns (HypePool memory);
+
+    function doesPoolExist(bytes32 uuid) external view returns (bool);
 
     function getPoolRewards(
         bytes32 poolId
@@ -44,7 +44,7 @@ interface IHypePool {
         string title,
         string projectName,
         string tokenName,
-        string word
+        string campaignWord
     );
 
     event PoolRewardsCreated(
@@ -56,9 +56,7 @@ interface IHypePool {
         uint256 startDate,
         uint256 endDate,
         uint256 duration,
-        uint256 firstLeaderRewards,
-        uint256 secondLeaderRewards,
-        uint256 thirdLeaderRewards
+        uint256[] leaderRewards
     );
 
     event PoolUriSet(bytes32 poolId, string uri);
