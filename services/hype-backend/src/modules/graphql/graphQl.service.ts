@@ -42,6 +42,47 @@ export class GraphQlService {
     );
   }
 
+  async getPools(take: number, skip: number): Promise<{ hypePools: IPool[] }> {
+    const now = DateTime.utc();
+    const endOfLastWeek = now
+      .minus({ week: 1 })
+      .endOf('week')
+      .set({ hour: 23, minute: 59, second: 59, weekday: 6 });
+    const unixTimestamp = Math.floor(endOfLastWeek.toMillis() / 1000);
+    return await this.graphQLClient.request(
+      gql`
+        query HypePools(
+          $first: Int!
+          $skip: Int!
+          $orderBy: String
+          $orderDirection: String
+          $endDate_gt: BigInt
+        ) {
+          hypePools(
+            first: $first
+            skip: $skip
+            orderBy: $orderBy
+            orderDirection: $orderDirection
+            where: { remainingFunds_not: 0, endDate_gt: $endDate_gt }
+          ) {
+            id
+            endDate
+            startDate
+            duration
+            status
+          }
+        }
+      `,
+      {
+        first: take,
+        skip: skip,
+        orderBy: 'endDate',
+        orderDirection: 'desc',
+        endDate_gt: unixTimestamp,
+      },
+    );
+  }
+
   async getActivePools(): Promise<{ hypePools: IPool[] }> {
     const now = DateTime.utc();
     const endOfLastWeek = now
@@ -56,7 +97,6 @@ export class GraphQlService {
           $skip: Int!
           $orderBy: String
           $orderDirection: String
-          $text: String
           $endDate_gt: BigInt
         ) {
           hypePools(
@@ -64,7 +104,6 @@ export class GraphQlService {
             skip: $skip
             orderBy: $orderBy
             orderDirection: $orderDirection
-            text: $text
             where: { remainingFunds_not: 0, endDate_gt: $endDate_gt }
           ) {
             id

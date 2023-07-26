@@ -14,6 +14,7 @@ import { GraphQlModule } from '@taraxa-hype/graphql';
 import { GroupModule } from '@taraxa-hype/group';
 import * as dotenv from 'dotenv';
 import { HypeUser, HypeReward, HypeClaim, Group } from './entities';
+import { PoolModule } from './modules/pool/pool.module';
 
 dotenv.config();
 
@@ -95,6 +96,7 @@ const HypeAppTypeOrmModule = () => {
     IpfsModule,
     GraphQlModule,
     GroupModule,
+    PoolModule,
   ],
 })
 export class AppModule {

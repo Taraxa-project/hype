@@ -3,7 +3,6 @@ export interface IPool {
   title: string;
   tokenName: string;
   tokenAddress: string;
-  active: boolean;
   projectName: string;
   projectDescription: string;
   description: string;
@@ -16,4 +15,13 @@ export interface IPool {
   duration: number;
   impressionReward: number;
   word: string;
+  status: PoolStatus;
+}
+
+export enum PoolStatus {
+  CREATED = 'CREATED',
+  FUNDED = 'FUNDED',
+  STARTED = 'STARTED',
+  EXPIRED = 'EXPIRED',
+  GRACE_PERIOD = 'GRACE_PERIOD',
 }
