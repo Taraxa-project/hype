@@ -46,7 +46,7 @@ export const useAddHypePoolEffects = () => {
     startDate: 0,
     endDate: 0,
   });
-  const { createPool: testCreatePool } = useHypePools();
+  const { createPool: onPoolCreate } = useHypePools();
 
   useEffect(() => {
     if (uploadedIpfsUrl) {
@@ -118,7 +118,7 @@ export const useAddHypePoolEffects = () => {
         duration: rewards.duration * 24 * 60 * 60,
       },
     };
-    testCreatePool(
+    onPoolCreate(
       args,
       successCallback,
       setCreatedPoolIndex,
