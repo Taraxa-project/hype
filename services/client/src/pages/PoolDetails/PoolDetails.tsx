@@ -36,9 +36,12 @@ import { RoundContainer } from '../../components/container/RoundContainer.styled
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 import Tooltip from '../../components/tooltip/Tooltip';
+import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
+  const dispatchModals = useModalsDispatch();
+
   const {
     title,
     description,
@@ -79,6 +82,34 @@ export const PoolDetails = () => {
 
   const projectKeywords = projectName?.split(',').map((item) => item.trim());
 
+  const bonusContent = (
+    <Box display="flex" flexDirection="column">
+      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
+        1️⃣st place bonus: 10k TARA
+      </Text>
+      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
+        2️⃣nd place: 5k TARA
+      </Text>
+      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
+        3️⃣rd place: 2.5k TARA
+      </Text>
+      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
+        Bonuses settled at the end of each week
+      </Text>
+    </Box>
+  );
+
+  const showBonuses = () => {
+    dispatchModals({
+      type: ModalsActionsEnum.SHOW_BASIC,
+      payload: {
+        open: true,
+        title: 'Leaderboard bonuses',
+        content: bonusContent,
+      },
+    });
+  };
+
   return (
     <PoolContainer>
       <RoundContainer>
@@ -97,25 +128,31 @@ export const PoolDetails = () => {
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" gridGap="0.5rem">
               <Text fontWeight="500" fontSize="1.25rem" paddingRight="5px">
                 Required keywords:
               </Text>
               <Tooltip message="Use one of the following keywords" />
+              <Box display="flex" alignItems="center" flexWrap="wrap">
+                {projectKeywords?.length > 0 &&
+                  projectKeywords.map((keyword, i) => (
+                    <Box key={`${keyword}-${i}`} display="flex" alignItems="center">
+                      <Keyword>{keyword}</Keyword>
+                      <Text p={2}>|</Text>
+                    </Box>
+                  ))}
+                {tokenName && <Keyword>{tokenName}</Keyword>}
+                {word && tokenName && <Text p={2}>|</Text>}
+                {word && <Keyword>{word}</Keyword>}
+              </Box>
             </Box>
-            {projectKeywords?.length > 0 &&
-              projectKeywords.map((keyword, i) => (
-                <Box key={`${keyword}-${i}`} display="flex" alignItems="center" gridGap="1rem">
-                  <Keyword>{keyword}</Keyword>
-                  <Text>OR</Text>
-                </Box>
-              ))}
-            {tokenName && <Keyword>{tokenName}</Keyword>}
-            {word && tokenName && <Text>OR</Text>}
-            {word && <Keyword>{word}</Keyword>}
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
-          {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
+          {imageUri && (
+            <div style={{ width: '100%' }}>
+              <PoolImage src={`${fullIpfsUrl(imageUri)}`} />
+            </div>
+          )}
           {poolStats && (
             <Box>
               <CategoryTitle>
@@ -152,10 +189,11 @@ export const PoolDetails = () => {
                 Weekly Leaderboard
               </Text>
             </CategoryTitle>
-            <Text textAlign="center" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-              1️⃣st place bonus: 10k TARA, 2️⃣nd place: 5k TARA, 3️⃣rd place: 2.5k TARA, bonuses
-              settled at the end of each week.
-            </Text>
+            <Box display="flex" justifyContent="center" mb={4}>
+              <Button type="button" onClick={showBonuses} variant="info">
+                Show leaderboard bonuses
+              </Button>
+            </Box>
             {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
             ) : (
