@@ -29,7 +29,7 @@ dataSources:
           handler: handlePoolCreated
         - event: PoolDetailsCreated(bytes32,string,string,string,string)
           handler: handlePoolDetails
-        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256[])
           handler: handlePoolRewards
         - event: PoolUriSet(bytes32,string)
           handler: handlePoolUriSet

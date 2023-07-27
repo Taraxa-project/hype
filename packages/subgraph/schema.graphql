@@ -12,7 +12,7 @@ type _Schema_
           { name: "description" }
           { name: "projectDescription" }
           { name: "tokenName" }
-          { name: "word" }
+          { name: "campaignWord" }
         ]
       }
     ]
@@ -33,7 +33,7 @@ type HypePool @entity(immutable: false) {
   title: String
   projectName: String
   tokenName: String
-  word: String
+  campaignWord: String
   description: String
   projectDescription: String
   network: BigInt
@@ -46,9 +46,7 @@ type HypePool @entity(immutable: false) {
   endDate: BigInt
   imageUri: String
   status: String
-  firstLeaderRewards: BigInt
-  secondLeaderRewards: BigInt
-  thirdLeaderRewards: BigInt
+  leaderRewards: [BigInt!]
 }
 
 type HypeUri @entity(immutable: true) {

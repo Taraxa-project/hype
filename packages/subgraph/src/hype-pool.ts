@@ -48,7 +48,7 @@ export function handlePoolDetails(event: PoolDetailsCreated): void {
   hypepool.projectName = event.params.projectName;
   hypepool.title = event.params.title;
   hypepool.tokenName = event.params.tokenName;
-  hypepool.word = event.params.word;
+  hypepool.campaignWord = event.params.campaignWord;
   hypepool.save();
 }
 
@@ -66,9 +66,7 @@ export function handlePoolRewards(event: PoolRewardsCreated): void {
   hypepool.startDate = event.params.startDate;
   hypepool.duration = event.params.duration;
   hypepool.endDate = event.params.endDate;
-  hypepool.firstLeaderRewards = event.params.firstLeaderRewards;
-  hypepool.secondLeaderRewards = event.params.secondLeaderRewards;
-  hypepool.thirdLeaderRewards = event.params.thirdLeaderRewards;
+  hypepool.leaderRewards = event.params.leaderRewards;
   hypepool.save();
 }
 
