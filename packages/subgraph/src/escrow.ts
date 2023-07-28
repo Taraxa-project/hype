@@ -10,7 +10,7 @@ export function handleClaimed(event: Claimed): void {
   if (hypepool && hypepool.endDate) {
     hypepool.remainingFunds = hypepool.remainingFunds.minus(amount);
     if (hypepool.remainingFunds.equals(BigInt.zero())) {
-      hypepool.status = 'EXPIRED';
+      hypepool.status = 'ENDED';
     } if (
       hypepool.endDate!
         .plus(BigInt.fromI32(604800))
@@ -56,7 +56,7 @@ export function handleWithdrawn(event: Withdrawn): void {
   if (hypepool) {
     hypepool.remainingFunds = hypepool.remainingFunds.minus(amount);
     if (hypepool.remainingFunds.equals(BigInt.zero())) {
-      hypepool.status = 'EXPIRED';
+      hypepool.status = 'ENDED';
     }
     hypepool.save();
   }

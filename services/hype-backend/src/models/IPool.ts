@@ -3,7 +3,7 @@ export interface IPool {
   title: string;
   tokenName: string;
   tokenAddress: string;
-  active: boolean;
+  status: string;
   projectName: string;
   projectDescription: string;
   description: string;
@@ -15,5 +15,6 @@ export interface IPool {
   endDate: number;
   duration: number;
   impressionReward: number;
-  word: string;
+  campaignWord: string;
+  leaderRewards: number[];
 }

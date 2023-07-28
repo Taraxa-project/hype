@@ -12,6 +12,7 @@ import {
 } from './Card.styled';
 import DotIcon from '../../assets/icons/Dot';
 import { useTokenDetails } from '../../hooks';
+import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 
 export interface CardProps {
   pool: HypePool;
@@ -21,7 +22,7 @@ export interface CardProps {
 
 const Card = ({ children, ...props }: CardProps) => {
   const { pool, onClick } = props;
-  const { title, projectName, description, cap, active, impressionReward, endDate } = pool;
+  const { title, projectName, description, cap, status, impressionReward, endDate } = pool;
   const { tokenDecimals, tokenSymbol } = useTokenDetails(pool);
 
   return (
@@ -64,19 +65,9 @@ const Card = ({ children, ...props }: CardProps) => {
           )}
           <DataContainer>
             <DataHeader>Status:</DataHeader>
-            {active ? (
-              endDate * 1000 > Date.now() ? (
-                <DataValue>
-                  <DotIcon color="#15AC5B" /> Active
-                </DataValue>
-              ) : (
-                <DataValue>
-                  <DotIcon color="#F7614A" /> Expired
-                </DataValue>
-              )
-            ) : (
+            {status && (
               <DataValue>
-                <DotIcon color="#C2C2C2" /> (not yet active)
+                <DotIcon color={getStatusColor(status)} /> {getStatusDisplayName(status)}
               </DataValue>
             )}
           </DataContainer>

@@ -149,7 +149,7 @@ contract HypePoolBase is IHypePool, AccessControl {
 
     /** @dev Creates a Hype Pool after the necessary checks.
      * @param uri The URI of the Hype Pool Metadata.
-     * @param details Hype title, word, token name, Project's name.
+     * @param details Hype title, campaign word, token name, Project's name.
      * @param rewards Network, Token address, min reward, impression reward, ap, end date
      */
     function _createPool(
@@ -218,7 +218,7 @@ contract HypePoolBase is IHypePool, AccessControl {
     function _deactivatePool(bytes32 uuid) internal {
         IHypePool.HypePool memory _pool = _pools[uuid];
         require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(isActive(uuid) == true, 'Pool is already inactive');
+        require(isActive(uuid), 'Pool is already inactive');
         _pool.rewards.endDate = block.timestamp - 7 days;
         _pools[uuid] = _pool;
         emit PoolDeactivated(uuid, msg.sender);

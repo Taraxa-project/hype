@@ -36,6 +36,8 @@ import { RoundContainer } from '../../components/container/RoundContainer.styled
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 import Tooltip from '../../components/tooltip/Tooltip';
+import { PoolStatus } from '../../models';
+import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -45,14 +47,14 @@ export const PoolDetails = () => {
     projectDescription,
     tokenName,
     tokenSymbol,
-    word,
+    campaignWord,
     network,
     tokenAddress,
     creator,
     projectName,
     cap,
     impressionReward,
-    active,
+    status,
     endDate,
     startDate,
     tokenDecimals,
@@ -91,9 +93,7 @@ export const PoolDetails = () => {
             <ListItem>
               {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
             </ListItem>
-            <ListItem>
-              {active ? (endDate * 1000 > Date.now() ? 'Active' : 'Expired') : 'Inactive'}
-            </ListItem>
+            <ListItem>{status && getStatusDisplayName(status)}</ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
@@ -111,8 +111,8 @@ export const PoolDetails = () => {
                 </Box>
               ))}
             {tokenName && <Keyword>{tokenName}</Keyword>}
-            {word && tokenName && <Text>OR</Text>}
-            {word && <Keyword>{word}</Keyword>}
+            {campaignWord && tokenName && <Text>OR</Text>}
+            {campaignWord && <Keyword>{campaignWord}</Keyword>}
           </KeywordWrapper>
           <SharePool createdPoolIndex={poolId} poolName={title} />
           {imageUri && <PoolImage src={`${fullIpfsUrl(imageUri)}`} />}
@@ -185,10 +185,10 @@ export const PoolDetails = () => {
               <InfoValue>{projectName}</InfoValue>
             </InfoContainer>
           )}
-          {word && (
+          {campaignWord && (
             <InfoContainer>
               <InfoHeader>Campaign keyword:</InfoHeader>
-              <InfoValue>{word}</InfoValue>
+              <InfoValue>{campaignWord}</InfoValue>
             </InfoContainer>
           )}
           {network && (
@@ -258,19 +258,9 @@ export const PoolDetails = () => {
 
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>
-            {active ? (
-              endDate * 1000 > Date.now() ? (
-                <InfoValue>
-                  <DotIcon color="#15AC5B" /> Active
-                </InfoValue>
-              ) : (
-                <InfoValue>
-                  <DotIcon color="#F7614A" /> Expired
-                </InfoValue>
-              )
-            ) : (
+            {status && (
               <InfoValue>
-                <DotIcon color="#C2C2C2" /> (not yet active)
+                <DotIcon color={getStatusColor(status)} /> {getStatusDisplayName(status)}
               </InfoValue>
             )}
           </InfoContainer>
@@ -285,39 +275,41 @@ export const PoolDetails = () => {
         </PoolDetailsWrapper>
       </RoundContainer>
 
-      {!active && authenticated && account?.toLowerCase() === creator?.toLowerCase() && (
-        <RoundContainer>
-          <Box>
-            <Box mb={4}>
-              {!isDeposited ? (
-                <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
-                  Fund the Pool
-                </Button>
-              ) : (
-                <Box>
-                  <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
-                    You need to activate the pool for participating community members to be
-                    rewarded.
-                  </Text>
-                  <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
-                    You may activate the pool at any time, but once you activate the pool it cannot
-                    be deactivated.
-                  </Text>
-                  <Button
-                    disabled={!authenticated}
-                    size="full-width"
-                    type="submit"
-                    variant="success"
-                    onClick={activate}
-                  >
-                    Activate the Pool
+      {(status === PoolStatus.CREATED || status === PoolStatus.FUNDED) &&
+        authenticated &&
+        account?.toLowerCase() === creator?.toLowerCase() && (
+          <RoundContainer>
+            <Box>
+              <Box mb={4}>
+                {!isDeposited ? (
+                  <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
+                    Fund the Pool
                   </Button>
-                </Box>
-              )}
+                ) : (
+                  <Box>
+                    <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                      You need to activate the pool for participating community members to be
+                      rewarded.
+                    </Text>
+                    <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                      You may activate the pool at any time, but once you activate the pool it
+                      cannot be deactivated.
+                    </Text>
+                    <Button
+                      disabled={!authenticated}
+                      size="full-width"
+                      type="submit"
+                      variant="success"
+                      onClick={activate}
+                    >
+                      Activate the Pool
+                    </Button>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </RoundContainer>
-      )}
+          </RoundContainer>
+        )}
 
       <Box>
         <Button size="full-width" onClick={onParticipate}>

@@ -3,7 +3,7 @@ export interface AddHypePool {
   projectName: string;
   projectDescription: string;
   description: string;
-  word: string;
+  campaignWord: string;
   network: number;
   token: string;
   impressionReward: number;
@@ -16,10 +16,19 @@ export interface AddHypePool {
   imageUri?: string;
 }
 
+export enum PoolStatus {
+  CREATED = 'Created',
+  FUNDED = 'Funded',
+  STARTED = 'Started',
+  EXPIRED = 'Expired',
+  GRACE_PERIOD = 'Grace period',
+  ENDED = 'Ended',
+}
+
 export interface HypePool extends AddHypePool {
   id?: number;
   creator: string;
-  active: boolean;
+  status: string;
   tokenAddress?: string;
 }
 

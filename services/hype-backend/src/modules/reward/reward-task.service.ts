@@ -25,11 +25,17 @@ export class RewardTaskService implements OnModuleInit {
   @Cron('0 23 * * 6') // Once a week Saturday at 23:00
   async calculateRewardsForLeaderboard() {
     this.logger.debug('Calculating rewards top user in Leaderboard...');
-    // Get all current active pools (active = true, endDate > currentDate)
+    // Get all current active pools (status = STARTED, endDate > currentDate)
     const { hypePools } = await this.graphQlService.getActivePools();
     await Promise.all(
       hypePools.map(async (pool: IPool) => {
         const leaderboard = await this.rewardService.getLeaderboard(pool.id);
+        const defaultRewards = [
+          ethers.utils.parseEther('5000'),
+          ethers.utils.parseEther('10000'),
+          ethers.utils.parseEther('2500'),
+        ];
+        const leaderRewards = pool.leaderRewards || defaultRewards;
         // If leaderboard is not empty
         if (leaderboard.length > 0) {
           for (let i = 0; i < leaderboard.length && i < 3; i++) {

@@ -12,7 +12,7 @@ import {
   useLoadingModals,
   useTokenDetails,
 } from '../../hooks';
-import { HypePool } from '../../models';
+import { HypePool, PoolStatus } from '../../models';
 import { AddressType, NotificationType } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { useGetPoolStats } from '../../api/pools/useGetPoolStats';
@@ -50,7 +50,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const successCallbackActivatePool = (): void => {
     setPool({
       ...pool,
-      active: true,
+      status: PoolStatus.STARTED,
     });
   };
 
@@ -83,7 +83,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   );
 
   useEffect(() => {
-    if (depositsOf && pool) {
+    if (depositsOf && pool?.cap) {
       if (
         depositsOf?.weiAmount?.toString() === pool.cap.toString() &&
         depositsOf?.poolId?.toString() === poolId.toString()

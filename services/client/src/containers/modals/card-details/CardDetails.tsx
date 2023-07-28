@@ -15,6 +15,7 @@ import {
 import Blockies from 'react-blockies';
 import { formatDate, networks, transformFromWei } from '../../../utils';
 import DotIcon from '../../../assets/icons/Dot';
+import { getStatusColor, getStatusDisplayName } from '../../../utils/pools';
 
 export const CardDetails = () => {
   const {
@@ -24,14 +25,14 @@ export const CardDetails = () => {
     projectDescription,
     tokenName,
     tokenSymbol,
-    word,
+    campaignWord,
     network,
     tokenAddress,
     creator,
     projectName,
     cap,
     impressionReward,
-    active,
+    status,
     endDate,
     startDate,
     closeModal,
@@ -92,10 +93,10 @@ export const CardDetails = () => {
             <DataValue>{projectName}</DataValue>
           </DataContainer>
         )}
-        {word && (
+        {campaignWord && (
           <DataContainer>
             <DataHeader>Campaign keyword:</DataHeader>
-            <DataValue>{word}</DataValue>
+            <DataValue>{campaignWord}</DataValue>
           </DataContainer>
         )}
         {network && (
@@ -145,13 +146,9 @@ export const CardDetails = () => {
         </DataContainer>
         <DataContainer>
           <DataHeader>Status:</DataHeader>
-          {active ? (
+          {status && (
             <DataValue>
-              <DotIcon color="#15AC5B" /> Active
-            </DataValue>
-          ) : (
-            <DataValue>
-              <DotIcon color="#C2C2C2" /> (not yet active)
+              <DotIcon color={getStatusColor(status)} /> {getStatusDisplayName(status)}
             </DataValue>
           )}
         </DataContainer>

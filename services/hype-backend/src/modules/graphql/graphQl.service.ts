@@ -21,7 +21,7 @@ export class GraphQlService {
             tokenName
             network
             tokenAddress
-            active
+            status
             projectName
             description
             projectDescription
@@ -32,7 +32,8 @@ export class GraphQlService {
             startDate
             duration
             impressionReward
-            word
+            campaignWord
+            leaderRewards
           }
         }
       `,
@@ -72,7 +73,7 @@ export class GraphQlService {
             tokenName
             network
             tokenAddress
-            active
+            status
             projectName
             description
             projectDescription
@@ -83,9 +84,10 @@ export class GraphQlService {
             startDate
             duration
             impressionReward
-            word
+            campaignWord
             remainingFunds
             imageUri
+            leaderRewards
           }
         }
       `,

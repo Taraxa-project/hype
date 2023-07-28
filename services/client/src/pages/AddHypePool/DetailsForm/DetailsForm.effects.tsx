@@ -7,7 +7,7 @@ import { useAuth } from '../../../hooks/useAuth';
 export interface HypePoolDetailsForm
   extends Pick<
     AddHypePool,
-    'title' | 'projectName' | 'tokenName' | 'description' | 'projectDescription' | 'word'
+    'title' | 'projectName' | 'tokenName' | 'description' | 'projectDescription' | 'campaignWord'
   > {}
 
 export const useDetailsFormEffects = (defaultValues: HypePoolDetailsForm) => {
@@ -28,7 +28,7 @@ export const useDetailsFormEffects = (defaultValues: HypePoolDetailsForm) => {
         .required('Hype description is required')
         .label('Hype description')
         .max(1000),
-      word: yup.string().required('Hype word is required').label('Hype word'),
+      campaignWord: yup.string().required('Campaign word is required').label('Campaign word'),
     })
     .required();
 

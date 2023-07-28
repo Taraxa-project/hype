@@ -7,7 +7,7 @@ export const HYPEPOOL_QUERIES = {
         tokenName
         network
         tokenAddress
-        active
+        status
         projectName
         description
         projectDescription
@@ -18,9 +18,10 @@ export const HYPEPOOL_QUERIES = {
         startDate
         duration
         impressionReward
-        word
+        campaignWord
         remainingFunds
-        imageUri
+        imageUri,
+        leaderRewards
       }
     }
   `,
@@ -33,7 +34,7 @@ export const HYPEPOOL_QUERIES = {
         tokenName
         network
         tokenAddress
-        active
+        status
         projectName
         description
         projectDescription
@@ -44,9 +45,10 @@ export const HYPEPOOL_QUERIES = {
         startDate
         duration
         impressionReward
-        word
+        campaignWord
         remainingFunds
-        imageUri
+        imageUri,
+        leaderRewards
       }
     }
   `,
@@ -63,7 +65,7 @@ export const HYPEPOOL_QUERIES = {
         tokenName
         network
         tokenAddress
-        active
+        status
         projectName
         description
         projectDescription
@@ -74,9 +76,10 @@ export const HYPEPOOL_QUERIES = {
         startDate
         duration
         impressionReward
-        word
+        campaignWord
         remainingFunds
-        imageUri
+        imageUri,
+        leaderRewards
       }
     }
   `,
@@ -91,7 +94,7 @@ export const HYPEPOOL_QUERIES = {
         tokenName
         network
         tokenAddress
-        active
+        status
         projectName
         description
         projectDescription
@@ -102,9 +105,10 @@ export const HYPEPOOL_QUERIES = {
         startDate
         duration
         impressionReward
-        word
+        campaignWord
         remainingFunds
-        imageUri
+        imageUri,
+        leaderRewards
       }
     }
   `,

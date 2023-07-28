@@ -10,7 +10,7 @@ export interface WritePoolDetailsArgs {
   title: string;
   projectName: string;
   tokenName?: string;
-  word: string;
+  campaignWord: string;
 }
 
 export interface WritePoolRewardsArgs {
