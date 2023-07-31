@@ -33,6 +33,8 @@ dataSources:
           handler: handlePoolRewards
         - event: PoolUriSet(bytes32,string)
           handler: handlePoolUriSet
+      blockHandlers:
+        - handler: handleBlock
       file: ./src/hype-pool.ts
   - kind: ethereum
     name: DynamicEscrow
