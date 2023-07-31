@@ -52,6 +52,13 @@ export type TPoolCreated = {
   pool: Pick<HypePool, 'title' | 'projectName' | 'token'>;
 };
 
+export type TBasic = {
+  open: boolean;
+  title: string;
+  content: JSX.Element;
+  onClose?: () => void;
+};
+
 export interface IModalsStore {
   hypeDetails: TCardDetails;
   loading: TLoading;
@@ -59,6 +66,7 @@ export interface IModalsStore {
   telegramInfo: TTelegramInfo;
   disconnectTelegram: TDisconnectTelegram;
   notification: TNotification;
+  basic: TBasic;
 }
 
 interface ICardDetailsAction {
@@ -91,10 +99,16 @@ interface TNotificationAction {
   payload: TNotification;
 }
 
+interface TBasicAction {
+  type: ModalsActionsEnum.SHOW_BASIC;
+  payload: TBasic;
+}
+
 export type TModalsAction =
   | ICardDetailsAction
   | ILoadingAction
   | IMetamaskInfoAction
   | ITelegramInfoAction
   | IDisconnectTelegramAction
-  | TNotificationAction;
+  | TNotificationAction
+  | TBasicAction;

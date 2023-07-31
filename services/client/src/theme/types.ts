@@ -22,6 +22,7 @@ export interface HypeButtons {
   secondary: ColorProps;
   success: ColorProps;
   danger: ColorProps;
+  info: ColorProps;
 }
 
 export interface HypeFonts {
