@@ -7,7 +7,6 @@ import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
-import { NotificationType } from '../../utils';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
@@ -33,7 +32,7 @@ export const useAddHypePoolEffects = () => {
   const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
   const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState<number>(2);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
@@ -56,6 +55,7 @@ export const useAddHypePoolEffects = () => {
     duration: null,
     startDate: 0,
     endDate: 0,
+    leaderRewards: []
   });
 
   useContractCreatePool(

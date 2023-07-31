@@ -16,6 +16,7 @@ export interface HypePoolRewardForm
   tokenAddress: string;
   tokenSymbol: string;
   tokenDecimals: number;
+  leaderRewards?: number[];
 }
 
 export const useRewardFormEffects = (

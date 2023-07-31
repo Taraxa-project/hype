@@ -118,12 +118,16 @@ export const PoolDetails = () => {
         <Box>
           <PoolTitle>{title}</PoolTitle>
           <List>
-            <ListItem>
-              {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {tokenSymbol}
-            </ListItem>
-            <ListItem>
-              {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
-            </ListItem>
+            {cap && (
+              <ListItem>
+                {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {tokenSymbol}
+              </ListItem>
+            )}
+            {impressionReward && (
+              <ListItem>
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
+              </ListItem>
+            )}
             <ListItem>{status && getStatusDisplayName(status)}</ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>

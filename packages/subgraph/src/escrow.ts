@@ -17,8 +17,8 @@ export function handleClaimed(event: Claimed): void {
         .gt(BigInt.fromI32(event.block.timestamp.toI32())) &&
       hypepool.endDate!.lt(BigInt.fromI32(event.block.timestamp.toI32()))
     ) {
-      // If the current time is after the pool's end date, but before the end of the grace period (end date + 1 week), set status to GRACE_PERIOD
-      hypepool.status = 'GRACE_PERIOD';
+      // If the current time is after the pool's end date, but before the end of the grace period (end date + 1 week), set status to EXPIRED
+      hypepool.status = 'EXPIRED';
     }
     hypepool.save();
   }

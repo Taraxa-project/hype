@@ -26,8 +26,6 @@ export function getStatusDisplayName(status: string): string {
       return PoolStatus.STARTED;
     case 'EXPIRED':
       return PoolStatus.EXPIRED;
-    case 'GRACE_PERIOD':
-      return PoolStatus.GRACE_PERIOD;
     case 'ENDED':
       return PoolStatus.ENDED;
     default:
@@ -47,8 +45,6 @@ export function getStatusColor(status: string): string {
     case 'STARTED':
       return '#15AC5B';
     case 'EXPIRED':
-      return '#DDA25D';
-    case 'GRACE_PERIOD':
       return '#DDA25D';
     case 'ENDED':
       return '#F7614A';

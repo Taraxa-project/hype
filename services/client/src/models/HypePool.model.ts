@@ -21,7 +21,6 @@ export enum PoolStatus {
   FUNDED = 'Funded',
   STARTED = 'Started',
   EXPIRED = 'Expired',
-  GRACE_PERIOD = 'Grace period',
   ENDED = 'Ended',
 }
 
