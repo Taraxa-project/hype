@@ -47,7 +47,6 @@ contract HypePoolBase is IHypePool, AccessControl {
     }
 
     function getPool(bytes32 uuid) public view returns (HypePool memory) {
-        require(_hashes[uuid], 'Pool does not exist');
         return _pools[uuid];
     }
 

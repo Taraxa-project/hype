@@ -38,8 +38,8 @@ contract DynamicEscrowUpgradeable is
         return _trustedAccountAddress;
     }
 
-    function setHypePoolAddress(address _hypePool) external onlyOwner {
-        _setHypePoolAddress(_hypePool);
+    function setHypePoolAddress(address hypePool) external onlyOwner {
+        _setHypePoolAddress(hypePool);
     }
 
     function deposit(
