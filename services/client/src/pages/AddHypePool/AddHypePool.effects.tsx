@@ -55,7 +55,7 @@ export const useAddHypePoolEffects = () => {
     duration: null,
     startDate: 0,
     endDate: 0,
-    leaderRewards: []
+    leaderRewards: [],
   });
 
   useContractCreatePool(
@@ -122,6 +122,16 @@ export const useAddHypePoolEffects = () => {
       rewards.impressionReward.toString().replace(',', '.'),
       rewards.tokenDecimals,
     );
+    const leaderRewards = [];
+    if (rewards.leaderRewards?.length > 0) {
+      rewards.leaderRewards.map((reward: { id: number; reward: number }) => {
+        let formattedReward = ethers.utils.parseUnits(
+          reward.toString().replace(',', '.'),
+          rewards.tokenDecimals,
+        );
+        leaderRewards.push(formattedReward);
+      });
+    }
     setWritePoolArgs({
       uri: ipfsUrl,
       details,
@@ -146,7 +156,8 @@ export const useAddHypePoolEffects = () => {
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
-    createPool(poolDetails, data);
+    console.log('REWARDS SUBMITTED: ', data);
+    // createPool(poolDetails, data);
   };
 
   const onBackFromRewards = () => {
