@@ -49,11 +49,6 @@ type HypePool @entity(immutable: false) {
   leaderRewards: [BigInt!]
 }
 
-type HypeUri @entity(immutable: true) {
-  id: Bytes!
-  uri: String!
-}
-
 type DepositedEvent @entity(immutable: true) {
   id: ID!
   weiAmount: BigInt!
