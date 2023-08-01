@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 import { useAccount, useBalance } from 'wagmi';
 import { HYPEPOOL_QUERIES } from '../../api/pools/query-collector';
@@ -38,26 +38,29 @@ export const usePoolDetailsEffects = (poolId: string) => {
     });
   };
 
+  const checkDepositsOf = useCallback(
+    async (amount: BigNumber, poolId: string) => {
+      const res = await depositsOf(poolId);
+      if (res && res.weiAmount?.toString() === amount.toString()) {
+        setIsDeposited(true);
+      }
+    },
+    [depositsOf],
+  );
+
   useEffect(() => {
     if (amount && poolId) {
       (async () => {
         await checkDepositsOf(amount, poolId);
       })();
     }
-  }, [amount, poolId]);
+  }, [amount, poolId, checkDepositsOf]);
 
   useEffect(() => {
     if (hypePoolData) {
       setPool(hypePoolData?.hypePool);
     }
   }, [hypePoolData]);
-
-  const checkDepositsOf = async (amount: BigNumber, poolId: string) => {
-    const { weiAmount, poolId: id } = await depositsOf(poolId);
-    if (weiAmount?.toString() === amount.toString() && id?.toString() === poolId.toString()) {
-      setIsDeposited(true);
-    }
-  };
 
   const fund = async () => {
     if (balance && amount) {

@@ -33,6 +33,6 @@ export function useContracts() {
 
   return {
     hypeContract,
-    escrowContract
+    escrowContract,
   };
 }

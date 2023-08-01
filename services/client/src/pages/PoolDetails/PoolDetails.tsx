@@ -349,7 +349,8 @@ export const PoolDetails = () => {
         </PoolDetailsWrapper>
       </RoundContainer>
 
-      {(status === PoolStatus.CREATED || status === PoolStatus.FUNDED) &&
+      {(getStatusDisplayName(status) === PoolStatus.CREATED ||
+        getStatusDisplayName(status) === PoolStatus.FUNDED) &&
         authenticated &&
         account?.toLowerCase() === creator?.toLowerCase() && (
           <RoundContainer>
