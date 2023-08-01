@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
@@ -11,7 +11,6 @@ import { WritePoolArgs, useHypePools } from '../../hooks';
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
   const imageUploadRef = useRef<HypeImageUploadRef>(null);
-
 
   const successCallback = (): void => {
     setCurrentStep(3);
@@ -22,7 +21,7 @@ export const useAddHypePoolEffects = () => {
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
-  const [currentStep, setCurrentStep] = useState<number>(2);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
   const [isCustomToken, setIsCustomToken] = useState<boolean>(false);
   const [poolTransaction, setPoolTransaction] = useState<string>();
@@ -104,17 +103,17 @@ export const useAddHypePoolEffects = () => {
       rewards.impressionReward.toString().replace(',', '.'),
       rewards.tokenDecimals,
     );
-    const leaderRewards = [];
+    const leaderRewards: BigNumber[] = [];
     if (rewards.leaderRewards?.length > 0) {
-      rewards.leaderRewards.map((reward: { id: number; reward: number }) => {
+      rewards.leaderRewards.map((leaderReward: { id: number; reward: number }) => {
         let formattedReward = ethers.utils.parseUnits(
-          reward.toString().replace(',', '.'),
+          leaderReward.reward.toString().replace(',', '.'),
           rewards.tokenDecimals,
         );
         leaderRewards.push(formattedReward);
       });
     }
-    
+
     const args: WritePoolArgs = {
       uri: ipfsUrl,
       details,
@@ -128,6 +127,7 @@ export const useAddHypePoolEffects = () => {
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
       },
+      leaderRewards,
     };
     onPoolCreate(
       args,
@@ -144,8 +144,7 @@ export const useAddHypePoolEffects = () => {
   };
 
   const onSubmitRewards = (data: HypePoolRewardForm) => {
-    console.log('REWARDS SUBMITTED: ', data);
-    // createPool(poolDetails, data);
+    createPool(poolDetails, data);
   };
 
   const onBackFromRewards = () => {

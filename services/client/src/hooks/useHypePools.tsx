@@ -27,6 +27,7 @@ export interface WritePoolArgs {
   uri: string;
   details: WritePoolDetailsArgs;
   rewards: WritePoolRewardsArgs;
+  leaderRewards: BigNumber[];
 }
 
 export const useHypePools = () => {
@@ -61,6 +62,7 @@ export const useHypePools = () => {
           args.uri,
           args.details,
           args.rewards,
+          args.leaderRewards,
         );
         const response: ethers.providers.TransactionReceipt = await poolTx.wait();
         if (response.transactionHash) {
