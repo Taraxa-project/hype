@@ -29,11 +29,8 @@ export const useSummaryEffects = (
 
   useEffect(() => {
     if (amount && createdPoolIndex && depositsData) {
-      const { weiAmount, poolId } = depositsData;
-      if (
-        weiAmount?.toString() === amount.toString() &&
-        poolId?.toString() === createdPoolIndex.toString()
-      ) {
+      const { weiAmount } = depositsData;
+      if (weiAmount?.toString() === amount.toString()) {
         setIsDeposited(true);
       }
     }
