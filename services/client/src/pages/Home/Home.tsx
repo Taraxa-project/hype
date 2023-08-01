@@ -77,7 +77,7 @@ export const Home = () => {
         </TelegramButtonsContainer>
       </TelegramInfoContainer>
       <PoolContainer>
-        <Box display="flex" gridGap="1rem" justifyContent={'space-between'}>
+        <Box display="flex" gridGap="1rem" justifyContent={'space-between'} flexWrap="wrap-reverse">
           <TitleText>
             {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools
           </TitleText>
