@@ -1,7 +1,8 @@
 import {
   PoolActivated,
   PoolCreated,
-  PoolDetailsAndRewardsCreated,
+  PoolDetailsCreated,
+  PoolRewardsCreated,
 } from '../generated/HypePool/HypePool';
 import { HypeIds, HypePool } from '../generated/schema';
 import { BigInt, ipfs, json } from '@graphprotocol/graph-ts';
@@ -59,7 +60,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   hypepool.save();
 }
 
-export function handlePoolDetailsAndRewards(event: PoolDetailsAndRewardsCreated): void {
+export function handlePoolDetails(event: PoolDetailsCreated): void {
   const id = event.params.poolId;
   let hypepool = HypePool.load(id);
   if (!hypepool) {
@@ -69,6 +70,16 @@ export function handlePoolDetailsAndRewards(event: PoolDetailsAndRewardsCreated)
   hypepool.title = event.params.title;
   hypepool.tokenName = event.params.tokenName;
   hypepool.campaignWord = event.params.campaignWord;
+  hypepool.save();
+}
+
+export function handlePoolRewards(event: PoolRewardsCreated): void {
+  const id = event.params.poolId;
+
+  let hypepool = HypePool.load(id);
+  if (!hypepool) {
+    hypepool = new HypePool(id);
+  }
   hypepool.network = event.params.network;
   hypepool.cap = event.params.cap;
   hypepool.remainingFunds = BigInt.zero();
@@ -80,3 +91,4 @@ export function handlePoolDetailsAndRewards(event: PoolDetailsAndRewardsCreated)
   hypepool.leaderRewards = event.params.leaderRewards;
   hypepool.save();
 }
+
