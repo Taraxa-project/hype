@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import { useLoadingModals } from './useLoadingModals';
-import { AddressType, NotificationType } from '../utils';
+import { AddressType, NotificationType, zeroAddress } from '../utils';
 import { useContracts } from './useContracts';
 import { useAccount, useProvider } from 'wagmi';
 import ABIs from '../abi';
+import { escrowAddress } from '../constants';
 
 export interface ClaimArgs {
   receiver: string;
@@ -53,9 +54,6 @@ export const useEscrow = () => {
           args.tokenAddress,
           args.nonce,
           args.hash,
-          {
-            gasLimit: BigNumber.from(9999999),
-          },
         );
         const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
@@ -78,6 +76,7 @@ export const useEscrow = () => {
       tokenAddress: string,
     ): Promise<ethers.providers.TransactionReceipt> => {
       showLoading(['Please, sign the message...', 'Funding the pool...']);
+      const isErc20 = tokenAddress !== zeroAddress;
       try {
         const tx: ethers.providers.TransactionResponse = await escrowContract!.deposit(
           spender,
@@ -86,8 +85,7 @@ export const useEscrow = () => {
           tokenAddress,
           {
             from: spender,
-            gasLimit: BigNumber.from(9999999),
-            value: amount,
+            value: isErc20 ? 0 : amount,
           },
         );
         const response: ethers.providers.TransactionReceipt = await tx.wait();
@@ -104,8 +102,6 @@ export const useEscrow = () => {
 
   const approve = useCallback(
     async (
-      spender: string,
-      poolId: string,
       amount: BigNumber,
       tokenAddress: AddressType,
     ): Promise<ethers.providers.TransactionReceipt> => {
@@ -115,17 +111,20 @@ export const useEscrow = () => {
       ]);
       try {
         const contract = new ethers.Contract(tokenAddress, erc20ABI, provider);
-        const tx: ethers.providers.TransactionResponse = await contract!.approve(spender, amount);
-        await tx.wait();
+        const tx: ethers.providers.TransactionResponse = await contract!.approve(
+          escrowAddress,
+          amount,
+        );
+        const response: ethers.providers.TransactionReceipt = await tx.wait();
         hideLoadingModal();
-        return await deposit(spender as AddressType, poolId, amount, tokenAddress);
+        return response;
       } catch (error: any) {
         console.log('On error: ', error);
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
       }
     },
-    [provider, deposit, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
+    [provider, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   return useMemo(

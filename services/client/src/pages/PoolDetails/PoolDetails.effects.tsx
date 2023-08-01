@@ -23,8 +23,6 @@ export const usePoolDetailsEffects = (poolId: string) => {
   let navigate = useNavigate();
 
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-
-  const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
   const { data: poolStats } = useGetPoolStats(poolId);
@@ -32,6 +30,7 @@ export const usePoolDetailsEffects = (poolId: string) => {
   const { depositsOf, deposit, approve } = useEscrow();
   const { activatePool } = useHypePools();
 
+  const amount: BigNumber = BigNumber.from(pool?.cap || 0);
   const successCallbackActivatePool = (): void => {
     setPool({
       ...pool,
@@ -53,13 +52,6 @@ export const usePoolDetailsEffects = (poolId: string) => {
     }
   }, [hypePoolData]);
 
-  useEffect(() => {
-    if (pool?.cap) {
-      const amount = BigNumber.from(pool?.cap || 0);
-      setAmount(amount);
-    }
-  }, [pool]);
-
   const checkDepositsOf = async (amount: BigNumber, poolId: string) => {
     const { weiAmount, poolId: id } = await depositsOf(poolId);
     if (weiAmount?.toString() === amount.toString() && id?.toString() === poolId.toString()) {
@@ -68,20 +60,18 @@ export const usePoolDetailsEffects = (poolId: string) => {
   };
 
   const fund = async () => {
-    if (balance && pool?.cap) {
-      if (balance?.value.lt(BigNumber.from(pool?.cap))) {
+    if (balance && amount) {
+      if (balance?.value.lt(BigNumber.from(amount))) {
         showNotificationModal(
           NotificationType.ERROR,
           'You don’t have enough balance in your account! Please add funds into your account in order to fund the pool!',
         );
       } else {
         if (isCustomToken) {
-          await approve(account, poolId, amount, pool?.tokenAddress as AddressType);
-          await checkDepositsOf(amount, poolId);
-        } else {
-          await deposit(account, poolId, amount, pool?.tokenAddress as AddressType);
-          await checkDepositsOf(amount, poolId);
+          await approve(amount, pool?.tokenAddress as AddressType);
         }
+        await deposit(account, poolId, amount, pool?.tokenAddress as AddressType);
+        await checkDepositsOf(amount, poolId);
       }
     }
   };
