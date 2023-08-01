@@ -110,19 +110,6 @@
           "internalType": "string",
           "name": "campaignWord",
           "type": "string"
-        }
-      ],
-      "name": "PoolDetailsCreated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
         },
         {
           "indexed": false,
@@ -173,7 +160,7 @@
           "type": "uint256[]"
         }
       ],
-      "name": "PoolRewardsCreated",
+      "name": "PoolDetailsAndRewardsCreated",
       "type": "event"
     },
     {

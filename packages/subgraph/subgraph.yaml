@@ -9,7 +9,7 @@ schema:
 dataSources:
   - kind: ethereum
     name: HypePool
-    network: taraxa
+    network: mainnet
     source:
       address: '0xA9aE59b5fe752D11c82fef31cFBD2527d573D158'
       abi: HypePool
@@ -27,14 +27,12 @@ dataSources:
           handler: handlePoolActivated
         - event: PoolCreated(bytes32,address,string)
           handler: handlePoolCreated
-        - event: PoolDetailsCreated(bytes32,string,string,string,string)
-          handler: handlePoolDetails
-        - event: PoolRewardsCreated(bytes32,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256[])
-          handler: handlePoolRewards
+        - event: PoolDetailsAndRewardsCreated(bytes32,string,string,string,string,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256[])
+          handler: handlePoolDetailsAndRewards
       file: ./src/hype-pool.ts
   - kind: ethereum
     name: DynamicEscrow
-    network: taraxa
+    network: mainnet
     source:
       address: '0x6BDA65fd6572B851fcC596D79215532a3FC19954'
       abi: DynamicEscrow

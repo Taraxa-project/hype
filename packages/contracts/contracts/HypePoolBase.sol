@@ -107,30 +107,21 @@ contract HypePoolBase is IHypePool, AccessControl {
         );
         _latestUuid = uuid;
         emit PoolCreated(uuid, msg.sender, _tokenURI);
-        _emitPoolDetails(uuid, details);
-        _emitPoolRewards(uuid, rewards, leaderRewards);
+        _emitPoolDetailsAndRewards(uuid, details, rewards, leaderRewards);
     }
 
-    function _emitPoolDetails(
+    function _emitPoolDetailsAndRewards(
         bytes32 uuid,
-        IHypePool.Details memory details
+        IHypePool.Details memory details,
+        IHypePool.Rewards memory rewards,
+        uint256[] memory leaderRewards
     ) internal virtual {
-        emit PoolDetailsCreated(
+        emit PoolDetailsAndRewardsCreated(
             uuid,
             details.title,
             details.projectName,
             details.tokenName,
-            details.campaignWord
-        );
-    }
-
-    function _emitPoolRewards(
-        bytes32 uuid,
-        IHypePool.Rewards memory rewards,
-        uint256[] memory leaderRewards
-    ) internal virtual {
-        emit PoolRewardsCreated(
-            uuid,
+            details.campaignWord,
             rewards.network,
             rewards.tokenAddress,
             rewards.impressionReward,
