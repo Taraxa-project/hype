@@ -2,14 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { HypePoolRewardForm } from '../RewardForm';
-import {
-  useAuth,
-  useContractERC20Approve,
-  useContractActivatePool,
-  useContractEscrowDeposit,
-  useContractEscrowGetDepositsOf,
-  useLoadingModals,
-} from '../../../hooks';
+import { useAuth, useLoadingModals, useEscrow, useHypePools, DepositsOf } from '../../../hooks';
 import { AddressType, NotificationType } from '../../../utils';
 
 export const useSummaryEffects = (
@@ -21,74 +14,32 @@ export const useSummaryEffects = (
   const { address: account } = useAccount();
   const { authenticated } = useAuth();
 
-  const [enableActivate, setEnableActivate] = useState<boolean>(false);
-  const [enableApprove, setEnableApprove] = useState<boolean>(false);
-  const [enableDeposit, setEnableDeposit] = useState<boolean>(false);
   const [isDeposited, setIsDeposited] = useState<boolean>(false);
-  const [hasDeposited, setHasDeposited] = useState<boolean>(false);
+  const [depositsData, setDepositsData] = useState<DepositsOf>();
 
-  const [amount, setAmount] = useState<BigNumber>(BigNumber.from(0));
-  const { data: depositsOf } = useContractEscrowGetDepositsOf(
-    createdPoolIndex,
-    hasDeposited,
-    isCustomToken,
-  );
+  const { depositsOf, deposit, approve } = useEscrow();
+  const { activatePool } = useHypePools();
   const { data: balance } = useBalance({ address: account });
   const { showNotificationModal } = useLoadingModals();
 
-  const successCallbackDeposit = (): void => {
-    setHasDeposited(true);
-  };
-  useContractActivatePool(createdPoolIndex, enableActivate, successCallbackActivatePool, () => {
-    setEnableActivate(false);
-  });
-  useContractERC20Approve(
-    account,
-    createdPoolIndex,
-    amount,
-    rewards.tokenAddress as AddressType,
-    enableApprove,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableApprove(false);
-    },
-  );
-  useContractEscrowDeposit(
-    account,
-    createdPoolIndex,
-    amount,
-    rewards.tokenAddress,
-    enableDeposit,
-    isCustomToken,
-    successCallbackDeposit,
-    () => {
-      setEnableDeposit(false);
-    },
-  );
+  const amount: BigNumber =
+    rewards.cap && rewards.tokenDecimals
+      ? ethers.utils.parseUnits(rewards.cap.toString().replace(',', '.'), rewards.tokenDecimals)
+      : BigNumber.from(0);
 
   useEffect(() => {
-    if (depositsOf && amount) {
+    if (amount && createdPoolIndex && depositsData) {
+      const { weiAmount, poolId } = depositsData;
       if (
-        depositsOf?.weiAmount?.toString() === amount.toString() &&
-        depositsOf?.poolId?.toString() === createdPoolIndex.toString()
+        weiAmount?.toString() === amount.toString() &&
+        poolId?.toString() === createdPoolIndex.toString()
       ) {
         setIsDeposited(true);
       }
     }
-  }, [depositsOf, amount, createdPoolIndex]);
+  }, [depositsData, amount, createdPoolIndex]);
 
-  useEffect(() => {
-    if (rewards.tokenDecimals) {
-      const amount = ethers.utils.parseUnits(
-        rewards.cap.toString().replace(',', '.'),
-        rewards.tokenDecimals,
-      );
-      setAmount(amount);
-    }
-  }, [rewards]);
-
-  const fund = () => {
+  const fund = async () => {
     if (balance && amount) {
       if (balance?.value.lt(amount)) {
         showNotificationModal(
@@ -97,17 +48,18 @@ export const useSummaryEffects = (
         );
       } else {
         if (isCustomToken) {
-          setEnableApprove(true);
-        } else {
-          setEnableDeposit(true);
+          await approve(amount, rewards.tokenAddress as AddressType);
         }
+        await deposit(account, createdPoolIndex, amount, rewards.tokenAddress);
+        const depositData = await depositsOf(createdPoolIndex);
+        setDepositsData(depositData);
       }
     }
   };
 
-  const activate = () => {
+  const activate = async () => {
     if (isDeposited) {
-      setEnableActivate(true);
+      await activatePool(createdPoolIndex, successCallbackActivatePool);
     }
   };
 
