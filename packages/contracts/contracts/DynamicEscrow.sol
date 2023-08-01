@@ -67,7 +67,7 @@ contract DynamicEscrow is
         uint256 nonce,
         bytes memory sig
     ) external nonReentrant whenNotPaused {
-        bytes32 hash = _hash(receiver, amount, nonce);
+        bytes32 hash = _hash(poolId, receiver, amount, nonce);
 
         require(
             ECDSA.recover(hash, sig) == _trustedAccountAddress,

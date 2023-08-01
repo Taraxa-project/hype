@@ -22,6 +22,7 @@ interface IHypePool {
     struct HypePool {
         bytes32 id;
         address creator;
+        string uri;
         Details details;
         Rewards rewards;
         uint256[] leaderRewards;
@@ -38,28 +39,6 @@ interface IHypePool {
     function getCurrentIndex() external view returns (bytes32);
 
     event PoolCreated(bytes32 poolId, address creator, string uri);
-
-    event PoolDetailsCreated(
-        bytes32 poolId,
-        string title,
-        string projectName,
-        string tokenName,
-        string campaignWord
-    );
-
-    event PoolRewardsCreated(
-        bytes32 poolId,
-        uint256 network,
-        address tokenAddress,
-        uint256 impressionReward,
-        uint256 cap,
-        uint256 startDate,
-        uint256 endDate,
-        uint256 duration,
-        uint256[] leaderRewards
-    );
-
-    event PoolUriSet(bytes32 poolId, string uri);
 
     event PoolActivated(
         bytes32 poolId,

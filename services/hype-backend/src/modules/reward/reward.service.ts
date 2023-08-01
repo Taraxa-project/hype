@@ -8,7 +8,7 @@ import {
 import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ethereum, auth } from '@taraxa-hype/config';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import * as abi from 'ethereumjs-abi';
 import * as ethUtil from 'ethereumjs-util';
 import { IsNull, Raw, Repository } from 'typeorm';
@@ -226,9 +226,10 @@ export class RewardService {
         total = total.add(bn);
       });
     const nonce = biggestId * 13;
+    const poolIndexBytes = ethers.utils.arrayify(poolId);
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [address, total.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, address, total.toString(), nonce],
     );
     const { v, r, s } = ethUtil.ecsign(encodedPayload, this.privateKey);
     const hash = ethUtil.toRpcSig(v, r, s);

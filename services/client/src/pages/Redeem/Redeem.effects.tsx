@@ -3,34 +3,23 @@ import { useGetMyRewards } from '../../api/rewards/useGetUserRewards';
 import { useRequestRewards } from '../../api/rewards/useRequestRewards';
 import useWallet from '../../hooks/useWallet';
 import { HypeClaim, PoolRewards } from '../../models/Redeem.model';
-import { ClaimArgs, useContractEscrowClaim } from '../../hooks';
+import { ClaimArgs, useEscrow } from '../../hooks';
 import { BigNumber } from 'ethers';
 import { useRewardsClaim } from '../../api/rewards/useRewardsClaim';
 
 export const useRedeemEffects = () => {
   const { isConnected } = useWallet();
-  const defaultContractArgs: ClaimArgs = {
-    receiver: null,
-    poolId: null,
-    amount: null,
-    tokenAddress: null,
-    nonce: null,
-    hash: null,
-  };
   const { data, isLoading: isLoadingRewards } = useGetMyRewards();
   const { submitHandler } = useRequestRewards();
   const { submitHandler: claimReward } = useRewardsClaim();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
-  const [claimArgs, setClaimArgs] = useState<ClaimArgs>(defaultContractArgs);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
-  const [enableClaim, setEnableClaim] = useState<boolean>(false);
   const [currentClaim, setCurrentClaim] = useState<HypeClaim>(null);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
+  const { claim } = useEscrow();
 
   const onClaimSuccess = () => {
     if (currentClaim) {
-      setEnableClaim(false);
-      setClaimArgs(defaultContractArgs);
       // Send backend claim success
       claimReward({
         id: currentClaim.id,
@@ -40,11 +29,6 @@ export const useRedeemEffects = () => {
       setCurrentClaim(null);
     }
   };
-  useContractEscrowClaim(claimArgs, enableClaim, onClaimSuccess, () => {
-    setEnableClaim(false);
-    setClaimArgs(defaultContractArgs);
-    setCurrentClaim(null);
-  });
 
   useEffect(() => {
     const setData = async () => {
@@ -62,18 +46,17 @@ export const useRedeemEffects = () => {
     submitHandler({ poolId: poolReward.poolId });
   };
   const onClaim = (poolClaim: HypeClaim) => {
-    console.log('poolClaim: ', poolClaim);
     if (poolClaim) {
       setCurrentClaim(poolClaim);
-      setClaimArgs({
+      const claimArgs: ClaimArgs = {
         receiver: poolClaim.rewardee,
         poolId: poolClaim.poolId,
         amount: BigNumber.from(poolClaim.amount),
         tokenAddress: poolClaim.tokenAddress,
         nonce: poolClaim.nonce,
         hash: poolClaim.hash,
-      });
-      setEnableClaim(true);
+      };
+      claim(claimArgs, onClaimSuccess);
     }
   };
 

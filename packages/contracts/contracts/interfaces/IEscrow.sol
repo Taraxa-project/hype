@@ -5,7 +5,6 @@ interface IEscrow {
     struct DynamicDeposit {
         uint256 weiAmount;
         address tokenAddress;
-        bytes32 poolId;
     }
 
     event Deposited(address indexed spender, uint256 weiAmount, bytes32 poolId);

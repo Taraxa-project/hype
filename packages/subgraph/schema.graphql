@@ -18,14 +18,6 @@ type _Schema_
     ]
   )
 
-type Details @entity(immutable: true) {
-  id: String!
-}
-
-type Rewards @entity(immutable: true) {
-  id: String!
-}
-
 type HypePool @entity(immutable: false) {
   id: Bytes!
   creator: Bytes!
@@ -47,11 +39,6 @@ type HypePool @entity(immutable: false) {
   imageUri: String
   status: String
   leaderRewards: [BigInt!]
-}
-
-type HypeUri @entity(immutable: true) {
-  id: Bytes!
-  uri: String!
 }
 
 type DepositedEvent @entity(immutable: true) {

@@ -12,9 +12,7 @@ contract HypePoolBase is IHypePool, AccessControl {
     address private _escrowContractAddress;
 
     mapping(bytes32 => IHypePool.HypePool) private _pools;
-    mapping(bytes32 => string) private _tokenURIs;
     // Mapping to store generated hash IDs
-    mapping(bytes32 => bool) private _hashes;
     bytes32 private _latestUuid;
 
     function initializeBase(
@@ -39,11 +37,12 @@ contract HypePoolBase is IHypePool, AccessControl {
     }
 
     function doesPoolExist(bytes32 uuid) public view returns (bool) {
-        return _hashes[uuid];
+        IHypePool.HypePool memory _pool = _pools[uuid];
+        return _pool.creator != address(0);
     }
 
     function poolURI(bytes32 uuid) public view returns (string memory) {
-        return _tokenURIs[uuid];
+        return _pools[uuid].uri;
     }
 
     function getPool(bytes32 uuid) public view returns (HypePool memory) {
@@ -98,52 +97,16 @@ contract HypePoolBase is IHypePool, AccessControl {
         IHypePool.Rewards memory rewards,
         uint256[] memory leaderRewards
     ) internal virtual {
-        _pools[uuid] = IHypePool.HypePool(uuid, msg.sender, details, rewards, leaderRewards);
-        _hashes[uuid] = true;
-        _latestUuid = uuid;
-
-        emit PoolCreated(uuid, msg.sender, _tokenURI);
-        _emitPoolDetails(uuid, details);
-        _emitPoolRewards(uuid, rewards, leaderRewards);
-    }
-
-    function _emitPoolDetails(
-        bytes32 uuid,
-        IHypePool.Details memory details
-    ) internal virtual {
-        emit PoolDetailsCreated(
+        _pools[uuid] = IHypePool.HypePool(
             uuid,
-            details.title,
-            details.projectName,
-            details.tokenName,
-            details.campaignWord
-        );
-    }
-
-    function _emitPoolRewards(
-        bytes32 uuid,
-        IHypePool.Rewards memory rewards,
-        uint256[] memory leaderRewards
-    ) internal virtual {
-        emit PoolRewardsCreated(
-            uuid,
-            rewards.network,
-            rewards.tokenAddress,
-            rewards.impressionReward,
-            rewards.cap,
-            rewards.startDate,
-            rewards.endDate,
-            rewards.duration,
+            msg.sender,
+            _tokenURI,
+            details,
+            rewards,
             leaderRewards
         );
-    }
-
-    function _setPoolURI(
-        bytes32 uuid,
-        string memory _tokenURI
-    ) internal virtual {
-        _tokenURIs[uuid] = _tokenURI;
-        emit PoolUriSet(uuid, _tokenURI);
+        _latestUuid = uuid;
+        emit PoolCreated(uuid, msg.sender, _tokenURI);
     }
 
     /** @dev Creates a Hype Pool after the necessary checks.
@@ -165,10 +128,9 @@ contract HypePoolBase is IHypePool, AccessControl {
         require(rewards.impressionReward > 0, 'Invalid impression hype reward');
 
         bytes32 uuid = _generateHashId();
-        require(!_hashes[uuid], 'Uuid already exists');
+        require(!doesPoolExist(uuid), 'Uuid already exists');
 
         _setPool(uuid, uri, details, rewards, leaderRewards);
-        _setPoolURI(uuid, uri);
         return _pools[uuid];
     }
 
@@ -179,8 +141,7 @@ contract HypePoolBase is IHypePool, AccessControl {
      */
     function _activatePool(bytes32 uuid) internal {
         IHypePool.HypePool memory _pool = _pools[uuid];
-        require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(_hashes[uuid], 'Pool does not exist');
+        require(doesPoolExist(uuid), 'Pool does not exist');
         require(!isActive(uuid), 'Pool is already active');
 
         bool hasActivatorRole = super.hasRole(ACTIVATOR_ROLE, msg.sender);
@@ -216,8 +177,8 @@ contract HypePoolBase is IHypePool, AccessControl {
      */
     function _deactivatePool(bytes32 uuid) internal {
         IHypePool.HypePool memory _pool = _pools[uuid];
-        require(_pool.rewards.impressionReward != 0, "Pool doesn't exist");
-        require(isActive(uuid), 'Pool is already inactive');
+        require(doesPoolExist(uuid), 'Pool does not exist');
+        require(isActive(uuid) == true, 'Pool is already inactive');
         _pool.rewards.endDate = block.timestamp - 7 days;
         _pools[uuid] = _pool;
         emit PoolDeactivated(uuid, msg.sender);
@@ -233,18 +194,10 @@ contract HypePoolBase is IHypePool, AccessControl {
         bytes32 hash = keccak256(
             abi.encodePacked(blockNumber, timestamp, nonce)
         );
-        while (_hashExists(hash)) {
+        while (doesPoolExist(hash)) {
             nonce++;
             hash = keccak256(abi.encodePacked(blockNumber, timestamp, nonce));
         }
         return hash;
-    }
-
-    /**
-     * @dev Function to check if a hash already exists
-     * @param _hash The ID of the pool to verify if exists.
-     */
-    function _hashExists(bytes32 _hash) private view returns (bool) {
-        return _hashes[_hash];
     }
 }

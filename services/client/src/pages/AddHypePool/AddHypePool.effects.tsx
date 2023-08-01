@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useContractCreatePool, WritePoolArgs } from '../../hooks/useContractCreatePool';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
@@ -7,20 +6,13 @@ import { ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
+import { WritePoolArgs, useHypePools } from '../../hooks';
 
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
   const imageUploadRef = useRef<HypeImageUploadRef>(null);
 
-  const defaultContractArgs: WritePoolArgs = {
-    uri: null,
-    details: null,
-    rewards: null,
-  };
-  const resetWriteContract = (): void => {
-    setWritePoolArgs(defaultContractArgs);
-    setContractEnabled(false);
-  };
+
   const successCallback = (): void => {
     setCurrentStep(3);
   };
@@ -29,8 +21,6 @@ export const useAddHypePoolEffects = () => {
   };
 
   const { data: uploadedIpfsUrl, submitHandler } = useIpfsUpload();
-  const [writePoolArgs, setWritePoolArgs] = useState<WritePoolArgs>(defaultContractArgs);
-  const [contractEnabled, setContractEnabled] = useState<boolean>(false);
   const [createdPoolIndex, setCreatedPoolIndex] = useState<string>();
   const [currentStep, setCurrentStep] = useState<number>(2);
   const [ipfsUrl, setIpfsUrl] = useState<string>();
@@ -57,15 +47,7 @@ export const useAddHypePoolEffects = () => {
     endDate: 0,
     leaderRewards: [],
   });
-
-  useContractCreatePool(
-    writePoolArgs,
-    contractEnabled,
-    resetWriteContract,
-    successCallback,
-    setCreatedPoolIndex,
-    setPoolTransaction,
-  );
+  const { createPool: onPoolCreate } = useHypePools();
 
   useEffect(() => {
     if (uploadedIpfsUrl) {
@@ -132,7 +114,8 @@ export const useAddHypePoolEffects = () => {
         leaderRewards.push(formattedReward);
       });
     }
-    setWritePoolArgs({
+    
+    const args: WritePoolArgs = {
       uri: ipfsUrl,
       details,
       rewards: {
@@ -145,8 +128,13 @@ export const useAddHypePoolEffects = () => {
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
       },
-    });
-    setContractEnabled(true);
+    };
+    onPoolCreate(
+      args,
+      successCallback,
+      setCreatedPoolIndex,
+      setPoolTransaction,
+    );
     setPoolReward(rewards);
   };
 
