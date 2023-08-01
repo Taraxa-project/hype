@@ -104,11 +104,6 @@
               "internalType": "address",
               "name": "tokenAddress",
               "type": "address"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "poolId",
-              "type": "bytes32"
             }
           ],
           "internalType": "struct IEscrow.DynamicDeposit",

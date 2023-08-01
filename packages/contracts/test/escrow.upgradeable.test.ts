@@ -568,10 +568,10 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorTwo.address)) + 1;
     const addr = depositorTwo.address;
-
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -602,10 +602,10 @@ describe('DynamicEscrowUpgradeable', function () {
       depositorTwo.address,
     );
     const addr = depositorTwo.address;
-
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -634,10 +634,11 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorTwo.address)) + 1;
     const addr = rewarder.address;
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
 
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -660,10 +661,11 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
     const addr = depositorOne.address;
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
 
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -742,9 +744,8 @@ describe('DynamicEscrowUpgradeable', function () {
       owner.address,
       currentPoolIndex,
     );
-    const { weiAmount, poolId, tokenAddress } = deposits;
+    const { weiAmount, tokenAddress } = deposits;
     expect(weiAmount).to.be.equal(ethers.utils.parseEther('13'));
-    expect(poolId).to.be.equal(currentPoolIndex);
     expect(tokenAddress).to.be.equal(fakeErc20.address);
   });
 
@@ -763,9 +764,8 @@ describe('DynamicEscrowUpgradeable', function () {
       owner.address,
       currentPoolIndex,
     );
-    const { weiAmount, poolId, tokenAddress } = depositIs;
+    const { weiAmount, tokenAddress } = depositIs;
     expect(weiAmount).to.be.equal(ethers.utils.parseEther('13'));
-    expect(poolId).to.be.equal(currentPoolIndex);
     expect(tokenAddress).to.be.equal(fakeErc20.address);
 
     const withdrawal2 = dynamicEscrow
@@ -800,9 +800,8 @@ describe('DynamicEscrowUpgradeable', function () {
       owner.address,
       currentPoolIndex,
     );
-    const { weiAmount, poolId, tokenAddress } = deposits;
+    const { weiAmount, tokenAddress } = deposits;
     expect(weiAmount).to.be.equal(ethers.utils.parseEther('13'));
-    expect(poolId).to.be.equal(currentPoolIndex);
     expect(tokenAddress).to.be.equal(erc20.address);
   });
 
@@ -1148,9 +1147,8 @@ describe('DynamicEscrowUpgradeable', function () {
       .to.emit(dynamicEscrow, 'Deposited')
       .withArgs(owner.address, ethers.utils.parseEther('13'), ownerPoolId);
     const deposits = await dynamicEscrow.depositsOf(owner.address, ownerPoolId);
-    const { weiAmount, poolId, tokenAddress } = deposits;
+    const { weiAmount, tokenAddress } = deposits;
     expect(weiAmount).to.be.equal(ethers.utils.parseEther('13'));
-    expect(poolId).to.be.equal(ownerPoolId);
     expect(tokenAddress).to.be.equal(erc20.address);
   });
 
@@ -1173,10 +1171,12 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
     const addr = depositorOne.address;
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
 
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -1210,10 +1210,12 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
     const addr = depositorTwo.address;
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
 
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(
@@ -1245,10 +1247,12 @@ describe('DynamicEscrowUpgradeable', function () {
     const nonce =
       (await ethers.provider.getTransactionCount(depositorOne.address)) + 1;
     const addr = depositorOne.address;
+    const currentPoolIndex = await hypePool.getCurrentIndex();
+    const poolIndexBytes = ethers.utils.arrayify(currentPoolIndex);
 
     const encodedPayload = abi.soliditySHA3(
-      ['address', 'uint', 'uint'],
-      [addr, value.toString(), nonce],
+      ['bytes', 'address', 'uint', 'uint'],
+      [poolIndexBytes, addr, value.toString(), nonce],
     );
 
     const { v, r, s } = ethUtil.ecsign(

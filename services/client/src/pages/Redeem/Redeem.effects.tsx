@@ -62,7 +62,6 @@ export const useRedeemEffects = () => {
     submitHandler({ poolId: poolReward.poolId });
   };
   const onClaim = (poolClaim: HypeClaim) => {
-    console.log('poolClaim: ', poolClaim);
     if (poolClaim) {
       setCurrentClaim(poolClaim);
       setClaimArgs({

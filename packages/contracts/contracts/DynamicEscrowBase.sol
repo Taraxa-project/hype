@@ -114,14 +114,9 @@ contract DynamicEscrowBase is IEscrow {
 
         IEscrow.DynamicDeposit memory depo = IEscrow.DynamicDeposit(
             amount,
-            tokenAddress,
-            poolId
+            tokenAddress
         );
         _deposits[poolId][spender] = depo;
-        require(
-            _deposits[poolId][spender].weiAmount != 0,
-            'Failed to save deposit on chain!'
-        );
         emit Deposited(spender, amount, poolId);
     }
 
@@ -141,7 +136,7 @@ contract DynamicEscrowBase is IEscrow {
         address tokenAddress,
         uint256 nonce
     ) internal {
-        bytes32 hash = _hash(receiver, amount, nonce);
+        bytes32 hash = _hash(poolId, receiver, amount, nonce);
         require(_claimed[hash] == 0, 'Claim: Hash already claimed');
 
         _claimed[hash] = amount;
@@ -191,10 +186,11 @@ contract DynamicEscrowBase is IEscrow {
     }
 
     function _hash(
+        bytes32 _poolId,
         address _address,
         uint256 _value,
         uint256 _nonce
     ) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked(_address, _value, _nonce));
+        return keccak256(abi.encodePacked(_poolId, _address, _value, _nonce));
     }
 }
