@@ -1,7 +1,7 @@
 import {
+  HypePool as HypePoolContract,
   PoolActivated,
   PoolCreated,
-  PoolDetailsAndRewardsCreated,
 } from '../generated/HypePool/HypePool';
 import { HypeIds, HypePool } from '../generated/schema';
 import { BigInt, ipfs, json } from '@graphprotocol/graph-ts';
@@ -56,27 +56,23 @@ export function handlePoolCreated(event: PoolCreated): void {
     }
   }
 
-  hypepool.save();
-}
-
-export function handlePoolDetailsAndRewards(event: PoolDetailsAndRewardsCreated): void {
-  const id = event.params.poolId;
-  let hypepool = HypePool.load(id);
-  if (!hypepool) {
-    hypepool = new HypePool(id);
+  let contract = HypePoolContract.bind(event.address);
+  let contractPool = contract.getPool(id);
+  if (contractPool) {
+    hypepool.projectName = contractPool.details.projectName;
+    hypepool.title = contractPool.details.title;
+    hypepool.tokenName = contractPool.details.tokenName;
+    hypepool.campaignWord = contractPool.details.campaignWord;
+    hypepool.network = contractPool.rewards.network;
+    hypepool.cap = contractPool.rewards.cap;
+    hypepool.remainingFunds = BigInt.zero();
+    hypepool.tokenAddress = contractPool.rewards.tokenAddress;
+    hypepool.impressionReward = contractPool.rewards.impressionReward;
+    hypepool.startDate = contractPool.rewards.startDate;
+    hypepool.duration = contractPool.rewards.duration;
+    hypepool.endDate = contractPool.rewards.endDate;
+    hypepool.leaderRewards = contractPool.leaderRewards;
   }
-  hypepool.projectName = event.params.projectName;
-  hypepool.title = event.params.title;
-  hypepool.tokenName = event.params.tokenName;
-  hypepool.campaignWord = event.params.campaignWord;
-  hypepool.network = event.params.network;
-  hypepool.cap = event.params.cap;
-  hypepool.remainingFunds = BigInt.zero();
-  hypepool.tokenAddress = event.params.tokenAddress;
-  hypepool.impressionReward = event.params.impressionReward;
-  hypepool.startDate = event.params.startDate;
-  hypepool.duration = event.params.duration;
-  hypepool.endDate = event.params.endDate;
-  hypepool.leaderRewards = event.params.leaderRewards;
+
   hypepool.save();
 }

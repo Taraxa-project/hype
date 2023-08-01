@@ -27,8 +27,6 @@ dataSources:
           handler: handlePoolActivated
         - event: PoolCreated(bytes32,address,string)
           handler: handlePoolCreated
-        - event: PoolDetailsAndRewardsCreated(bytes32,string,string,string,string,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256[])
-          handler: handlePoolDetailsAndRewards
       file: ./src/hype-pool.ts
   - kind: ethereum
     name: DynamicEscrow

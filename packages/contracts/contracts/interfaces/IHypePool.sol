@@ -40,22 +40,6 @@ interface IHypePool {
 
     event PoolCreated(bytes32 poolId, address creator, string uri);
 
-    event PoolDetailsAndRewardsCreated(
-        bytes32 poolId,
-        string title,
-        string projectName,
-        string tokenName,
-        string campaignWord,
-        uint256 network,
-        address tokenAddress,
-        uint256 impressionReward,
-        uint256 cap,
-        uint256 startDate,
-        uint256 endDate,
-        uint256 duration,
-        uint256[] leaderRewards
-    );
-
     event PoolActivated(
         bytes32 poolId,
         address activator,
