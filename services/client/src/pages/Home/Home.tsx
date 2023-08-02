@@ -40,7 +40,6 @@ export const Home = () => {
     isFetchingNextPage,
     toggleActive,
     isActive,
-    searchString,
   } = useHomeEffects();
 
   return (
@@ -79,13 +78,14 @@ export const Home = () => {
       <PoolContainer>
         <Box display="flex" gridGap="1rem" justifyContent={'space-between'} flexWrap="wrap-reverse">
           <TitleText>
-            {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools
+            {/* {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools */}
+            { isActive ? 'Active' : 'Inactive'} Hype Pools
           </TitleText>
           <ToggleSwitch
             label={`Show Active`}
             checked={isActive}
             onCheck={toggleActive}
-            disabled={!!searchString}
+            // disabled={!!searchString}
           />
         </Box>
         <Input

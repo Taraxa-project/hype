@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
-import { HypePool } from '../../models';
 import debounce from 'lodash.debounce';
 import { useNavigate } from 'react-router-dom';
+import { useFetchHypePools } from '../../api/pools/useFetchHypePools';
+import { HypePool, PoolStatus } from '../../models';
+import { getStatusDisplayName } from '../../utils/pools';
 
 export const useHomeEffects = () => {
   const [searchString, setSearchString] = useState<string>('');
@@ -34,8 +35,14 @@ export const useHomeEffects = () => {
         setMaxReached(true);
       }
       if (searchString) {
+        const filteredPools = data.filter((pool) => {
+          const status = getStatusDisplayName(pool.status, pool.endDate);
+          const isActivePool = status === PoolStatus.STARTED;
+          const isInactivePool = status === PoolStatus.EXPIRED || status === PoolStatus.ENDED;
+          return isActive ? isActivePool : isInactivePool;
+        });
         setHypePools((prevPools) => {
-          const filteredNewPools = data.filter(
+          const filteredNewPools = filteredPools.filter(
             (newPool) => !prevPools.find((pool) => pool.id === newPool.id),
           );
           return [...prevPools, ...filteredNewPools];
@@ -57,13 +64,13 @@ export const useHomeEffects = () => {
     setSearchString(e.target.value || '');
     setPage(1);
     setMaxReached(false);
-    setIsActive(true);
+    // setIsActive(true);
   };
 
   const toggleActive = (active: boolean) => {
     setHypePools([]);
     setIsActive(active);
-    setSearchString('');
+    // setSearchString('');
     setPage(1);
     setMaxReached(false);
   };
