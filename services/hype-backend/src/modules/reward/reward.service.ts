@@ -439,6 +439,7 @@ export class RewardService {
         startDate,
         endDate,
       })
+      .andWhere('reward.isBonus = :isBonus', { isBonus: false })
       .groupBy('reward.telegramId, reward.telegramUsername')
       .orderBy('"totalImpressions"', 'DESC')
       .take(10);
