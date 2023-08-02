@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers';
+
 export interface AddHypePool {
   title: string;
   projectName: string;
@@ -14,6 +16,7 @@ export interface AddHypePool {
   tokenName?: string;
   remainingFunds?: string;
   imageUri?: string;
+  leaderRewards?: BigNumber[];
 }
 
 export enum PoolStatus {

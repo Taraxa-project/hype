@@ -39,6 +39,7 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import { PoolStatus } from '../../models';
 import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import { ethers } from 'ethers';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -103,7 +104,9 @@ export const PoolDetails = () => {
     duration,
     imageUri,
     startDate,
+    leaderRewards,
   } = pool;
+
   const startedAt =
     Number(startDate) !== 0 && !!startDate ? formatDate(new Date(+startDate * 1000)) : null;
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
@@ -118,15 +121,36 @@ export const PoolDetails = () => {
 
   const bonusContent = (
     <Box display="flex" flexDirection="column">
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        1️⃣st place bonus: 10k TARA
-      </Text>
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        2️⃣nd place: 5k TARA
-      </Text>
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        3️⃣rd place: 2.5k TARA
-      </Text>
+      {leaderRewards?.map((reward, index) => {
+        let emoji;
+        switch (index) {
+          case 0:
+            emoji = '1️⃣st';
+            break;
+          case 1:
+            emoji = '2️⃣nd';
+            break;
+          case 2:
+            emoji = '3️⃣rd';
+            break;
+          default:
+            emoji = `${index + 1}th`;
+        }
+
+        return (
+          <Text
+            key={index}
+            textAlign="left"
+            fontSize="1.2rem"
+            fontWeight="500"
+            paddingBottom="2rem"
+          >
+            {emoji} place bonus:{' '}
+            {prettifyNumber(Number(transformFromWei(reward.toString(), tokenDecimals)))}{' '}
+            {tokenSymbol}
+          </Text>
+        );
+      })}
       <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
         Bonuses settled at the end of each week
       </Text>
@@ -225,11 +249,13 @@ export const PoolDetails = () => {
                 Weekly Leaderboard
               </Text>
             </CategoryTitle>
-            <Box display="flex" justifyContent="center" mb={4}>
-              <Button type="button" onClick={showBonuses} variant="info">
-                Show leaderboard bonuses
-              </Button>
-            </Box>
+            {leaderRewards?.length > 0 && (
+              <Box display="flex" justifyContent="center" mb={4}>
+                <Button type="button" onClick={showBonuses} variant="info">
+                  Show leaderboard bonuses
+                </Button>
+              </Box>
+            )}
             {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
             ) : (
