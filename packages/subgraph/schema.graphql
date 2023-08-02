@@ -12,29 +12,20 @@ type _Schema_
           { name: "description" }
           { name: "projectDescription" }
           { name: "tokenName" }
-          { name: "word" }
+          { name: "campaignWord" }
         ]
       }
     ]
   )
 
-type Details @entity(immutable: true) {
-  id: String!
-}
-
-type Rewards @entity(immutable: true) {
-  id: String!
-}
-
 type HypePool @entity(immutable: false) {
   id: Bytes!
   creator: Bytes!
   uri: String!
-  active: Boolean
   title: String
   projectName: String
   tokenName: String
-  word: String
+  campaignWord: String
   description: String
   projectDescription: String
   network: BigInt
@@ -46,11 +37,8 @@ type HypePool @entity(immutable: false) {
   duration: BigInt
   endDate: BigInt
   imageUri: String
-}
-
-type HypeUri @entity(immutable: true) {
-  id: Bytes!
-  uri: String!
+  status: String
+  leaderRewards: [BigInt!]
 }
 
 type DepositedEvent @entity(immutable: true) {
@@ -79,4 +67,9 @@ type RewardCreditedEvent @entity(immutable: true) {
   weiAmount: BigInt!
   receiver: Bytes!
   poolId: Bytes!
+}
+
+type HypeIds @entity(immutable: false) {
+  id: ID!
+  ids: [Bytes!]!
 }

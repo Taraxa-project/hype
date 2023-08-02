@@ -7,10 +7,18 @@ export function handleClaimed(event: Claimed): void {
   const receiver = event.params.receiver;
   const amount = event.params.weiAmount;
   let hypepool = HypePool.load(id);
-  if (hypepool) {
+  if (hypepool && hypepool.endDate) {
     hypepool.remainingFunds = hypepool.remainingFunds.minus(amount);
     if (hypepool.remainingFunds.equals(BigInt.zero())) {
-      hypepool.active = false;
+      hypepool.status = 'EXPIRED';
+    } if (
+      hypepool.endDate!
+        .plus(BigInt.fromI32(604800))
+        .gt(BigInt.fromI32(event.block.timestamp.toI32())) &&
+      hypepool.endDate!.lt(BigInt.fromI32(event.block.timestamp.toI32()))
+    ) {
+      // If the current time is after the pool's end date, but before the end of the grace period (end date + 1 week), set status to GRACE_PERIOD
+      hypepool.status = 'GRACE_PERIOD';
     }
     hypepool.save();
   }
@@ -29,6 +37,7 @@ export function handleDeposited(event: Deposited): void {
   let hypepool = HypePool.load(id);
   if (hypepool) {
     hypepool.remainingFunds = hypepool.remainingFunds.plus(amount);
+    hypepool.status = 'FUNDED';
     hypepool.save();
   }
 
@@ -47,7 +56,7 @@ export function handleWithdrawn(event: Withdrawn): void {
   if (hypepool) {
     hypepool.remainingFunds = hypepool.remainingFunds.minus(amount);
     if (hypepool.remainingFunds.equals(BigInt.zero())) {
-      hypepool.active = false;
+      hypepool.status = 'EXPIRED';
     }
     hypepool.save();
   }
