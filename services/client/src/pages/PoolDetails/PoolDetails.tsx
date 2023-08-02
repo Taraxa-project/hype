@@ -57,6 +57,7 @@ export const PoolDetails = () => {
     onParticipate,
     poolStats,
     leaderboard,
+    signer,
   } = usePoolDetailsEffects(poolId);
 
   if (fetchingPoolData) {
@@ -377,14 +378,27 @@ export const PoolDetails = () => {
 
       {(poolStatus === PoolStatus.CREATED || poolStatus === PoolStatus.FUNDED) &&
         authenticated &&
+        signer &&
         account?.toLowerCase() === creator?.toLowerCase() && (
           <RoundContainer>
             <Box>
               <Box mb={4}>
                 {!isDeposited ? (
-                  <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
-                    Fund the Pool
-                  </Button>
+                  <Box>
+                    {cap && tokenSymbol && (
+                      <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                        Fund {transformFromWei(cap, tokenDecimals)} {tokenSymbol} into the pool.
+                      </Text>
+                    )}
+                    <Button
+                      disabled={!authenticated}
+                      size="full-width"
+                      type="button"
+                      onClick={fund}
+                    >
+                      Fund the Pool
+                    </Button>
+                  </Box>
                 ) : (
                   <Box>
                     <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
