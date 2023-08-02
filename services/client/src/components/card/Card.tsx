@@ -67,7 +67,8 @@ const Card = ({ children, ...props }: CardProps) => {
             <DataHeader>Status:</DataHeader>
             {status && (
               <DataValue>
-                <DotIcon color={getStatusColor(status)} /> {getStatusDisplayName(status)}
+                <DotIcon color={getStatusColor(status, endDate)} />{' '}
+                {getStatusDisplayName(status, endDate)}
               </DataValue>
             )}
           </DataContainer>

@@ -39,7 +39,6 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import { PoolStatus } from '../../models';
 import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
-import { ethers } from 'ethers';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -118,6 +117,7 @@ export const PoolDetails = () => {
     : 0;
 
   const projectKeywords = projectName?.split(',').map((item) => item.trim());
+  const poolStatus = getStatusDisplayName(status, endDate);
 
   const bonusContent = (
     <Box display="flex" flexDirection="column">
@@ -184,7 +184,7 @@ export const PoolDetails = () => {
                 {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
               </ListItem>
             )}
-            <ListItem>{status && getStatusDisplayName(status)}</ListItem>
+            <ListItem>{status && poolStatus}</ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
@@ -360,7 +360,7 @@ export const PoolDetails = () => {
             <InfoHeader>Status:</InfoHeader>
             {status && (
               <InfoValue>
-                <DotIcon color={getStatusColor(status)} /> {getStatusDisplayName(status)}
+                <DotIcon color={getStatusColor(status, endDate)} /> {poolStatus}
               </InfoValue>
             )}
           </InfoContainer>
@@ -375,8 +375,7 @@ export const PoolDetails = () => {
         </PoolDetailsWrapper>
       </RoundContainer>
 
-      {(getStatusDisplayName(status) === PoolStatus.CREATED ||
-        getStatusDisplayName(status) === PoolStatus.FUNDED) &&
+      {(poolStatus === PoolStatus.CREATED || poolStatus === PoolStatus.FUNDED) &&
         authenticated &&
         account?.toLowerCase() === creator?.toLowerCase() && (
           <RoundContainer>
