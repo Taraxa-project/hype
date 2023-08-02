@@ -17,7 +17,7 @@ export async function getPoolDetailsById(id: string, provider: ethers.providers.
 function checkPoolStatusBasedOnDate(endDate: number, status: string): string {
   const poolEndDate = DateTime.fromMillis(endDate * 1000);
   const now = DateTime.now();
-  if (endDate === 0) {
+  if (endDate === 0 || !endDate || Number(endDate) === 0) {
     // This corresponds to the end date being null in the smart contract
     // console.log('End date is null');
     return status;
