@@ -72,7 +72,7 @@ export class RewardTaskService implements OnModuleInit {
   @Cron(CronExpression.EVERY_HOUR)
   async checkClaims() {
     this.logger.debug('Called every day at 1 AM');
-    const claims = await this.rewardService.getClaimedClaims();
+    const claims = await this.rewardService.getUnClaimedClaims();
     if (claims.length > 0) {
       await Promise.all(
         claims.map(async (claim: HypeClaim) => {

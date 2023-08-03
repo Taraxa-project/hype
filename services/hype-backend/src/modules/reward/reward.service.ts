@@ -421,7 +421,7 @@ export class RewardService {
     return qb.getRawMany();
   }
 
-  async getClaimedClaims(): Promise<HypeClaim[]> {
+  async getUnClaimedClaims(): Promise<HypeClaim[]> {
     return this.claimRepository.find({
       where: {
         claimed: false,
