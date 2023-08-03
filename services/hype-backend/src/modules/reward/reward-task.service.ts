@@ -8,6 +8,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { RewardService } from './reward.service';
 import { GraphQlService } from '../graphql';
 import { IPool } from '../../models';
+import { HypeClaim } from '../../entities';
 
 @Injectable()
 export class RewardTaskService implements OnModuleInit {
@@ -21,8 +22,8 @@ export class RewardTaskService implements OnModuleInit {
     this.logger.debug(`Init ${RewardTaskService.name} cron`);
   }
 
-  // @Cron('0 23 * * 6') // Once a week Saturday at 23:00
-  @Cron(CronExpression.EVERY_30_SECONDS) // Once a week Saturday at 23:00
+  @Cron('0 23 * * 6') // Once a week Saturday at 23:00
+  // @Cron(CronExpression.EVERY_30_SECONDS) // Once a week Saturday at 23:00
   async calculateRewardsForLeaderboard() {
     this.logger.debug('Calculating rewards top user in Leaderboard...');
     const hypePools = await this.getAllActivePools();
@@ -66,6 +67,29 @@ export class RewardTaskService implements OnModuleInit {
         }
       }),
     );
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async checkClaims() {
+    this.logger.debug('Called every day at 1 AM');
+    const claims = await this.rewardService.getUnClaimedClaims();
+    if (claims.length > 0) {
+      await Promise.all(
+        claims.map(async (claim: HypeClaim) => {
+          const onChainclaims = await this.graphQlService.getClaimedEvents(
+            claim.poolId,
+            claim.rewardee,
+            claim.amount,
+          );
+          if (onChainclaims.claimedEvents.length > 0) {
+            this.logger.warn(`Found unclaimed claims`);
+            claim.claimed = true;
+            this.logger.log(`Updating claims`);
+            await claim.save();
+          }
+        }),
+      );
+    }
   }
 
   async getAllActivePools(): Promise<IPool[]> {
