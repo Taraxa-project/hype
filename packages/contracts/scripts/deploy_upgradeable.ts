@@ -83,7 +83,7 @@ async function main() {
 
     if (dynamicEscrow) {
       // Updating the DynamicEscrow contract with the address of HypePool
-      await dynamicEscrow._setHypePoolAddress(hypePool.address);
+      await dynamicEscrow.setHypePoolAddress(hypePool.address);
       console.log('DynamicEscrow updated with HypePool address');
     }
   } catch (error) {

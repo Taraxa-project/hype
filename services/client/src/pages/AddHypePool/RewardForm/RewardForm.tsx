@@ -260,7 +260,6 @@ export const RewardForm = ({
               <Text>#{index + 1}</Text>
               <FormInput
                 disabled={!authenticated}
-                type="number"
                 {...register(`leaderRewards.${index}.reward`)}
                 defaultValue={item.reward}
               />

@@ -33,14 +33,8 @@ import { RoundContainer } from '../../components/container/RoundContainer.styled
 import { ToggleSwitch } from '../../components/toggle-switch/ToggleSwitch';
 
 export const Home = () => {
-  const {
-    debouncedResults,
-    hypePools,
-    onClick,
-    isFetchingNextPage,
-    toggleActive,
-    isActive,
-  } = useHomeEffects();
+  const { debouncedResults, hypePools, onClick, isFetchingNextPage, toggleActive, isActive } =
+    useHomeEffects();
 
   return (
     <RoundContainer>
@@ -79,7 +73,7 @@ export const Home = () => {
         <Box display="flex" gridGap="1rem" justifyContent={'space-between'} flexWrap="wrap-reverse">
           <TitleText>
             {/* {searchString ? 'All' : isActive ? 'Active' : 'Inactive'} Hype Pools */}
-            { isActive ? 'Active' : 'Inactive'} Hype Pools
+            {isActive ? 'Active' : 'Inactive'} Hype Pools
           </TitleText>
           <ToggleSwitch
             label={`Show Active`}
@@ -104,15 +98,17 @@ export const Home = () => {
           )}
         </CardContainer>
       )}
-      {isFetchingNextPage && (
-        <Box display="flex" justifyContent="center" alignItems="center" my={3}>
-          <LoadingSpinner />
-        </Box>
-      )}
+
       {(!hypePools || hypePools.length === 0) && (
         <NotFoundContainer>
           <NotFoundText>
-            <NotFoundIcon /> Nothing found...
+            {isFetchingNextPage ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                <NotFoundIcon /> Nothing found...
+              </>
+            )}
           </NotFoundText>
         </NotFoundContainer>
       )}
