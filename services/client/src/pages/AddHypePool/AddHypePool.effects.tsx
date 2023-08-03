@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 import { HypePoolDetailsForm } from './DetailsForm';
 import { HypePoolRewardForm } from './RewardForm';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useIpfsUpload } from '../../api/ipfs/useUploadIpfs';
 import { HypeProjectDetails } from '../../models';
 import { HypeImageUploadRef } from './DetailsForm/HypeImageUpload';
@@ -11,7 +11,6 @@ import { WritePoolArgs, useHypePools } from '../../hooks';
 export const useAddHypePoolEffects = () => {
   const dispatchModals = useModalsDispatch();
   const imageUploadRef = useRef<HypeImageUploadRef>(null);
-
 
   const successCallback = (): void => {
     setCurrentStep(3);
@@ -32,7 +31,7 @@ export const useAddHypePoolEffects = () => {
     tokenName: '',
     description: '',
     projectDescription: '',
-    word: 'testnet',
+    campaignWord: 'testnet',
   });
   const [poolReward, setPoolReward] = useState<HypePoolRewardForm>({
     network: 841,
@@ -45,6 +44,7 @@ export const useAddHypePoolEffects = () => {
     duration: null,
     startDate: 0,
     endDate: 0,
+    leaderRewards: [],
   });
   const { createPool: onPoolCreate } = useHypePools();
 
@@ -103,7 +103,17 @@ export const useAddHypePoolEffects = () => {
       rewards.impressionReward.toString().replace(',', '.'),
       rewards.tokenDecimals,
     );
-    
+    const leaderRewards: BigNumber[] = [];
+    if (rewards.leaderRewards?.length > 0) {
+      rewards.leaderRewards.map((leaderReward: { id: number; reward: number }) => {
+        let formattedReward = ethers.utils.parseUnits(
+          leaderReward.reward.toString().replace(',', '.'),
+          rewards.tokenDecimals,
+        );
+        leaderRewards.push(formattedReward);
+      });
+    }
+
     const args: WritePoolArgs = {
       uri: ipfsUrl,
       details,
@@ -117,6 +127,7 @@ export const useAddHypePoolEffects = () => {
         startDate: 0,
         duration: rewards.duration * 24 * 60 * 60,
       },
+      leaderRewards,
     };
     onPoolCreate(
       args,

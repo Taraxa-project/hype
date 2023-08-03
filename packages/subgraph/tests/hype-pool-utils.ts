@@ -60,7 +60,7 @@ export function createPoolCreatedEvent(
   uri: string,
   projectName: string,
   title: string,
-  active: boolean,
+  status: string,
   poolCap: BigInt,
   poolToken: Address,
   minHypeReward: BigInt,
@@ -84,7 +84,7 @@ export function createPoolCreatedEvent(
     new ethereum.EventParam('title', ethereum.Value.fromString(title)),
   );
   poolCreatedEvent.parameters.push(
-    new ethereum.EventParam('active', ethereum.Value.fromBoolean(active)),
+    new ethereum.EventParam('status', ethereum.Value.fromBoolean(status)),
   );
   poolCreatedEvent.parameters.push(
     new ethereum.EventParam('poolCap', ethereum.Value.fromUnsignedBigInt(poolCap)),

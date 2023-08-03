@@ -42,7 +42,12 @@ export const RewardForm = ({
     debouncedResults,
     isEthNetwork,
     getValues,
+    fields,
+    append,
+    remove,
   } = useRewardFormEffects(defaultValues, setIsCustomToken);
+
+  const MAX_NO_REWARDS = 3;
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -171,8 +176,8 @@ export const RewardForm = ({
             <Label>Reward per 1 impression:</Label>
           </Box>
           <Example>
-            How much reward to give for every 1 impression (or view) of effective social
-            mentions in support of your hype?
+            How much reward to give for every 1 impression (or view) of effective social mentions in
+            support of your hype?
           </Example>
           <FormInput
             disabled={!authenticated}
@@ -231,6 +236,47 @@ export const RewardForm = ({
             <Text color="danger" fontSize="0.8rem">
               {errors.duration.message}
             </Text>
+          )}
+        </FormElement>
+
+        {/* Leaderboard bonus */}
+        <FormElement>
+          <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
+            <Label>Leaderboard bonus:</Label>
+          </Box>
+          <Example>
+            These are rewards for the top n users you wish to reward and the end of each week. This
+            is not required.
+          </Example>
+          {fields.map((item, index) => (
+            <Box
+              display="flex"
+              flexDirection="row"
+              gridGap="0.5rem"
+              alignItems="center"
+              key={item.id}
+              mb={3}
+            >
+              <Text>#{index + 1}</Text>
+              <FormInput
+                disabled={!authenticated}
+                type="number"
+                {...register(`leaderRewards.${index}.reward`)}
+                defaultValue={item.reward}
+              />
+              <Button type="button" variant="danger" onClick={() => remove(index)}>
+                Remove
+              </Button>
+            </Box>
+          ))}
+          {fields.length < MAX_NO_REWARDS && (
+            <Button
+              type="button"
+              variant="info"
+              onClick={() => append({ id: fields.length, reward: null })}
+            >
+              Add Reward
+            </Button>
           )}
         </FormElement>
 

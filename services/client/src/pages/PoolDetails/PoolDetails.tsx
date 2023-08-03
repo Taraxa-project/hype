@@ -36,6 +36,8 @@ import { RoundContainer } from '../../components/container/RoundContainer.styled
 import { StatsCard } from '../../components/stats-card/StatsCard';
 import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 import Tooltip from '../../components/tooltip/Tooltip';
+import { PoolStatus } from '../../models';
+import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 import { ModalsActionsEnum, useModalsDispatch } from '../../context';
 
 export const PoolDetails = () => {
@@ -55,6 +57,7 @@ export const PoolDetails = () => {
     onParticipate,
     poolStats,
     leaderboard,
+    signer,
   } = usePoolDetailsEffects(poolId);
 
   if (fetchingPoolData) {
@@ -89,19 +92,21 @@ export const PoolDetails = () => {
     description,
     projectDescription,
     tokenName,
-    word,
+    campaignWord,
     network,
     tokenAddress,
     creator,
     projectName,
     cap,
     impressionReward,
-    active,
+    status,
     endDate,
     duration,
     imageUri,
     startDate,
+    leaderRewards,
   } = pool;
+
   const startedAt =
     Number(startDate) !== 0 && !!startDate ? formatDate(new Date(+startDate * 1000)) : null;
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
@@ -113,18 +118,40 @@ export const PoolDetails = () => {
     : 0;
 
   const projectKeywords = projectName?.split(',').map((item) => item.trim());
+  const poolStatus = getStatusDisplayName(status, endDate);
 
   const bonusContent = (
     <Box display="flex" flexDirection="column">
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        1️⃣st place bonus: 10k TARA
-      </Text>
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        2️⃣nd place: 5k TARA
-      </Text>
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        3️⃣rd place: 2.5k TARA
-      </Text>
+      {leaderRewards?.map((reward, index) => {
+        let emoji;
+        switch (index) {
+          case 0:
+            emoji = '1️⃣st';
+            break;
+          case 1:
+            emoji = '2️⃣nd';
+            break;
+          case 2:
+            emoji = '3️⃣rd';
+            break;
+          default:
+            emoji = `${index + 1}th`;
+        }
+
+        return (
+          <Text
+            key={index}
+            textAlign="left"
+            fontSize="1.2rem"
+            fontWeight="500"
+            paddingBottom="2rem"
+          >
+            {emoji} place bonus:{' '}
+            {prettifyNumber(Number(transformFromWei(reward.toString(), tokenDecimals)))}{' '}
+            {tokenSymbol}
+          </Text>
+        );
+      })}
       <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
         Bonuses settled at the end of each week
       </Text>
@@ -148,15 +175,17 @@ export const PoolDetails = () => {
         <Box>
           <PoolTitle>{title}</PoolTitle>
           <List>
-            <ListItem>
-              {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {tokenSymbol}
-            </ListItem>
-            <ListItem>
-              {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
-            </ListItem>
-            <ListItem>
-              {active ? (endDate * 1000 > Date.now() ? 'Active' : 'Expired') : 'Inactive'}
-            </ListItem>
+            {cap && (
+              <ListItem>
+                {prettifyNumber(Number(transformFromWei(cap, tokenDecimals)))} {tokenSymbol}
+              </ListItem>
+            )}
+            {impressionReward && (
+              <ListItem>
+                {transformFromWei(impressionReward, tokenDecimals)} {tokenSymbol} / Impression
+              </ListItem>
+            )}
+            <ListItem>{status && poolStatus}</ListItem>
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
@@ -174,8 +203,8 @@ export const PoolDetails = () => {
                     </Box>
                   ))}
                 {tokenName && <Keyword>{tokenName}</Keyword>}
-                {word && tokenName && <Text p={2}>|</Text>}
-                {word && <Keyword>{word}</Keyword>}
+                {campaignWord && tokenName && <Text p={2}>|</Text>}
+                {campaignWord && <Keyword>{campaignWord}</Keyword>}
               </Box>
             </Box>
           </KeywordWrapper>
@@ -221,11 +250,13 @@ export const PoolDetails = () => {
                 Weekly Leaderboard
               </Text>
             </CategoryTitle>
-            <Box display="flex" justifyContent="center" mb={4}>
-              <Button type="button" onClick={showBonuses} variant="info">
-                Show leaderboard bonuses
-              </Button>
-            </Box>
+            {leaderRewards?.length > 0 && (
+              <Box display="flex" justifyContent="center" mb={4}>
+                <Button type="button" onClick={showBonuses} variant="info">
+                  Show leaderboard bonuses
+                </Button>
+              </Box>
+            )}
             {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
             ) : (
@@ -255,10 +286,10 @@ export const PoolDetails = () => {
               <InfoValue>{projectName}</InfoValue>
             </InfoContainer>
           )}
-          {word && (
+          {campaignWord && (
             <InfoContainer>
               <InfoHeader>Campaign keyword:</InfoHeader>
-              <InfoValue>{word}</InfoValue>
+              <InfoValue>{campaignWord}</InfoValue>
             </InfoContainer>
           )}
           {network && (
@@ -328,19 +359,9 @@ export const PoolDetails = () => {
 
           <InfoContainer>
             <InfoHeader>Status:</InfoHeader>
-            {active ? (
-              endDate * 1000 > Date.now() ? (
-                <InfoValue>
-                  <DotIcon color="#15AC5B" /> Active
-                </InfoValue>
-              ) : (
-                <InfoValue>
-                  <DotIcon color="#F7614A" /> Expired
-                </InfoValue>
-              )
-            ) : (
+            {status && (
               <InfoValue>
-                <DotIcon color="#C2C2C2" /> (not yet active)
+                <DotIcon color={getStatusColor(status, endDate)} /> {poolStatus}
               </InfoValue>
             )}
           </InfoContainer>
@@ -355,39 +376,54 @@ export const PoolDetails = () => {
         </PoolDetailsWrapper>
       </RoundContainer>
 
-      {!active && authenticated && account?.toLowerCase() === creator?.toLowerCase() && (
-        <RoundContainer>
-          <Box>
-            <Box mb={4}>
-              {!isDeposited ? (
-                <Button disabled={!authenticated} size="full-width" type="button" onClick={fund}>
-                  Fund the Pool
-                </Button>
-              ) : (
-                <Box>
-                  <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
-                    You need to activate the pool for participating community members to be
-                    rewarded.
-                  </Text>
-                  <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
-                    You may activate the pool at any time, but once you activate the pool it cannot
-                    be deactivated.
-                  </Text>
-                  <Button
-                    disabled={!authenticated}
-                    size="full-width"
-                    type="submit"
-                    variant="success"
-                    onClick={activate}
-                  >
-                    Activate the Pool
-                  </Button>
-                </Box>
-              )}
+      {(poolStatus === PoolStatus.CREATED || poolStatus === PoolStatus.FUNDED) &&
+        authenticated &&
+        signer &&
+        account?.toLowerCase() === creator?.toLowerCase() && (
+          <RoundContainer>
+            <Box>
+              <Box mb={4}>
+                {!isDeposited ? (
+                  <Box>
+                    {cap && tokenSymbol && (
+                      <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                        Fund {transformFromWei(cap, tokenDecimals)} {tokenSymbol} into the pool.
+                      </Text>
+                    )}
+                    <Button
+                      disabled={!authenticated}
+                      size="full-width"
+                      type="button"
+                      onClick={fund}
+                    >
+                      Fund the Pool
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Text pt={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                      You need to activate the pool for participating community members to be
+                      rewarded.
+                    </Text>
+                    <Text py={4} fontSize="1.25rem" fontWeight="700" color="greys.7">
+                      You may activate the pool at any time, but once you activate the pool it
+                      cannot be deactivated.
+                    </Text>
+                    <Button
+                      disabled={!authenticated}
+                      size="full-width"
+                      type="submit"
+                      variant="success"
+                      onClick={activate}
+                    >
+                      Activate the Pool
+                    </Button>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </RoundContainer>
-      )}
+          </RoundContainer>
+        )}
 
       <Box>
         <Button size="full-width" onClick={onParticipate}>

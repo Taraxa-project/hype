@@ -6,10 +6,14 @@ import { hypeAddress, escrowAddress } from '../constants';
 
 export function useContracts() {
   const provider = useProvider();
-  const { data: signer } = useSigner();
+  const { data: signer, error } = useSigner();
 
   const { abi: hypeABI } = ABIs.contracts.HypePool;
   const { abi: escrowABI } = ABIs.contracts.DynamicEscrow;
+
+  if (error) {
+    console.log('Error loading signer: ', error);
+  }
 
   const hypeContract = useMemo(() => {
     let instance: ethers.Contract | undefined;
@@ -33,6 +37,6 @@ export function useContracts() {
 
   return {
     hypeContract,
-    escrowContract
+    escrowContract,
   };
 }

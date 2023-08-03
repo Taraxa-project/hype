@@ -7,3 +7,4 @@ export * from './useTokenDetails';
 export * from './useContracts';
 export * from './useEscrow';
 export * from './useHypePools';
+export * from './useCheckDepositsAndFund';

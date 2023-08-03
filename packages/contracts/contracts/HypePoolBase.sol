@@ -92,7 +92,7 @@ contract HypePoolBase is IHypePool, AccessControl {
 
     function _setPool(
         bytes32 uuid,
-        string memory _tokenURI,
+        string memory uri,
         IHypePool.Details memory details,
         IHypePool.Rewards memory rewards,
         uint256[] memory leaderRewards
@@ -100,18 +100,18 @@ contract HypePoolBase is IHypePool, AccessControl {
         _pools[uuid] = IHypePool.HypePool(
             uuid,
             msg.sender,
-            _tokenURI,
+            uri,
             details,
             rewards,
             leaderRewards
         );
         _latestUuid = uuid;
-        emit PoolCreated(uuid, msg.sender, _tokenURI);
+        emit PoolCreated(uuid, msg.sender, uri);
     }
 
     /** @dev Creates a Hype Pool after the necessary checks.
      * @param uri The URI of the Hype Pool Metadata.
-     * @param details Hype title, word, token name, Project's name.
+     * @param details Hype title, campaign word, token name, Project's name.
      * @param rewards Network, Token address, min reward, impression reward, ap, end date
      */
     function _createPool(
