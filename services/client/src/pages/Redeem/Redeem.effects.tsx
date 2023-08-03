@@ -23,7 +23,6 @@ export const useRedeemEffects = () => {
       // Send backend claim success
       claimReward({
         id: currentClaim.id,
-        rewardee: currentClaim.rewardee,
         poolId: currentClaim.poolId,
       });
       setCurrentClaim(null);

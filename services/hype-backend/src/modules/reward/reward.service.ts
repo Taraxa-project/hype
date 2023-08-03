@@ -26,7 +26,6 @@ import {
 } from './dto';
 import { HypeClaim } from '../../entities/claim.entity';
 import { IPool } from '../../models';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { GraphQlService } from '../graphql';
 import { HypeUser } from '../user';
 
@@ -60,33 +59,6 @@ export class RewardService {
   ) {
     this.privateKey = Buffer.from(ethereumConfig.privateSigningKey, 'hex');
     this.gsSecret = authConfig.gsSecret;
-  }
-
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
-  async checkClaims() {
-    this.logger.debug('Called every day at 1 AM');
-    const claims = await this.claimRepository.find({
-      where: {
-        claimed: false,
-      },
-    });
-    if (claims.length > 0) {
-      await Promise.all(
-        claims.map(async (claim: HypeClaim) => {
-          const onChainclaims = await this.graphQlService.getClaimedEvents(
-            claim.poolId,
-            claim.rewardee,
-            claim.amount,
-          );
-          if (onChainclaims.claimedEvents.length > 0) {
-            this.logger.warn(`Found unclaimed claims`);
-            claim.claimed = true;
-            this.logger.log(`Updating claims`);
-            await claim.save();
-          }
-        }),
-      );
-    }
   }
 
   async getAllRewards() {
@@ -267,10 +239,12 @@ export class RewardService {
     );
   }
 
-  async claim(claim: ClaimDto): Promise<HypeClaim> {
+  async claim(address: string, claim: ClaimDto): Promise<HypeClaim> {
     const fetchedClaim = await this.claimRepository.findOneBy({
       id: claim.id,
-      rewardee: claim.rewardee,
+      rewardee: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:address)`, {
+        address,
+      }),
       poolId: claim.poolId,
     });
     if (!fetchedClaim) {
@@ -445,5 +419,13 @@ export class RewardService {
       .take(10);
 
     return qb.getRawMany();
+  }
+
+  async getClaimedClaims(): Promise<HypeClaim[]> {
+    return this.claimRepository.find({
+      where: {
+        claimed: false,
+      },
+    });
   }
 }
