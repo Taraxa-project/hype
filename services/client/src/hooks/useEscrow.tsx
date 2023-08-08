@@ -31,6 +31,9 @@ export const useEscrow = () => {
 
   const depositsOf = useCallback(
     async (poolId: string): Promise<DepositsOf> => {
+      if (!escrowContract) {
+        return;
+      }
       try {
         return await escrowContract!.depositsOf(payee, poolId);
       } catch (error: any) {
