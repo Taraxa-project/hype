@@ -4,6 +4,8 @@ import Box from '../../../components/styles/Box';
 import { Link } from '../../../components/styles/Link';
 import { getExplorerFromNetwork } from '../../../utils';
 import { SharePool } from '../../../components/share-pool/SharePool';
+import Button from '../../../components/button/Button';
+import { useNavigate } from 'react-router-dom';
 
 export interface CompletedProps {
   createdPoolIndex: string;
@@ -18,7 +20,11 @@ export const Completed: FC<CompletedProps> = ({
   transaction,
   network,
 }) => {
+  let navigate = useNavigate();
   const { text, href } = getExplorerFromNetwork(Number(network), transaction);
+  const onRedirect = () => {
+    navigate(`/pool/${createdPoolIndex}`);
+  };
 
   return (
     <Box width={'100%'}>
@@ -39,6 +45,14 @@ export const Completed: FC<CompletedProps> = ({
         Hype your Hype Pool!
       </Text>
       <SharePool createdPoolIndex={createdPoolIndex} poolName={poolName} />
+      <Button
+        variant="primary"
+        size="full-width"
+        onClick={onRedirect}
+        style={{ marginTop: '1rem' }}
+      >
+        Go to pool details page
+      </Button>
     </Box>
   );
 };
