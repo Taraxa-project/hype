@@ -59,8 +59,8 @@ export const useCheckDepositsAndFund = (
 
   const activate = async () => {
     if (isDeposited) {
-      setIsDeposited(false);
       await activatePool(poolId, successCallbackActivatePool);
+      setIsDeposited(false);
     }
   };
 
