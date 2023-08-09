@@ -17,6 +17,7 @@ export const LoadingModal = () => {
       closeOutside={false}
       open={open}
       closeModal={closeModal}
+      height="10rem"
     >
       <Box display="flex" flexDirection="column" height="100%">
         {text &&

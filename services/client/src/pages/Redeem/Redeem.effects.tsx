@@ -14,20 +14,8 @@ export const useRedeemEffects = () => {
   const { submitHandler: claimReward } = useRewardsClaim();
   const [claims, setClaims] = useState<HypeClaim[]>([]);
   const [claimHistory, setClaimHistory] = useState<HypeClaim[]>([]);
-  const [currentClaim, setCurrentClaim] = useState<HypeClaim>(null);
   const [poolRewards, setPoolRewards] = useState<PoolRewards[]>([]);
   const { claim } = useEscrow();
-
-  const onClaimSuccess = () => {
-    if (currentClaim) {
-      // Send backend claim success
-      claimReward({
-        id: currentClaim.id,
-        poolId: currentClaim.poolId,
-      });
-      setCurrentClaim(null);
-    }
-  };
 
   useEffect(() => {
     const setData = async () => {
@@ -46,7 +34,6 @@ export const useRedeemEffects = () => {
   };
   const onClaim = (poolClaim: HypeClaim) => {
     if (poolClaim) {
-      setCurrentClaim(poolClaim);
       const claimArgs: ClaimArgs = {
         receiver: poolClaim.rewardee,
         poolId: poolClaim.poolId,
@@ -55,7 +42,12 @@ export const useRedeemEffects = () => {
         nonce: poolClaim.nonce,
         hash: poolClaim.hash,
       };
-      claim(claimArgs, onClaimSuccess);
+      claim(claimArgs, () => {
+        claimReward({
+          id: poolClaim.id,
+          poolId: poolClaim.poolId,
+        });
+      });
     }
   };
 

@@ -48,7 +48,7 @@ async function main() {
   try {
     dynamicEscrow = await upgrades.deployProxy(
       DynamicEscrow,
-      ['0xc6a808A6EC3103548f0b38d32DCb6a705B734c89'],
+      [signer.address],
       {
         kind: 'transparent',
         initializer: 'initialize',

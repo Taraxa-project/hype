@@ -189,11 +189,18 @@ export const PoolDetails = () => {
             {endsAt && <ListItem>ends {endsAt}</ListItem>}
           </List>
           <KeywordWrapper>
-            <Box display="flex" alignItems="center" gridGap="0.5rem">
-              <Text fontWeight="500" fontSize="1.25rem" paddingRight="5px">
-                Required keywords:
-              </Text>
-              <Tooltip message="Use one of the following keywords" />
+            <Box
+              display="flex"
+              flexDirection={{ _: 'column', md: 'row' }}
+              alignItems={{ _: 'start', md: 'center' }}
+              gridGap="0.5rem"
+            >
+              <Box display="flex" alignItems="center">
+                <Text fontWeight="500" fontSize="1.25rem" paddingRight="5px">
+                  Required keywords:
+                </Text>
+                <Tooltip message="Use one of the following keywords" />
+              </Box>
               <Box display="flex" alignItems="center" flexWrap="wrap">
                 {projectKeywords?.length > 0 &&
                   projectKeywords.map((keyword, i) => (

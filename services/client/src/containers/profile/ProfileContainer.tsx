@@ -35,11 +35,7 @@ export const ProfileContainer = ({
   disconnect,
 }: ProfileProps) => {
   return (
-    <RoundContainer
-      justifyContent="space-between"
-      flex="1 1 auto"
-      alignItems="left"
-    >
+    <RoundContainer justifyContent="space-between" flex="1 1 auto" alignItems="left">
       <Heading
         fontSize="1.25rem"
         fontWeight="700"
@@ -50,7 +46,7 @@ export const ProfileContainer = ({
         Your profile
       </Heading>
       {address && (
-        <Box display="flex" alignItems="center" gridGap="1.5rem" my="1rem">
+        <Box display="flex" alignItems="center" gridGap="1rem" my="1rem">
           <Blockies bgColor="#fff" scale={5} seed={address || 'current-user'} />
           <Account>{address}</Account>
         </Box>
@@ -60,14 +56,14 @@ export const ProfileContainer = ({
       </Text>
       <Box
         backgroundColor="greys.0"
-        p="1.5rem"
+        p="1rem"
         borderRadius="10px"
         display="flex"
         flexDirection={{ _: 'column', sm: 'column', md: 'column', lg: 'row' }}
         justifyContent="space-between"
         alignItems="center"
-        gridGap="1.1rem"
-        mt="0.75rem"
+        gridGap="1rem"
+        mt="1rem"
       >
         <Box display="flex" flexDirection="row">
           <TelegramLogo width="90" height="54.75" />
@@ -75,7 +71,7 @@ export const ProfileContainer = ({
             display="flex"
             flexDirection="column"
             justifyContent="space-evenly"
-            alignItems="center"
+            alignItems="start"
             marginLeft="1rem"
             width="100%"
           >
@@ -84,13 +80,13 @@ export const ProfileContainer = ({
             </Text>
             {telegramUsername && (
               <Text fontSize="0.875rem" color="greys.4">
-                {telegramUsername}
+                @{telegramUsername}
               </Text>
             )}
           </Box>
         </Box>
         {telegramUsername ? (
-          <Button variant="secondary" onClick={disconnect}>
+          <Button variant="secondary" size="full-width" onClick={disconnect}>
             Disconnect this account
           </Button>
         ) : (

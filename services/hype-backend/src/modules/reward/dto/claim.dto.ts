@@ -10,10 +10,5 @@ export class ClaimDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  rewardee: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   poolId: string;
 }

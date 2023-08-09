@@ -81,6 +81,7 @@ export const useHypePools = () => {
       } catch (error: any) {
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
+        throw error;
       }
     },
     [abi, hideLoadingModal, hypeContract, showLoading, showNotificationModal],
@@ -101,6 +102,7 @@ export const useHypePools = () => {
       } catch (error: any) {
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
+        throw error;
       }
     },
     [hideLoadingModal, hypeContract, showLoading, showNotificationModal],

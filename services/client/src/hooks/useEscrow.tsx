@@ -3,7 +3,7 @@ import { BigNumber, ethers } from 'ethers';
 import { useLoadingModals } from './useLoadingModals';
 import { AddressType, NotificationType, zeroAddress } from '../utils';
 import { useContracts } from './useContracts';
-import { useAccount, useProvider } from 'wagmi';
+import { useAccount, useSigner } from 'wagmi';
 import ABIs from '../abi';
 import { escrowAddress } from '../constants';
 
@@ -27,14 +27,18 @@ export const useEscrow = () => {
   const { showLoading, hideLoadingModal, showNotificationModal } = useLoadingModals();
   const { address: payee } = useAccount();
   const { abi: erc20ABI } = ABIs.contracts.HypeToken;
-  const provider = useProvider();
+  const { data: signer } = useSigner();
 
   const depositsOf = useCallback(
     async (poolId: string): Promise<DepositsOf> => {
+      if (!escrowContract) {
+        return;
+      }
       try {
         return await escrowContract!.depositsOf(payee, poolId);
       } catch (error: any) {
         console.log('Can`t fetch the deposits of: ', error?.message);
+        throw error;
       }
     },
     [escrowContract, payee],
@@ -63,6 +67,7 @@ export const useEscrow = () => {
         console.log('On error: ', error);
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
+        throw error;
       }
     },
     [escrowContract, hideLoadingModal, showLoading, showNotificationModal],
@@ -95,6 +100,7 @@ export const useEscrow = () => {
         console.log('On error: ', error);
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
+        throw error;
       }
     },
     [escrowContract, hideLoadingModal, showLoading, showNotificationModal],
@@ -110,7 +116,7 @@ export const useEscrow = () => {
         'You need to approve in order to deposit your funds',
       ]);
       try {
-        const contract = new ethers.Contract(tokenAddress, erc20ABI, provider);
+        const contract = new ethers.Contract(tokenAddress, erc20ABI, signer);
         const tx: ethers.providers.TransactionResponse = await contract!.approve(
           escrowAddress,
           amount,
@@ -122,9 +128,10 @@ export const useEscrow = () => {
         console.log('On error: ', error);
         hideLoadingModal();
         showNotificationModal(NotificationType.ERROR, error?.message);
+        throw error;
       }
     },
-    [provider, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
+    [signer, erc20ABI, hideLoadingModal, showLoading, showNotificationModal],
   );
 
   return useMemo(
