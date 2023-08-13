@@ -1,0 +1,439 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "UintUtils__InsufficientHexLength",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newIngesterProxy",
+          "type": "address"
+        }
+      ],
+      "name": "IngesterProxyAddressUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "ingesterAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "usersIpfsHash",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "chatsIpfsHash",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "messagesIpfsHash",
+          "type": "string"
+        }
+      ],
+      "name": "IpfsHashAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "previousAdminRole",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "newAdminRole",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        { "internalType": "string", "name": "usersHash", "type": "string" },
+        { "internalType": "string", "name": "chatsHash", "type": "string" },
+        { "internalType": "string", "name": "messagesHash", "type": "string" }
+      ],
+      "name": "addIpfsHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "numerator", "type": "uint256" },
+        { "internalType": "uint256", "name": "denominator", "type": "uint256" }
+      ],
+      "name": "divideAndRoundUp",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "clusterId", "type": "uint256" }
+      ],
+      "name": "getCluster",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "ingesterAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "clusterGroupCount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "clusterRemainingCapacity",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IIngesterGroupManager.ClusterSlim",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getClusters",
+      "outputs": [
+        { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "controllerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getControllerIngesters",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "ingesterAddress",
+              "type": "address"
+            },
+            { "internalType": "bool", "name": "verified", "type": "bool" },
+            {
+              "internalType": "uint256",
+              "name": "clusterId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IIngesterRegistration.Ingester[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getGroupCount",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ingesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getIngester",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "ingesterAddress",
+              "type": "address"
+            },
+            { "internalType": "bool", "name": "verified", "type": "bool" },
+            {
+              "internalType": "uint256",
+              "name": "clusterId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IIngesterRegistration.Ingester",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getIngesterCount",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ingesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getIngesterWithGroups",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "ingesterAddress",
+              "type": "address"
+            },
+            { "internalType": "bool", "name": "verified", "type": "bool" },
+            {
+              "internalType": "uint256",
+              "name": "clusterId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string[]",
+              "name": "assignedGroups",
+              "type": "string[]"
+            }
+          ],
+          "internalType": "struct IIngesterRegistration.IngesterWithGroups",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getIngesters",
+      "outputs": [
+        { "internalType": "address[]", "name": "", "type": "address[]" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ingesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getIpfsHashes",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "usersIpfsHash",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "chatsIpfsHash",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "messagesIpfsHash",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct IIngesterDataGathering.IpfsHash",
+          "name": "ipfsHashes",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" }
+      ],
+      "name": "getRoleAdmin",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getUnallocatedGroups",
+      "outputs": [
+        { "internalType": "string[]", "name": "", "type": "string[]" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "hasRole",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "address", "name": "ingester", "type": "address" },
+        { "internalType": "address", "name": "controller", "type": "address" }
+      ],
+      "name": "isIngesterOwnedByController",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "address", "name": "controller", "type": "address" }
+      ],
+      "name": "isRegisteredController",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ingesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isRegisteredIngester",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

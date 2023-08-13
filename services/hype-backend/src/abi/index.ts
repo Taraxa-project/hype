@@ -5,12 +5,14 @@ import HypePoolUpgradeable from 'hype-contracts/artifacts/contracts/upgradeable/
 import IEscrow from 'hype-contracts/artifacts/contracts/interfaces/IEscrow.sol/IEscrow.json';
 import IHypePool from 'hype-contracts/artifacts/contracts/interfaces/IHypePool.sol/IHypePool.json';
 import IRewarder from 'hype-contracts/artifacts/contracts/interfaces/IRewarder.sol/IRewarder.json';
+import * as GroupManagerFacet from './GroupManagerFacet.abi.json';
 
 const contracts = {
   DynamicEscrow,
   DynamicEscrowUpgradeable,
   HypePool,
   HypePoolUpgradeable,
+  GroupManagerFacet,
 };
 
 const interfaces = {
