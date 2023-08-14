@@ -11,7 +11,6 @@ import { Group } from '../../entities/group.entity';
 import { GetFilterDto } from './dto/get-filter.dto';
 import { ethereum } from '@taraxa-hype/config';
 import { ConfigType } from '@nestjs/config';
-import ABIs from '../../abi';
 import { IpfsService } from '../ipfs';
 import { DateTime } from 'luxon';
 import { Cron } from '@nestjs/schedule';
@@ -53,7 +52,39 @@ export class IngesterService {
     this.provider = new ethers.providers.JsonRpcProvider(
       ethereumConfig.provider,
     );
-    const { abi } = ABIs.contracts.GroupManagerFacet;
+    const abi = [
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'ingesterAddress',
+            type: 'address',
+          },
+          {
+            indexed: false,
+            internalType: 'string',
+            name: 'usersIpfsHash',
+            type: 'string',
+          },
+          {
+            indexed: false,
+            internalType: 'string',
+            name: 'chatsIpfsHash',
+            type: 'string',
+          },
+          {
+            indexed: false,
+            internalType: 'string',
+            name: 'messagesIpfsHash',
+            type: 'string',
+          },
+        ],
+        name: 'IpfsHashAdded',
+        type: 'event',
+      },
+    ];
     const contractAddress = ethereumConfig.echoContract;
     this.contract = new ethers.Contract(contractAddress, abi, this.provider);
   }
@@ -225,11 +256,11 @@ export class IngesterService {
       });
 
       if (existingGroup) {
-        existingGroup.totalMessages += chatInfo.totalMessages;
         existingGroup.memberCount = chatInfo.memberCount;
         existingGroup.groupTitle = chatInfo.title;
         existingGroup.groupUsername = chatInfo.groupUsername;
         existingGroup.totalMessages = chatInfo.totalMessages;
+        existingGroup.createdAt = chatInfo.createdAt;
         await this.groupRepository.save(existingGroup);
         this.logger.log(
           `Updated group with ID ${existingGroup.groupId} for week ${weekStart} `,

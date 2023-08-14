@@ -5,13 +5,7 @@ import {
   Column,
   UpdateDateColumn,
 } from 'typeorm';
-import {
-  IsString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsDate,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
 
 @Entity('group')
 export class Group extends BaseEntity {
@@ -23,53 +17,51 @@ export class Group extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'group_username', nullable: false })
+  @Column({ name: 'group_username' })
   @IsNotEmpty()
   @IsString()
   groupUsername: string;
 
-  @Column({ name: 'group_id', nullable: true })
-  @IsOptional()
+  @Column({ name: 'group_id' })
+  @IsNotEmpty()
   @IsNumber()
-  groupId?: number;
+  groupId: number;
 
-  @Column({ name: 'group_title', nullable: true })
-  @IsOptional()
+  @Column({ name: 'group_title' })
+  @IsNotEmpty()
   @IsString()
-  groupTitle?: string;
+  groupTitle: string;
 
-  @Column({ name: 'member_count', nullable: true })
-  @IsOptional()
+  @Column({ name: 'member_count', default: 0 })
+  @IsNotEmpty()
   @IsNumber()
-  memberCount?: number;
+  memberCount: number;
 
-  @Column({ name: 'total_messages', nullable: true })
-  @IsOptional()
+  @Column({ name: 'total_messages', default: 0 })
+  @IsNotEmpty()
   @IsNumber()
-  totalMessages?: number;
+  totalMessages: number;
 
   @Column({
     name: 'week_start',
     type: 'date', // Storing the start date of the week
-    nullable: true,
+    default: 0,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsDate()
-  weekStart?: Date;
+  weekStart: Date;
 
   @Column({
     name: 'created_at',
     type: 'timestamp with time zone',
-    nullable: true,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsDate()
-  createdAt?: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp with time zone',
-    nullable: true,
   })
-  updatedAt?: Date;
+  updatedAt: Date;
 }
