@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class TelegramGroupUpdates1692034454195 implements MigrationInterface {
-  name = 'TelegramGroupUpdates1692034454195';
+export class TelegramGroupUpdates1692035457211 implements MigrationInterface {
+  name = 'TelegramGroupUpdates1692035457211';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -11,7 +11,7 @@ export class TelegramGroupUpdates1692034454195 implements MigrationInterface {
       `ALTER TABLE "group" ADD "total_messages" integer NOT NULL DEFAULT '0'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "group" ADD "week_start" date NOT NULL DEFAULT '0'`,
+      `ALTER TABLE "group" ADD "week_start" date NOT NULL DEFAULT '"2023-08-14T17:50:59.673Z"'`,
     );
     await queryRunner.query(
       `ALTER TABLE "group" ADD "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()`,

@@ -12,7 +12,7 @@ import { RewardsTelegramGroup1688031467409 } from './src/migrations/168803146740
 import { UniqueReward1688469554091 } from './src/migrations/1688469554091-UniqueReward';
 import { RemovedRewardClaimed1688485811000 } from './src/migrations/1688485811000-RemovedRewardClaimed';
 import { RewardsIsBonus1689163303605 } from './src/migrations/1689163303605-RewardsIsBonus';
-import { TelegramGroupUpdates1692034454195 } from './src/migrations/1692034454195-TelegramGroupUpdates';
+import { TelegramGroupUpdates1692035457211 } from './src/migrations/1692035457211-TelegramGroupUpdates';
 
 dotenv.config();
 
@@ -65,7 +65,7 @@ const DataSourceConfig = new DataSource({
     UniqueReward1688469554091,
     RemovedRewardClaimed1688485811000,
     RewardsIsBonus1689163303605,
-    TelegramGroupUpdates1692034454195,
+    TelegramGroupUpdates1692035457211,
   ],
   migrationsTableName: 'migrations_hype_pool',
 } as DataSourceOptions);

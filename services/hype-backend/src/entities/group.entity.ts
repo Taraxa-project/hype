@@ -45,7 +45,7 @@ export class Group extends BaseEntity {
   @Column({
     name: 'week_start',
     type: 'date', // Storing the start date of the week
-    default: 0,
+    default: new Date(),
   })
   @IsNotEmpty()
   @IsDate()

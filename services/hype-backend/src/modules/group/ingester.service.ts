@@ -4,11 +4,11 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  OnModuleInit,
 } from '@nestjs/common';
 import { ethers } from 'ethers';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from '../../entities/group.entity';
-import { GetFilterDto } from './dto/get-filter.dto';
 import { ethereum } from '@taraxa-hype/config';
 import { ConfigType } from '@nestjs/config';
 import { IpfsService } from '../ipfs';
@@ -37,7 +37,7 @@ interface ChatInfo {
 const DAYS_AGO_FILTER = 14;
 
 @Injectable()
-export class IngesterService {
+export class IngesterService implements OnModuleInit {
   private logger = new Logger('GroupService');
   private readonly provider: ethers.providers.Provider;
   private readonly contract: ethers.Contract;
@@ -89,8 +89,13 @@ export class IngesterService {
     this.contract = new ethers.Contract(contractAddress, abi, this.provider);
   }
 
+  onModuleInit() {
+    this.collectDataForIngesters();
+  }
+
   @Cron('0 0 * * SUN')
   async cleanupOldGroups() {
+    this.logger.debug('Starting cleanup for old telegram groups worker...');
     try {
       const n = 2;
       const targetDate = DateTime.local()
@@ -280,59 +285,6 @@ export class IngesterService {
           `Created new group with ID ${chatInfo.groupId} for week ${weekStart} `,
         );
       }
-    }
-  }
-
-  public async findAll(filterDto: GetFilterDto): Promise<GroupPaginate> {
-    const [groups, total] = await this.getByFilters(filterDto);
-    return {
-      data: groups || [],
-      total,
-    };
-  }
-
-  private async getByFilters(
-    filterDto: GetFilterDto,
-  ): Promise<[Group[], number]> {
-    const { search, take, skip } = filterDto;
-    const limit = take || 0;
-    const offset = skip || 0;
-
-    const query = this.groupRepository
-      .createQueryBuilder('group')
-      .select([
-        'group.id',
-        'group.groupUsername',
-        'group.groupId',
-        'group.groupTitle',
-        'group.memberCount',
-        'group.totalMessages',
-        'group.weekStart',
-        'group.createdAt',
-        'group.updatedAt',
-      ]);
-
-    if (search) {
-      query.where(
-        'group.groupUsername ILIKE :search or group.groupTitle ILIKE :search',
-        { search: `%${search}%` },
-      );
-    }
-
-    try {
-      const results = await query
-        .skip(offset)
-        .take(limit)
-        .orderBy('group.weekStart', 'DESC')
-        .addOrderBy('group.totalMessages', 'DESC')
-        .getManyAndCount();
-      return results;
-    } catch (error) {
-      this.logger.error(
-        `Failed to get groups, DTO: ${JSON.stringify(filterDto)}`,
-        error,
-      );
-      throw new InternalServerErrorException('Internal server exception');
     }
   }
 }
