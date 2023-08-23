@@ -314,7 +314,9 @@ export const PoolDetails = () => {
           {tokenAddress && tokenAddress !== '0x0000000000000000000000000000000000000000' && (
             <InfoContainer>
               <InfoHeader>Token contract address:</InfoHeader>
-              <InfoValue>{tokenAddress}</InfoValue>
+              <InfoValue>
+                <AddressValue>{tokenAddress}</AddressValue>
+              </InfoValue>
             </InfoContainer>
           )}
           {cap && (
