@@ -213,30 +213,24 @@ export class IngesterService implements OnModuleInit {
 
     const chatInfos: ChatInfo[] = [];
 
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - DAYS_AGO_FILTER);
+    const { hash } = chatDetails[chatDetails.length - 1];
+    const data = await this.ipfsService.getIpfsFile(hash);
 
-    for (const { hash, createdAt } of chatDetails) {
-      if (createdAt >= twoWeeksAgo) {
-        const data = await this.ipfsService.getIpfsFile(hash);
-
-        const downloadedLines = data.trim().split('\n').slice(1);
-        for (const line of downloadedLines) {
-          const chatData = JSON.parse(line);
-          const groupId = chatData[1];
-          const group = messageGroups.find((g) => g.groupId === groupId);
-          if (group) {
-            const chatInfo: ChatInfo = {
-              groupId: groupId,
-              totalMessages: group.totalMessages,
-              groupUsername: chatData[0],
-              title: chatData[2],
-              memberCount: chatData[3],
-              createdAt: new Date(chatData[8]),
-            };
-            chatInfos.push(chatInfo);
-          }
-        }
+    const downloadedLines = data.trim().split('\n').slice(1);
+    for (const line of downloadedLines) {
+      const chatData = JSON.parse(line);
+      const groupId = chatData[1];
+      const group = messageGroups.find((g) => g.groupId === groupId);
+      if (group) {
+        const chatInfo: ChatInfo = {
+          groupId: groupId,
+          totalMessages: group.totalMessages,
+          groupUsername: chatData[0],
+          title: chatData[2],
+          memberCount: chatData[3],
+          createdAt: new Date(chatData[8]),
+        };
+        chatInfos.push(chatInfo);
       }
     }
 
