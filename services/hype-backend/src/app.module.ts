@@ -89,19 +89,17 @@ const HypeAppTypeOrmModule = () => {
     HypeAppTypeOrmModule(),
     AuthModule,
     BlockchainModule,
-    RewardModule,
     UserModule,
     HealthModule,
     IpfsModule,
     GraphQlModule,
-    GroupModule,
   ],
 })
 export class AppModule {
   static forRoot(type = 'web'): DynamicModule {
     return {
       module: AppModule,
-      imports: [RewardModule.forRoot(type)],
+      imports: [RewardModule.forRoot(type), GroupModule.forRoot(type)],
     };
   }
 }

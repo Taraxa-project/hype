@@ -23,7 +23,6 @@ export class RewardTaskService implements OnModuleInit {
   }
 
   @Cron('0 23 * * 6') // Once a week Saturday at 23:00
-  // @Cron(CronExpression.EVERY_30_SECONDS) // Once a week Saturday at 23:00
   async calculateRewardsForLeaderboard() {
     this.logger.debug('Calculating rewards top user in Leaderboard...');
     const hypePools = await this.getAllActivePools();
@@ -71,7 +70,7 @@ export class RewardTaskService implements OnModuleInit {
 
   @Cron(CronExpression.EVERY_HOUR)
   async checkClaims() {
-    this.logger.debug('Called every day at 1 AM');
+    this.logger.debug('Called checkClaims worker every hour...');
     const claims = await this.rewardService.getUnClaimedClaims();
     if (claims.length > 0) {
       await Promise.all(

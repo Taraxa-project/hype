@@ -7,7 +7,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from '../../entities/group.entity';
 import { GetFilterDto } from './dto/get-filter.dto';
-
 export interface GroupPaginate {
   data: any[];
   total: number;
@@ -36,8 +35,6 @@ export class GroupService {
     const { search, take, skip } = filterDto;
     const limit = take || 0;
     const offset = skip || 0;
-    const orderByType = 'createdAt';
-    const orderDirection: 'ASC' | 'DESC' = 'DESC';
 
     const query = this.groupRepository
       .createQueryBuilder('group')
@@ -46,7 +43,11 @@ export class GroupService {
         'group.groupUsername',
         'group.groupId',
         'group.groupTitle',
+        'group.memberCount',
+        'group.totalMessages',
+        'group.weekStart',
         'group.createdAt',
+        'group.updatedAt',
       ]);
 
     if (search) {
@@ -60,7 +61,8 @@ export class GroupService {
       const results = await query
         .skip(offset)
         .take(limit)
-        .orderBy(`group.${orderByType}`, orderDirection)
+        .orderBy('group.weekStart', 'DESC')
+        .addOrderBy('group.totalMessages', 'DESC')
         .getManyAndCount();
       return results;
     } catch (error) {

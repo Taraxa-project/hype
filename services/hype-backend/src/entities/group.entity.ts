@@ -3,13 +3,12 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   Column,
-  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
-import { IGroup } from '../models/IGroup';
+import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
 
 @Entity('group')
-export class Group extends BaseEntity implements IGroup {
+export class Group extends BaseEntity {
   constructor(group?: Partial<Group>) {
     super();
     Object.assign(this, group);
@@ -18,24 +17,51 @@ export class Group extends BaseEntity implements IGroup {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'group_username', nullable: false })
+  @Column({ name: 'group_username' })
   @IsNotEmpty()
   @IsString()
   groupUsername: string;
 
-  @Column({ name: 'group_id', nullable: true })
+  @Column({ name: 'group_id' })
   @IsNotEmpty()
   @IsNumber()
-  groupId?: number;
+  groupId: number;
 
-  @Column({ name: 'group_title', nullable: true })
+  @Column({ name: 'group_title' })
+  @IsNotEmpty()
   @IsString()
-  groupTitle?: string;
+  groupTitle: string;
 
-  @CreateDateColumn({
+  @Column({ name: 'member_count', default: 0 })
+  @IsNotEmpty()
+  @IsNumber()
+  memberCount: number;
+
+  @Column({ name: 'total_messages', default: 0 })
+  @IsNotEmpty()
+  @IsNumber()
+  totalMessages: number;
+
+  @Column({
+    name: 'week_start',
+    type: 'date', // Storing the start date of the week
+    default: new Date(),
+  })
+  @IsNotEmpty()
+  @IsDate()
+  weekStart: Date;
+
+  @Column({
     name: 'created_at',
     type: 'timestamp with time zone',
-    nullable: true,
   })
-  createdAt?: Date;
+  @IsNotEmpty()
+  @IsDate()
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp with time zone',
+  })
+  updatedAt: Date;
 }
