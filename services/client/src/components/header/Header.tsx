@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Megaphone from '../../assets/images/megaphone.png';
+import HypeLogo from '../../assets/images/HypeLogo.svg';
 import Image from '../../components/image/Image';
 
 import HamburgerMenuIcon from '../../assets/icons/HamburgerMenu';
@@ -25,7 +25,6 @@ import {
 } from './Header.styled';
 import LoadingSpinner from '../../assets/icons/Spinner';
 import Text from '../styles/Text';
-import { LogoText } from '../../pages/Home/Home.styled';
 
 export interface HeaderProps {
   headerElements?: HeaderLink[];
@@ -66,6 +65,13 @@ const Header = React.memo(
                 </Account>
               )}
             </SidebarHeader>
+            <AccountContainer className="margin-right">
+              {connected && chain && (
+                <Text>
+                  Connected to <strong>{chain.name}</strong>
+                </Text>
+              )}
+            </AccountContainer>
             <SidebarMenu>
               {headerEntries.map(
                 (e: HeaderLink) =>
@@ -88,10 +94,7 @@ const Header = React.memo(
             <div className="header-left">
               <Link to="/" style={{ textDecoration: 'none', display: 'flex' }}>
                 <Logo>
-                  <Image src={Megaphone} alt="Megaphone" width="50px" />
-                  <Box display={{ _: 'none', xs: 'flex' }}>
-                    <LogoText style={{ margin: '0 0 0 1rem' }}>Hype</LogoText>
-                  </Box>
+                  <Image src={HypeLogo} alt="Megaphone" />
                 </Logo>
               </Link>
             </div>
@@ -112,17 +115,19 @@ const Header = React.memo(
                           <LoadingSpinner />
                         </Box>
                       ) : (
-                        <AccountContainer className="margin-right">
-                          {chain && (
-                            <Text>
-                              Connected to <strong>{chain.name}</strong>
-                            </Text>
-                          )}
-                          <Account>
-                            <GreenDot />
-                            {shortenAddress(account)}
-                          </Account>
-                        </AccountContainer>
+                        <Box display={{ _: 'none', sm: 'none', md: 'flex' }}>
+                          <AccountContainer className="margin-right">
+                            {chain && (
+                              <Text>
+                                Connected to <strong>{chain.name}</strong>
+                              </Text>
+                            )}
+                            <Account>
+                              <GreenDot />
+                              {shortenAddress(account)}
+                            </Account>
+                          </AccountContainer>
+                        </Box>
                       )}
                     </Box>
                     <MenuButton onClick={onMenuOpen}>
