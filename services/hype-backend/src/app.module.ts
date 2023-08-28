@@ -93,6 +93,8 @@ const HypeAppTypeOrmModule = () => {
     HealthModule,
     IpfsModule,
     GraphQlModule,
+    RewardModule,
+    GroupModule,
   ],
 })
 export class AppModule {
