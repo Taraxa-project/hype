@@ -14,6 +14,7 @@ import { ConfigType } from '@nestjs/config';
 import { IpfsService } from '../ipfs';
 import { DateTime } from 'luxon';
 import { Cron } from '@nestjs/schedule';
+import ABIs from '../../abi';
 
 export interface GroupPaginate {
   data: any[];
@@ -39,7 +40,7 @@ const DAYS_AGO_FILTER = 14;
 @Injectable()
 export class IngesterService implements OnModuleInit {
   private logger = new Logger('GroupService');
-  private readonly provider: ethers.providers.Provider;
+  private readonly provider: ethers.providers.JsonRpcProvider;
   private readonly contract: ethers.Contract;
 
   constructor(
@@ -52,39 +53,7 @@ export class IngesterService implements OnModuleInit {
     this.provider = new ethers.providers.JsonRpcProvider(
       ethereumConfig.provider,
     );
-    const abi = [
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: 'address',
-            name: 'ingesterAddress',
-            type: 'address',
-          },
-          {
-            indexed: false,
-            internalType: 'string',
-            name: 'usersIpfsHash',
-            type: 'string',
-          },
-          {
-            indexed: false,
-            internalType: 'string',
-            name: 'chatsIpfsHash',
-            type: 'string',
-          },
-          {
-            indexed: false,
-            internalType: 'string',
-            name: 'messagesIpfsHash',
-            type: 'string',
-          },
-        ],
-        name: 'IpfsHashAdded',
-        type: 'event',
-      },
-    ];
+    const abi = ABIs.contracts.DataGatheringFacet.abi;
     const contractAddress = ethereumConfig.echoContract;
     this.contract = new ethers.Contract(contractAddress, abi, this.provider);
   }
@@ -123,31 +92,42 @@ export class IngesterService implements OnModuleInit {
 
   public async collectDataForIngesters(): Promise<void> {
     this.logger.debug(`Started ingester listening for IpfsHashAdded event`);
+    // const pastEvents = await this.contract.queryFilter('IpfsHashAdded');
     this.contract.on(
       'IpfsHashAdded',
-      (
+      async (
         ingesterAddress,
         usersIpfsHash,
         chatsIpfsHash,
         messagesIpfsHash,
         event,
       ) => {
-        console.log(
-          ingesterAddress,
-          usersIpfsHash,
-          chatsIpfsHash,
-          messagesIpfsHash,
-          event,
-        );
-        this.readIngexterData(chatsIpfsHash, messagesIpfsHash)
-          .then(() => {
-            this.logger.log(`Data Ingexter finished`);
-          })
-          .catch((err: string) => {
-            this.logger.error(`Something wrong occured: ${err}`);
-          });
+        try {
+          console.log(
+            'Event received:',
+            ingesterAddress,
+            usersIpfsHash,
+            chatsIpfsHash,
+            messagesIpfsHash,
+            event,
+          );
+
+          await this.readIngexterData(chatsIpfsHash, messagesIpfsHash);
+          this.logger.log('Data Ingexter finished');
+        } catch (err) {
+          this.logger.error(`Something wrong occurred: ${err}`);
+        }
       },
     );
+
+    this.contract.on('error', (error) => {
+      console.error('Echo Contract Error:', error);
+    });
+
+    // Use this for testing
+    // const chatsIpfsHash = 'QmT2i2SdazcqjdqofFA8TBUSce4w8AHErtebVs8WH3hSeN';
+    // const messagesIpfsHash = 'QmPAfdQSFX67j3ccXLFXNUH4Kg9K2hXmo5S7kaWGifMqTS';
+    // await this.readIngexterData(chatsIpfsHash, messagesIpfsHash);
   }
 
   private async readIngexterData(

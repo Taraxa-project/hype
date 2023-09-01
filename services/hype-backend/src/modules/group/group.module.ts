@@ -9,7 +9,7 @@ import { IngesterService } from './ingester.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Group]), IpfsModule],
   controllers: [GroupController],
-  providers: [GroupService, IngesterService],
+  providers: [GroupService],
 })
 export class GroupModule {
   static forRoot(type = 'web'): DynamicModule {
