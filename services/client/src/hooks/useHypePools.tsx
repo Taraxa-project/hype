@@ -65,12 +65,12 @@ export const useHypePools = () => {
           args.leaderRewards,
         );
         const response: ethers.providers.TransactionReceipt = await poolTx.wait();
-        if (response.transactionHash) {
+        if (response?.transactionHash) {
           setPoolTransaction(response.transactionHash);
         }
         const hypeI = new ethers.utils.Interface(abi);
         const poolCreatedEvent = hypeI.parseLog(
-          response.logs.filter((event: any) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
+          response?.logs?.filter((event: any) => hypeI.parseLog(event)?.name === 'PoolCreated')[0],
         );
         if (poolCreatedEvent && poolCreatedEvent.args[0]) {
           setCreatedPoolIndex(poolCreatedEvent.args[0]);
