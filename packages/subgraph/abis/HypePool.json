@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "escrowContractAddress",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "activator",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -121,111 +126,38 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "bytes32",
-        "name": "poolId",
+        "name": "role",
         "type": "bytes32"
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "title",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "projectName",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "tokenName",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "word",
-        "type": "string"
-      }
-    ],
-    "name": "PoolDetailsCreated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "poolId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "network",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "tokenAddress",
+        "name": "account",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "impressionReward",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "cap",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "startDate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "endDate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
       }
     ],
-    "name": "PoolRewardsCreated",
+    "name": "RoleGranted",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "bytes32",
-        "name": "poolId",
+        "name": "role",
         "type": "bytes32"
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "uri",
-        "type": "string"
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
-    "name": "PoolUriSet",
+    "name": "RoleRevoked",
     "type": "event"
   },
   {
@@ -242,6 +174,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "ACTIVATOR_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -250,6 +195,24 @@
       }
     ],
     "name": "activatePool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "addRole",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -280,7 +243,7 @@
           },
           {
             "internalType": "string",
-            "name": "word",
+            "name": "campaignWord",
             "type": "string"
           }
         ],
@@ -329,6 +292,11 @@
         "internalType": "struct IHypePool.Rewards",
         "name": "rewards",
         "type": "tuple"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "leaderRewards",
+        "type": "uint256[]"
       }
     ],
     "name": "createPool",
@@ -346,9 +314,9 @@
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
           },
           {
             "components": [
@@ -369,7 +337,7 @@
               },
               {
                 "internalType": "string",
-                "name": "word",
+                "name": "campaignWord",
                 "type": "string"
               }
             ],
@@ -418,6 +386,11 @@
             "internalType": "struct IHypePool.Rewards",
             "name": "rewards",
             "type": "tuple"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "leaderRewards",
+            "type": "uint256[]"
           }
         ],
         "internalType": "struct IHypePool.HypePool",
@@ -439,6 +412,25 @@
     "name": "deactivatePool",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "uuid",
+        "type": "bytes32"
+      }
+    ],
+    "name": "doesPoolExist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -477,9 +469,9 @@
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
           },
           {
             "components": [
@@ -500,7 +492,7 @@
               },
               {
                 "internalType": "string",
-                "name": "word",
+                "name": "campaignWord",
                 "type": "string"
               }
             ],
@@ -549,11 +541,153 @@
             "internalType": "struct IHypePool.Rewards",
             "name": "rewards",
             "type": "tuple"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "leaderRewards",
+            "type": "uint256[]"
           }
         ],
         "internalType": "struct IHypePool.HypePool",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "uuid",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPoolRewards",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "network",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "impressionReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cap",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "duration",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IHypePool.Rewards",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "uuid",
+        "type": "bytes32"
+      }
+    ],
+    "name": "isActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "uuid",
+        "type": "bytes32"
+      }
+    ],
+    "name": "isExpired",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "uuid",
+        "type": "bytes32"
+      }
+    ],
+    "name": "isGracePeriod",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -614,6 +748,24 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

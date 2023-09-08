@@ -4,11 +4,11 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { RewardService } from './reward.service';
 import { GraphQlService } from '../graphql';
 import { IPool } from '../../models';
-import { ethers } from 'ethers';
+import { HypeClaim } from '../../entities';
 
 @Injectable()
 export class RewardTaskService implements OnModuleInit {
@@ -25,53 +25,95 @@ export class RewardTaskService implements OnModuleInit {
   @Cron('0 23 * * 6') // Once a week Saturday at 23:00
   async calculateRewardsForLeaderboard() {
     this.logger.debug('Calculating rewards top user in Leaderboard...');
-    // Get all current active pools (active = true, endDate > currentDate)
-    const { hypePools } = await this.graphQlService.getActivePools();
+    const hypePools = await this.getAllActivePools();
+
     await Promise.all(
       hypePools.map(async (pool: IPool) => {
         const leaderboard = await this.rewardService.getLeaderboard(pool.id);
-        // If leaderboard is not empty
-        if (leaderboard.length > 0) {
-          for (let i = 0; i < leaderboard.length && i < 3; i++) {
-            const leader = leaderboard[i];
-            // Determine reward based on rank
-            let rewardAmount;
-            switch (leader.rank) {
-              case '1':
-                rewardAmount = ethers.utils.parseEther('10000'); // Reward for rank 1
-                break;
-              case '2':
-                rewardAmount = ethers.utils.parseEther('5000'); // Reward for rank 2
-                break;
-              case '3':
-                rewardAmount = ethers.utils.parseEther('2500'); // Reward for rank 3
-                break;
-              default:
-                continue; // Skip if not rank 1, 2, or 3
-            }
-            const user = await this.rewardService.getUserByTelegramId(
-              leader.telegramId.toString(),
-            );
-            if (!user) {
-              throw new NotFoundException(
-                `User with telegram id: ${leader.telegramId.toString()} was not found`,
-              );
-            }
-            this.logger.debug(`Saving bonus in the reward`);
-            const savedBonus = await this.rewardService.saveRewardBonus(
-              rewardAmount.toString(),
-              pool.tokenAddress,
-              user ? user.address : null,
-              user.telegramId.toString(),
-              user.username,
-              pool.id,
-            );
-            this.logger.log(
-              `Saved ${savedBonus.amount} bonus for ${savedBonus.rewardee}`,
+        const leaderRewards = pool.leaderRewards;
+
+        if (leaderboard.length === 0 || leaderRewards.length === 0) {
+          return;
+        }
+
+        for (
+          let i = 0;
+          i < Math.min(leaderRewards.length, leaderboard.length);
+          i++
+        ) {
+          const leader = leaderboard[i];
+          const rewardAmount = leaderRewards[i];
+          const user = await this.rewardService.getUserByTelegramId(
+            leader.telegramId.toString(),
+          );
+          if (!user) {
+            throw new NotFoundException(
+              `User with telegram id: ${leader.telegramId.toString()} was not found`,
             );
           }
+          this.logger.debug(`Saving bonus in the reward`);
+          const savedBonus = await this.rewardService.saveRewardBonus(
+            rewardAmount.toString(),
+            pool.tokenAddress,
+            user ? user.address : null,
+            user.telegramId.toString(),
+            user.username,
+            pool.id,
+          );
+          this.logger.log(
+            `Saved ${savedBonus.amount} bonus for ${savedBonus.rewardee}`,
+          );
         }
       }),
     );
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async checkClaims() {
+    this.logger.debug('Called checkClaims worker every hour...');
+    const claims = await this.rewardService.getUnClaimedClaims();
+    if (claims.length > 0) {
+      await Promise.all(
+        claims.map(async (claim: HypeClaim) => {
+          const onChainclaims = await this.graphQlService.getClaimedEvents(
+            claim.poolId,
+            claim.rewardee,
+            claim.amount,
+          );
+          if (onChainclaims.claimedEvents.length > 0) {
+            this.logger.warn(`Found unclaimed claims`);
+            claim.claimed = true;
+            this.logger.log(`Updating claims`);
+            await claim.save();
+          }
+        }),
+      );
+    }
+  }
+
+  async getAllActivePools(): Promise<IPool[]> {
+    const allActivePools: IPool[] = [];
+    const take = 100;
+    let skip = 0;
+
+    while (true) {
+      try {
+        const { hypePools } = await this.graphQlService.getActivePools(
+          take,
+          skip,
+        );
+        allActivePools.push(...hypePools);
+        if (hypePools.length < take) {
+          break;
+        }
+
+        skip += take;
+      } catch (e) {
+        console.error(e);
+        break;
+      }
+    }
+
+    return allActivePools;
   }
 }

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ERC20",
-  "sourceName": "contracts/upgradeable/DynamicEscrowUpgradeable.sol",
+  "sourceName": "contracts/DynamicEscrowBase.sol",
   "abi": [
     {
       "inputs": [
@@ -61,6 +61,24 @@
           "type": "uint256"
         }
       ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseAllowance",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },

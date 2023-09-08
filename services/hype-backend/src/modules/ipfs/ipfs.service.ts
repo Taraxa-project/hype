@@ -9,6 +9,9 @@ import { ConfigType } from '@nestjs/config';
 import { CID, create, IPFSHTTPClient, Options } from 'ipfs-http-client';
 import { ipfs } from '@taraxa-hype/config';
 import { ProjectDetailsDTO } from './dto';
+import { catchError, firstValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import { AxiosError } from '@nestjs/terminus/dist/errors/axios.error';
 
 export interface IpfsResult {
   Name: string;
@@ -45,6 +48,7 @@ export class IpfsService {
   constructor(
     @Inject(ipfs.KEY)
     private readonly ipfsConfig: ConfigType<typeof ipfs>,
+    private httpService: HttpService,
   ) {
     this.ipfsHost = ipfsConfig.ipfsHost;
     this.ipfsPort = Number(ipfsConfig.ipfsPort);
@@ -93,6 +97,19 @@ export class IpfsService {
 
   public getIpfsClient(): IPFSHTTPClient {
     return this.ipfsClient;
+  }
+
+  public async getIpfsFile(hash: string): Promise<any> {
+    const path = this.getFullIpfsUrl(hash);
+    const { data } = await firstValueFrom(
+      this.httpService.get<any>(path).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.response.data);
+          throw 'An error happened!';
+        }),
+      ),
+    );
+    return data;
   }
 
   public async uploadDetailsToIpfs(

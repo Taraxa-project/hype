@@ -31,6 +31,6 @@ export const StyledButton = styled.button<{
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 1rem 0.5rem;
+    padding: ${({ size }) => (size === 'small' ? '1rem 0.5rem' : '1rem 1.2rem')};
   }
 `;

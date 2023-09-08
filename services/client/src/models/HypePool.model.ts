@@ -1,9 +1,11 @@
+import { BigNumber } from 'ethers';
+
 export interface AddHypePool {
   title: string;
   projectName: string;
   projectDescription: string;
   description: string;
-  word: string;
+  campaignWord: string;
   network: number;
   token: string;
   impressionReward: number;
@@ -14,12 +16,21 @@ export interface AddHypePool {
   tokenName?: string;
   remainingFunds?: string;
   imageUri?: string;
+  leaderRewards?: BigNumber[];
+}
+
+export enum PoolStatus {
+  CREATED = 'Created',
+  FUNDED = 'Funded',
+  STARTED = 'Started',
+  EXPIRED = 'Expired',
+  ENDED = 'Ended',
 }
 
 export interface HypePool extends AddHypePool {
   id?: number;
   creator: string;
-  active: boolean;
+  status: string;
   tokenAddress?: string;
 }
 

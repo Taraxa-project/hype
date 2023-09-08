@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 import { HypeThemeType } from '../../../theme';
 
-interface StyledModalProps {
-  height?: string;
-}
-
-export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModalProps }>`
+export const StyledModal = styled.div<{ theme: HypeThemeType }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -16,7 +12,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
 
   max-width: 36rem;
   min-width: 30rem;
-  height: ${({ props }) => props.height || '37rem'};
+  height: auto;
 
   maxheight: 100vh;
 
@@ -32,7 +28,7 @@ export const StyledModal = styled.div<{ theme: HypeThemeType; props: StyledModal
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 70%;
-    height: ${({ props }) => props.height || '38rem'};
+    height: auto;
     min-height: 17rem;
     max-width: unset;
     min-width: unset;

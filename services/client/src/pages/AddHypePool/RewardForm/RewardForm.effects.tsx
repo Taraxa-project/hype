@@ -7,6 +7,7 @@ import { useSwitchNetwork, useAuth } from '../../../hooks';
 import debounce from 'lodash.debounce';
 import { useNetwork, useToken } from 'wagmi';
 import { AddressType, networkOptions, tokensOptions } from '../../../utils';
+import { useFieldArray } from 'react-hook-form';
 
 export interface HypePoolRewardForm
   extends Pick<
@@ -16,6 +17,7 @@ export interface HypePoolRewardForm
   tokenAddress: string;
   tokenSymbol: string;
   tokenDecimals: number;
+  leaderRewards: { id: number; reward: number }[];
 }
 
 export const useRewardFormEffects = (
@@ -104,6 +106,11 @@ export const useRewardFormEffects = (
     resolver: yupResolver(validationSchema),
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control, // control prop from useForm
+    name: 'leaderRewards',
+  });
+
   const onCancel = () => {
     reset();
   };
@@ -181,5 +188,8 @@ export const useRewardFormEffects = (
     showToken,
     debouncedResults,
     isEthNetwork,
+    fields,
+    append,
+    remove,
   };
 };

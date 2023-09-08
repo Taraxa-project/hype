@@ -173,12 +173,12 @@ export const DetailsForm = ({ defaultValues, onSubmit, imageUploadRef }: Details
           <FormInput
             disabled={!authenticated}
             placeholder="ex: testnet"
-            name="word"
-            {...register('word')}
+            name="campaignWord"
+            {...register('campaignWord')}
           />
-          {errors.word && (
+          {errors.campaignWord && (
             <Text color="danger" fontSize="0.8rem">
-              {errors.word.message}
+              {errors.campaignWord.message}
             </Text>
           )}
         </FormElement>

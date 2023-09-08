@@ -60,8 +60,11 @@ export class RewardController {
   @ApiBearerAuth('authorization')
   @ApiCreatedResponse({ description: 'Claim details' })
   @ApiNotFoundResponse({ description: 'Claim not found' })
-  public async claimed(@Body() claim: ClaimDto): Promise<HypeClaim> {
-    return await this.rewardService.claim(claim);
+  public async claimed(
+    @GetAddress() address: string,
+    @Body() claim: ClaimDto,
+  ): Promise<HypeClaim> {
+    return await this.rewardService.claim(address, claim);
   }
 
   @Patch()

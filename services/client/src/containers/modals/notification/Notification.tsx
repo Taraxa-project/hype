@@ -36,7 +36,13 @@ export const Notification = () => {
       <Box display="flex" flexDirection="column" gridGap="1rem">
         {message &&
           message.map((text: string) => (
-            <Text key={text} fontWeight="600" fontSize="14px" color="greys.11">
+            <Text
+              key={text}
+              fontWeight="600"
+              fontSize="14px"
+              color="greys.11"
+              style={{ wordBreak: 'break-word' }}
+            >
               {text}
             </Text>
           ))}

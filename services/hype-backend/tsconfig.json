@@ -37,6 +37,12 @@
       "@taraxa-hype/group": ["src/modules/group"]
     }
   },
-  "include": ["config/*", "src/**/*", "test/**/*", "data-source.ts"],
+  "include": [
+    "config/*",
+    "src/**/*",
+    "test/**/*",
+    "data-source.ts",
+    "src/abi/DataGatheringFacet.json"
+  ],
   "exclude": ["node_modules", "dist"]
 }

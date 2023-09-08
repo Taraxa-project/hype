@@ -10,6 +10,12 @@ export const Logo = styled.div`
   display: flex;
 `;
 
+export const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
 export const CardContainer = styled.div`
   position: relative;
   z-index: 1;
@@ -29,52 +35,48 @@ export const HeroContainer = styled.div`
   justify-content: space-between;
   gap: 4rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: 1100px) {
     flex-direction: column;
     gap: 2rem;
   }
 `;
 
 export const IntroContainer = styled.div<CustomStyledProps>`
-  background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
 `;
 
-export const GuideContainer = styled.a`
+export const GuideContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
 export const Guide = styled.img<CustomStyledProps>`
   border-radius: 10px;
   width: 400px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: 1100px) {
     width: 100%;
+    max-width: 500px;
   }
 `;
 
 export const TelegramInfoContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 2rem;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media  {
     flex-direction: column;
-    margin-top: 2.5rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-top: 0.7rem;
   }
 `;
 
 export const TelegramDetails = styled.div<CustomStyledProps>`
-  background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
+  text-align: center;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -85,11 +87,11 @@ export const TelegramDetails = styled.div<CustomStyledProps>`
 `;
 
 export const TelegramButtonsContainer = styled.div<CustomStyledProps>`
-  background: ${({ theme }) => theme.colors.greys[0]};
   padding: 1.5rem;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
   align-items: center;
@@ -137,36 +139,22 @@ export const NotFoundText = styled.span`
 
 export const DescriptionContainer = styled.span`
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.25rem;
   letter-spacing: -0.02em;
-  text-align: left;
   color: #595959;
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: unset;
-    margin-bottom: 2.625rem;
   }
 `;
 
-export const LogoText = styled.h1`
-  font-weight: 700;
-  font-size: 2rem;
-  line-height: 1.625rem;
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.02em;
-  color: #000000;
-  margin-left: 0.5rem;
-`;
 
 export const TitleText = styled.h3`
   font-weight: 700;
   font-size: 1.2rem;
   line-height: 1.625rem;
-  display: flex;
-  align-items: center;
   letter-spacing: -0.02em;
   color: #000000;
 `;
@@ -174,4 +162,13 @@ export const TitleText = styled.h3`
 export const LoadingContainer = styled.footer`
   position: absolute;
   bottom: 0;
+`;
+
+export const MainTitle = styled.h1`
+  font-weight: 700;
+  font-size: 4rem;
+  color: #000000;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 3rem;
+  }
 `;

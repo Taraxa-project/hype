@@ -1,0 +1,122 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "DynamicEscrowBase",
+  "sourceName": "contracts/DynamicEscrowBase.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "weiAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Claimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "weiAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Deposited",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "weiAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Withdrawn",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "payee",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "depositsOf",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "weiAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IEscrow.DynamicDeposit",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610149806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c80631aa9e74214610030575b600080fd5b61009961003e3660046100ce565b60408051808201825260008082526020918201819052928352600180825282842073ffffffffffffffffffffffffffffffffffffffff9586168552825292829020825180840190935280548352909201549092169082015290565b604080518251815260209283015173ffffffffffffffffffffffffffffffffffffffff16928101929092520160405180910390f35b600080604083850312156100e157600080fd5b823573ffffffffffffffffffffffffffffffffffffffff8116811461010557600080fd5b94602093909301359350505056fea264697066735822122091970770427908ec3d21c17c84e4e073d09494fd9c94081b586ed88d3adf714b64736f6c63430008120033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c80631aa9e74214610030575b600080fd5b61009961003e3660046100ce565b60408051808201825260008082526020918201819052928352600180825282842073ffffffffffffffffffffffffffffffffffffffff9586168552825292829020825180840190935280548352909201549092169082015290565b604080518251815260209283015173ffffffffffffffffffffffffffffffffffffffff16928101929092520160405180910390f35b600080604083850312156100e157600080fd5b823573ffffffffffffffffffffffffffffffffffffffff8116811461010557600080fd5b94602093909301359350505056fea264697066735822122091970770427908ec3d21c17c84e4e073d09494fd9c94081b586ed88d3adf714b64736f6c63430008120033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

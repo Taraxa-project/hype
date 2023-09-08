@@ -83,10 +83,10 @@ export const Summary: FC<SummaryProps> = ({
             </Text>
 
             <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-              Hype word:
+              Campaign word:
             </Text>
             <Text pb={3} fontSize="0.875rem" color="greys.7">
-              {details.word}
+              {details.campaignWord}
             </Text>
 
             <RewardContent>
@@ -113,17 +113,18 @@ export const Summary: FC<SummaryProps> = ({
                 {rewards.tokenDecimals}
               </Text>
             </RewardContent>
-            {rewards.tokenAddress && rewards.tokenAddress !== '0x0000000000000000000000000000000000000000' && (
-              <>
-                <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
-                  Token contract address:
-                </Text>
-                <BlockiesContainer>
-                  <Blockies seed={rewards.tokenAddress} />
-                  <Account>{rewards.tokenAddress}</Account>
-                </BlockiesContainer>
-              </>
-            )}
+            {rewards.tokenAddress &&
+              rewards.tokenAddress !== '0x0000000000000000000000000000000000000000' && (
+                <>
+                  <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
+                    Token contract address:
+                  </Text>
+                  <BlockiesContainer>
+                    <Blockies seed={rewards.tokenAddress} />
+                    <Account>{rewards.tokenAddress}</Account>
+                  </BlockiesContainer>
+                </>
+              )}
             <RewardContent>
               <Text fontSize="0.875rem" fontWeight="700" color="greys.7">
                 Reward per 1,000 impressions:

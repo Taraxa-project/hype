@@ -58,9 +58,14 @@ export const AddressValue = styled.p`
 `;
 
 export const PoolImage = styled.img`
+  margin: 0 auto;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  border-radius: 10px;
+  // max-height: 400px;
+  display: block;
 `;
 
 export const PoolContainer = styled.div`

@@ -3,8 +3,8 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
-import * as dotenv from "dotenv";
+import { ethers } from 'hardhat';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 async function main() {
@@ -14,24 +14,34 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
-  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", ethers.provider);
-  console.log("signer address: ", signer.address);
+  const signer = new ethers.Wallet(
+    process.env.MAINNET_PRIV_KEY || '',
+    ethers.provider,
+  );
+  console.log('signer address: ', signer.address);
   //   Get the contract factory connected to signer so it uses hardcoded fee data and
   //   should deploy using the signer and the hardcoded fees.
-  const DynamicEscrow = await ethers.getContractFactory("DynamicEscrow");
+  const DynamicEscrow = await ethers.getContractFactory('DynamicEscrow');
   const deployFunc = DynamicEscrow.connect(signer).deploy(signer.address);
 
   const dynamicEscrow = await deployFunc;
   // console.log(dynamicEscrow);
 
   await dynamicEscrow.deployed();
-  console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
-  const HypePool = await ethers.getContractFactory("HypePool");
-  const hypePool = await HypePool.connect(signer).deploy(dynamicEscrow.address);
+  console.log('DynamicEscrow deployed to:', dynamicEscrow.address);
+  const HypePool = await ethers.getContractFactory('HypePool');
+  const hypePool = await HypePool.connect(signer).deploy(
+    dynamicEscrow.address,
+    signer.address,
+  );
 
   await hypePool.deployed();
 
-  console.log("HypePool deployed to:", hypePool.address);
+  console.log('HypePool deployed to:', hypePool.address);
+
+  // Updating the DynamicEscrow contract with the address of HypePool
+  await dynamicEscrow.setHypePoolAddress(hypePool.address);
+  console.log('DynamicEscrow updated with HypePool address');
 }
 
 // We recommend this pattern to be able to use async/await everywhere

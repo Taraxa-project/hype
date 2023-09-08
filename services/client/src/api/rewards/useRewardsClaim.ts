@@ -5,7 +5,6 @@ import { ApiError } from '../../models';
 
 export interface ClaimReward {
   id: number;
-  rewardee: string;
   poolId: string;
 }
 

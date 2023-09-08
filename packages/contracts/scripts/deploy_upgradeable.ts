@@ -3,9 +3,9 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import hre, { ethers, upgrades } from "hardhat";
-import * as dotenv from "dotenv";
-import { BigNumber } from "ethers";
+import hre, { ethers, upgrades } from 'hardhat';
+import * as dotenv from 'dotenv';
+import { BigNumber } from 'ethers';
 dotenv.config();
 
 async function main() {
@@ -24,48 +24,71 @@ async function main() {
   // Wrap the provider so we can override fee data.
   const provider = new ethers.providers.FallbackProvider([ethers.provider], 1);
   // provider.getFeeData = async () => FEE_DATA;
-  provider.estimateGas = async (tx) => BigNumber.from("10000000");
+  provider.estimateGas = async (tx) => BigNumber.from('10000000');
 
   console.log(await provider.getFeeData());
 
-  console.log("hardhat network id is:", hre.network.config.chainId);
-  console.log("config is now:", hre.network.config);
+  console.log('hardhat network id is:', hre.network.config.chainId);
+  console.log('config is now:', hre.network.config);
   // Create the signer for the mnemonic, connected to the provider with hardcoded fee data
-  const signer = new ethers.Wallet(process.env.MAINNET_PRIV_KEY || "", provider);
-  console.log("signer address: ", signer.address);
+  const signer = new ethers.Wallet(
+    process.env.MAINNET_PRIV_KEY || '',
+    provider,
+  );
+  console.log('signer address: ', signer.address);
 
   // Get the contract factory connected to signer so it uses hardcoded fee data and
   // should deploy using the signer and the hardcoded fees.
-  const DynamicEscrow = await ethers.getContractFactory("DynamicEscrowUpgradeable", signer);
+  const DynamicEscrow = await ethers.getContractFactory(
+    'DynamicEscrowUpgradeable',
+    signer,
+  );
 
   let dynamicEscrow;
   try {
-    dynamicEscrow = await upgrades.deployProxy(DynamicEscrow, ["0xc6a808A6EC3103548f0b38d32DCb6a705B734c89"], {
-      kind: "transparent",
-      initializer: "initialize",
-    });
+    dynamicEscrow = await upgrades.deployProxy(
+      DynamicEscrow,
+      [signer.address],
+      {
+        kind: 'transparent',
+        initializer: 'initialize',
+      },
+    );
 
     await dynamicEscrow.deployed();
-    console.log("DynamicEscrow deployed to:", dynamicEscrow.address);
+    console.log('DynamicEscrow deployed to:', dynamicEscrow.address);
   } catch (error) {
     console.error(error);
-    console.log("==============================");
+    console.log('==============================');
     console.error(dynamicEscrow);
   }
-  const HypePool = await ethers.getContractFactory("HypePoolUpgradeable", signer);
+  const HypePool = await ethers.getContractFactory(
+    'HypePoolUpgradeable',
+    signer,
+  );
   let hypePool;
   try {
-    hypePool = await upgrades.deployProxy(HypePool, [dynamicEscrow?.address], {
-      kind: "transparent",
-      initializer: "initialize",
-    });
+    hypePool = await upgrades.deployProxy(
+      HypePool,
+      [dynamicEscrow?.address, signer.address],
+      {
+        kind: 'transparent',
+        initializer: 'initialize',
+      },
+    );
 
     await hypePool.deployed();
 
-    console.log("HypePool deployed to:", hypePool.address);
+    console.log('HypePool deployed to:', hypePool.address);
+
+    if (dynamicEscrow) {
+      // Updating the DynamicEscrow contract with the address of HypePool
+      await dynamicEscrow.setHypePoolAddress(hypePool.address);
+      console.log('DynamicEscrow updated with HypePool address');
+    }
   } catch (error) {
     console.error(error);
-    console.log("==============================");
+    console.log('==============================');
     console.error(hypePool);
   }
 }

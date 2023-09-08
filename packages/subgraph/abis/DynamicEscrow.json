@@ -222,11 +222,6 @@
             "internalType": "address",
             "name": "tokenAddress",
             "type": "address"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "poolId",
-            "type": "bytes32"
           }
         ],
         "internalType": "struct IEscrow.DynamicDeposit",
@@ -286,6 +281,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hypePool",
+        "type": "address"
+      }
+    ],
+    "name": "setHypePoolAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
