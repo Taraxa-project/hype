@@ -210,8 +210,6 @@ export const PoolDetails = () => {
                     </Box>
                   ))}
                 {tokenName && <Keyword>{tokenName}</Keyword>}
-                {campaignWord && tokenName && <Text p={2}>|</Text>}
-                {campaignWord && <Keyword>{campaignWord}</Keyword>}
               </Box>
             </Box>
           </KeywordWrapper>
