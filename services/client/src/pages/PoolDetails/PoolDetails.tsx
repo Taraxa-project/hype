@@ -38,11 +38,10 @@ import { Leaderboard } from '../../components/leaderboard/Leaderboard';
 import Tooltip from '../../components/tooltip/Tooltip';
 import { PoolStatus } from '../../models';
 import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
-import { ModalsActionsEnum, useModalsDispatch } from '../../context';
+import { LeaderboardBonus } from '../../components/leaderboard-bonus/LeaderboardBonus';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
-  const dispatchModals = useModalsDispatch();
 
   const {
     pool,
@@ -119,55 +118,6 @@ export const PoolDetails = () => {
 
   const projectKeywords = projectName?.split(',').map((item) => item.trim());
   const poolStatus = getStatusDisplayName(status, endDate);
-
-  const bonusContent = (
-    <Box display="flex" flexDirection="column">
-      {leaderRewards?.map((reward, index) => {
-        let emoji;
-        switch (index) {
-          case 0:
-            emoji = '1️⃣st';
-            break;
-          case 1:
-            emoji = '2️⃣nd';
-            break;
-          case 2:
-            emoji = '3️⃣rd';
-            break;
-          default:
-            emoji = `${index + 1}th`;
-        }
-
-        return (
-          <Text
-            key={index}
-            textAlign="left"
-            fontSize="1.2rem"
-            fontWeight="500"
-            paddingBottom="2rem"
-          >
-            {emoji} place bonus:{' '}
-            {prettifyNumber(Number(transformFromWei(reward.toString(), tokenDecimals)))}{' '}
-            {tokenSymbol}
-          </Text>
-        );
-      })}
-      <Text textAlign="left" fontSize="1.2rem" fontWeight="500" paddingBottom="2rem">
-        Bonuses settled at the end of each week
-      </Text>
-    </Box>
-  );
-
-  const showBonuses = () => {
-    dispatchModals({
-      type: ModalsActionsEnum.SHOW_BASIC,
-      payload: {
-        open: true,
-        title: 'Leaderboard bonuses',
-        content: bonusContent,
-      },
-    });
-  };
 
   return (
     <PoolContainer>
@@ -256,11 +206,11 @@ export const PoolDetails = () => {
               </Text>
             </CategoryTitle>
             {leaderRewards?.length > 0 && (
-              <Box display="flex" justifyContent="center" mb={4}>
-                <Button type="button" onClick={showBonuses} variant="info">
-                  Show leaderboard bonuses
-                </Button>
-              </Box>
+              <LeaderboardBonus
+                leaderRewards={leaderRewards}
+                tokenDecimals={tokenDecimals}
+                tokenSymbol={tokenSymbol}
+              />
             )}
             {leaderboard?.length > 0 ? (
               <Leaderboard topAccounts={leaderboard} />
