@@ -47,9 +47,10 @@ export class RewardTaskService implements OnModuleInit {
             leader.telegramId.toString(),
           );
           if (!user) {
-            throw new NotFoundException(
+            console.warn(
               `User with telegram id: ${leader.telegramId.toString()} was not found`,
             );
+            continue;
           }
           this.logger.debug(`Saving bonus in the reward`);
           const savedBonus = await this.rewardService.saveRewardBonus(
