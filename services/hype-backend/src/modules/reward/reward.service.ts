@@ -300,6 +300,7 @@ export class RewardService {
     telegramId: string,
     telegramUsername: string,
     poolId: string,
+    dateFrom: string,
   ): Promise<HypeReward> {
     const newReward = this.rewardRepository.create({
       amount: amount,
@@ -310,6 +311,7 @@ export class RewardService {
       telegramGroup: `Leaderboard BONUS!`,
       poolId: poolId,
       isBonus: true,
+      dateFrom,
     });
 
     try {

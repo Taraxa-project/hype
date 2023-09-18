@@ -1,14 +1,10 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { RewardService } from './reward.service';
 import { GraphQlService } from '../graphql';
 import { IPool } from '../../models';
 import { HypeClaim } from '../../entities';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class RewardTaskService implements OnModuleInit {
@@ -53,6 +49,7 @@ export class RewardTaskService implements OnModuleInit {
             continue;
           }
           this.logger.debug(`Saving bonus in the reward`);
+          const dateFrom = DateTime.utc().toISODate();
           const savedBonus = await this.rewardService.saveRewardBonus(
             rewardAmount.toString(),
             pool.tokenAddress,
@@ -60,6 +57,7 @@ export class RewardTaskService implements OnModuleInit {
             user.telegramId.toString(),
             user.username,
             pool.id,
+            dateFrom,
           );
           this.logger.log(
             `Saved ${savedBonus.amount} bonus for ${savedBonus.rewardee}`,
