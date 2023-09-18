@@ -10,6 +10,8 @@ import Box from '../../../components/styles/Box';
 import { FormColumn, Label, FormAction } from '../AddHypePool.styled';
 import TitleText from '../../../components/titletext/TitleText';
 import { networks } from '../../../utils';
+import { LeaderboardBonus } from '../../../components/leaderboard-bonus/LeaderboardBonus';
+import { BigNumber, ethers } from 'ethers';
 
 export interface SummaryProps {
   createdPoolIndex: string;
@@ -32,6 +34,16 @@ export const Summary: FC<SummaryProps> = ({
     rewards,
     isCustomToken,
   );
+  const leaderRewards: BigNumber[] = [];
+  if (rewards.leaderRewards?.length > 0) {
+    rewards.leaderRewards.map((leaderReward: { id: number; reward: number }) => {
+      let formattedReward = ethers.utils.parseUnits(
+        leaderReward.reward.toString().replace(',', '.'),
+        rewards.tokenDecimals,
+      );
+      leaderRewards.push(formattedReward);
+    });
+  }
 
   return (
     <>
@@ -152,6 +164,14 @@ export const Summary: FC<SummaryProps> = ({
               </RewardContent>
             )}
           </PoolContent>
+
+          {leaderRewards?.length > 0 && (
+            <LeaderboardBonus
+              leaderRewards={leaderRewards}
+              tokenDecimals={rewards.tokenDecimals}
+              tokenSymbol={rewards.tokenSymbol}
+            />
+          )}
 
           <Box display="flex" flexDirection="row" gridGap="0.2rem" alignItems="center">
             <Label>
