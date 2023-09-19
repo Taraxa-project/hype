@@ -10,6 +10,8 @@ export const useGroupEffects = () => {
   const columns: { path: string; name: string }[] = [
     { path: 'groupUsername', name: 'ID' },
     { path: 'groupTitle', name: 'Group Name' },
+    { path: 'memberCount', name: 'Members' },
+    { path: 'totalMessages', name: 'Total Messages' },
     { path: 'createdAt', name: 'Indexing started on' },
   ];
   const rows: {
@@ -22,6 +24,8 @@ export const useGroupEffects = () => {
         {
           groupUsername: `@${group.groupUsername}`,
           groupTitle: group.groupTitle,
+          memberCount: group.memberCount,
+          totalMessages: group.totalMessages,
           createdAt: group.createdAt ? new Date(group.createdAt).toDateString() : 'NA',
         },
       ],
