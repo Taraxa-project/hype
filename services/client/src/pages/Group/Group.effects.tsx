@@ -36,17 +36,17 @@ export const useGroupEffects = () => {
     let fetching = false;
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-
-      if (!fetching && scrollHeight - scrollTop <= clientHeight) {
+      const threshold = 100;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight + threshold) {
         fetching = true;
         await fetchNextPage();
         fetching = false;
       }
     };
 
-    document.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll);
     return () => {
-      document.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

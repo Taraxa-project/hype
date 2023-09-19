@@ -22,9 +22,9 @@ export const useHomeEffects = () => {
       }
     };
 
-    document.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll);
     return () => {
-      document.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetchingNextPage, maxReached]);
