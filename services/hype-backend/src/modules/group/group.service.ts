@@ -33,38 +33,57 @@ export class GroupService {
     filterDto: GetFilterDto,
   ): Promise<[Group[], number]> {
     const { search, take, skip } = filterDto;
-    const limit = take || 0;
+
+    const searchTerm = search ? `%${search}%` : '%';
+    const limit = take || 50;
     const offset = skip || 0;
 
-    const query = this.groupRepository
-      .createQueryBuilder('group')
-      .select([
-        'group.id',
-        'group.groupUsername',
-        'group.groupId',
-        'group.groupTitle',
-        'group.memberCount',
-        'group.totalMessages',
-        'group.weekStart',
-        'group.createdAt',
-        'group.updatedAt',
-      ]);
+    const rawQuery = `
+      SELECT * 
+      FROM (
+          SELECT DISTINCT ON (group_username)
+              id, 
+              group_username, 
+              group_id, 
+              group_title, 
+              member_count, 
+              total_messages, 
+              week_start, 
+              created_at, 
+              updated_at
+          FROM "group"
+          WHERE "group".group_username ILIKE $1 
+            OR "group".group_title ILIKE $1
+          ORDER BY 
+              group_username, 
+              total_messages DESC, 
+              week_start DESC
+      ) AS sub
+      ORDER BY 
+          total_messages DESC, 
+          week_start DESC
+      LIMIT $2
+      OFFSET $3;
+    `;
 
+    const countQuery = this.groupRepository.createQueryBuilder('groupCount');
     if (search) {
-      query.where(
-        'group.groupUsername ILIKE :search or group.groupTitle ILIKE :search',
-        { search: `%${search}%` },
+      countQuery.where(
+        'groupCount.groupUsername ILIKE :search OR groupCount.groupTitle ILIKE :search',
+        { search: searchTerm },
       );
     }
+    const totalCount = await countQuery.getCount();
 
     try {
-      const results = await query
-        .skip(offset)
-        .take(limit)
-        .orderBy('group.weekStart', 'DESC')
-        .addOrderBy('group.totalMessages', 'DESC')
-        .getManyAndCount();
-      return results;
+      const rawResults = await this.groupRepository.query(rawQuery, [
+        searchTerm,
+        limit,
+        offset,
+      ]);
+
+      const results: Group[] = rawResults.map(this.mapToGroup);
+      return [results, totalCount];
     } catch (error) {
       this.logger.error(
         `Failed to get groups, DTO: ${JSON.stringify(filterDto)}`,
@@ -72,5 +91,19 @@ export class GroupService {
       );
       throw new InternalServerErrorException('Internal server exception');
     }
+  }
+
+  private mapToGroup(rawResult: any): Group {
+    return new Group({
+      id: rawResult.id,
+      groupUsername: rawResult.group_username,
+      groupId: rawResult.group_id,
+      groupTitle: rawResult.group_title,
+      memberCount: rawResult.member_count,
+      totalMessages: rawResult.total_messages,
+      weekStart: rawResult.week_start,
+      createdAt: rawResult.created_at,
+      updatedAt: rawResult.updated_at,
+    });
   }
 }
