@@ -2,6 +2,8 @@ export interface TelegramGroup {
   groupUsername: string;
   groupId?: number;
   groupTitle?: string;
+  memberCount?: number;
+  totalMessages?: number;
   createdAt?: Date;
 }
 
