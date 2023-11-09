@@ -228,7 +228,6 @@ export const RewardForm = ({
             placeholder="ex: 28 days"
             type="number"
             min="1"
-            max="28"
             name="duration"
             {...register('duration')}
           />
