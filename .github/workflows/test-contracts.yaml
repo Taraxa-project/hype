@@ -22,7 +22,7 @@ jobs:
       TARA_DEVNET_URL: https://rpc.devnet.taraxa.io/
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup NodeJS 16
         uses: actions/setup-node@v3
         with:
