@@ -10,6 +10,9 @@
       "**/@openzeppelin"
     ]
   },
+  "resolutions": {
+    "concat-stream": "^2.0.0"
+  },
   "scripts": {
     "start": "concurrently \"SKIP_PREFLIGHT_CHECK=true yarn workspace hype-backend start & SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start\"",
     "start-client": "SKIP_PREFLIGHT_CHECK=true yarn workspace hype-client start",
