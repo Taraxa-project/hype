@@ -45,7 +45,7 @@ export const useHeaderEffects = (authenticated: boolean, headerElements?: Header
       display: true,
     },
     {
-      route: 'https://forms.gle/rZcHY9dwBfbEzkRN6',
+      route: '/pool',
       name: HeaderValues.HypePool,
       display: true,
     },
