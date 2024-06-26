@@ -13,10 +13,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(({ ...props }, ref) =>
   return props.icon ? (
     <div style={{ width: '100%' }}>
       <StyledSearchIcon>{props.icon}</StyledSearchIcon>
-      <StyledSelect {...props} placeholder={props.placeholder} ref={ref} />
+      <StyledSelect {...props} ref={ref} />
     </div>
   ) : (
-    <StyledSelect {...props} placeholder={props.placeholder} ref={ref} />
+    <StyledSelect {...props} ref={ref} />
   );
 });
 

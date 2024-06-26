@@ -39,6 +39,8 @@ import Tooltip from '../../components/tooltip/Tooltip';
 import { PoolStatus } from '../../models';
 import { getStatusColor, getStatusDisplayName } from '../../utils/pools';
 import { LeaderboardBonus } from '../../components/leaderboard-bonus/LeaderboardBonus';
+import { formatUnits } from 'ethers/lib/utils.js';
+import { BigNumber } from 'ethers';
 
 export const PoolDetails = () => {
   const { poolId } = useParams();
@@ -105,15 +107,14 @@ export const PoolDetails = () => {
     startDate,
     leaderRewards,
   } = pool;
-
   const startedAt =
     Number(startDate) !== 0 && !!startDate ? formatDate(new Date(+startDate * 1000)) : null;
   const endsAt = Number(endDate) !== 0 && !!endDate ? formatDate(new Date(+endDate * 1000)) : null;
   const tokensAwarded = poolStats?.tokensAwarded
-    ? Number(transformFromWei(poolStats.tokensAwarded, tokenDecimals))
+    ? parseFloat(formatUnits(BigNumber.from(poolStats.tokensAwarded.split('.')[0]), tokenDecimals))
     : 0;
   const tokensClaimed = poolStats?.tokensClaimed
-    ? Number(transformFromWei(poolStats.tokensClaimed, tokenDecimals))
+    ? parseFloat(formatUnits(poolStats.tokensClaimed, tokenDecimals))
     : 0;
 
   const projectKeywords = projectName?.split(',').map((item) => item.trim());
