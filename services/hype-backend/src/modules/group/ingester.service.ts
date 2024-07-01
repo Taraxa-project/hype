@@ -223,7 +223,7 @@ export class IngesterService implements OnModuleInit {
     }
     const weekStart = DateTime.local()
       .startOf('week')
-      .set({ weekday: 0 }) // Sunday
+      .set({ weekday: 7 }) // Sunday
       .toJSDate();
 
     for (const chatInfo of chatInfos) {

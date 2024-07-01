@@ -203,7 +203,7 @@ export const PoolDetails = () => {
             <CategoryTitle>
               👑
               <Text fontWeight="700" fontSize="1.25rem" lineHeight="26px">
-                Weekly Leaderboard
+                Leaderboard
               </Text>
             </CategoryTitle>
             {leaderRewards?.length > 0 && (
