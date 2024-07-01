@@ -378,17 +378,17 @@ export class RewardService {
   }
 
   async getLeaderboard(poolId: string): Promise<TopTelegramAccountDto[]> {
-    const currentDate = DateTime.utc();
-    const startDate = currentDate
-      .startOf('week')
-      .minus({ days: 1 })
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-      .toJSDate();
-    const endDate = currentDate
-      .endOf('week')
-      .minus({ days: 1 })
-      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
-      .toJSDate();
+    // const currentDate = DateTime.utc();
+    // const startDate = currentDate
+    //   .startOf('week')
+    //   .minus({ days: 1 })
+    //   .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+    //   .toJSDate();
+    // const endDate = currentDate
+    //   .endOf('week')
+    //   .minus({ days: 1 })
+    //   .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+    //   .toJSDate();
 
     const qb = this.rewardRepository
       .createQueryBuilder('reward')
@@ -407,14 +407,14 @@ export class RewardService {
       .andWhere(
         '(reward.telegramUsername IS NOT NULL OR reward.telegramId IS NOT NULL)',
       )
-      .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
-        startDate,
-        endDate,
-      })
-      .andWhere('reward.date_to BETWEEN :startDate AND :endDate', {
-        startDate,
-        endDate,
-      })
+      // .andWhere('reward.date_from BETWEEN :startDate AND :endDate', {
+      //   startDate,
+      //   endDate,
+      // })
+      // .andWhere('reward.date_to BETWEEN :startDate AND :endDate', {
+      //   startDate,
+      //   endDate,
+      // })
       .andWhere('reward.isBonus = :isBonus', { isBonus: false })
       .groupBy('reward.telegramId, reward.telegramUsername')
       .orderBy('"totalImpressions"', 'DESC')
