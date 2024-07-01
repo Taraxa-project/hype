@@ -1,4 +1,4 @@
-FROM node:18.13-alpine AS build
+FROM node:18.16-alpine AS build
 
 RUN apk --no-cache add --update \
     python3 git build-base
@@ -24,7 +24,7 @@ RUN yarn workspace hype-backend build
 # Failure to do this might result in using a different image
 # Tags are not 100% reliable
 
-FROM node:18.13-alpine AS release
+FROM node:18.16-alpine AS release
 
 WORKDIR /app
 

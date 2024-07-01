@@ -1,5 +1,5 @@
 # build environment
-FROM node:18.13-alpine as build
+FROM node:18.16-alpine as build
 
 # Default replace vars for entrypoint
 # Should be removed after we able to configure at runtime
